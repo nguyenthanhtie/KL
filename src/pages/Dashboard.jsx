@@ -30,38 +30,91 @@ const Dashboard = () => {
           lessons: [
             { 
               lessonId: 1, 
-              title: 'Bài 1: Chất – Tính chất của chất', 
+              title: 'Bài 1: Mở đầu môn Hoá học', 
               completed: false,
-              level: 'Level 1',
-              description: 'Tìm hiểu về chất, phân biệt chất tinh khiết và hỗn hợp'
+              type: 'theory',
+              icon: '📚',
+              description: 'Giới thiệu về môn Hoá học, tầm quan trọng và ứng dụng'
             },
             { 
               lessonId: 2, 
-              title: 'Bài 2: Nguyên tử – Phân tử', 
+              title: 'Bài 2: Chất', 
               completed: false,
-              level: 'Level 2',
-              description: 'Khám phá cấu tạo nguyên tử và phân tử'
+              type: 'theory',
+              icon: '🔬',
+              description: 'Tìm hiểu về chất, phân biệt chất tinh khiết và hỗn hợp'
             },
             { 
               lessonId: 3, 
-              title: 'Bài 3: Nguyên tố hóa học', 
+              title: 'Bài 3: Bài thực hành 1 - Tính chất nóng chảy của chất', 
               completed: false,
-              level: 'Level 3',
-              description: 'Học về ký hiệu hóa học và số nguyên tử'
+              type: 'lab',
+              icon: '🧪',
+              description: 'Thực hành mô phỏng quan sát tính chất nóng chảy'
             },
             { 
               lessonId: 4, 
-              title: 'Bài 4: Đơn chất & Hợp chất', 
+              title: 'Bài 4: Nguyên tử', 
               completed: false,
-              level: 'Level 4',
-              description: 'Phân biệt đơn chất và hợp chất'
+              type: 'theory',
+              icon: '⚛️',
+              description: 'Khám phá cấu tạo nguyên tử và các hạt cơ bản'
             },
             { 
               lessonId: 5, 
-              title: 'Bài 5: Phân tử khối', 
+              title: 'Bài 5: Nguyên tố hoá học', 
               completed: false,
-              level: 'Level 5',
-              description: 'Tính toán phân tử khối các chất'
+              type: 'theory',
+              icon: '🔤',
+              description: 'Học về nguyên tố hóa học và ký hiệu hóa học'
+            },
+            { 
+              lessonId: 6, 
+              title: 'Bài 6: Đơn chất và Hợp chất - Phân tử', 
+              completed: false,
+              type: 'theory',
+              icon: '🧩',
+              description: 'Phân biệt đơn chất, hợp chất và tìm hiểu phân tử'
+            },
+            { 
+              lessonId: 7, 
+              title: 'Bài 7: Bài thực hành 2 - Sự lan toả của chất', 
+              completed: false,
+              type: 'lab',
+              icon: '🌊',
+              description: 'Thực hành mô phỏng quan sát sự lan toả của chất'
+            },
+            { 
+              lessonId: 8, 
+              title: 'Bài 8: Bài luyện tập 1', 
+              completed: false,
+              type: 'exercise',
+              icon: '💪',
+              description: 'Luyện tập tổng hợp kiến thức về chất, nguyên tử, phân tử'
+            },
+            { 
+              lessonId: 9, 
+              title: 'Bài 9: Công thức hoá học', 
+              completed: false,
+              type: 'theory',
+              icon: '📝',
+              description: 'Học cách viết và đọc công thức hóa học'
+            },
+            { 
+              lessonId: 10, 
+              title: 'Bài 10: Hoá trị', 
+              completed: false,
+              type: 'theory',
+              icon: '⚡',
+              description: 'Tìm hiểu về hóa trị và cách xác định hóa trị'
+            },
+            { 
+              lessonId: 11, 
+              title: 'Bài 11: Bài luyện tập 2', 
+              completed: false,
+              type: 'exercise',
+              icon: '🎯',
+              description: 'Luyện tập tổng hợp về công thức hóa học và hóa trị'
             }
           ]
         }
@@ -146,36 +199,53 @@ const Dashboard = () => {
                   <div key={ch.chapterId} className="p-4 bg-gray-50 rounded-lg">
                     <h4 className="font-semibold text-gray-800 mb-3">{ch.title}</h4>
                     <div className="space-y-3">
-                      {ch.lessons.map((lesson, index) => (
-                        <div 
-                          key={lesson.lessonId}
-                          className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm"
-                        >
-                          <div className="flex items-center space-x-4">
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-xs ${
-                              lesson.completed 
-                                ? 'bg-success text-white' 
-                                : 'bg-gradient-to-r from-blue-400 to-purple-500 text-white'
-                            }`}>
-                              {lesson.completed ? '✓' : lesson.level}
+                      {ch.lessons.map((lesson, index) => {
+                        // Xác định màu sắc và badge theo loại bài
+                        const lessonTypeConfig = {
+                          lab: { color: 'from-green-400 to-teal-500', badge: 'Thực hành', badgeColor: 'bg-green-100 text-green-700' },
+                          exercise: { color: 'from-orange-400 to-red-500', badge: 'Luyện tập', badgeColor: 'bg-orange-100 text-orange-700' },
+                          theory: { color: 'from-blue-400 to-purple-500', badge: 'Lý thuyết', badgeColor: 'bg-blue-100 text-blue-700' }
+                        };
+                        const config = lessonTypeConfig[lesson.type] || lessonTypeConfig.theory;
+
+                        return (
+                          <div 
+                            key={lesson.lessonId}
+                            className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                          >
+                            <div className="flex items-center space-x-4">
+                              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl ${
+                                lesson.completed 
+                                  ? 'bg-success text-white' 
+                                  : `bg-gradient-to-r ${config.color} text-white`
+                              }`}>
+                                {lesson.completed ? '✓' : lesson.icon}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h5 className="font-medium text-gray-800">{lesson.title}</h5>
+                                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${config.badgeColor}`}>
+                                    {config.badge}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-gray-500">{lesson.description}</p>
+                                <p className="text-xs text-gray-400 mt-1">
+                                  {lesson.completed ? '✓ Đã hoàn thành' : '○ Chưa hoàn thành'}
+                                </p>
+                              </div>
                             </div>
-                            <div>
-                              <h5 className="font-medium text-gray-800">{lesson.title}</h5>
-                              <p className="text-sm text-gray-500">{lesson.description}</p>
-                              <p className="text-xs text-gray-400">{lesson.completed ? 'Đã hoàn thành' : 'Chưa hoàn thành'}</p>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                onClick={() => navigate(`/lesson/${cls.classId}/${ch.chapterId}/${lesson.lessonId}`)}
+                                variant={lesson.completed ? 'secondary' : 'primary'}
+                                className="text-sm"
+                              >
+                                {lesson.completed ? '🔄 Ôn tập' : '▶️ Bắt đầu'}
+                              </Button>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Button
-                              onClick={() => navigate(`/lesson/${cls.classId}/${ch.chapterId}/${lesson.lessonId}`)}
-                              variant={lesson.completed ? 'secondary' : 'primary'}
-                              className="text-sm"
-                            >
-                              {lesson.completed ? 'Ôn tập' : 'Bắt đầu'}
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 ))}

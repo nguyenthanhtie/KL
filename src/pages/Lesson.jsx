@@ -142,7 +142,24 @@ const Lesson = () => {
           >
             ← Quay lại Dashboard
           </button>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">{lessonData.title}</h1>
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-3xl font-bold text-gray-800">{lessonData.title}</h1>
+            {lessonData.type === 'lab' && (
+              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                🧪 Thực hành
+              </span>
+            )}
+            {lessonData.type === 'exercise' && (
+              <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
+                💪 Luyện tập
+              </span>
+            )}
+            {lessonData.type === 'theory' && (
+              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                📚 Lý thuyết
+              </span>
+            )}
+          </div>
           <p className="text-gray-600">{lessonData.description}</p>
         </div>
 
@@ -164,7 +181,35 @@ const Lesson = () => {
           </div>
 
           {activeTab === 'theory' && (
-            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: lessonData.theory }} />
+            <div>
+              {lessonData.type === 'lab' && (
+                <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded">
+                  <div className="flex items-start">
+                    <span className="text-2xl mr-3">🧪</span>
+                    <div>
+                      <h3 className="font-bold text-green-800 mb-1">Bài thực hành mô phỏng</h3>
+                      <p className="text-green-700 text-sm">
+                        Đây là bài thực hành dạng mô phỏng phòng thí nghiệm. Hãy đọc kỹ hướng dẫn và thực hiện các bước quan sát.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {lessonData.type === 'exercise' && (
+                <div className="mb-6 p-4 bg-orange-50 border-l-4 border-orange-500 rounded">
+                  <div className="flex items-start">
+                    <span className="text-2xl mr-3">💪</span>
+                    <div>
+                      <h3 className="font-bold text-orange-800 mb-1">Bài luyện tập tổng hợp</h3>
+                      <p className="text-orange-700 text-sm">
+                        Ôn tập và củng cố kiến thức đã học thông qua các bài tập đa dạng.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: lessonData.theory }} />
+            </div>
           )}
 
           {activeTab === 'game' && (
