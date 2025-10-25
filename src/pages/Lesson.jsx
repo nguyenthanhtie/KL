@@ -5,6 +5,7 @@ import { API_URL } from '../config/api';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
+import LevelSelector from '../components/ui/LevelSelector';
 
 const Lesson = () => {
   const { classId, chapterId, lessonId } = useParams();
@@ -18,19 +19,42 @@ const Lesson = () => {
   const [score, setScore] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState('theory');
+  const [progress, setProgress] = useState(null); // Progress data with stars
+  const [showLevelSelector, setShowLevelSelector] = useState(false); // Modal chọn cấp độ
 
-  // Fetch lesson data from API
+  // Fetch lesson data and progress from API
   useEffect(() => {
-    const fetchLesson = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        // Fetch lesson data
+        const lessonResponse = await axios.get(
           `${API_URL}/lessons/class/${classId}/chapter/${chapterId}/lesson/${lessonId}`
         );
-        setLessonData(response.data);
+        setLessonData(lessonResponse.data);
+        
+        // Fetch progress data nếu đã đăng nhập
+        if (user?.uid) {
+          try {
+            const progressResponse = await axios.get(
+              `${API_URL}/progress/${user.uid}/${classId}/${lessonId}`
+            );
+            setProgress(progressResponse.data);
+          } catch (err) {
+            // Chưa có progress, set giá trị mặc định
+            setProgress({ 
+              stars: { basic: false, intermediate: false, advanced: false },
+              totalStars: 0,
+              levelScores: { basic: 0, intermediate: 0, advanced: 0 }
+            });
+          }
+        }
+        
         setError(null);
       } catch (err) {
-        console.error('Error fetching lesson:', err);
+        console.error('Error fetching data:', err);
         setError(err.response?.data?.message || 'Không thể tải bài học. Vui lòng thử lại.');
       } finally {
         setLoading(false);
@@ -38,7 +62,7 @@ const Lesson = () => {
     };
 
     if (classId && chapterId && lessonId) {
-      fetchLesson();
+      fetchData();
     }
   }, [classId, chapterId, lessonId]);
 
@@ -136,12 +160,7 @@ const Lesson = () => {
       <div className="container mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-8">
-          <button 
-            onClick={() => navigate('/dashboard')}
-            className="text-primary-600 hover:text-primary-700 mb-4 flex items-center"
-          >
-            ← Quay lại Dashboard
-          </button>
+         
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-3xl font-bold text-gray-800">{lessonData.title}</h1>
             {lessonData.type === 'lab' && (
@@ -161,6 +180,36 @@ const Lesson = () => {
             )}
           </div>
           <p className="text-gray-600">{lessonData.description}</p>
+          
+          {/* Hiển thị sao đã đạt được */}
+          {progress && (
+            <div className="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="text-2xl font-bold text-gray-800">
+                    {progress.totalStars || 0}/3 ⭐
+                  </div>
+                  <div className="flex gap-3">
+                    <div className={`flex items-center gap-1 ${progress.stars?.basic ? 'text-yellow-500' : 'text-gray-300'}`}>
+                      <span className="text-lg">⭐</span>
+                      <span className="text-sm">Cơ bản</span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${progress.stars?.intermediate ? 'text-yellow-500' : 'text-gray-300'}`}>
+                      <span className="text-lg">⭐</span>
+                      <span className="text-sm">Trung bình</span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${progress.stars?.advanced ? 'text-yellow-500' : 'text-gray-300'}`}>
+                      <span className="text-lg">⭐</span>
+                      <span className="text-sm">Nâng cao</span>
+                    </div>
+                  </div>
+                </div>
+                <Button onClick={() => setShowLevelSelector(true)} className="bg-gradient-to-r from-blue-500 to-purple-600">
+                  🎮 Chơi ngay
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Content & Game Tabs */}
@@ -458,6 +507,21 @@ const Lesson = () => {
               Quay về Dashboard
             </Button>
           </div>
+        </Modal>
+        
+        {/* Level Selector Modal */}
+        <Modal
+          isOpen={showLevelSelector}
+          onClose={() => setShowLevelSelector(false)}
+          title=""
+        >
+          <LevelSelector
+            progress={progress}
+            onSelectLevel={(level) => {
+              setShowLevelSelector(false);
+              navigate(`/gameplay/${classId}/${chapterId}/${lessonId}/${level}`);
+            }}
+          />
         </Modal>
       </div>
     </div>

@@ -46,7 +46,7 @@ const Home = () => {
             Tính năng nổi bật
           </h2>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">📚</span>
@@ -64,6 +64,16 @@ const Home = () => {
               <h3 className="text-xl font-bold mb-3 text-gray-800">Quiz đa dạng</h3>
               <p className="text-gray-600">
                 Trắc nghiệm, điền từ, đúng/sai - nhiều dạng bài tập thú vị
+              </p>
+            </div>
+
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-error/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🏆</span>
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-800">Thử thách nâng cao</h3>
+              <p className="text-gray-600">
+                Kiểm tra kiến thức tổng hợp qua các bài kiểm tra định kỳ.
               </p>
             </div>
             
@@ -84,23 +94,36 @@ const Home = () => {
       <section className="py-16 px-4 bg-gray-50">
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
-            Chủ đề học tập
+            Lộ trình của bạn
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link to="/dashboard" className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all block">
+                <div className="w-12 h-12 bg-blue-500 rounded-lg mb-3 flex items-center justify-center">
+                    <span className="text-2xl text-white">🚀</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-800">Lộ trình chính</h3>
+                <p className="text-gray-600 mt-1">Bắt đầu từ con số 0, chinh phục các khái niệm Hóa học.</p>
+            </Link>
+            <Link to="/advanced-challenge" className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all block">
+                <div className="w-12 h-12 bg-purple-500 rounded-lg mb-3 flex items-center justify-center">
+                    <span className="text-2xl text-white">🏆</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-800">Thử thách nâng cao</h3>
+                <p className="text-gray-600 mt-1">Kiểm tra kiến thức và giải các bài tập khó.</p>
+            </Link>
+            
             {[
-              { title: 'Nguyên tử', color: 'bg-blue-500' },
-              { title: 'Bảng tuần hoàn', color: 'bg-purple-500' },
-              { title: 'Liên kết hóa học', color: 'bg-green-500' },
-              { title: 'Phản ứng hóa học', color: 'bg-red-500' },
-              { title: 'Dung dịch', color: 'bg-yellow-500' },
-              { title: 'Hóa hữu cơ', color: 'bg-pink-500' },
-              { title: 'Điện hóa', color: 'bg-indigo-500' },
-              { title: 'Động học', color: 'bg-teal-500' },
+              { title: 'Hóa hữu cơ', color: 'bg-green-500', icon: '🔬' },
+              { title: 'Điện hóa', color: 'bg-red-500', icon: '⚡' },
             ].map((topic, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
-                <div className={`w-12 h-12 ${topic.color} rounded-lg mb-3`}></div>
-                <h3 className="text-lg font-bold text-gray-800">{topic.title}</h3>
+              <div key={index} className="bg-gray-200 rounded-xl p-6 shadow-md cursor-not-allowed relative">
+                <div className="absolute top-2 right-2 bg-gray-500 text-white text-xs font-bold px-2 py-1 rounded">Sắp ra mắt</div>
+                <div className={`w-12 h-12 ${topic.color} rounded-lg mb-3 flex items-center justify-center opacity-50`}>
+                    <span className="text-2xl text-white">{topic.icon}</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-500">{topic.title}</h3>
+                <p className="text-gray-400 mt-1">Chuyên đề chuyên sâu sắp được cập nhật.</p>
               </div>
             ))}
           </div>

@@ -10,6 +10,20 @@ const LessonSimple = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Tạo key để lưu trạng thái đã đọc
+  const getReadStatusKey = () => `lesson_read_${classId}_${chapterId}_${lessonId}`;
+
+  // Kiểm tra xem đã đọc bài học này chưa
+  const hasReadLesson = () => {
+    return localStorage.getItem(getReadStatusKey()) === 'true';
+  };
+
+  // Đánh dấu đã đọc và chuyển sang trò chơi
+  const handleMarkAsRead = () => {
+    localStorage.setItem(getReadStatusKey(), 'true');
+    navigate(`/gameplay/${classId}/${chapterId}/${lessonId}`);
+  };
+
   useEffect(() => {
     console.log('Fetching lesson...', { classId, chapterId, lessonId });
     
@@ -22,6 +36,13 @@ const LessonSimple = () => {
         console.log('Lesson data:', response.data);
         setLessonData(response.data);
         setError(null);
+
+        // Nếu đã đọc bài này rồi, chuyển thẳng sang trò chơi
+        if (hasReadLesson()) {
+          setTimeout(() => {
+            navigate(`/gameplay/${classId}/${chapterId}/${lessonId}`);
+          }, 500);
+        }
       } catch (err) {
         console.error('Error fetching lesson:', err);
         setError(err.response?.data?.message || 'Không thể tải bài học');
@@ -33,7 +54,7 @@ const LessonSimple = () => {
     if (classId && chapterId && lessonId) {
       fetchLesson();
     }
-  }, [classId, chapterId, lessonId]);
+  }, [classId, chapterId, lessonId, navigate]);
 
   if (loading) {
     return (
@@ -70,20 +91,7 @@ const LessonSimple = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      <button 
-        onClick={() => navigate('/dashboard')}
-        style={{ 
-          padding: '10px 20px', 
-          marginBottom: '20px',
-          background: '#3b82f6',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        ← Quay lại Dashboard
-      </button>
+     
 
       <h1 style={{ fontSize: '32px', marginBottom: '10px' }}>{lessonData.title}</h1>
       <p style={{ color: '#666', marginBottom: '30px' }}>{lessonData.description}</p>
@@ -91,53 +99,44 @@ const LessonSimple = () => {
       <div style={{ background: 'white', padding: '30px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <h2 style={{ marginBottom: '20px' }}>📖 Lý thuyết</h2>
         <div dangerouslySetInnerHTML={{ __html: lessonData.theory }} />
+        
+        {/* Nút đã đọc */}
+        <div style={{ marginTop: '30px', textAlign: 'center' }}>
+          <button
+            onClick={handleMarkAsRead}
+            style={{
+              padding: '15px 40px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '18px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+              transition: 'all 0.3s ease',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.6)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+            }}
+          >
+            <span>✓</span> Đã đọc - Bắt đầu trò chơi
+          </button>
+          <p style={{ marginTop: '15px', color: '#666', fontSize: '14px' }}>
+            Sau khi đánh dấu đã đọc, lần sau bạn sẽ chuyển thẳng đến trò chơi
+          </p>
+        </div>
       </div>
 
-      <div style={{ background: 'white', padding: '30px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginTop: '30px' }}>
-        <h2 style={{ marginBottom: '20px' }}>🎮 Trò chơi</h2>
-        <p style={{ color: '#666' }}>
-          Bài học này có <strong>{lessonData.game?.quizzes?.length || 0}</strong> câu hỏi
-        </p>
-        
-        {lessonData.game?.quizzes?.map((quiz, index) => (
-          <div key={index} style={{ 
-            padding: '15px', 
-            background: '#f9fafb', 
-            borderRadius: '8px', 
-            marginTop: '15px',
-             borderLeft: '4px solid #3b82f6',
-             display: 'flex',
-             justifyContent: 'space-between',
-             alignItems: 'center'
-          }}>
-             <div>
-               <h3 style={{ fontSize: '18px', marginBottom: '10px' }}>
-                 Câu {index + 1}: {quiz.question}
-               </h3>
-               <p style={{ color: '#888', fontSize: '14px' }}>
-                 Loại: <strong>{quiz.type}</strong> | Điểm: <strong>{quiz.points}pts</strong>
-               </p>
-             </div>
-             <a 
-               href={`/gameplay/${classId}/${chapterId}/${lessonId}`}
-               style={{ 
-                 padding: '10px 20px', 
-                 background: '#10b981', 
-                 color: 'white', 
-                 textDecoration: 'none', 
-                 borderRadius: '6px',
-                 fontWeight: 'bold',
-                 whiteSpace: 'nowrap',
-                 transition: 'background 0.3s'
-               }}
-               onMouseOver={(e) => e.target.style.background = '#059669'}
-               onMouseOut={(e) => e.target.style.background = '#10b981'}
-             >
-               🎮 Chơi ngay
-             </a>
-          </div>
-        ))}
-      </div>
+      
     </div>
   );
 };

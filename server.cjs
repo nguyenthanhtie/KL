@@ -11,11 +11,38 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/chemistry-learning';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://nguyenthanhtien2120_db_user:7WgzKPi26QbyJcb2@chim.vcidcf8.mongodb.net/chemistry-learning?retryWrites=true&w=majority&appName=Chim';
+
+// Set mongoose options
+mongoose.set('strictQuery', false);
+mongoose.set('bufferTimeoutMS', 30000); // Increase buffer timeout to 30 seconds
+
 mongoose
-  .connect(MONGODB_URI)
-  .then(() => console.log('✓ Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .connect(MONGODB_URI, {
+    serverSelectionTimeoutMS: 10000, // Timeout after 10s instead of default 30s
+    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+  })
+  .then(() => {
+    console.log('✓ Connected to MongoDB');
+    console.log('✓ Database:', mongoose.connection.name);
+  })
+  .catch((err) => {
+    console.error('❌ MongoDB connection error:', err.message);
+    console.error('⚠️  Please check:');
+    console.error('   1. Your IP is whitelisted in MongoDB Atlas Network Access');
+    console.error('   2. Your credentials are correct');
+    console.error('   3. Your cluster is running');
+    process.exit(1); // Exit if cannot connect to database
+  });
+
+// Handle connection events
+mongoose.connection.on('disconnected', () => {
+  console.log('⚠️  MongoDB disconnected');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB error:', err.message);
+});
 
 // Routes
 app.use('/api/users', require('./routes/users.cjs'));

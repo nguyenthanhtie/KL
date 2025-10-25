@@ -4,15 +4,26 @@ import axios from 'axios';
 import { API_URL } from '../config/api';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import Modal from '../components/ui/Modal';
+import QuizHeader from './gamelist/QuizHeader';
+import QuizTypeBadge from './gamelist/QuizTypeBadge';
+import MultipleChoice from './gamelist/MultipleChoice';
+import TrueFalse from './gamelist/TrueFalse';
+import FillInBlank from './gamelist/FillInBlank';
+import Matching from './gamelist/Matching';
+import Ordering from './gamelist/Ordering';
+import DragDrop from './gamelist/DragDrop';
+import ResultModal from './gamelist/ResultModal';
 
 const GamePlay = () => {
-  const { classId, chapterId, lessonId } = useParams();
+  const { classId, chapterId, lessonId, level } = useParams(); // Thêm level param
   const navigate = useNavigate();
   
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState(level || 'basic'); // Cấp độ hiện tại
+  const [allLessons, setAllLessons] = useState([]); // Danh sách tất cả bài học
+  const [nextLesson, setNextLesson] = useState(null); // Bài học tiếp theo
   
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState(null);
@@ -32,43 +43,78 @@ const GamePlay = () => {
   
   useEffect(() => {
     fetchLesson();
+    fetchAllLessons();
   }, [classId, chapterId, lessonId]);
 
   const fetchLesson = async () => {
     try {
       setLoading(true);
-      console.log('Fetching lesson:', { classId, chapterId, lessonId });
       const response = await axios.get(
         `${API_URL}/lessons/class/${classId}/chapter/${chapterId}/lesson/${lessonId}`
       );
-      console.log('Lesson data:', response.data);
       setLesson(response.data);
       
+      // Lấy quiz theo cấp độ
+      const quizzes = getQuizzesByLevel(response.data, selectedLevel);
+      
       // Initialize first quiz state
-      const firstQuiz = response.data.game?.quizzes?.[0];
-      if (firstQuiz?.type === 'ordering') {
-        const items = [...firstQuiz.options];
-        setOrderedItems(shuffle(items));
-      }
-      if (firstQuiz?.type === 'matching') {
-        const options = (firstQuiz.pairs || []).map(p => p.right);
-        setMatchingPool(shuffle(options));
-        setMatchingAnswers({});
-      }
-      // Initialize inline drag-drop if provided
-      if (firstQuiz?.type === 'drag-drop' && firstQuiz?.inline) {
-        // Create slots with empty values
-        const slots = (firstQuiz.slots || []).map(s => ({ ...s, value: null }));
-        setInlineSlots(slots);
-        setInlineOptions(shuffle(firstQuiz.options || []));
-      }
+      initializeQuiz(quizzes?.[0]);
       
       setLoading(false);
     } catch (err) {
-      console.error('Error fetching lesson:', err);
       setError(err.response?.data?.message || 'Không thể tải bài học');
       setLoading(false);
     }
+  };
+
+  // Lấy tất cả bài học để tìm bài học tiếp theo
+  const fetchAllLessons = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/lessons`);
+      setAllLessons(response.data);
+      
+      // Tìm bài học tiếp theo
+      const currentLessonIndex = response.data.findIndex(
+        (l) => l.classId === parseInt(classId) && 
+               l.chapterId === parseInt(chapterId) && 
+               l.lessonId === parseInt(lessonId)
+      );
+      
+      if (currentLessonIndex !== -1 && currentLessonIndex < response.data.length - 1) {
+        const next = response.data[currentLessonIndex + 1];
+        setNextLesson(next);
+      } else {
+        setNextLesson(null);
+      }
+    } catch (err) {
+      console.error('Error fetching all lessons:', err);
+    }
+  };
+
+  // Chuyển đến bài học tiếp theo
+  const goToNextLesson = () => {
+    if (nextLesson) {
+      navigate(`/gameplay/${nextLesson.classId}/${nextLesson.chapterId}/${nextLesson.lessonId}`);
+      // Reset game state
+      setShowResult(false);
+      setCurrentQuizIndex(0);
+      setScore(0);
+      setIsAnswered(false);
+      setUserAnswer(null);
+    }
+  };
+
+  // Helper: Lấy quiz theo cấp độ
+  const getQuizzesByLevel = (lessonData, level) => {
+    if (!lessonData?.game) return [];
+    
+    // Ưu tiên quiz theo cấp độ, fallback về quizzes chung
+    if (lessonData.game[level] && lessonData.game[level].length > 0) {
+      return lessonData.game[level];
+    }
+    
+    // Fallback: dùng quizzes chung (backward compatibility)
+    return lessonData.game.quizzes || [];
   };
 
   const shuffle = (array) => {
@@ -80,59 +126,51 @@ const GamePlay = () => {
     return newArray;
   };
 
-  const currentQuiz = lesson?.game?.quizzes?.[currentQuizIndex];
+  const initializeQuiz = (quiz) => {
+    if (!quiz) return;
+    
+    if (quiz.type === 'ordering') {
+      setOrderedItems(shuffle([...quiz.options]));
+    }
+    if (quiz.type === 'matching') {
+      const options = (quiz.pairs || []).map(p => p.right);
+      setMatchingPool(shuffle(options));
+      setMatchingAnswers({});
+    }
+    if (quiz.type === 'drag-drop' && quiz.inline) {
+      setInlineSlots((quiz.slots || []).map(s => ({ ...s, value: null })));
+      setInlineOptions(shuffle(quiz.options || []));
+    }
+  };
+
+  const currentQuiz = lesson?.game?.[selectedLevel]?.[currentQuizIndex] || 
+                     lesson?.game?.quizzes?.[currentQuizIndex]; // Fallback
+
+  // Lấy danh sách quiz theo cấp độ
+  const currentLevelQuizzes = lesson?.game?.[selectedLevel] || lesson?.game?.quizzes || [];
 
   // Determine if the current quiz has sufficient input to allow checking
   const canCheck = (() => {
     if (!currentQuiz) return false;
     switch (currentQuiz.type) {
       case 'multiple-choice':
-        return userAnswer !== null && userAnswer !== undefined;
       case 'true-false':
-        // Accept both true and false; only disallow when null/undefined
         return userAnswer !== null && userAnswer !== undefined;
       case 'fill-in-blank':
         return (userAnswer ?? '').toString().trim().length > 0;
       case 'matching':
         return Array.isArray(currentQuiz.pairs) && Object.keys(matchingAnswers).length === currentQuiz.pairs.length;
       case 'ordering':
-        return true; // Can always check ordering
+        return true;
       case 'drag-drop':
-        // For drag-drop we require every item to be assigned (similar to matching)
+        if (currentQuiz.inline) {
+          return Array.isArray(inlineSlots) && inlineSlots.every(s => s.value !== null);
+        }
         return Array.isArray(currentQuiz.pairs) && Object.keys(matchingAnswers).length === currentQuiz.pairs.length;
       default:
         return false;
     }
   })();
-
-  useEffect(() => {
-    console.log('Current quiz index:', currentQuizIndex);
-    console.log('Current quiz:', currentQuiz);
-    console.log('Total quizzes:', lesson?.game?.quizzes?.length);
-  }, [currentQuizIndex, currentQuiz, lesson]);
-
-  const handleMultipleChoice = (value) => {
-    if (isAnswered) return;
-    setUserAnswer(value);
-  };
-
-  const handleTrueFalse = (value) => {
-     console.log('handleTrueFalse called with:', value, 'isAnswered:', isAnswered, 'currentAnswer:', userAnswer);
-    if (isAnswered) return;
-     // Allow changing answer before checking
-     setUserAnswer(value);
-  };
-
-  const handleFillInBlank = (e) => {
-    setUserAnswer(e.target.value);
-  };
-
-  const handleMatching = (left, right) => {
-    setMatchingAnswers(prev => ({
-      ...prev,
-      [left]: right
-    }));
-  };
 
   const moveItem = (fromIndex, toIndex) => {
     const newItems = [...orderedItems];
@@ -263,29 +301,42 @@ const GamePlay = () => {
     setIsAnswered(true);
   };
 
-  const nextQuiz = () => {
-    if (currentQuizIndex < lesson.game.quizzes.length - 1) {
-      setCurrentQuizIndex(prev => prev + 1);
+  const nextQuiz = async () => {
+    if (currentQuizIndex < currentLevelQuizzes.length - 1) {
+      const nextIndex = currentQuizIndex + 1;
+      setCurrentQuizIndex(nextIndex);
       setUserAnswer(null);
       setIsAnswered(false);
       setMatchingAnswers({});
       setMatchingPool([]);
       
-      // Initialize next quiz if it's ordering type
-      const nextQuiz = lesson.game.quizzes[currentQuizIndex + 1];
-      if (nextQuiz.type === 'ordering') {
-        setOrderedItems(shuffle([...nextQuiz.options]));
-      }
-      if (nextQuiz.type === 'matching') {
-        const options = (nextQuiz.pairs || []).map(p => p.right);
-        setMatchingPool(shuffle(options));
-      }
-      if (nextQuiz.type === 'drag-drop' && nextQuiz.inline) {
-        setInlineSlots((nextQuiz.slots || []).map(s => ({ ...s, value: null })));
-        setInlineOptions(shuffle(nextQuiz.options || []));
-      }
+      // Initialize next quiz
+      initializeQuiz(currentLevelQuizzes[nextIndex]);
     } else {
+      // Tính tổng điểm và gửi kết quả
+      const totalPoints = currentLevelQuizzes.reduce((sum, q) => sum + q.points, 0);
+      await submitProgress(score, totalPoints);
       setShowResult(true);
+    }
+  };
+
+  // Gửi kết quả lên server
+  const submitProgress = async (currentScore, totalPoints) => {
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user?.uid) return;
+
+      await axios.post(`${API_URL}/progress/submit`, {
+        firebaseUid: user.uid,
+        pathId: parseInt(classId),
+        lessonId: parseInt(lessonId),
+        score: currentScore,
+        totalQuestions: totalPoints,
+        correctAnswers: currentScore,
+        level: selectedLevel // Gửi cấp độ hiện tại
+      });
+    } catch (error) {
+      console.error('Error submitting progress:', error);
     }
   };
 
@@ -297,17 +348,9 @@ const GamePlay = () => {
     setShowResult(false);
     setMatchingAnswers({});
     setMatchingPool([]);
-    if (lesson?.game?.quizzes?.[0]?.type === 'ordering') {
-      setOrderedItems(shuffle([...lesson.game.quizzes[0].options]));
-    }
-    if (lesson?.game?.quizzes?.[0]?.type === 'matching') {
-      const options = (lesson.game.quizzes[0].pairs || []).map(p => p.right);
-      setMatchingPool(shuffle(options));
-    }
-    if (lesson?.game?.quizzes?.[0]?.type === 'drag-drop' && lesson.game.quizzes[0].inline) {
-      setInlineSlots((lesson.game.quizzes[0].slots || []).map(s => ({ ...s, value: null })));
-      setInlineOptions(shuffle(lesson.game.quizzes[0].options || []));
-    }
+    
+    // Re-initialize first quiz
+    initializeQuiz(lesson?.game?.quizzes?.[0]);
   };
 
   if (loading) {
@@ -340,346 +383,93 @@ const GamePlay = () => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Header */}
-      <div className="mb-6 flex justify-between items-center">
-        <Button variant="outline" onClick={() => navigate(-1)}>
-          ← Quay lại
-        </Button>
-        <div className="text-right">
-          <div className="text-sm text-gray-600">
-            Câu {currentQuizIndex + 1} / {lesson.game.quizzes.length}
-          </div>
-          <div className="text-xl font-bold text-blue-600">
-            Điểm: {score} / {lesson.game.quizzes.reduce((sum, q) => sum + q.points, 0)}
-          </div>
-        </div>
-      </div>
+      <QuizHeader
+        onBack={() => navigate(-1)}
+        currentIndex={currentQuizIndex}
+        totalQuizzes={currentLevelQuizzes.length}
+        score={score}
+        totalPoints={currentLevelQuizzes.reduce((sum, q) => sum + q.points, 0)}
+      />
 
       {/* Quiz Card */}
       <Card className="p-6">
-        <div className="mb-4">
-          <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-2">
-            {currentQuiz.type === 'multiple-choice' && '🔷 Trắc nghiệm'}
-            {currentQuiz.type === 'true-false' && '🧠 Đúng/Sai'}
-            {currentQuiz.type === 'fill-in-blank' && '📝 Điền từ'}
-            {currentQuiz.type === 'matching' && '🔗 Nối cặp'}
-            {currentQuiz.type === 'ordering' && '📊 Sắp xếp'}
-            {currentQuiz.type === 'drag-drop' && '🎯 Kéo thả'}
-          </span>
-          <span className="ml-2 text-gray-600">{currentQuiz.points} điểm</span>
-        </div>
-
+        <QuizTypeBadge type={currentQuiz.type} points={currentQuiz.points} />
+        
         <h3 className="text-xl font-bold mb-6">{currentQuiz.question}</h3>
 
         {/* Multiple Choice */}
         {currentQuiz.type === 'multiple-choice' && (
-          <div className="space-y-3">
-            {currentQuiz.options.map((option, index) => {
-              const correctOption = typeof currentQuiz.correctAnswer === 'number' 
-                ? currentQuiz.options[currentQuiz.correctAnswer]
-                : currentQuiz.correctAnswer;
-              
-              return (
-                <button
-                  key={index}
-                  onClick={() => handleMultipleChoice(option)}
-                  disabled={isAnswered}
-                  className={`w-full p-4 text-left border-2 rounded-lg transition-all ${
-                    userAnswer === option
-                      ? isAnswered
-                        ? option === correctOption
-                          ? 'border-green-500 bg-green-50'
-                          : 'border-red-500 bg-red-50'
-                        : 'border-blue-500 bg-blue-50'
-                      : isAnswered && option === correctOption
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-300 hover:border-blue-300'
-                  }`}
-                >
-                  {option}
-                </button>
-              );
-            })}
-          </div>
+          <MultipleChoice
+            quiz={currentQuiz}
+            userAnswer={userAnswer}
+            isAnswered={isAnswered}
+            onAnswer={(value) => !isAnswered && setUserAnswer(value)}
+          />
         )}
 
         {/* True/False */}
         {currentQuiz.type === 'true-false' && (
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={() => handleTrueFalse(true)}
-              disabled={isAnswered}
-              className={`px-8 py-4 text-lg font-bold rounded-lg border-2 transition-all ${
-                userAnswer === true
-                  ? isAnswered
-                    ? currentQuiz.correctAnswer === true
-                      ? 'border-green-500 bg-green-500 text-white'
-                      : 'border-red-500 bg-red-500 text-white'
-                    : 'border-blue-500 bg-blue-500 text-white'
-                  : isAnswered && currentQuiz.correctAnswer === true
-                  ? 'border-green-500 bg-green-50 text-green-700'
-                  : 'border-gray-300 hover:border-blue-300'
-              }`}
-            >
-              ✓ Đúng
-            </button>
-            <button
-              onClick={() => handleTrueFalse(false)}
-              disabled={isAnswered}
-              className={`px-8 py-4 text-lg font-bold rounded-lg border-2 transition-all ${
-                userAnswer === false
-                  ? isAnswered
-                    ? currentQuiz.correctAnswer === false
-                      ? 'border-green-500 bg-green-500 text-white'
-                      : 'border-red-500 bg-red-500 text-white'
-                    : 'border-blue-500 bg-blue-500 text-white'
-                  : isAnswered && currentQuiz.correctAnswer === false
-                  ? 'border-green-500 bg-green-50 text-green-700'
-                  : 'border-gray-300 hover:border-blue-300'
-              }`}
-            >
-              ✗ Sai
-            </button>
-          </div>
+          <TrueFalse
+            quiz={currentQuiz}
+            userAnswer={userAnswer}
+            isAnswered={isAnswered}
+            onAnswer={(value) => !isAnswered && setUserAnswer(value)}
+          />
         )}
 
         {/* Fill in Blank */}
         {currentQuiz.type === 'fill-in-blank' && (
-          <div>
-            <input
-              type="text"
-              value={userAnswer || ''}
-              onChange={handleFillInBlank}
-              disabled={isAnswered}
-              placeholder="Nhập câu trả lời của bạn..."
-              className="w-full p-4 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-            />
-            {isAnswered && (
-              <div className={`mt-3 p-3 rounded ${
-                userAnswer?.toString().trim().toLowerCase() === currentQuiz.correctAnswer?.toString().trim().toLowerCase()
-                  ? 'bg-green-50 text-green-700'
-                  : 'bg-red-50 text-red-700'
-              }`}>
-                Đáp án đúng: <strong>{currentQuiz.correctAnswer}</strong>
-              </div>
-            )}
-            {currentQuiz.hint && !isAnswered && (
-              <div className="mt-3 p-3 bg-yellow-50 text-yellow-800 rounded">
-                💡 Gợi ý: {currentQuiz.hint}
-              </div>
-            )}
-          </div>
+          <FillInBlank
+            quiz={currentQuiz}
+            userAnswer={userAnswer}
+            isAnswered={isAnswered}
+            onAnswer={setUserAnswer}
+          />
         )}
 
   {/* Matching */}
         {currentQuiz.type === 'matching' && (
-          <div className="space-y-6">
-            {/* Targets */}
-            {currentQuiz.pairs.map((pair, index) => (
-              <div key={index} className="flex items-center gap-4">
-                <div className="flex-1 p-3 bg-blue-50 border-2 border-blue-300 rounded">
-                  {pair.left}
-                </div>
-                <div
-                  onDrop={(e) => !isAnswered && onDropToLeft(pair.left, e)}
-                  onDragOver={onDragOverLeft}
-                  className={`flex-1 min-h-[48px] p-3 border-2 rounded flex items-center justify-between ${
-                    matchingAnswers[pair.left]
-                      ? 'border-green-400 bg-green-50'
-                      : 'border-dashed border-gray-300 bg-white'
-                  }`}
-                >
-                  <span>{matchingAnswers[pair.left] || 'Kéo đáp án vào đây'}</span>
-                  {matchingAnswers[pair.left] && !isAnswered && (
-                    <button onClick={() => removeAssigned(pair.left)} className="text-sm text-red-600">Bỏ</button>
-                  )}
-                </div>
-                {isAnswered && (
-                  <div className="text-2xl">
-                    {matchingAnswers[pair.left] === pair.right ? '✓' : '✗'}
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {/* Pool */}
-            {!isAnswered && (
-              <div className="p-3 bg-gray-50 border-2 border-gray-200 rounded">
-                <div className="text-sm text-gray-600 mb-2">Kéo các đáp án sau đến vị trí phù hợp:</div>
-                <div className="flex flex-wrap gap-2">
-                  {matchingPool.map((opt, i) => (
-                    <div
-                      key={i}
-                      draggable
-                      onDragStart={(e) => onDragStartOption(e, opt)}
-                      className="px-3 py-2 bg-white border-2 border-gray-300 rounded cursor-move hover:border-blue-400"
-                    >
-                      {opt}
-                    </div>
-                  ))}
-                  {matchingPool.length === 0 && (
-                    <div className="text-gray-500 text-sm">Đã kéo hết đáp án.</div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
+          <Matching
+            quiz={currentQuiz}
+            isAnswered={isAnswered}
+            matchingAnswers={matchingAnswers}
+            matchingPool={matchingPool}
+            onDragStart={onDragStartOption}
+            onDropToLeft={onDropToLeft}
+            onDragOverLeft={onDragOverLeft}
+            onRemoveAssigned={removeAssigned}
+          />
         )}
 
-        {/* Inline Drag-Drop (Duolingo-style) */}
-        {currentQuiz.type === 'drag-drop' && currentQuiz.inline && (
-          <div className="space-y-6">
-            <div className="flex justify-center items-center gap-6">
-              {inlineSlots.map(slot => (
-                <div key={slot.id} className={`w-32 h-32 rounded-full flex items-center justify-center border-2 ${isAnswered ? 'opacity-80' : 'bg-white'}`}>
-                  <div
-                    onDrop={(e) => !isAnswered && onDropToSlot(slot.id, e)}
-                    onDragOver={onDragOverSlot}
-                    className="w-28 h-28 rounded-full flex items-center justify-center"
-                    style={{ background: slot.value ? (slot.correct === slot.value ? '#f0fff4' : '#fff5f5') : '#f8fafc' }}
-                  >
-                    {slot.value ? (
-                      <div className="text-lg font-bold">{slot.value}</div>
-                    ) : (
-                      <div className="text-sm text-gray-600">{slot.label}</div>
-                    )}
-                  </div>
-                  {!isAnswered && slot.value && (
-                    <button onClick={() => removeInlineAssigned(slot.id)} className="text-sm text-red-600 mt-2">Bỏ</button>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {!isAnswered && (
-              <div className="mt-4 flex justify-center gap-3 flex-wrap">
-                {inlineOptions.map((opt, i) => (
-                  <div
-                    key={i}
-                    draggable
-                    onDragStart={(e) => onDragStartInline(e, opt)}
-                    className="px-4 py-2 bg-white border rounded shadow cursor-move"
-                  >
-                    {opt}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Drag-Drop (interactive) */}
+        {/* Drag-Drop */}
         {currentQuiz.type === 'drag-drop' && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold text-gray-700 mb-2">Các mục (Kéo)</h4>
-                <div className="space-y-2">
-                  {currentQuiz.pairs?.map((pair, index) => {
-                    const assigned = Object.values(matchingAnswers).includes(pair.right) ? null : pair.left;
-                    // show item if not yet assigned
-                    return (
-                      <div
-                        key={`drag-${index}`}
-                        draggable={!isAnswered}
-                        onDragStart={(e) => onDragStartOption(e, pair.right)}
-                        className={`p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-move ${isAnswered ? 'opacity-60' : ''}`}
-                      >
-                        <span className="font-medium">🔸 {pair.left}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-semibold text-gray-700 mb-2">Nhóm (Thả vào)</h4>
-                <div className="space-y-2">
-                  {currentQuiz.pairs?.map((pair, index) => (
-                    <div
-                      key={`target-${index}`}
-                      onDrop={(e) => !isAnswered && onDropToLeft(pair.left, e)}
-                      onDragOver={onDragOverLeft}
-                      className={`p-3 rounded-lg border-2 min-h-[48px] flex items-center justify-between ${matchingAnswers[pair.left] ? 'border-green-400 bg-green-50' : 'border-dashed border-gray-300 bg-white'}`}
-                    >
-                      <span>{matchingAnswers[pair.left] || pair.right}</span>
-                      {matchingAnswers[pair.left] && !isAnswered && (
-                        <button onClick={() => removeAssigned(pair.left)} className="text-sm text-red-600">Bỏ</button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            {!isAnswered && (
-              <div className="text-sm text-gray-600 italic text-center">Kéo từng mục từ cột trái vào nhóm phù hợp ở cột phải, sau đó nhấn "Kiểm tra đáp án"</div>
-            )}
-          </div>
+          <DragDrop
+            quiz={currentQuiz}
+            isAnswered={isAnswered}
+            matchingAnswers={matchingAnswers}
+            inlineSlots={inlineSlots}
+            inlineOptions={inlineOptions}
+            onDragStartOption={onDragStartOption}
+            onDropToLeft={onDropToLeft}
+            onDragOverLeft={onDragOverLeft}
+            onRemoveAssigned={removeAssigned}
+            onDragStartInline={onDragStartInline}
+            onDropToSlot={onDropToSlot}
+            onDragOverSlot={onDragOverSlot}
+            onRemoveInlineAssigned={removeInlineAssigned}
+          />
         )}
 
         {/* Ordering */}
         {currentQuiz.type === 'ordering' && (
-          <div className="space-y-4">
-            <div className="text-sm text-gray-600">Kéo để sắp xếp theo thứ tự đúng từ trái sang phải:</div>
-            {(() => {
-              const gridTemplate = orderedItems
-                .map((_, i) => (i < orderedItems.length - 1 ? '1fr auto' : '1fr'))
-                .join(' ');
-              return (
-                <div className="grid items-start gap-2" style={{ gridTemplateColumns: gridTemplate }}>
-                  {orderedItems.map((item, index) => {
-                    const correctAtPos = isAnswered ? item === currentQuiz.correctOrder[index] : null;
-                    return (
-                      <>
-                        <div
-                          key={`item-${index}`}
-                          draggable={!isAnswered}
-                          onDragStart={() => onDragStartOrder(index)}
-                          onDragOver={onDragOverOrder}
-                          onDrop={() => onDropOrder(index)}
-                          className={`min-w-0 max-w-[240px] px-3 py-2 rounded-lg border-2 bg-white cursor-move select-none shadow-sm text-sm leading-snug whitespace-normal break-words ${
-                            isAnswered
-                              ? correctAtPos
-                                ? 'border-green-500 bg-green-50'
-                                : 'border-red-500 bg-red-50'
-                              : 'border-gray-300 hover:border-blue-400'
-                          }`}
-                        >
-                          {item}
-                        </div>
-                        {index < orderedItems.length - 1 && (
-                          <div key={`arrow-${index}`} className="self-center text-gray-400">→</div>
-                        )}
-                      </>
-                    );
-                  })}
-                </div>
-              );
-            })()}
-            {isAnswered && (
-              <div className="mt-4 p-4 bg-green-50 border-2 border-green-300 rounded">
-                <div className="font-bold mb-2">Thứ tự đúng:</div>
-                {(() => {
-                  const gridTemplate = currentQuiz.correctOrder
-                    .map((_, i) => (i < currentQuiz.correctOrder.length - 1 ? 'auto auto' : 'auto'))
-                    .join(' ');
-                  return (
-                    <div className="grid items-start gap-2" style={{ gridTemplateColumns: gridTemplate }}>
-                      {currentQuiz.correctOrder.map((item, index) => (
-                        <>
-                          <div key={`ans-${index}`} className="px-3 py-2 rounded-lg border-2 border-green-400 bg-white text-sm leading-snug">
-                            {item}
-                          </div>
-                          {index < currentQuiz.correctOrder.length - 1 && (
-                            <div key={`ans-arrow-${index}`} className="self-center text-gray-400">→</div>
-                          )}
-                        </>
-                      ))}
-                    </div>
-                  );
-                })()}
-              </div>
-            )}
-          </div>
+          <Ordering
+            quiz={currentQuiz}
+            orderedItems={orderedItems}
+            isAnswered={isAnswered}
+            onDragStart={onDragStartOrder}
+            onDragOver={onDragOverOrder}
+            onDrop={onDropOrder}
+          />
         )}
 
         {/* Action Buttons */}
@@ -690,39 +480,24 @@ const GamePlay = () => {
             </Button>
           ) : (
             <Button onClick={nextQuiz}>
-              {currentQuizIndex < lesson.game.quizzes.length - 1 ? 'Câu tiếp theo →' : 'Xem kết quả'}
+              {currentQuizIndex < currentLevelQuizzes.length - 1 ? 'Câu tiếp theo →' : 'Xem kết quả'}
             </Button>
           )}
         </div>
       </Card>
 
       {/* Result Modal */}
-      {showResult && (
-        <Modal isOpen={showResult} onClose={() => setShowResult(false)}>
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-4">
-              {score >= lesson.game.quizzes.reduce((sum, q) => sum + q.points, 0) * 0.8 ? '🎉' : '💪'}
-              {' '}Hoàn thành!
-            </h2>
-            <div className="text-6xl font-bold text-blue-600 mb-4">
-              {score} / {lesson.game.quizzes.reduce((sum, q) => sum + q.points, 0)}
-            </div>
-            <p className="text-xl mb-6">
-              {score >= lesson.game.quizzes.reduce((sum, q) => sum + q.points, 0) * 0.8
-                ? 'Xuất sắc! Bạn đã nắm vững kiến thức!'
-                : 'Cố gắng lên! Hãy thử lại để đạt điểm cao hơn!'}
-            </p>
-            <div className="flex gap-3 justify-center">
-              <Button onClick={restartGame}>
-                Chơi lại
-              </Button>
-              <Button variant="outline" onClick={() => navigate(-1)}>
-                Quay lại bài học
-              </Button>
-            </div>
-          </div>
-        </Modal>
-      )}
+      <ResultModal
+        isOpen={showResult}
+        onClose={() => setShowResult(false)}
+        score={score}
+        totalPoints={currentLevelQuizzes.reduce((sum, q) => sum + q.points, 0)}
+        level={selectedLevel}
+        onRestart={restartGame}
+        onBack={() => navigate('/dashboard')}
+        onNext={goToNextLesson}
+        hasNextLesson={!!nextLesson}
+      />
     </div>
   );
 };

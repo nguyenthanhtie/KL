@@ -10,6 +10,12 @@ import Lesson from './pages/Lesson';
 import LessonSimple from './pages/LessonSimple';
 import GamePlay from './pages/GamePlay';
 import Profile from './pages/Profile';
+import AdvancedChallenge from './pages/AdvancedChallenge';
+import GhepNguyenTu from './pages/challenges/GhepNguyenTu';
+import TroChoiCanBang from './pages/challenges/TroChoiCanBang';
+import SuyLuanPhanUng from './pages/challenges/SuyLuanPhanUng';
+import DuoiHinhBatChu from './pages/challenges/DuoiHinhBatChu';
+import PhongThiNghiem from './pages/challenges/PhongThiNghiem';
 
 function App() {
   return (
@@ -21,6 +27,12 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/advanced-challenge" element={<AdvancedChallenge />} />
+            <Route path="/advanced-challenge/ghep-nguyen-tu" element={<GhepNguyenTu />} />
+            <Route path="/advanced-challenge/can-bang" element={<TroChoiCanBang />} />
+            <Route path="/advanced-challenge/suy-luan" element={<SuyLuanPhanUng />} />
+            <Route path="/advanced-challenge/duoi-hinh" element={<DuoiHinhBatChu />} />
+            <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
             <Route 
               path="/dashboard" 
               element={
@@ -34,7 +46,7 @@ function App() {
               element={<LessonSimple />}
             />
            <Route 
-             path="/gameplay/:classId/:chapterId/:lessonId" 
+             path="/gameplay/:classId/:chapterId/:lessonId/:level?" 
              element={<GamePlay />}
            />
             <Route 
@@ -53,4 +65,3 @@ function App() {
 }
 
 export default App;
-

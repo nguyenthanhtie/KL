@@ -38,6 +38,82 @@ const lessonSchema = new mongoose.Schema({
 
   // Game object containing quizzes / interactive content
   game: {
+    // Quiz cho cấp độ cơ bản
+    basic: [{
+      type: {
+        type: String,
+        enum: ['multiple-choice', 'true-false', 'fill-in-blank', 'matching', 'ordering', 'drag-drop', 'molecule-assembly'],
+        required: true
+      },
+      question: {
+        type: String,
+        required: true
+      },
+      options: [String],
+      pairs: [{
+        left: String,
+        right: String
+      }],
+      correctOrder: [String],
+      correctAnswer: mongoose.Schema.Types.Mixed,
+      explanation: String,
+      points: {
+        type: Number,
+        default: 10
+      },
+      hint: String
+    }],
+    // Quiz cho cấp độ trung bình
+    intermediate: [{
+      type: {
+        type: String,
+        enum: ['multiple-choice', 'true-false', 'fill-in-blank', 'matching', 'ordering', 'drag-drop', 'molecule-assembly'],
+        required: true
+      },
+      question: {
+        type: String,
+        required: true
+      },
+      options: [String],
+      pairs: [{
+        left: String,
+        right: String
+      }],
+      correctOrder: [String],
+      correctAnswer: mongoose.Schema.Types.Mixed,
+      explanation: String,
+      points: {
+        type: Number,
+        default: 15
+      },
+      hint: String
+    }],
+    // Quiz cho cấp độ nâng cao
+    advanced: [{
+      type: {
+        type: String,
+        enum: ['multiple-choice', 'true-false', 'fill-in-blank', 'matching', 'ordering', 'drag-drop', 'molecule-assembly'],
+        required: true
+      },
+      question: {
+        type: String,
+        required: true
+      },
+      options: [String],
+      pairs: [{
+        left: String,
+        right: String
+      }],
+      correctOrder: [String],
+      correctAnswer: mongoose.Schema.Types.Mixed,
+      explanation: String,
+      points: {
+        type: Number,
+        default: 20
+      },
+      hint: String
+    }],
+    // Legacy: giữ lại để backward compatibility
     quizzes: [{
       type: {
         type: String,
@@ -48,23 +124,18 @@ const lessonSchema = new mongoose.Schema({
         type: String,
         required: true
       },
-      // For multiple-choice, matching options
       options: [String],
-      // For matching: pairs of items to match
       pairs: [{
         left: String,
         right: String
       }],
-      // For ordering: correct sequence
       correctOrder: [String],
-      // Mixed type for different answer formats
       correctAnswer: mongoose.Schema.Types.Mixed,
       explanation: String,
       points: {
         type: Number,
         default: 10
       },
-      // Optional hint for difficult questions
       hint: String
     }]
   },

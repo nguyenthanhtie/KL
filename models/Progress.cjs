@@ -28,6 +28,28 @@ const progressSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  // Hệ thống 3 cấp độ với sao
+  stars: {
+    basic: { type: Boolean, default: false },      // Cơ bản - 1 sao
+    intermediate: { type: Boolean, default: false }, // Trung bình - 2 sao
+    advanced: { type: Boolean, default: false }      // Nâng cao - 3 sao
+  },
+  currentLevel: {
+    type: String,
+    enum: ['basic', 'intermediate', 'advanced'],
+    default: 'basic'
+  },
+  totalStars: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 3
+  },
+  levelScores: {
+    basic: { type: Number, default: 0 },
+    intermediate: { type: Number, default: 0 },
+    advanced: { type: Number, default: 0 }
+  },
   lastAttemptDate: Date,
   completedAt: Date,
   createdAt: {
