@@ -56,6 +56,13 @@ const lessonSchema = new mongoose.Schema({
       }],
       correctOrder: [String],
       correctAnswer: mongoose.Schema.Types.Mixed,
+      inline: Boolean,
+      slots: [{
+        id: Number,
+        label: String,
+        correct: String,
+        value: String
+      }],
       explanation: String,
       points: {
         type: Number,
@@ -81,6 +88,13 @@ const lessonSchema = new mongoose.Schema({
       }],
       correctOrder: [String],
       correctAnswer: mongoose.Schema.Types.Mixed,
+      inline: Boolean,
+      slots: [{
+        id: Number,
+        label: String,
+        correct: String,
+        value: String
+      }],
       explanation: String,
       points: {
         type: Number,
@@ -106,6 +120,13 @@ const lessonSchema = new mongoose.Schema({
       }],
       correctOrder: [String],
       correctAnswer: mongoose.Schema.Types.Mixed,
+      inline: Boolean,
+      slots: [{
+        id: Number,
+        label: String,
+        correct: String,
+        value: String
+      }],
       explanation: String,
       points: {
         type: Number,
@@ -131,6 +152,13 @@ const lessonSchema = new mongoose.Schema({
       }],
       correctOrder: [String],
       correctAnswer: mongoose.Schema.Types.Mixed,
+      inline: Boolean,
+      slots: [{
+        id: Number,
+        label: String,
+        correct: String,
+        value: String
+      }],
       explanation: String,
       points: {
         type: Number,

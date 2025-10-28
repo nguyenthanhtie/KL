@@ -145,8 +145,9 @@ module.exports = {
        {
         type: "drag-drop",
         question: "🧩 Hoàn thành phương trình: 2Al + 2NaOH + 2H₂O → ? + 3H₂↑",
+        inline: true,
         slots: [
-          { id: 1, label: "Sản phẩm", accepts: ["2NaAlO₂"] }
+          { id: 1, label: "Sản phẩm", correct: "2NaAlO₂" }
         ],
         options: ["2NaAlO₂", "Na₂Al₂O₄", "Al(OH)₃", "Na₂O"],
         explanation: "✅ Nhôm tác dụng với dung dịch kiềm tạo ra muối aluminat và giải phóng khí hiđro.",

@@ -136,15 +136,15 @@ module.exports = {
         explanation: "✅ Các nguyên tố này cùng thuộc chu kỳ 3. Theo chiều từ trái sang phải, tính phi kim tăng dần.",
         points: 15
       },
-       {
+      {
         type: "drag-drop",
-        question: "🧩 Dựa vào quy luật biến đổi, hãy so sánh tính kim loại của Na, Mg, K. Kim loại mạnh nhất là ?, yếu nhất là ?.",
+        question: "🧩 Hoàn thành: Trong chu kỳ, khi đi từ trái sang phải, tính kim loại __.",
+        inline: true,
         slots: [
-          { id: 1, label: "Mạnh nhất", accepts: ["K"] },
-          { id: 2, label: "Yếu nhất", accepts: ["Mg"] }
+          { id: 1, label: "Quy luật", correct: "giảm dần" }
         ],
-        options: ["Na", "Mg", "K"],
-        explanation: "✅ Trong chu kỳ 3, Na mạnh hơn Mg. Trong nhóm IA, K mạnh hơn Na. Vậy K > Na > Mg.",
+        options: ["giảm dần", "tăng dần", "không đổi", "tăng rồi giảm"],
+        explanation: "✅ Trong chu kỳ, theo chiều từ trái sang phải, tính kim loại giảm dần, tính phi kim tăng dần.",
         points: 15
       },
       {

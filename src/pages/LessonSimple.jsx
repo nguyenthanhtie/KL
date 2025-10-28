@@ -26,25 +26,29 @@ const LessonSimple = () => {
 
   useEffect(() => {
     console.log('Fetching lesson...', { classId, chapterId, lessonId });
+    console.log('API_URL:', API_URL);
     
     const fetchLesson = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${API_URL}/lessons/class/${classId}/chapter/${chapterId}/lesson/${lessonId}`
-        );
+        const url = `${API_URL}/lessons/class/${classId}/chapter/${chapterId}/lesson/${lessonId}`;
+        console.log('Making request to:', url);
+        
+        const response = await axios.get(url);
         console.log('Lesson data:', response.data);
         setLessonData(response.data);
         setError(null);
 
-        // Nếu đã đọc bài này rồi, chuyển thẳng sang trò chơi
-        if (hasReadLesson()) {
+        // Chỉ chuyển hướng nếu load thành công VÀ đã đọc bài này rồi
+        if (response.data && hasReadLesson()) {
+          console.log('Lesson already read, redirecting to gameplay...');
           setTimeout(() => {
             navigate(`/gameplay/${classId}/${chapterId}/${lessonId}`);
           }, 500);
         }
       } catch (err) {
         console.error('Error fetching lesson:', err);
+        console.error('Error details:', err.response);
         setError(err.response?.data?.message || 'Không thể tải bài học');
       } finally {
         setLoading(false);

@@ -133,8 +133,9 @@ module.exports = {
        {
         type: "drag-drop",
         question: "🧩 Hoàn thành phương trình: Zn + ? → ZnCl₂ + H₂↑",
+        inline: true,
         slots: [
-          { id: 1, label: "Axit", accepts: ["2HCl"] }
+          { id: 1, label: "Axit", correct: "2HCl" }
         ],
         options: ["2HCl", "Cl₂", "H₂O", "2NaCl"],
         explanation: "✅ Kẽm (Zn) đứng trước H nên tác dụng với axit HCl tạo muối kẽm clorua và giải phóng khí hiđro.",

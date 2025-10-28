@@ -138,8 +138,9 @@ module.exports = {
        {
         type: "drag-drop",
         question: "🧩 Hoàn thành phương trình: P₂O₅ + 3H₂O → ?",
+        inline: true,
         slots: [
-          { id: 1, label: "Sản phẩm", accepts: ["2H₃PO₄"] }
+          { id: 1, label: "Sản phẩm", correct: "2H₃PO₄" }
         ],
         options: ["2H₃PO₄", "H₂PO₄", "2H₃P", "P(OH)₅"],
         explanation: "✅ Oxit axit P₂O₅ tác dụng với nước tạo ra axit tương ứng là axit photphoric (H₃PO₄).",

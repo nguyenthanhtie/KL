@@ -17,6 +17,7 @@ const Dashboard = () => {
     totalPoints: 0
   });
   const [lessonsProgress, setLessonsProgress] = useState({}); // Store progress by lessonId
+  const [classes, setClasses] = useState([]);
 
   // Fetch user progress from API
   useEffect(() => {
@@ -50,98 +51,83 @@ const Dashboard = () => {
     fetchProgress();
   }, [user]);
 
-  // Chương trình Hóa học lớp 8 - 28 bài (Tối ưu)
-  const classes = [
-    {
-      classId: 8,
-      title: 'Lớp 8 - Hóa học cơ bản',
-      level: 'Grade 8',
-      progress: 0,
-      color: 'from-blue-500 to-purple-600',
-      chapters: [
-        {
-          chapterId: 1,
-          title: 'Chương 1: Chất - Nguyên tử - Phân tử',
-          description: '6 bài học cơ bản',
-          lessons: [
-            { lessonId: 1, title: 'Bài 1: Mở đầu môn Hoá học', completed: false, type: 'theory', icon: '📚', description: 'Giới thiệu về môn Hoá học' },
-            { lessonId: 2, title: 'Bài 2: Chất và tính chất vật lý', completed: false, type: 'lab', icon: '🔬', description: 'Chất, phân loại và thực hành' },
-            { lessonId: 3, title: 'Bài 3: Nguyên tử', completed: false, type: 'theory', icon: '⚛️', description: 'Cấu tạo nguyên tử' },
-            { lessonId: 4, title: 'Bài 4: Nguyên tố hoá học', completed: false, type: 'theory', icon: '🔤', description: 'Nguyên tố và ký hiệu hóa học' },
-            { lessonId: 5, title: 'Bài 5: Đơn chất, Hợp chất và Phân tử', completed: false, type: 'theory', icon: '🧩', description: 'Phân loại và tính chất' },
-            { lessonId: 6, title: 'Bài 6: Công thức hoá học và Hoá trị', completed: false, type: 'exercise', icon: '📝', description: 'Viết CTHH và tính hóa trị' }
-          ]
-        },
-        {
-          chapterId: 2,
-          title: 'Chương 2: Phản ứng hóa học',
-          description: '3 bài học về phản ứng',
-          lessons: [
-            { lessonId: 7, title: 'Bài 7: Sự biến đổi chất và PƯHH', completed: false, type: 'theory', icon: '🔄', description: 'Hiện tượng và phản ứng hóa học' },
-            { lessonId: 8, title: 'Bài 8: Định luật bảo toàn khối lượng', completed: false, type: 'lab', icon: '⚖️', description: 'ĐLBTK và thực hành' },
-            { lessonId: 9, title: 'Bài 9: Phương trình hoá học', completed: false, type: 'exercise', icon: '📐', description: 'Lập và cân bằng PTHH' }
-          ]
-        },
-        {
-          chapterId: 3,
-          title: 'Chương 3: Mol và tính toán hóa học',
-          description: '4 bài học tính toán',
-          lessons: [
-            { lessonId: 10, title: 'Bài 10: Mol và số Avogadro', completed: false, type: 'theory', icon: '🔢', description: 'Đơn vị mol và số Avogadro' },
-            { lessonId: 11, title: 'Bài 11: Chuyển đổi và Tỉ khối', completed: false, type: 'theory', icon: '⚡', description: 'Chuyển đổi các đại lượng' },
-            { lessonId: 12, title: 'Bài 12: Tính theo công thức', completed: false, type: 'exercise', icon: '🧮', description: 'Bài tập tính theo CTHH' },
-            { lessonId: 13, title: 'Bài 13: Tính theo phương trình', completed: false, type: 'exercise', icon: '📊', description: 'Bài tập tính theo PTHH' }
-          ]
-        },
-        {
-          chapterId: 4,
-          title: 'Chương 4: Oxi - Không khí',
-          description: '4 bài học về oxi',
-          lessons: [
-            { lessonId: 14, title: 'Bài 14: Tính chất của Oxi', completed: false, type: 'theory', icon: '💨', description: 'Tính chất và ứng dụng' },
-            { lessonId: 15, title: 'Bài 15: Sự oxi hoá và Oxit', completed: false, type: 'theory', icon: '🔥', description: 'Phản ứng oxi hóa' },
-            { lessonId: 16, title: 'Bài 16: Điều chế khí Oxi', completed: false, type: 'lab', icon: '🧪', description: 'Phương pháp điều chế' },
-            { lessonId: 17, title: 'Bài 17: Không khí và Sự cháy', completed: false, type: 'exercise', icon: '🌬️', description: 'Không khí và điều kiện cháy' }
-          ]
-        },
-        {
-          chapterId: 5,
-          title: 'Chương 5: Hiđro - Nước',
-          description: '5 bài học về hiđro',
-          lessons: [
-            { lessonId: 18, title: 'Bài 18: Tính chất của Hiđro', completed: false, type: 'theory', icon: '⚗️', description: 'Tính chất vật lý và hóa học' },
-            { lessonId: 19, title: 'Bài 19: Phản ứng oxi hoá - khử', completed: false, type: 'theory', icon: '🔬', description: 'Chất khử và chất oxi hóa' },
-            { lessonId: 20, title: 'Bài 20: Điều chế khí Hiđro', completed: false, type: 'lab', icon: '🧪', description: 'Phương pháp điều chế H₂' },
-            { lessonId: 21, title: 'Bài 21: Nước và tính chất', completed: false, type: 'lab', icon: '💧', description: 'Tính chất của nước' },
-            { lessonId: 22, title: 'Bài 22: Axit - Bazơ - Muối', completed: false, type: 'exercise', icon: '🧫', description: 'Khái niệm cơ bản' }
-          ]
-        },
-        {
-          chapterId: 6,
-          title: 'Chương 6: Dung dịch',
-          description: '4 bài học về dung dịch',
-          lessons: [
-            { lessonId: 23, title: 'Bài 23: Dung dịch và phân loại', completed: false, type: 'theory', icon: '🥤', description: 'Khái niệm dung dịch' },
-            { lessonId: 24, title: 'Bài 24: Nồng độ dung dịch', completed: false, type: 'theory', icon: '📏', description: 'C% và CM' },
-            { lessonId: 25, title: 'Bài 25: Pha chế dung dịch', completed: false, type: 'lab', icon: '🧪', description: 'Cách pha loãng và pha trộn' },
-            { lessonId: 26, title: 'Bài 26: Luyện tập chương 6', completed: false, type: 'exercise', icon: '💪', description: 'Bài tập tổng hợp' }
-          ]
-        },
-        {
-          chapterId: 7,
-          title: 'Ôn tập cuối năm',
-          description: '2 bài ôn tập',
-          lessons: [
-            { lessonId: 27, title: 'Bài 27: Ôn tập lý thuyết', completed: false, type: 'theory', icon: '📖', description: 'Tổng hợp lý thuyết các chương' },
-            { lessonId: 28, title: 'Bài 28: Ôn tập bài tập', completed: false, type: 'exercise', icon: '🎯', description: 'Bài tập tổng hợp cuối năm' }
-          ]
-        }
-      ]
-    }
-  ];
+  // Fetch lessons data from API
+  useEffect(() => {
+    const fetchLessons = async () => {
+      try {
+        console.log('Fetching lessons from API...');
+        const response = await axios.get(`${API_URL}/lessons/grouped`);
+        console.log('API Response:', response.data);
+        
+        // Find lessons 21 and 22 specifically
+        response.data.forEach(classData => {
+          classData.chapters.forEach(chapter => {
+            const lesson21 = chapter.lessons.find(l => l.lessonId === 21);
+            const lesson22 = chapter.lessons.find(l => l.lessonId === 22);
+            if (lesson21) console.log('Found lesson 21:', lesson21.title, 'in chapter', chapter.chapterId);
+            if (lesson22) console.log('Found lesson 22:', lesson22.title, 'in chapter', chapter.chapterId);
+          });
+        });
+        
+        setClasses(response.data);
+      } catch (error) {
+        console.error('Error fetching lessons:', error);
+        // Fallback to empty array if API fails
+        setClasses([]);
+      }
+    };
 
-  const handleStartLesson = (pathId, lessonId) => {
-    navigate(`/lesson/${pathId}/${lessonId}`);
+    fetchLessons();
+  }, []);
+
+  const handleStartLesson = (classId, chapterId, lessonId) => {
+    navigate(`/lesson/${classId}/${chapterId}/${lessonId}`);
+  };
+
+  // Function to get icon based on lesson type or title
+  const getLessonIcon = (lesson) => {
+    if (lesson.title.includes('Mở đầu')) return '📚';
+    if (lesson.title.includes('Chất')) return '🔬';
+    if (lesson.title.includes('Nguyên tử')) return '⚛️';
+    if (lesson.title.includes('Nguyên tố')) return '🔤';
+    if (lesson.title.includes('Đơn chất') || lesson.title.includes('Hợp chất')) return '🧩';
+    if (lesson.title.includes('Công thức') || lesson.title.includes('Hoá trị')) return '📝';
+    if (lesson.title.includes('biến đổi') || lesson.title.includes('PƯHH')) return '🔄';
+    if (lesson.title.includes('bảo toàn')) return '⚖️';
+    if (lesson.title.includes('Phương trình')) return '📐';
+    if (lesson.title.includes('Mol') || lesson.title.includes('Avogadro')) return '🔢';
+    if (lesson.title.includes('Chuyển đổi') || lesson.title.includes('Tỉ khối')) return '⚡';
+    if (lesson.title.includes('tính theo')) return '🧮';
+    if (lesson.title.includes('Oxi')) return '💨';
+    if (lesson.title.includes('oxi hoá') || lesson.title.includes('Oxit')) return '🔥';
+    if (lesson.title.includes('Điều chế') && lesson.title.includes('Oxi')) return '🧪';
+    if (lesson.title.includes('Không khí') || lesson.title.includes('cháy')) return '🌬️';
+    if (lesson.title.includes('Hiđro')) return '⚗️';
+    if (lesson.title.includes('khử')) return '🔬';
+    if (lesson.title.includes('Điều chế') && lesson.title.includes('Hiđro')) return '🧪';
+    if (lesson.title.includes('Nước')) return '💧';
+    if (lesson.title.includes('Axit') || lesson.title.includes('Bazơ') || lesson.title.includes('Muối')) return '🧫';
+    if (lesson.title.includes('Dung dịch')) return '🥤';
+    if (lesson.title.includes('Nồng độ')) return '📏';
+    if (lesson.title.includes('Pha chế')) return '🧪';
+    if (lesson.title.includes('Luyện tập')) return '💪';
+    if (lesson.title.includes('Ôn tập lý thuyết')) return '📖';
+    if (lesson.title.includes('Ôn tập bài tập')) return '🎯';
+    return '📖'; // default icon
+  };
+
+  const getChapterTitle = (chapterId) => {
+    const chapterTitles = {
+      1: 'Chương 1: Chất - Nguyên tử - Phân tử',
+      2: 'Chương 2: Phản ứng hóa học',
+      3: 'Chương 3: Mol và tính toán hóa học',
+      4: 'Chương 4: Oxi - Không khí',
+      5: 'Chương 5: Hiđro - Nước',
+      6: 'Chương 6: Axit - Bazơ - Muối',
+      7: 'Chương 7: Dung dịch',
+      8: 'Ôn tập cuối năm'
+    };
+    return chapterTitles[chapterId] || `Chương ${chapterId}`;
   };
 
   return (
@@ -190,22 +176,22 @@ const Dashboard = () => {
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Lộ trình học tập</h2>
         
         <div className="space-y-6">
-          {classes.map((cls) => (
-            <Card key={cls.classId} className="overflow-hidden">
+          {classes.map((classData) => (
+            <Card key={classData.classId} className="overflow-hidden">
               {/* Header */}
-              <div className={`bg-gradient-to-r ${cls.color} text-white p-6 -m-6 mb-6`}>
+              <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 -m-6 mb-6">
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <h3 className="text-2xl font-bold mb-1">{cls.title}</h3>
-                    <span className="text-sm opacity-90">{cls.level}</span>
+                    <h3 className="text-2xl font-bold mb-1">Lớp {classData.classId} - Hóa học cơ bản</h3>
+                    <span className="text-sm opacity-90">Grade {classData.classId}</span>
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-bold">{cls.progress}%</div>
+                    <div className="text-2xl font-bold">{Math.round((userProgress.completedLessons / userProgress.totalLessons) * 100) || 0}%</div>
                     <div className="text-sm opacity-90">Hoàn thành</div>
                   </div>
                 </div>
                 <ProgressBar 
-                  progress={cls.progress} 
+                  progress={Math.round((userProgress.completedLessons / userProgress.totalLessons) * 100) || 0} 
                   className="bg-white/20"
                   color="white"
                 />
@@ -213,25 +199,31 @@ const Dashboard = () => {
 
               {/* Chapters */}
               <div className="space-y-4">
-                {cls.chapters.map((ch) => (
-                  <div key={ch.chapterId} className="p-4 bg-gray-50 rounded-lg">
-                    <h4 className="font-semibold text-gray-800 mb-3">{ch.title}</h4>
+                {classData.chapters.map((chapter) => (
+                  <div key={chapter.chapterId} className="p-4 bg-gray-50 rounded-lg">
+                    <h4 className="font-semibold text-gray-800 mb-3">{getChapterTitle(chapter.chapterId)}</h4>
                     <div className="space-y-3">
-                      {ch.lessons.map((lesson, index) => {
+                      {chapter.lessons.map((lesson, index) => {
                         // Lấy progress data cho bài học này
                         const progress = lessonsProgress[lesson.lessonId] || {
                           stars: { basic: false, intermediate: false, advanced: false },
                           totalStars: 0,
                           completed: false
                         };
-                        
                         // Xác định màu sắc và badge theo loại bài
+                        const getLessonType = (lesson) => {
+                          if (lesson.title.includes('Thực hành') || lesson.title.includes('Điều chế') || lesson.title.includes('Pha chế')) return 'lab';
+                          if (lesson.title.includes('Luyện tập') || lesson.title.includes('Bài tập') || lesson.title.includes('Ôn tập bài tập')) return 'exercise';
+                          return 'theory';
+                        };
+                        
                         const lessonTypeConfig = {
                           lab: { color: 'from-green-400 to-teal-500', badge: 'Thực hành', badgeColor: 'bg-green-100 text-green-700' },
                           exercise: { color: 'from-orange-400 to-red-500', badge: 'Luyện tập', badgeColor: 'bg-orange-100 text-orange-700' },
                           theory: { color: 'from-blue-400 to-purple-500', badge: 'Lý thuyết', badgeColor: 'bg-blue-100 text-blue-700' }
                         };
-                        const config = lessonTypeConfig[lesson.type] || lessonTypeConfig.theory;
+                        const lessonType = getLessonType(lesson);
+                        const config = lessonTypeConfig[lessonType];
 
                         return (
                           <div 
@@ -241,10 +233,10 @@ const Dashboard = () => {
                             <div className="flex items-center space-x-4">
                               <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl ${
                                 progress.completed 
-                                  ? 'bg-success text-white' 
+                                  ? 'bg-green-500 text-white' 
                                   : `bg-gradient-to-r ${config.color} text-white`
                               }`}>
-                                {progress.completed ? '✓' : lesson.icon}
+                                {progress.completed ? '✓' : getLessonIcon(lesson)}
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
@@ -276,7 +268,7 @@ const Dashboard = () => {
                             </div>
                             <div className="flex items-center gap-2">
                               <Button
-                                onClick={() => navigate(`/lesson/${cls.classId}/${ch.chapterId}/${lesson.lessonId}`)}
+                                onClick={() => handleStartLesson(classData.classId, chapter.chapterId, lesson.lessonId)}
                                 variant={progress.completed ? 'secondary' : 'primary'}
                                 className="text-sm"
                               >

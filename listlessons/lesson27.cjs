@@ -148,8 +148,9 @@ module.exports = {
        {
         type: "drag-drop",
         question: "🧩 Hoàn thành phương trình: Cl₂ + 2NaOH → NaCl + ? + H₂O",
+        inline: true,
         slots: [
-          { id: 1, label: "Sản phẩm", accepts: ["NaClO"] }
+          { id: 1, label: "Sản phẩm", correct: "NaClO" }
         ],
         options: ["NaClO", "NaClO₂", "NaClO₃", "Cl₂O"],
         explanation: "✅ Phản ứng tạo ra nước Javen, một hỗn hợp của Natri clorua (NaCl) và Natri hipoclorit (NaClO).",

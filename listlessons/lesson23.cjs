@@ -134,15 +134,15 @@ module.exports = {
         explanation: "✅ Phản ứng giữa KCl và Mg(NO₃)₂ không xảy ra vì các sản phẩm giả định (KNO₃, MgCl₂) đều tan.",
         points: 15
       },
-       {
+      {
         type: "drag-drop",
-        question: "🧩 Hoàn thành phương trình ion rút gọn cho phản ứng trung hòa HCl và NaOH: ? + ? → H₂O",
+        question: "🧩 Hoàn thành phương trình: CaCO₃ + 2HCl → CaCl₂ + H₂O + ?",
+        inline: true,
         slots: [
-          { id: 1, label: "Ion dương", accepts: ["H⁺"] },
-          { id: 2, label: "Ion âm", accepts: ["OH⁻"] }
+          { id: 1, label: "Sản phẩm khí", correct: "CO₂↑" }
         ],
-        options: ["H⁺", "OH⁻", "Na⁺", "Cl⁻"],
-        explanation: "✅ Bản chất của phản ứng trung hòa axit mạnh và bazơ mạnh là sự kết hợp của ion H⁺ và OH⁻ để tạo thành nước.",
+        options: ["CO₂↑", "O₂↑", "H₂↑", "Cl₂↑"],
+        explanation: "✅ Muối cacbonat tác dụng với axit tạo ra muối mới, nước và khí CO₂.",
         points: 15
       },
       {

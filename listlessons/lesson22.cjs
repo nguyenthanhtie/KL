@@ -134,16 +134,15 @@ module.exports = {
         explanation: "✅ Đây là muối axit, gốc axit là -HCO₃ (hiđrocacbonat). Tên đầy đủ là Natri hiđrocacbonat.",
         points: 15
       },
-       {
+      {
         type: "drag-drop",
-        question: "🧩 Phân loại các chất sau vào đúng nhóm: HCl, Mg(OH)₂, KNO₃, H₃PO₄",
+        question: "🧩 Hoàn thành: Công thức của axit sunfuric là __",
+        inline: true,
         slots: [
-          { id: 1, label: "Axit", accepts: ["HCl", "H₃PO₄"] },
-          { id: 2, label: "Bazơ", accepts: ["Mg(OH)₂"] },
-          { id: 3, label: "Muối", accepts: ["KNO₃"] }
+          { id: 1, label: "Công thức", correct: "H₂SO₄" }
         ],
-        options: ["HCl", "Mg(OH)₂", "KNO₃", "H₃PO₄"],
-        explanation: "✅ Phân loại đúng dựa trên thành phần cấu tạo: axit có H đứng đầu, bazơ có nhóm -OH, muối có kim loại và gốc axit.",
+        options: ["H₂SO₄", "H₂SO₃", "H₂S", "SO₄"],
+        explanation: "✅ Axit sunfuric có công thức H₂SO₄, là một trong những axit mạnh và quan trọng nhất.",
         points: 15
       },
       {

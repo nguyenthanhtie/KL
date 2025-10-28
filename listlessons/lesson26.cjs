@@ -130,15 +130,15 @@ module.exports = {
         explanation: "✅ Khi bị xước, tôn tạo ra pin điện Fe-Zn. Kẽm (mạnh hơn) bị ăn mòn, bảo vệ sắt. Sắt tây tạo pin Fe-Sn. Sắt (mạnh hơn) bị ăn mòn, nên gỉ nhanh hơn.",
         points: 15
       },
-       {
+      {
         type: "drag-drop",
-        question: "🧩 Trong pin điện hóa Zn-Cu, dòng electron di chuyển từ đâu đến đâu?",
+        question: "🧩 Hoàn thành: Thiếc (Sn) có trong thành phần của hợp kim __.",
+        inline: true,
         slots: [
-          { id: 1, label: "Từ", accepts: ["Zn"] },
-          { id: 2, label: "Đến", accepts: ["Cu"] }
+          { id: 1, label: "Hợp kim", correct: "Đồng thiếc" }
         ],
-        options: ["Zn", "Cu", "Dung dịch", "Dây dẫn"],
-        explanation: "✅ Kẽm (Zn) là cực âm, nơi xảy ra sự oxi hóa (nhường e). Đồng (Cu) là cực dương, nơi e di chuyển đến. Dòng electron đi từ cực âm sang cực dương.",
+        options: ["Đồng thiếc", "Thép", "Hợp kim nhôm", "Gang"],
+        explanation: "✅ Thiếc là thành phần chính của hợp kim đồng thiếc (đồng đỏ). Đây là hợp kim được sử dụng từ thời cổ đại.",
         points: 15
       },
       {
