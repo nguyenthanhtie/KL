@@ -5,7 +5,7 @@ require('dotenv').config();
 
 async function seedDatabase() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://nguyenthanhtien2120_db_user:7WgzKPi26QbyJcb2@chim.vcidcf8.mongodb.net/chemistry-learning?retryWrites=true&w=majority&appName=Chim');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://2200002540_db_user:Luan123@dan-1211.epxn7qi.mongodb.net/chemlearn?retryWrites=true&w=majority');
     console.log(' Đã kết nối MongoDB');
 
     await Lesson.deleteMany({});

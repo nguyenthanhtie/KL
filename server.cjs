@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://nguyenthanhtien2120_db_user:7WgzKPi26QbyJcb2@chim.vcidcf8.mongodb.net/chemistry-learning?retryWrites=true&w=majority&appName=Chim';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://2200002540_db_user:Luan123@dan-1211.epxn7qi.mongodb.net/chemlearn?retryWrites=true&w=majority';
 
 // Set mongoose options
 mongoose.set('strictQuery', false);
