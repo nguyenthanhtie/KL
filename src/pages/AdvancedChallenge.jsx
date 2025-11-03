@@ -71,6 +71,19 @@ const challenges = [
   },
   {
     id: 6,
+    name: 'Nhận Biết Dung Dịch',
+    description: 'Mô phỏng thí nghiệm thực tế! Nhỏ các thuốc thử vào dung dịch X, quan sát hiện tượng và đoán xem đó là ion gì.',
+    icon: '💧',
+    difficulty: 'Trung bình',
+    difficultyColor: 'bg-blue-500',
+    time: '15-20 phút',
+    points: 250,
+    status: 'available',
+    link: '/advanced-challenge/nhan-biet-dung-dich',
+    features: ['8 thí nghiệm', 'Mô phỏng phòng lab', 'Hiệu ứng thực tế', 'Nhiều vòng kiểm tra']
+  },
+  {
+    id: 7,
     name: 'Ghép Thẻ Hóa Học',
     description: 'Tìm các cặp thẻ giống nhau về công thức hóa học. Rèn luyện trí nhớ và khả năng nhận diện công thức nhanh.',
     icon: '🃏',
@@ -83,6 +96,18 @@ const challenges = [
   },
   {
     id: 7,
+    name: 'Ghép Thẻ Hóa Học',
+    description: 'Tìm các cặp thẻ giống nhau về công thức hóa học. Rèn luyện trí nhớ và khả năng nhận diện công thức nhanh.',
+    icon: '🃏',
+    difficulty: 'Dễ',
+    difficultyColor: 'bg-green-500',
+    time: '5-8 phút',
+    points: 150,
+    status: 'coming-soon',
+    features: ['Nhiều cấp độ', 'Tính khối lượng mol', 'Tăng độ khó', 'Thời gian giới hạn']
+  },
+  {
+    id: 8,
     name: 'Thử Thách Tổng Hợp',
     description: 'Kết hợp tất cả các kỹ năng: cân bằng, tính toán, nhận diện công thức. Dành cho người chơi xuất sắc!',
     icon: '🏆',
@@ -125,7 +150,7 @@ const AdvancedChallenge = () => {
         {/* Stats Bar */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
           <div className="bg-white rounded-lg p-6 shadow-md text-center">
-            <div className="text-3xl font-bold text-primary-600">7</div>
+            <div className="text-3xl font-bold text-primary-600">8</div>
             <div className="text-gray-600 mt-1">Thử thách</div>
           </div>
           <div className="bg-white rounded-lg p-6 shadow-md text-center">

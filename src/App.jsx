@@ -16,6 +16,7 @@ import TroChoiCanBang from './pages/challenges/TroChoiCanBang';
 import SuyLuanPhanUng from './pages/challenges/SuyLuanPhanUng';
 import DuoiHinhBatChu from './pages/challenges/DuoiHinhBatChu';
 import PhongThiNghiem from './pages/challenges/PhongThiNghiem';
+import NhanBietDungDich from './pages/challenges/NhanBietDungDich';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/advanced-challenge/suy-luan" element={<SuyLuanPhanUng />} />
             <Route path="/advanced-challenge/duoi-hinh" element={<DuoiHinhBatChu />} />
             <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
+            <Route path="/advanced-challenge/nhan-biet-dung-dich" element={<NhanBietDungDich />} />
             <Route 
               path="/dashboard" 
               element={
