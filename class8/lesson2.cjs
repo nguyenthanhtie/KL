@@ -6,7 +6,46 @@ module.exports = {
   description: "Tìm hiểu về chất, phân loại chất, tính chất vật lý và thực hành",
   level: "Beginner",
   order: 2,
-  theory: "\n      <h2>Thế nào là chất?</h2>\n      <p><strong>Chất</strong> là những gì cấu tạo nên các vật thể xung quanh chúng ta.</p>\n      <p><em>Ví dụ:</em> Nước, muối ăn, sắt, nhôm, đường, không khí...</p>\n      \n      <h3>Phân loại chất</h3>\n      <div style=\"background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;\">\n        <h4>Chất tinh khiết</h4>\n        <p>Là chất chỉ gồm một loại chất duy nhất.</p>\n        <p><strong>Ví dụ:</strong> Nước cất, muối ăn nguyên chất, vàng 24k</p>\n      </div>\n      \n      <div style=\"background: #fef3c7; padding: 15px; border-left: 4px solid #d97706; margin: 15px 0;\">\n        <h4>Hỗn hợp</h4>\n        <p>Là chất gồm hai hay nhiều chất tinh khiết trộn lẫn với nhau.</p>\n        <p><strong>Ví dụ:</strong> Không khí, nước biển, nước đường, đất</p>\n      </div>\n\n      <h3>Tính chất của chất</h3>\n      <table style=\"width: 100%; border-collapse: collapse; margin: 15px 0;\">\n        <tr style=\"background: #e5e7eb;\">\n          <th style=\"border: 1px solid #9ca3af; padding: 10px;\">Tính chất vật lý</th>\n          <th style=\"border: 1px solid #9ca3af; padding: 10px;\">Tính chất hóa học</th>\n        </tr>\n        <tr>\n          <td style=\"border: 1px solid #9ca3af; padding: 10px;\">\n            • Màu sắc, mùi vị<br>\n            • Trạng thái (rắn, lỏng, khí)<br>\n            • Nhiệt độ nóng chảy, sôi<br>\n            • Tính dẫn điện, dẫn nhiệt\n          </td>\n          <td style=\"border: 1px solid #9ca3af; padding: 10px;\">\n            • Khả năng tham gia phản ứng<br>\n            • Tính oxi hóa, khử<br>\n            • Tính axit, bazơ<br>\n            • Khả năng cháy\n          </td>\n        </tr>\n      </table>\n    ",
+  theory: `
+      <h2>Thế nào là chất?</h2>
+      <p><strong>Chất</strong> là những gì cấu tạo nên các vật thể xung quanh chúng ta.</p>
+      <p><em>Ví dụ:</em> Nước, muối ăn, sắt, nhôm, đường, không khí...</p>
+      
+      <h3>Phân loại chất</h3>
+      <div style="background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
+        <h4>Chất tinh khiết</h4>
+        <p>Là chất chỉ gồm một loại chất duy nhất.</p>
+        <p><strong>Ví dụ:</strong> Nước cất, muối ăn nguyên chất, vàng 24k</p>
+      </div>
+      
+      <div style="background: #fef3c7; padding: 15px; border-left: 4px solid #d97706; margin: 15px 0;">
+        <h4>Hỗn hợp</h4>
+        <p>Là chất gồm hai hay nhiều chất tinh khiết trộn lẫn với nhau.</p>
+        <p><strong>Ví dụ:</strong> Không khí, nước biển, nước đường, đất</p>
+      </div>
+
+      <h3>Tính chất của chất</h3>
+      <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <tr style="background: #e5e7eb;">
+          <th style="border: 1px solid #9ca3af; padding: 10px;">Tính chất vật lý</th>
+          <th style="border: 1px solid #9ca3af; padding: 10px;">Tính chất hóa học</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #9ca3af; padding: 10px;">
+            • Màu sắc, mùi vị<br>
+            • Trạng thái (rắn, lỏng, khí)<br>
+            • Nhiệt độ nóng chảy, sôi<br>
+            • Tính dẫn điện, dẫn nhiệt
+          </td>
+          <td style="border: 1px solid #9ca3af; padding: 10px;">
+            • Khả năng tham gia phản ứng<br>
+            • Tính oxi hóa, khử<br>
+            • Tính axit, bazơ<br>
+            • Khả năng cháy
+          </td>
+        </tr>
+      </table>
+    `,
   game: {
     // 🌱 CẤP ĐỘ CƠ BẢN
     basic: [

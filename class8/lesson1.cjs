@@ -6,7 +6,42 @@ module.exports = {
   description: "Giới thiệu về môn Hoá học, tầm quan trọng và ứng dụng trong đời sống",
   level: "Beginner",
   order: 1,
-  theory: "\n      <h2>🧪 Chào mừng đến với thế giới Hóa học!</h2>\n      <p><strong>Hóa học</strong> là khoa học nghiên cứu về chất, cấu tạo, tính chất và sự biến đổi của chúng.</p>\n      \n      <h3>🌟 Tại sao học Hóa học?</h3>\n      <div style=\"background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;\">\n        <h4>🔬 Hiểu thế giới xung quanh</h4>\n        <p>• Tại sao nước lại sôi ở 100°C?</p>\n        <p>• Vì sao sắt bị gỉ?</p>\n        <p>• Làm thế nào để chế tạo thuốc?</p>\n      </div>\n      \n      <div style=\"background: #dcfce7; padding: 15px; border-left: 4px solid #16a34a; margin: 15px 0;\">\n        <h4>🏭 Ứng dụng trong đời sống</h4>\n        <p>• <strong>Y học:</strong> Chế tạo thuốc chữa bệnh</p>\n        <p>• <strong>Nông nghiệp:</strong> Phân bón, thuốc trừ sâu</p>\n        <p>• <strong>Công nghiệp:</strong> Chế tạo vật liệu mới</p>\n        <p>• <strong>Môi trường:</strong> Xử lý ô nhiễm</p>\n      </div>\n\n      <h3>🎯 Phương pháp học Hóa học hiệu quả</h3>\n      <ul>\n        <li>📚 <strong>Học lý thuyết:</strong> Hiểu khái niệm cơ bản</li>\n        <li>🧪 <strong>Thực hành:</strong> Làm thí nghiệm quan sát</li>\n        <li>💪 <strong>Luyện tập:</strong> Giải bài tập thường xuyên</li>\n        <li>🔗 <strong>Liên hệ thực tế:</strong> Tìm hiểu ứng dụng</li>\n      </ul>\n\n      <h3>⚠️ An toàn trong phòng thí nghiệm</h3>\n      <div style=\"background: #fef2f2; padding: 15px; border-left: 4px solid #dc2626; margin: 15px 0;\">\n        <p>• Luôn đeo kính bảo hộ và áo blouse</p>\n        <p>• Không được nếm thử hóa chất</p>\n        <p>• Rửa tay sau khi làm thí nghiệm</p>\n        <p>• Báo cáo ngay khi có sự cố</p>\n      </div>\n    ",
+  theory: `
+      <h2>🧪 Chào mừng đến với thế giới Hóa học!</h2>
+      <p><strong>Hóa học</strong> là khoa học nghiên cứu về chất, cấu tạo, tính chất và sự biến đổi của chúng.</p>
+      
+      <h3>🌟 Tại sao học Hóa học?</h3>
+      <div style="background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
+        <h4>🔬 Hiểu thế giới xung quanh</h4>
+        <p>• Tại sao nước lại sôi ở 100°C?</p>
+        <p>• Vì sao sắt bị gỉ?</p>
+        <p>• Làm thế nào để chế tạo thuốc?</p>
+      </div>
+      
+      <div style="background: #dcfce7; padding: 15px; border-left: 4px solid #16a34a; margin: 15px 0;">
+        <h4>🏭 Ứng dụng trong đời sống</h4>
+        <p>• <strong>Y học:</strong> Chế tạo thuốc chữa bệnh</p>
+        <p>• <strong>Nông nghiệp:</strong> Phân bón, thuốc trừ sâu</p>
+        <p>• <strong>Công nghiệp:</strong> Chế tạo vật liệu mới</p>
+        <p>• <strong>Môi trường:</strong> Xử lý ô nhiễm</p>
+      </div>
+
+      <h3>🎯 Phương pháp học Hóa học hiệu quả</h3>
+      <ul>
+        <li>📚 <strong>Học lý thuyết:</strong> Hiểu khái niệm cơ bản</li>
+        <li>🧪 <strong>Thực hành:</strong> Làm thí nghiệm quan sát</li>
+        <li>💪 <strong>Luyện tập:</strong> Giải bài tập thường xuyên</li>
+        <li>🔗 <strong>Liên hệ thực tế:</strong> Tìm hiểu ứng dụng</li>
+      </ul>
+
+      <h3>⚠️ An toàn trong phòng thí nghiệm</h3>
+      <div style="background: #fef2f2; padding: 15px; border-left: 4px solid #dc2626; margin: 15px 0;">
+        <p>• Luôn đeo kính bảo hộ và áo blouse</p>
+        <p>• Không được nếm thử hóa chất</p>
+        <p>• Rửa tay sau khi làm thí nghiệm</p>
+        <p>• Báo cáo ngay khi có sự cố</p>
+      </div>
+    `,
   game: {
     // 🌱 CẤP ĐỘ CƠ BẢN - 5 câu dễ
     basic: [

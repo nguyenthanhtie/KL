@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Lesson = require('./models/Lesson.cjs');
-const lessons = require('./listlessons/index.cjs');
+const lessons = require('./class8/index.cjs');
 require('dotenv').config();
 
 async function seedDatabase() {
