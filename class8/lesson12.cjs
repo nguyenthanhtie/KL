@@ -2,107 +2,202 @@ module.exports = {
   classId: 8,
   chapterId: 3,
   lessonId: 12,
-  title: "Bài 12: Tính theo công thức hoá học",
-  description: "Bài tập tính toán theo công thức hóa học",
+  title: "Bài 12: Sự biến đổi chất",
+  description: "Phân biệt hiện tượng vật lí và hiện tượng hóa học",
   level: "Advanced",
   order: 12,
   theory: `
-      <h2>📐 Tính theo công thức hóa học</h2>
-      <p>Từ <strong>công thức hóa học</strong>, ta có thể tính được nhiều đại lượng quan trọng.</p>
+      <h2>🔬 Sự biến đổi chất</h2>
+      <p>Các chất trong tự nhiên luôn có sự biến đổi theo hai dạng: <strong>Hiện tượng vật lí</strong> và <strong>Hiện tượng hóa học</strong>.</p>
       
-      <h3>🧮 Các công thức tính toán</h3>
+      <h3>🌊 1. Hiện tượng vật lí</h3>
       <div style="background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
-        <h4>1. Khối lượng mol phân tử (M)</h4>
-        <p style="text-align: center; font-size: 18px; color: #0284c7;">
-          <strong>M = Tổng khối lượng nguyên tử × số nguyên tử</strong>
-        </p>
-        <p><strong>Ví dụ:</strong> H₂O</p>
-        <p>M<sub>H₂O</sub> = 2×1 + 16 = 18 (g/mol)</p>
+        <p><strong>Định nghĩa:</strong> Là hiện tượng chỉ biến đổi về <strong>trạng thái, hình dạng</strong> nhưng vẫn <strong>giữ nguyên là chất ban đầu</strong>.</p>
+        
+        <h4>📌 Ví dụ:</h4>
+        <ul>
+          <li><strong>Nước:</strong> đá (rắn) → nước (lỏng) → hơi nước (khí)</li>
+          <li><strong>Muối ăn:</strong> Hòa tan muối ăn dạng hạt vào nước, sau đó nung nóng dung dịch cho đến khi nước bay hơi hết, ta lại thu được muối ăn ở dạng rắn</li>
+        </ul>
+        
+        <p style="color: #0284c7; font-weight: bold;">✅ Chất không thay đổi bản chất</p>
       </div>
 
-      <div style="background: #dcfce7; padding: 15px; border-left: 4px solid #16a34a; margin: 15px 0;">
-        <h4>2. Thành phần phần trăm theo khối lượng (%)</h4>
-        <p style="text-align: center; font-size: 18px; color: #16a34a;">
-          <strong>%A = (n<sub>A</sub> × M<sub>A</sub>) / M × 100%</strong>
-        </p>
-        <p>Trong đó:</p>
-        <p>• n<sub>A</sub>: số nguyên tử A trong phân tử</p>
-        <p>• M<sub>A</sub>: khối lượng nguyên tử A</p>
-        <p>• M: khối lượng mol phân tử</p>
+      <h3>🔥 2. Hiện tượng hóa học</h3>
+      <div style="background: #fef3c7; padding: 15px; border-left: 4px solid #f59e0b; margin: 15px 0;">
+        <p><strong>Định nghĩa:</strong> Là hiện tượng khi có sự <strong>biến đổi chất này thành chất khác</strong>.</p>
+        
+        <h4>🧪 Ví dụ 1: Sắt + Lưu huỳnh</h4>
+        <p><strong>Thí nghiệm:</strong></p>
+        <ol>
+          <li>Trộn bột lưu huỳnh và bột sắt, chia thành 2 phần</li>
+          <li><strong>Phần 1:</strong> Đưa nam châm lại gần → Sắt bị hút (chưa biến đổi)</li>
+          <li><strong>Phần 2:</strong> Đun nóng mạnh, để nguội và đưa nam châm lại gần</li>
+        </ol>
+        <p><strong>Hiện tượng:</strong> Hỗn hợp nóng sáng lên, chuyển thành chất rắn màu xám. Chất này <strong>không bị nam châm hút</strong>.</p>
+        <p style="color: #f59e0b; font-weight: bold;">⚗️ Sắt + Lưu huỳnh → Chất mới (màu xám)</p>
+
+        <h4>🍬 Ví dụ 2: Đun nóng đường</h4>
+        <p><strong>Thí nghiệm:</strong> Đun nóng đáy ống nghiệm đựng đường</p>
+        <ol>
+          <li>Đường nóng chảy → dung dịch trong suốt</li>
+          <li>Đun tiếp → dung dịch chuyển dần thành <strong>chất màu đen (than)</strong></li>
+          <li>Có <strong>giọt nước</strong> ngưng tụ trên thành ống nghiệm</li>
+        </ol>
+        <p style="color: #f59e0b; font-weight: bold;">⚗️ Đường → Than + Nước</p>
       </div>
 
-      <h3>� Ví dụ minh họa</h3>
-      <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 15px 0;">
-        <p><strong>Bài toán:</strong> Tính % khối lượng các nguyên tố trong H₂SO₄</p>
-        <p><strong>Giải:</strong></p>
-        <p>• M<sub>H₂SO₄</sub> = 2×1 + 32 + 4×16 = 98 (g/mol)</p>
-        <p>• %H = (2×1)/98 × 100% ≈ 2,04%</p>
-        <p>• %S = 32/98 × 100% ≈ 32,65%</p>
-        <p>• %O = (4×16)/98 × 100% ≈ 65,31%</p>
+      <h3>📊 So sánh hai hiện tượng</h3>
+      <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <tr style="background: #f3f4f6;">
+          <th style="border: 1px solid #ddd; padding: 10px;">Tiêu chí</th>
+          <th style="border: 1px solid #ddd; padding: 10px;">Hiện tượng vật lí</th>
+          <th style="border: 1px solid #ddd; padding: 10px;">Hiện tượng hóa học</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 10px;"><strong>Bản chất chất</strong></td>
+          <td style="border: 1px solid #ddd; padding: 10px;">Không thay đổi</td>
+          <td style="border: 1px solid #ddd; padding: 10px;">Thay đổi thành chất mới</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 10px;"><strong>Thay đổi</strong></td>
+          <td style="border: 1px solid #ddd; padding: 10px;">Trạng thái, hình dạng</td>
+          <td style="border: 1px solid #ddd; padding: 10px;">Thành phần, tính chất</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 10px;"><strong>Ví dụ</strong></td>
+          <td style="border: 1px solid #ddd; padding: 10px;">Nước đá tan chảy</td>
+          <td style="border: 1px solid #ddd; padding: 10px;">Đốt cháy giấy</td>
+        </tr>
+      </table>
+
+      <h3>🎯 Cách nhận biết</h3>
+      <div style="background: #dcfce7; padding: 15px; border-radius: 8px; margin: 15px 0;">
+        <p><strong>Hiện tượng hóa học thường có dấu hiệu:</strong></p>
+        <ul>
+          <li>✅ Đổi màu</li>
+          <li>✅ Tỏa nhiệt hoặc phát sáng</li>
+          <li>✅ Có kết tủa xuất hiện</li>
+          <li>✅ Có khí thoát ra</li>
+          <li>✅ Tính chất của chất thay đổi hoàn toàn</li>
+        </ul>
       </div>
 
-      <h3>📋 Các bước giải bài toán</h3>
-      <ol>
-        <li>Xác định công thức hóa học</li>
-        <li>Tính khối lượng mol phân tử (M)</li>
-        <li>Áp dụng công thức tính % khối lượng</li>
-        <li>Kiểm tra: tổng % = 100%</li>
-      </ol>
+      <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; border-radius: 50px; display: inline-block; font-size: 20px; font-weight: bold;">
+            TÓM TẮT NỘI DUNG SỰ BIẾN ĐỔI CHẤT
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+          <!-- Hiện tượng Vật lí -->
+          <div style="flex: 1; min-width: 280px; background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); padding: 20px; border-radius: 15px; border: 3px solid #0284c7;">
+            <h4 style="text-align: center; color: #0284c7; margin-top: 0;">🌊 HIỆN TƯỢNG VẬT LÍ</h4>
+            
+            <div style="background: white; padding: 10px; border-radius: 8px; margin: 10px 0;">
+              <p style="margin: 5px 0;"><strong>Đặc điểm:</strong></p>
+              <p style="margin: 5px 0; font-size: 14px;">• Chất không đổi</p>
+              <p style="margin: 5px 0; font-size: 14px;">• Chỉ đổi hình dạng/trạng thái</p>
+            </div>
+
+            <div style="background: white; padding: 10px; border-radius: 8px; margin: 10px 0;">
+              <p style="margin: 5px 0;"><strong>Ví dụ:</strong></p>
+              <p style="margin: 5px 0; font-size: 14px;">❄️ Nước đá → Nước → Hơi</p>
+              <p style="margin: 5px 0; font-size: 14px;">🧂 Muối rắn → Dung dịch</p>
+            </div>
+
+            <div style="background: #0284c7; color: white; padding: 8px; border-radius: 8px; text-align: center; margin-top: 10px; font-weight: bold;">
+              Có thể đảo ngược
+            </div>
+          </div>
+
+          <!-- Hiện tượng Hóa học -->
+          <div style="flex: 1; min-width: 280px; background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 20px; border-radius: 15px; border: 3px solid #f59e0b;">
+            <h4 style="text-align: center; color: #f59e0b; margin-top: 0;">🔥 HIỆN TƯỢNG HÓA HỌC</h4>
+            
+            <div style="background: white; padding: 10px; border-radius: 8px; margin: 10px 0;">
+              <p style="margin: 5px 0;"><strong>Đặc điểm:</strong></p>
+              <p style="margin: 5px 0; font-size: 14px;">• Tạo chất mới</p>
+              <p style="margin: 5px 0; font-size: 14px;">• Đổi tính chất</p>
+            </div>
+
+            <div style="background: white; padding: 10px; border-radius: 8px; margin: 10px 0;">
+              <p style="margin: 5px 0;"><strong>Dấu hiệu:</strong></p>
+              <p style="margin: 5px 0; font-size: 14px;">🎨 Đổi màu</p>
+              <p style="margin: 5px 0; font-size: 14px;">💨 Thoát khí</p>
+              <p style="margin: 5px 0; font-size: 14px;">🔥 Tỏa nhiệt/sáng</p>
+              <p style="margin: 5px 0; font-size: 14px;">⬇️ Có kết tủa</p>
+            </div>
+
+            <div style="background: white; padding: 10px; border-radius: 8px; margin: 10px 0;">
+              <p style="margin: 5px 0;"><strong>Ví dụ:</strong></p>
+              <p style="margin: 5px 0; font-size: 14px;">🧲 Sắt + Lưu huỳnh</p>
+              <p style="margin: 5px 0; font-size: 14px;">🍬 Đường → Than + Nước</p>
+            </div>
+
+            <div style="background: #f59e0b; color: white; padding: 8px; border-radius: 8px; text-align: center; margin-top: 10px; font-weight: bold;">
+              Khó đảo ngược
+            </div>
+          </div>
+        </div>
+
+        <!-- So sánh -->
+        <div style="margin-top: 30px; text-align: center;">
+          <div style="display: inline-block; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); padding: 15px 30px; border-radius: 15px; border: 2px dashed #6b7280;">
+            <p style="margin: 0; font-weight: bold; color: #374151;">⚖️ Cả hai đều là SỰ BIẾN ĐỔI của chất trong tự nhiên</p>
+          </div>
+        </div>
+      </div>
     `,
   game: {
     // 🌱 CẤP ĐỘ CƠ BẢN
     basic: [
       {
+        type: "true-false",
+        question: "Nước đá tan chảy thành nước lỏng là hiện tượng vật lí.",
+        correctAnswer: true,
+        explanation: "✅ Đúng! Nước chỉ thay đổi trạng thái từ rắn sang lỏng, vẫn là chất H₂O.",
+        points: 10
+      },
+      {
         type: "multiple-choice",
-        question: "Khối lượng mol phân tử H₂O là bao nhiêu? (Biết H = 1, O = 16)",
+        question: "Hiện tượng nào sau đây là hiện tượng hóa học?",
         options: [
-          "16 g/mol",
-          "17 g/mol",
-          "18 g/mol",
-          "19 g/mol"
+          "Nước sôi",
+          "Đường tan trong nước",
+          "Giấy bị cháy",
+          "Nước đá tan chảy"
         ],
         correctAnswer: 2,
-        explanation: "✅ M(H₂O) = 2×1 + 16 = 18 g/mol",
+        explanation: "✅ Giấy cháy tạo ra tro và khí, là chất mới → hiện tượng hóa học.",
         points: 10
       },
       {
         type: "true-false",
-        question: "Khối lượng mol phân tử được tính bằng tổng khối lượng các nguyên tử trong phân tử.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Khối lượng mol = tổng khối lượng nguyên tử × số nguyên tử",
+        question: "Hiện tượng vật lí là hiện tượng chất ban đầu biến đổi thành chất mới.",
+        correctAnswer: false,
+        explanation: "❌ Sai! Hiện tượng vật lí vẫn giữ nguyên chất ban đầu, chỉ thay đổi trạng thái/hình dạng.",
         points: 10
       },
       {
         type: "multiple-choice",
-        question: "Công thức tính % khối lượng nguyên tố A trong hợp chất là:",
+        question: "Dấu hiệu nào cho thấy đã xảy ra hiện tượng hóa học?",
         options: [
-          "%A = (M_A / M) × 100%",
-          "%A = (n_A × M_A) / M × 100%",
-          "%A = M / M_A × 100%",
-          "%A = n_A / M × 100%"
+          "Chất rắn tan trong nước",
+          "Nước bay hơi",
+          "Có khí thoát ra",
+          "Nước đông đá"
         ],
-        correctAnswer: 1,
-        explanation: "✅ %A = (n_A × M_A) / M × 100%, với n_A là số nguyên tử A",
+        correctAnswer: 2,
+        explanation: "✅ Có khí thoát ra là dấu hiệu của phản ứng hóa học.",
         points: 10
       },
       {
         type: "true-false",
-        question: "Tổng % khối lượng các nguyên tố trong một hợp chất luôn bằng 100%.",
+        question: "Khi đun nóng, đường chuyển từ rắn sang lỏng là hiện tượng vật lí.",
         correctAnswer: true,
-        explanation: "✅ Đúng! Đây là cách kiểm tra kết quả tính toán.",
-        points: 10
-      },
-      {
-        type: "multiple-choice",
-        question: "Khối lượng mol của CO₂ là bao nhiêu? (C = 12, O = 16)",
-        options: [
-          "28 g/mol",
-          "32 g/mol",
-          "44 g/mol",
-          "48 g/mol"
-        ],
-        correctAnswer: 2,
-        explanation: "✅ M(CO₂) = 12 + 2×16 = 44 g/mol",
+        explanation: "✅ Đúng! Đường chỉ nóng chảy, vẫn còn là đường.",
         points: 10
       }
     ],
@@ -111,127 +206,123 @@ module.exports = {
     intermediate: [
       {
         type: "matching",
-        question: "🔗 Ghép hợp chất với khối lượng mol đúng",
+        question: "🔗 Ghép hiện tượng với loại biến đổi",
         pairs: [
-          { left: "NaCl", right: "58,5 g/mol" },
-          { left: "CaCO₃", right: "100 g/mol" },
-          { left: "H₂SO₄", right: "98 g/mol" }
+          { left: "Muối tan trong nước", right: "Hiện tượng vật lí" },
+          { left: "Sắt gỉ trong không khí ẩm", right: "Hiện tượng hóa học" },
+          { left: "Nước bay hơi", right: "Hiện tượng vật lí" }
         ],
-        explanation: "✅ Tuyệt vời! Bạn đã tính đúng khối lượng mol các hợp chất.",
-        points: 15
-      },
-      {
-        type: "fill-in-blank",
-        question: "Trong CO₂, phần trăm khối lượng của C là ___% (làm tròn 1 chữ số thập phân). Biết C = 12, O = 16",
-        correctAnswer: "27.3",
-        hint: "💡 M(CO₂) = 44 g/mol, %C = 12/44 × 100%",
-        explanation: "✅ %C = 12/44 × 100% ≈ 27,3%",
+        explanation: "✅ Chính xác! Bạn đã phân biệt được hai loại hiện tượng.",
         points: 15
       },
       {
         type: "ordering",
-        question: "📋 Sắp xếp các bước tính % khối lượng nguyên tố",
+        question: "📋 Sắp xếp các hiện tượng xảy ra khi đun nóng đường theo thứ tự",
         options: [
-          "Xác định công thức hóa học",
-          "Tính khối lượng mol phân tử",
-          "Áp dụng công thức %",
-          "Kiểm tra tổng % = 100%"
+          "Đường ở dạng rắn ban đầu",
+          "Đường nóng chảy thành dung dịch trong suốt",
+          "Đường chuyển thành chất màu đen (than)",
+          "Có giọt nước ngưng tụ"
         ],
         correctOrder: [
-          "Xác định công thức hóa học",
-          "Tính khối lượng mol phân tử",
-          "Áp dụng công thức %",
-          "Kiểm tra tổng % = 100%"
+          "Đường ở dạng rắn ban đầu",
+          "Đường nóng chảy thành dung dịch trong suốt",
+          "Đường chuyển thành chất màu đen (than)",
+          "Có giọt nước ngưng tụ"
         ],
-        explanation: "✅ Đúng rồi! Đây là trình tự giải bài toán chuẩn.",
+        explanation: "✅ Đúng rồi! Bước đầu là hiện tượng vật lí, sau đó là hóa học.",
         points: 15
       },
-      {
-        type: "multiple-choice",
-        question: "Hợp chất nào có % khối lượng oxi cao nhất?",
-        options: [
-          "H₂O (M = 18)",
-          "CO₂ (M = 44)",
-          "SO₂ (M = 64)",
-          "NO₂ (M = 46)"
-        ],
-        correctAnswer: 0,
-        explanation: "✅ H₂O có %O = 16/18 × 100% ≈ 88,9% là cao nhất",
-        points: 15
-      },
+
       {
         type: "fill-in-blank",
-        question: "Nếu %H trong hợp chất H_xO = 11,1%, thì x = ___",
-        correctAnswer: "2",
-        hint: "💡 %H = (x×1)/(x×1 + 16) × 100% = 11,1%",
-        explanation: "✅ Giải phương trình: x/(x+16) = 0,111 → x = 2",
+        question: "Khi trộn bột sắt và lưu huỳnh rồi đun nóng, thu được chất rắn màu ___ không bị nam châm hút.",
+        correctAnswer: "xám",
+        hint: "💡 Xem lại thí nghiệm về sắt và lưu huỳnh",
+        explanation: "✅ Chất mới có màu xám và không còn tính chất của sắt.",
+        points: 15
+      },
+      
+      {
+        type: "multiple-choice",
+        question: "Hiện tượng nào sau đây KHÔNG phải là dấu hiệu của hiện tượng hóa học?",
+        options: [
+          "Đổi màu",
+          "Thay đổi trạng thái",
+          "Tỏa nhiệt",
+          "Có kết tủa"
+        ],
+        correctAnswer: 1,
+        explanation: "✅ Thay đổi trạng thái là dấu hiệu của hiện tượng vật lí.",
+        points: 15
+      },
+      {
+        type: "true-false",
+        question: "Khi đun nóng mạnh đường đến khi chuyển thành than, đã xảy ra cả hai hiện tượng vật lí và hóa học.",
+        correctAnswer: true,
+        explanation: "✅ Đúng! Đầu tiên đường nóng chảy (vật lí), sau đó biến thành than và nước (hóa học).",
         points: 15
       }
     ],
-
     // ⚡ CẤP ĐỘ NÂNG CAO
     advanced: [
       {
         type: "drag-drop",
-        question: "🧩 Hoàn thành công thức tính khối lượng mol",
-        inline: true,
-        slots: [
-          { id: 1, label: "Công thức", correct: "M = Σ(n × M_nguyên tử)" },
-          { id: 2, label: "Đơn vị", correct: "g/mol" },
-          { id: 3, label: "Ứng dụng", correct: "Tính % khối lượng" }
+        question: "🧩 Phân loại các hiện tượng sau",
+        inline: false,
+        categories: ["Hiện tượng vật lí", "Hiện tượng hóa học"],
+        items: [
+          { id: 1, text: "Nước đá tan", category: "Hiện tượng vật lí" },
+          { id: 2, text: "Thịt bị thối", category: "Hiện tượng hóa học" },
+          { id: 3, text: "Muối tan trong nước", category: "Hiện tượng vật lí" },
+          { id: 4, text: "Sữa bị chua", category: "Hiện tượng hóa học" }
         ],
-        options: [
-          "M = Σ(n × M_nguyên tử)",
-          "g/mol",
-          "Tính % khối lượng",
-          "mol/L"
-        ],
-        explanation: "✅ Hoàn hảo! Bạn hiểu rõ về khối lượng mol.",
+        explanation: "✅ Xuất sắc! Bạn phân biệt rõ hai loại hiện tượng.",
         points: 20
       },
       {
         type: "multiple-choice",
-        question: "Một hợp chất có công thức Fe_xO_y, biết %Fe = 70%. Công thức của hợp chất là:",
+        question: "Trong thí nghiệm đun nóng hỗn hợp sắt và lưu huỳnh, tại sao chất tạo thành không bị nam châm hút?",
         options: [
-          "FeO",
-          "Fe₂O₃",
-          "Fe₃O₄",
-          "FeO₂"
+          "Vì sắt đã nóng chảy",
+          "Vì sắt đã biến thành chất mới không có tính chất của sắt",
+          "Vì lưu huỳnh che phủ sắt",
+          "Vì nhiệt độ quá cao"
         ],
-        correctAnswer: 2,
-        explanation: "✅ %Fe = (x×56)/(x×56+y×16) = 70% → Fe₃O₄",
-        points: 20
-      },
-      {
-        type: "fill-in-blank",
-        question: "Một oxit sắt có khối lượng mol là 160 g/mol và %Fe = 70%. Công thức của oxit là Fe___O___",
-        correctAnswer: "3O4",
-        hint: "💡 M = 160, %Fe = 70% → tính x và y",
-        explanation: "✅ Khối lượng Fe = 112g → 112/56 = 2×1,5 = 3; Khối lượng O = 48g → 48/16 = 3×1,33 = 4",
+        correctAnswer: 1,
+        explanation: "✅ Sắt đã tác dụng với lưu huỳnh tạo thành hợp chất mới (sắt sunfua) không còn tính chất từ tính.",
         points: 20
       },
       {
         type: "matching",
-        question: "🧠 Ghép hợp chất với thành phần % khối lượng",
+        question: "🧠 Ghép hiện tượng với giải thích đúng",
         pairs: [
-          { left: "H₂O", right: "%O ≈ 89%" },
-          { left: "CO₂", right: "%O ≈ 73%" },
-          { left: "SO₂", right: "%O = 50%" }
+          { left: "Hơi nước ngưng tụ trên kính", right: "Vật lí - Chỉ đổi trạng thái" },
+          { left: "Thức ăn bị mốc", right: "Hóa học - Chất biến đổi" },
+          { left: "Cồn bay hơi", right: "Vật lí - Vẫn là cồn" }
         ],
-        explanation: "✅ Xuất sắc! Bạn tính toán chính xác.",
+        explanation: "✅ Tuyệt vời! Bạn hiểu sâu về bản chất hai hiện tượng.",
+        points: 20
+      },
+      {
+        type: "fill-in-blank",
+        question: "Khi đun nóng đường, hiện tượng ___ xảy ra trước, sau đó mới đến hiện tượng ___.",
+        correctAnswer: "vật lí#hóa học",
+        hint: "💡 Đường nóng chảy trước, sau đó mới biến thành than",
+        explanation: "✅ Đầu tiên đường nóng chảy (vật lí), sau đó phân hủy thành than và nước (hóa học).",
         points: 20
       },
       {
         type: "multiple-choice",
-        question: "Hợp chất A có công thức Ca_xC_yO_z với %Ca = 40%, %C = 12%. Tỉ lệ x:y:z là:",
+        question: "Một học sinh quan sát thấy: lá cây xanh → lá vàng → lá rụng. Đây là hiện tượng gì?",
         options: [
-          "1:1:2",
-          "1:1:3",
-          "2:1:3",
-          "1:2:3"
+          "Chỉ có hiện tượng vật lí",
+          "Chỉ có hiện tượng hóa học",
+          "Cả hai hiện tượng vật lí và hóa học",
+          "Không phải hai hiện tượng trên"
         ],
-        correctAnswer: 1,
-        explanation: "✅ %O = 48% → x:y:z = (40/40):(12/12):(48/16) = 1:1:3 → CaCO₃",
+        correctAnswer: 2,
+        explanation: "✅ Lá chuyển màu do chất diệp lục bị phân hủy (hóa học), lá rụng là hiện tượng vật lí.",
         points: 20
       }
     ]
