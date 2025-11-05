@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Button from '../components/ui/Button';
+import GradeSelector from '../components/ui/GradeSelector';
 
 const Home = () => {
   const { user } = useAuth();
@@ -97,49 +98,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Topics Section - Enhanced with lighter blue colors */}
-      <section className="py-16 px-4 bg-gradient-to-b from-blue-25 to-indigo-25">
-        <div className="container mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-700 animate-fade-in">
-            Lộ trình của bạn
-          </h2>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link to="/dashboard" className="bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 block animate-slide-up group border border-blue-200">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg mb-3 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
-                    <span className="text-2xl text-white group-hover:scale-110 transition-transform duration-300">🚀</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-700 group-hover:text-blue-600 transition-colors duration-300">Lộ trình chính</h3>
-                <p className="text-gray-600 mt-1">Bắt đầu từ con số 0, chinh phục các khái niệm Hóa học.</p>
-            </Link>
-            <Link to="/advanced-challenge" className="bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 block animate-slide-up animation-delay-100 group border border-purple-200">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg mb-3 flex items-center justify-center group-hover:shadow-lg transition-all duration-300">
-                    <span className="text-2xl text-white group-hover:scale-110 transition-transform duration-300">🏆</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-700 group-hover:text-purple-600 transition-colors duration-300">Thử thách nâng cao</h3>
-                <p className="text-gray-600 mt-1">Kiểm tra kiến thức và giải các bài tập khó.</p>
-            </Link>
-            
-            <div className="bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-xl p-6 shadow-sm cursor-not-allowed relative transition-all duration-300 animate-slide-up group border border-green-200" style={{animationDelay: '200ms'}}>
-                <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">Sắp ra mắt</div>
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg mb-3 flex items-center justify-center opacity-70 group-hover:opacity-80 transition-all duration-300">
-                    <span className="text-2xl text-white">🔬</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-600 group-hover:text-green-600 transition-colors duration-300">Hóa hữu cơ</h3>
-                <p className="text-gray-500 mt-1">Chuyên đề chuyên sâu sắp được cập nhật.</p>
-            </div>
-            
-            <div className="bg-gradient-to-br from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 rounded-xl p-6 shadow-sm cursor-not-allowed relative transition-all duration-300 animate-slide-up group border border-red-200" style={{animationDelay: '300ms'}}>
-                <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">Sắp ra mắt</div>
-                <div className="w-12 h-12 bg-gradient-to-br from-red-400 to-rose-500 rounded-lg mb-3 flex items-center justify-center opacity-70 group-hover:opacity-80 transition-all duration-300">
-                    <span className="text-2xl text-white">⚡</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-600 group-hover:text-red-600 transition-colors duration-300">Điện hóa</h3>
-                <p className="text-gray-500 mt-1">Chuyên đề chuyên sâu sắp được cập nhật.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Grade Selector Section */}
+      <GradeSelector />
 
       {/* CTA Section - Lighter blue gradient with animations */}
       {!user && (

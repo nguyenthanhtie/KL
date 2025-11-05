@@ -243,8 +243,6 @@ const Register = () => {
                   onChange={handleChange}
                   className="w-full px-3 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 hover:border-indigo-300 text-sm"
                 >
-                  <option value={6}>Lớp 6</option>
-                  <option value={7}>Lớp 7</option>
                   <option value={8}>Lớp 8</option>
                   <option value={9}>Lớp 9</option>
                   <option value={10}>Lớp 10</option>

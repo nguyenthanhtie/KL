@@ -172,8 +172,41 @@ const Dashboard = () => {
           </Card>
         </div>
 
+        {/* Quick Access to Classes */}
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Chọn lớp học</h2>
+        
+        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+          {[8, 9, 10, 11, 12].map((gradeId) => {
+            const gradeColors = {
+              8: 'from-blue-400 to-blue-600',
+              9: 'from-green-400 to-green-600',
+              10: 'from-purple-400 to-purple-600',
+              11: 'from-orange-400 to-orange-600',
+              12: 'from-pink-400 to-pink-600'
+            };
+            const gradeIcons = {
+              8: '🧪',
+              9: '⚗️',
+              10: '🔬',
+              11: '⚛️',
+              12: '🎓'
+            };
+            
+            return (
+              <div
+                key={gradeId}
+                onClick={() => navigate(`/class/${gradeId}`)}
+                className={`bg-gradient-to-br ${gradeColors[gradeId]} text-white rounded-xl p-6 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg`}
+              >
+                <div className="text-4xl mb-2 text-center">{gradeIcons[gradeId]}</div>
+                <h3 className="text-xl font-bold text-center">Lớp {gradeId}</h3>
+              </div>
+            );
+          })}
+        </div>
+
         {/* Learning Paths */}
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Lộ trình học tập</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Lộ trình học tập của bạn</h2>
         
         <div className="space-y-6">
           {classes.map((classData) => (
@@ -181,10 +214,16 @@ const Dashboard = () => {
               {/* Header */}
               <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 -m-6 mb-6">
                 <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-1">Lớp {classData.classId} - Hóa học cơ bản</h3>
-                    <span className="text-sm opacity-90">Grade {classData.classId}</span>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold mb-1">Lớp {classData.classId} - Hóa học</h3>
+                    <span className="text-sm opacity-90">{classData.chapters.length} chương • {classData.chapters.reduce((sum, ch) => sum + ch.lessons.length, 0)} bài học</span>
                   </div>
+                  <button
+                    onClick={() => navigate(`/class/${classData.classId}`)}
+                    className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                  >
+                    Xem tất cả →
+                  </button>
                   <div className="text-right">
                     <div className="text-2xl font-bold">{Math.round((userProgress.completedLessons / userProgress.totalLessons) * 100) || 0}%</div>
                     <div className="text-sm opacity-90">Hoàn thành</div>

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import ClassDashboard from './pages/ClassDashboard';
 import Lesson from './pages/Lesson';
 import LessonSimple from './pages/LessonSimple';
 import GamePlay from './pages/GamePlay';
@@ -42,6 +43,10 @@ function App() {
                   <Dashboard />
                 </ProtectedRoute>
               } 
+            />
+            <Route 
+              path="/class/:classId" 
+              element={<ClassDashboard />}
             />
             <Route 
               path="/lesson/:classId/:chapterId/:lessonId" 
