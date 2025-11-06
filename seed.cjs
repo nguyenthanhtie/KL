@@ -88,18 +88,7 @@ const challenges = [
     link: '/advanced-challenge/xay-dung-phan-tu',
     features: ['3 cấp độ', '12 phân tử', 'Tương tác kéo thả', 'Hỗ trợ liên kết đa dạng']
   },
-  {
-    id: 8,
-    name: 'Ghép Thẻ Hóa Học',
-    description: 'Tìm các cặp thẻ giống nhau về công thức hóa học. Rèn luyện trí nhớ và khả năng nhận diện công thức nhanh.',
-    icon: '🃏',
-    difficulty: 'Dễ',
-    difficultyColor: 'bg-green-500',
-    time: '5-8 phút',
-    points: 150,
-    status: 'coming-soon',
-    features: ['Nhiều cấp độ', 'Tính khối lượng mol', 'Tăng độ khó', 'Thời gian giới hạn']
-  },
+
   {
     id: 10,
     name: 'Pha Chế Dung Dịch',
@@ -113,18 +102,23 @@ const challenges = [
     link: '/advanced-challenge/pha-che-dung-dich',
     features: ['12 thử thách', 'Mô phỏng bình thí nghiệm', '3 cấp độ', 'Công thức chi tiết']
   },
+  
+ 
+ 
   {
-    id: 11,
-    name: 'Thử Thách Tổng Hợp',
-    description: 'Kết hợp tất cả các kỹ năng: cân bằng, tính toán, nhận diện công thức. Dành cho người chơi xuất sắc!',
-    icon: '🏆',
-    difficulty: 'Rất khó',
-    difficultyColor: 'bg-purple-600',
-    time: '30-45 phút',
-    points: 500,
-    status: 'coming-soon',
-    features: ['Nhiều dạng bài', 'Giới hạn thời gian', 'Bảng xếp hạng', 'Phần thưởng đặc biệt']
-  }
+    id: 15,
+    name: 'Cấu Trúc Nguyên Tử',
+    description: 'Xác định số proton, neutron, electron trong nguyên tử và ion! Hiểu về số khối, số hiệu nguyên tử, đồng vị và sự hình thành ion.',
+    icon: '⚛️',
+    difficulty: 'Trung bình',
+    difficultyColor: 'bg-blue-600',
+    time: '20-25 phút',
+    points: 250,
+    status: 'available',
+    link: '/advanced-challenge/cau-truc-nguyen-tu',
+    features: ['10 thử thách', 'Mô phỏng nguyên tử', 'Vỏ electron', 'Học về đồng vị']
+  },
+  
 ];
 
 async function seedDatabase() {

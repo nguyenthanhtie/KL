@@ -20,6 +20,9 @@ import NhanBietDungDich from './pages/challenges/NhanBietDungDich';
 import XayDungPhanTu from './pages/challenges/XayDungPhanTu';
 import PhaCheDungDich from './pages/challenges/PhaCheDungDich';
 
+import CauTrucNguyenTu from './pages/challenges/CauTrucNguyenTu';
+
+
 function App() {
   return (
     <Router>
@@ -38,6 +41,8 @@ function App() {
             <Route path="/advanced-challenge/nhan-biet-dung-dich" element={<NhanBietDungDich />} />
             <Route path="/advanced-challenge/xay-dung-phan-tu" element={<XayDungPhanTu />} />
             <Route path="/advanced-challenge/pha-che-dung-dich" element={<PhaCheDungDich />} />
+    
+            <Route path="/advanced-challenge/cau-truc-nguyen-tu" element={<CauTrucNguyenTu />} />
             <Route 
               path="/dashboard" 
               element={
