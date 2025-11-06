@@ -1,15 +1,12 @@
 const mongoose = require('mongoose');
 const Lesson = require('./models/Lesson.cjs');
-<<<<<<< Updated upstream
 const lessons8 = require('./class8/index.cjs');
 const lessons9 = require('./class9/index.cjs');
 const lessons10 = require('./class10/index.cjs');
 const lessons11 = require('./class11/index.cjs');
 const lessons12 = require('./class12/index.cjs');
-=======
 const Challenge = require('./models/Challenge.cjs');
 const lessons = require('./class8/index.cjs');
->>>>>>> Stashed changes
 require('dotenv').config();
 
 const challenges = [
@@ -137,7 +134,6 @@ async function seedDatabase() {
 
     // Seed lessons
     await Lesson.deleteMany({});
-<<<<<<< Updated upstream
     console.log('✓ Đã xóa dữ liệu cũ');
 
     // Combine all lessons from all classes
@@ -157,7 +153,6 @@ async function seedDatabase() {
     console.log('  - Lớp 11:', lessons11.length, 'bài');
     console.log('  - Lớp 12:', lessons12.length, 'bài');
     console.log('✓ Tổng cộng:', allLessons.length, 'bài học');
-=======
     console.log('✓ Đã xóa dữ liệu bài học cũ');
 
     await Lesson.insertMany(lessons);
@@ -169,7 +164,6 @@ async function seedDatabase() {
 
     await Challenge.insertMany(challenges);
     console.log('✓ Đã thêm', challenges.length, 'thử thách');
->>>>>>> Stashed changes
 
     console.log('✓ Seed database thành công!');
     process.exit(0);
