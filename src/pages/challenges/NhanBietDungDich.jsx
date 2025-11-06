@@ -3,102 +3,112 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb, Droplet, TestTube, Beaker, FlaskConical, AlertCircle } from 'lucide-react';
 import './NhanBietDungDich.css';
 
-// Dữ liệu về các ion và dấu hiệu nhận biết
+// Dữ liệu về các hợp chất và dấu hiệu nhận biết (dành cho lớp 8-9)
 const ionDatabase = {
-  // Cation (ion dương)
-  'Fe2+': {
-    name: 'Sắt (II)',
-    formula: 'Fe²⁺',
-    color: 'lục nhạt',
-    solutionColor: '#c8e6c9',
+  // Axit
+  'HCl': {
+    name: 'Axit clohidric',
+    formula: 'HCl',
+    color: 'không màu',
+    solutionColor: '#e3f2fd',
     reactions: [
-      { reagent: 'NaOH', result: 'Kết tủa trắng xanh Fe(OH)₂, hóa nâu ngoài không khí', precipitateColor: '#b2dfdb', equation: 'Fe²⁺ + 2OH⁻ → Fe(OH)₂↓' },
-      { reagent: 'K₃[Fe(CN)₆]', result: 'Kết tủa xanh đậm (xanh tím)', precipitateColor: '#1976d2', equation: '3Fe²⁺ + 2[Fe(CN)₆]³⁻ → Fe₃[Fe(CN)₆]₂↓' }
+      { reagent: 'Quỳ tím', result: 'Quỳ tím hóa đỏ', precipitateColor: '#ff6b9d', isLitmusTest: true, equation: 'HCl → H⁺ + Cl⁻' },
+      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa trắng AgCl', precipitateColor: '#fafafa', equation: 'HCl + AgNO₃ → AgCl↓ + HNO₃' },
+      { reagent: 'Kim loại Zn', result: 'Sủi bọt khí H₂', precipitateColor: 'transparent', hasBubbles: true, equation: 'Zn + 2HCl → ZnCl₂ + H₂↑' }
     ]
   },
-  'Fe3+': {
-    name: 'Sắt (III)',
-    formula: 'Fe³⁺',
-    color: 'vàng nâu',
-    solutionColor: '#ffb74d',
+  'H2SO4': {
+    name: 'Axit sunfuric',
+    formula: 'H₂SO₄',
+    color: 'không màu',
+    solutionColor: '#e3f2fd',
     reactions: [
-      { reagent: 'NaOH', result: 'Kết tủa nâu đỏ Fe(OH)₃', precipitateColor: '#8d6e63', equation: 'Fe³⁺ + 3OH⁻ → Fe(OH)₃↓' },
-      { reagent: 'KSCN', result: 'Dung dịch chuyển màu đỏ máu', precipitateColor: '#c62828', equation: 'Fe³⁺ + SCN⁻ → [Fe(SCN)]²⁺' },
-      { reagent: 'K₄[Fe(CN)₆]', result: 'Kết tủa xanh đậm (xanh tím)', precipitateColor: '#0d47a1', equation: '4Fe³⁺ + 3[Fe(CN)₆]⁴⁻ → Fe₄[Fe(CN)₆]₃↓' }
+      { reagent: 'Quỳ tím', result: 'Quỳ tím hóa đỏ', precipitateColor: '#ff6b9d', isLitmusTest: true, equation: 'H₂SO₄ → 2H⁺ + SO₄²⁻' },
+      { reagent: 'Dung dịch BaCl₂', result: 'Kết tủa trắng BaSO₄', precipitateColor: '#fefefe', equation: 'H₂SO₄ + BaCl₂ → BaSO₄↓ + 2HCl' },
+      { reagent: 'Kim loại Zn', result: 'Sủi bọt khí H₂', precipitateColor: 'transparent', hasBubbles: true, equation: 'Zn + H₂SO₄ → ZnSO₄ + H₂↑' }
     ]
   },
-  'Cu2+': {
-    name: 'Đồng (II)',
-    formula: 'Cu²⁺',
+  
+  // Bazơ
+  'NaOH': {
+    name: 'Natri hidroxit',
+    formula: 'NaOH',
+    color: 'không màu',
+    solutionColor: '#e8f5e9',
+    reactions: [
+      { reagent: 'Quỳ tím', result: 'Quỳ tím hóa xanh', precipitateColor: '#6b9dff', isLitmusTest: true, equation: 'NaOH → Na⁺ + OH⁻' },
+      { reagent: 'Dung dịch CuSO₄', result: 'Kết tủa xanh lam Cu(OH)₂', precipitateColor: '#2196f3', equation: '2NaOH + CuSO₄ → Cu(OH)₂↓ + Na₂SO₄' },
+      { reagent: 'Dung dịch FeCl₃', result: 'Kết tủa nâu đỏ Fe(OH)₃', precipitateColor: '#a0522d', equation: '3NaOH + FeCl₃ → Fe(OH)₃↓ + 3NaCl' }
+    ]
+  },
+  'Ca(OH)2': {
+    name: 'Canxi hidroxit (nước vôi trong)',
+    formula: 'Ca(OH)₂',
+    color: 'không màu',
+    solutionColor: '#f0f8ff',
+    reactions: [
+      { reagent: 'Quỳ tím', result: 'Quỳ tím hóa xanh', precipitateColor: '#6b9dff', isLitmusTest: true, equation: 'Ca(OH)₂ → Ca²⁺ + 2OH⁻' },
+      { reagent: 'Khí CO₂', result: 'Xuất hiện kết tủa trắng CaCO₃', precipitateColor: '#fcfcfc', equation: 'Ca(OH)₂ + CO₂ → CaCO₃↓ + H₂O' },
+      { reagent: 'Dung dịch Na₂CO₃', result: 'Kết tủa trắng CaCO₃', precipitateColor: '#fcfcfc', equation: 'Ca(OH)₂ + Na₂CO₃ → CaCO₃↓ + 2NaOH' }
+    ]
+  },
+  
+  // Muối
+  'NaCl': {
+    name: 'Natri clorua (muối ăn)',
+    formula: 'NaCl',
+    color: 'không màu',
+    solutionColor: '#e3f2fd',
+    reactions: [
+      { reagent: 'Quỳ tím', result: 'Quỳ tím không đổi màu', precipitateColor: 'transparent', isSolutionChange: false, equation: '' },
+      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa trắng AgCl', precipitateColor: '#fafafa', equation: 'NaCl + AgNO₃ → AgCl↓ + NaNO₃' }
+    ]
+  },
+  'CuSO4': {
+    name: 'Đồng(II) sunfat',
+    formula: 'CuSO₄',
     color: 'xanh lam',
     solutionColor: '#42a5f5',
     reactions: [
-      { reagent: 'NaOH', result: 'Kết tủa xanh lam Cu(OH)₂', precipitateColor: '#1976d2', equation: 'Cu²⁺ + 2OH⁻ → Cu(OH)₂↓' },
-      { reagent: 'NH₃ (dư)', result: 'Dung dịch xanh thẫm [Cu(NH₃)₄]²⁺', precipitateColor: '#0d47a1', equation: 'Cu²⁺ + 4NH₃ → [Cu(NH₃)₄]²⁺' },
-      { reagent: 'H₂S', result: 'Kết tủa đen CuS', precipitateColor: '#212121', equation: 'Cu²⁺ + H₂S → CuS↓ + 2H⁺' }
+      { reagent: 'Quỳ tím', result: 'Quỳ tím không đổi màu', precipitateColor: 'transparent', isSolutionChange: false, equation: '' },
+      { reagent: 'Dung dịch NaOH', result: 'Kết tủa xanh lam Cu(OH)₂', precipitateColor: '#2196f3', equation: 'CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄' },
+      { reagent: 'Dung dịch BaCl₂', result: 'Kết tủa trắng BaSO₄', precipitateColor: '#fefefe', equation: 'CuSO₄ + BaCl₂ → BaSO₄↓ + CuCl₂' },
+      { reagent: 'Kim loại Fe', result: 'Bề mặt Fe phủ lớp Cu màu đỏ', precipitateColor: '#d84315', isMetalReaction: true, equation: 'Fe + CuSO₄ → FeSO₄ + Cu' }
     ]
   },
-  'Zn2+': {
-    name: 'Kẽm',
-    formula: 'Zn²⁺',
+  'FeCl3': {
+    name: 'Sắt(III) clorua',
+    formula: 'FeCl₃',
+    color: 'vàng nâu',
+    solutionColor: '#ffb74d',
+    reactions: [
+      { reagent: 'Quỳ tím', result: 'Quỳ tím hóa đỏ nhạt', precipitateColor: '#ff9999', isLitmusTest: true, equation: 'FeCl₃ + H₂O ⇌ Fe(OH)Cl₂ + HCl' },
+      { reagent: 'Dung dịch NaOH', result: 'Kết tủa nâu đỏ Fe(OH)₃', precipitateColor: '#a0522d', equation: 'FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl' },
+      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa trắng AgCl', precipitateColor: '#fafafa', equation: 'FeCl₃ + 3AgNO₃ → 3AgCl↓ + Fe(NO₃)₃' }
+    ]
+  },
+  'Na2CO3': {
+    name: 'Natri cacbonat',
+    formula: 'Na₂CO₃',
+    color: 'không màu',
+    solutionColor: '#e8f5e9',
+    reactions: [
+      { reagent: 'Quỳ tím', result: 'Quỳ tím hóa xanh nhạt', precipitateColor: '#9dc3ff', isLitmusTest: true, equation: 'Na₂CO₃ + H₂O ⇌ NaHCO₃ + NaOH' },
+      { reagent: 'Dung dịch HCl', result: 'Sủi bọt khí CO₂', precipitateColor: 'transparent', hasBubbles: true, equation: 'Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂↑' },
+      { reagent: 'Dung dịch CaCl₂', result: 'Kết tủa trắng CaCO₃', precipitateColor: '#fcfcfc', equation: 'Na₂CO₃ + CaCl₂ → CaCO₃↓ + 2NaCl' },
+      { reagent: 'Dung dịch BaCl₂', result: 'Kết tủa trắng BaCO₃', precipitateColor: '#f9f9f9', equation: 'Na₂CO₃ + BaCl₂ → BaCO₃↓ + 2NaCl' }
+    ]
+  },
+  'BaCl2': {
+    name: 'Bari clorua',
+    formula: 'BaCl₂',
     color: 'không màu',
     solutionColor: '#e3f2fd',
     reactions: [
-      { reagent: 'NaOH (vừa đủ)', result: 'Kết tủa trắng Zn(OH)₂', precipitateColor: '#ffffff', equation: 'Zn²⁺ + 2OH⁻ → Zn(OH)₂↓' },
-      { reagent: 'NaOH (dư)', result: 'Kết tủa tan, tạo dung dịch không màu', precipitateColor: 'transparent', equation: 'Zn(OH)₂ + 2OH⁻ → [Zn(OH)₄]²⁻' },
-      { reagent: 'H₂S', result: 'Kết tủa trắng ZnS', precipitateColor: '#f5f5f5', equation: 'Zn²⁺ + H₂S → ZnS↓ + 2H⁺' }
-    ]
-  },
-  'Al3+': {
-    name: 'Nhôm',
-    formula: 'Al³⁺',
-    color: 'không màu',
-    solutionColor: '#e3f2fd',
-    reactions: [
-      { reagent: 'NaOH (vừa đủ)', result: 'Kết tủa trắng keo Al(OH)₃', precipitateColor: '#ffffff', equation: 'Al³⁺ + 3OH⁻ → Al(OH)₃↓' },
-      { reagent: 'NaOH (dư)', result: 'Kết tủa tan, tạo dung dịch không màu', precipitateColor: 'transparent', equation: 'Al(OH)₃ + OH⁻ → [Al(OH)₄]⁻' }
-    ]
-  },
-  'Ag+': {
-    name: 'Bạc',
-    formula: 'Ag⁺',
-    color: 'không màu',
-    solutionColor: '#e3f2fd',
-    reactions: [
-      { reagent: 'HCl', result: 'Kết tủa trắng AgCl, tan trong NH₃', precipitateColor: '#ffffff', equation: 'Ag⁺ + Cl⁻ → AgCl↓' },
-      { reagent: 'NaOH', result: 'Kết tủa nâu đen Ag₂O', precipitateColor: '#3e2723', equation: '2Ag⁺ + 2OH⁻ → Ag₂O↓ + H₂O' },
-      { reagent: 'H₂S', result: 'Kết tủa đen Ag₂S', precipitateColor: '#212121', equation: '2Ag⁺ + H₂S → Ag₂S↓ + 2H⁺' }
-    ]
-  },
-  'Ba2+': {
-    name: 'Bari',
-    formula: 'Ba²⁺',
-    color: 'không màu',
-    solutionColor: '#e3f2fd',
-    reactions: [
-      { reagent: 'H₂SO₄', result: 'Kết tủa trắng BaSO₄', precipitateColor: '#ffffff', equation: 'Ba²⁺ + SO₄²⁻ → BaSO₄↓' },
-      { reagent: 'Na₂CO₃', result: 'Kết tủa trắng BaCO₃', precipitateColor: '#ffffff', equation: 'Ba²⁺ + CO₃²⁻ → BaCO₃↓' }
-    ]
-  },
-  'Ca2+': {
-    name: 'Canxi',
-    formula: 'Ca²⁺',
-    color: 'không màu',
-    solutionColor: '#e3f2fd',
-    reactions: [
-      { reagent: 'Na₂CO₃', result: 'Kết tủa trắng CaCO₃', precipitateColor: '#ffffff', equation: 'Ca²⁺ + CO₃²⁻ → CaCO₃↓' },
-      { reagent: 'H₂C₂O₄', result: 'Kết tủa trắng CaC₂O₄', precipitateColor: '#ffffff', equation: 'Ca²⁺ + C₂O₄²⁻ → CaC₂O₄↓' }
-    ]
-  },
-  'Pb2+': {
-    name: 'Chì',
-    formula: 'Pb²⁺',
-    color: 'không màu',
-    solutionColor: '#e3f2fd',
-    reactions: [
-      { reagent: 'HCl', result: 'Kết tủa trắng PbCl₂, tan trong nước nóng', precipitateColor: '#ffffff', equation: 'Pb²⁺ + 2Cl⁻ → PbCl₂↓' },
-      { reagent: 'H₂SO₄', result: 'Kết tủa trắng PbSO₄', precipitateColor: '#ffffff', equation: 'Pb²⁺ + SO₄²⁻ → PbSO₄↓' },
-      { reagent: 'H₂S', result: 'Kết tủa đen PbS', precipitateColor: '#212121', equation: 'Pb²⁺ + H₂S → PbS↓ + 2H⁺' }
+      { reagent: 'Quỳ tím', result: 'Quỳ tím không đổi màu', precipitateColor: 'transparent', isSolutionChange: false, equation: '' },
+      { reagent: 'Dung dịch H₂SO₄', result: 'Kết tủa trắng BaSO₄', precipitateColor: '#fefefe', equation: 'BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl' },
+      { reagent: 'Dung dịch Na₂CO₃', result: 'Kết tủa trắng BaCO₃', precipitateColor: '#f9f9f9', equation: 'BaCl₂ + Na₂CO₃ → BaCO₃↓ + 2NaCl' },
+      { reagent: 'Dung dịch Na₂SO₄', result: 'Kết tủa trắng BaSO₄', precipitateColor: '#fefefe', equation: 'BaCl₂ + Na₂SO₄ → BaSO₄↓ + 2NaCl' }
     ]
   }
 };
@@ -107,66 +117,66 @@ const ionDatabase = {
 const experimentQuestions = [
   {
     id: 1,
-    unknownSolution: 'Cu2+',
-    availableReagents: ['NaOH', 'NH₃ (dư)', 'H₂S', 'HCl'],
+    unknownSolution: 'HCl',
+    availableReagents: ['Quỳ tím', 'Dung dịch AgNO₃', 'Kim loại Zn'],
     minTests: 1,
-    hint: 'Dung dịch này có màu xanh lam đặc trưng',
+    hint: 'Chất này làm quỳ tím chuyển màu và có phản ứng đặc trưng với bạc',
     difficulty: 'easy'
   },
   {
     id: 2,
-    unknownSolution: 'Fe3+',
-    availableReagents: ['NaOH', 'KSCN', 'K₄[Fe(CN)₆]', 'HCl'],
+    unknownSolution: 'NaOH',
+    availableReagents: ['Quỳ tím', 'Dung dịch CuSO₄', 'Dung dịch FeCl₃'],
     minTests: 1,
-    hint: 'Dung dịch có màu vàng nâu',
+    hint: 'Chất này là bazơ mạnh, dễ nhận biết với quỳ tím',
     difficulty: 'easy'
   },
   {
     id: 3,
-    unknownSolution: 'Ag+',
-    availableReagents: ['HCl', 'NaOH', 'H₂S', 'NH₃'],
-    minTests: 2,
-    hint: 'Kim loại quý, dung dịch không màu',
-    difficulty: 'medium'
+    unknownSolution: 'Na2CO3',
+    availableReagents: ['Quỳ tím', 'Dung dịch HCl', 'Dung dịch CaCl₂', 'Dung dịch BaCl₂'],
+    minTests: 1,
+    hint: 'Chất này tạo khí CO₂ với axit',
+    difficulty: 'easy'
   },
   {
     id: 4,
-    unknownSolution: 'Ba2+',
-    availableReagents: ['H₂SO₄', 'Na₂CO₃', 'HCl', 'NaOH'],
-    minTests: 1,
-    hint: 'Kim loại kiềm thổ, tạo kết tủa trắng với nhiều thuốc thử',
+    unknownSolution: 'CuSO4',
+    availableReagents: ['Quỳ tím', 'Dung dịch NaOH', 'Dung dịch BaCl₂', 'Kim loại Fe'],
+    minTests: 2,
+    hint: 'Dung dịch có màu xanh lam đặc trưng',
     difficulty: 'medium'
   },
   {
     id: 5,
-    unknownSolution: 'Fe2+',
-    availableReagents: ['NaOH', 'K₃[Fe(CN)₆]', 'KSCN', 'H₂SO₄'],
+    unknownSolution: 'H2SO4',
+    availableReagents: ['Quỳ tím', 'Dung dịch BaCl₂', 'Kim loại Zn'],
     minTests: 2,
-    hint: 'Dung dịch lục nhạt, kết tủa dễ bị oxi hóa',
+    hint: 'Axit mạnh, tạo kết tủa trắng không tan với muối bari',
     difficulty: 'medium'
   },
   {
     id: 6,
-    unknownSolution: 'Zn2+',
-    availableReagents: ['NaOH (vừa đủ)', 'NaOH (dư)', 'H₂S', 'NH₃'],
+    unknownSolution: 'BaCl2',
+    availableReagents: ['Quỳ tím', 'Dung dịch H₂SO₄', 'Dung dịch Na₂CO₃', 'Dung dịch Na₂SO₄'],
     minTests: 2,
-    hint: 'Kim loại lưỡng tính, dung dịch không màu',
-    difficulty: 'hard'
+    hint: 'Muối bari, tạo kết tủa trắng với nhiều chất',
+    difficulty: 'medium'
   },
   {
     id: 7,
-    unknownSolution: 'Al3+',
-    availableReagents: ['NaOH (vừa đủ)', 'NaOH (dư)', 'NH₃', 'HCl'],
+    unknownSolution: 'FeCl3',
+    availableReagents: ['Quỳ tím', 'Dung dịch NaOH', 'Dung dịch AgNO₃'],
     minTests: 2,
-    hint: 'Kim loại lưỡng tính, tạo kết tủa keo',
+    hint: 'Dung dịch màu vàng nâu, muối sắt III',
     difficulty: 'hard'
   },
   {
     id: 8,
-    unknownSolution: 'Pb2+',
-    availableReagents: ['HCl', 'H₂SO₄', 'H₂S', 'NaOH'],
+    unknownSolution: 'Ca(OH)2',
+    availableReagents: ['Quỳ tím', 'Khí CO₂', 'Dung dịch Na₂CO₃'],
     minTests: 2,
-    hint: 'Kim loại nặng, độc, kết tủa có nhiều màu',
+    hint: 'Nước vôi trong, phản ứng đặc trưng với khí CO₂',
     difficulty: 'hard'
   }
 ];
@@ -309,9 +319,63 @@ const NhanBietDungDich = () => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [canSubmit, setCanSubmit] = useState(false);
+  const [ionOptions, setIonOptions] = useState([]);
+  const [currentReaction, setCurrentReaction] = useState(null);
   
   const currentQ = experimentQuestions[currentQuestion];
   const unknownIon = ionDatabase[currentQ.unknownSolution];
+
+  // Tạo danh sách đáp án khi câu hỏi thay đổi
+  useEffect(() => {
+    const allCompounds = ['HCl', 'H2SO4', 'NaOH', 'Ca(OH)2', 'NaCl', 'CuSO4', 'FeCl3', 'Na2CO3', 'BaCl2'];
+    const correctCompound = currentQ.unknownSolution;
+    let options = [correctCompound];
+    
+    // Thêm 3 đáp án nhiễu ngẫu nhiên
+    const otherCompounds = allCompounds.filter(compound => compound !== correctCompound);
+    while (options.length < 4) {
+      const randomCompound = otherCompounds[Math.floor(Math.random() * otherCompounds.length)];
+      if (!options.includes(randomCompound)) {
+        options.push(randomCompound);
+      }
+    }
+    
+    // Trộn ngẫu nhiên
+    setIonOptions(options.sort(() => Math.random() - 0.5));
+  }, [currentQuestion, currentQ.unknownSolution]);
+
+  // Phân loại chất thử
+  const getReagentType = (reagent) => {
+    if (reagent.includes('Quỳ')) return 'litmus';
+    if (reagent.includes('Kim loại')) return 'metal';
+    if (reagent.includes('Khí')) return 'gas';
+    return 'solution';
+  };
+
+  const getReagentColor = (reagent) => {
+    if (reagent.includes('Quỳ tím')) return '#9c27b0';
+    if (reagent.includes('Kim loại Zn')) return '#b0bec5';
+    if (reagent.includes('Kim loại Fe')) return '#78909c';
+    if (reagent.includes('AgNO₃')) return 'transparent';
+    if (reagent.includes('CuSO₄')) return '#42a5f5';
+    if (reagent.includes('FeCl₃')) return '#ffb74d';
+    if (reagent.includes('NaOH')) return 'transparent';
+    if (reagent.includes('BaCl₂')) return 'transparent';
+    if (reagent.includes('CaCl₂')) return 'transparent';
+    if (reagent.includes('Na₂CO₃')) return 'transparent';
+    if (reagent.includes('Na₂SO₄')) return 'transparent';
+    if (reagent.includes('HCl')) return 'transparent';
+    if (reagent.includes('H₂SO₄')) return 'transparent';
+    return 'transparent';
+  };
+
+  // Lấy màu quỳ sau khi phản ứng
+  const getLitmusColorAfterReaction = (color) => {
+    // color là precipitateColor từ reaction (màu trong isSolutionChange)
+    if (color === '#ff6b9d' || color === '#ff9999') return '#e91e63'; // Đỏ (axit)
+    if (color === '#6b9dff' || color === '#9dc3ff') return '#2196f3'; // Xanh (bazơ)
+    return '#9c27b0'; // Tím (trung tính)
+  };
 
   
   // Xử lý nhỏ thuốc thử
@@ -323,6 +387,7 @@ const NhanBietDungDich = () => {
     
     // Tìm phản ứng tương ứng
     const reaction = unknownIon.reactions.find(r => r.reagent === reagent);
+    setCurrentReaction(reaction);
     
     setTimeout(() => {
       if (reaction) {
@@ -331,11 +396,15 @@ const NhanBietDungDich = () => {
           result: reaction.result,
           color: reaction.precipitateColor,
           equation: reaction.equation,
-          hasBubbles: reaction.result.includes('Sủi bọt') || reaction.result.includes('khí')
+          hasBubbles: reaction.hasBubbles === true,
+          isSolutionChange: reaction.isSolutionChange === true,
+          isLitmusTest: reaction.isLitmusTest === true,
+          isMetalReaction: reaction.isMetalReaction === true
         }]);
       }
       setIsDropping(false);
       setSelectedReagent(null);
+      setCurrentReaction(null);
       
       // Kiểm tra xem đã đủ số lần test chưa
       if (testResults.length + 1 >= currentQ.minTests) {
@@ -397,28 +466,6 @@ const NhanBietDungDich = () => {
     setCorrectAnswers(0);
     setCanSubmit(false);
   };
-
-  // Lấy danh sách các ion có thể chọn
-  const getIonOptions = () => {
-    const allIons = ['Fe2+', 'Fe3+', 'Cu2+', 'Zn2+', 'Al3+', 'Ag+', 'Ba2+', 'Pb2+'];
-    // Đảm bảo đáp án đúng luôn có trong danh sách
-    const correctIon = currentQ.unknownSolution;
-    let options = [correctIon];
-    
-    // Thêm 3 đáp án nhiễu ngẫu nhiên
-    const otherIons = allIons.filter(ion => ion !== correctIon);
-    while (options.length < 4) {
-      const randomIon = otherIons[Math.floor(Math.random() * otherIons.length)];
-      if (!options.includes(randomIon)) {
-        options.push(randomIon);
-      }
-    }
-    
-    // Trộn ngẫu nhiên
-    return options.sort(() => Math.random() - 0.5);
-  };
-
-  const ionOptions = getIonOptions();
 
   if (gameCompleted) {
     const percentage = (correctAnswers / experimentQuestions.length * 100).toFixed(0);
@@ -503,137 +550,233 @@ const NhanBietDungDich = () => {
           <div className="reagents-section">
             <h3><TestTube size={20} /> Thuốc thử có sẵn:</h3>
             <div className="reagents-grid">
-              {currentQ.availableReagents.map((reagent, idx) => (
-                <button
-                  key={idx}
-                  className={`reagent-btn ${selectedReagent === reagent ? 'dropping' : ''} ${
-                    testResults.some(r => r.reagent === reagent) ? 'used' : ''
-                  }`}
-                  onClick={() => handleDropReagent(reagent)}
-                  disabled={isDropping || showAnswer || testResults.some(r => r.reagent === reagent)}
-                >
-                  <div className="reagent-tube">
-                    <div className="reagent-liquid"></div>
-                  </div>
-                  <span className="reagent-name">{reagent}</span>
-                  {testResults.some(r => r.reagent === reagent) && <span className="check-mark">✓</span>}
-                </button>
-              ))}
+              {currentQ.availableReagents.map((reagent, idx) => {
+                const reagentType = getReagentType(reagent);
+                const reagentColor = getReagentColor(reagent);
+                
+                return (
+                  <button
+                    key={idx}
+                    className={`reagent-btn ${selectedReagent === reagent ? 'dropping' : ''} ${
+                      testResults.some(r => r.reagent === reagent) ? 'used' : ''
+                    }`}
+                    onClick={() => handleDropReagent(reagent)}
+                    disabled={isDropping || showAnswer || testResults.some(r => r.reagent === reagent)}
+                  >
+                    {reagentType === 'litmus' ? (
+                      <div className="reagent-litmus">
+                        <div className="litmus-paper" style={{ backgroundColor: reagentColor }}></div>
+                      </div>
+                    ) : reagentType === 'metal' ? (
+                      <div className="reagent-metal">
+                        <div className="metal-rod" style={{ backgroundColor: reagentColor }}></div>
+                      </div>
+                    ) : (
+                      <div className="reagent-tube">
+                        <div className="reagent-liquid" style={{ backgroundColor: reagentColor }}></div>
+                      </div>
+                    )}
+                    <span className="reagent-name">{reagent}</span>
+                    {testResults.some(r => r.reagent === reagent) && <span className="check-mark">✓</span>}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Khu vực thí nghiệm */}
+          {/* Khu vực thí nghiệm - Số bình tự động dựa trên số chất thử */}
           <div className="experiment-area">
-            <div className="beaker-container">
-              <div className="lab-stand">
-                {/* Ống nhỏ giọt */}
-                {selectedReagent && (
-                  <div className="dropper-animation">
-                    <div className="dropper">
-                      <div className="dropper-bulb"></div>
-                      <div className="dropper-tip"></div>
-                      <div className="drop"></div>
-                    </div>
-                  </div>
-                )}
+            <div className="beakers-row">
+              {currentQ.availableReagents.map((_, beakerIndex) => {
+                const testResult = testResults[beakerIndex];
+                const isActive = selectedReagent && beakerIndex === testResults.length;
                 
-                {/* Bình tam giác chứa dung dịch */}
-                <div className="erlenmeyer-flask">
-                  <div className="flask-neck"></div>
-                  <div className="flask-body">
-                    <div 
-                      className="unknown-solution"
-                      style={{ 
-                        backgroundColor: unknownIon.solutionColor,
-                        position: 'relative'
-                      }}
-                    >
-                      {/* Hiệu ứng sủi bọt khí */}
-                      {testResults.length > 0 && testResults[testResults.length - 1].hasBubbles && (
-                        <div className="bubbles-container">
-                          {[...Array(8)].map((_, i) => (
-                            <div 
-                              key={i}
-                              className="bubble"
-                              style={{
-                                left: `${20 + Math.random() * 60}%`,
-                                animationDelay: `${Math.random() * 2}s`,
-                                animationDuration: `${2 + Math.random() * 1}s`
-                              }}
-                            />
-                          ))}
+                return (
+                  <div key={beakerIndex} className="beaker-container">
+                    <div className="lab-stand">
+                      {/* Animation cho thuốc thử ở bình đang active */}
+                      {isActive && (
+                        <div className="reagent-action-animation">
+                          {getReagentType(selectedReagent) === 'litmus' ? (
+                            <div className="litmus-dipping">
+                              <div 
+                                className="litmus-paper-dip"
+                                style={{
+                                  '--litmus-changed-color': currentReaction && currentReaction.isLitmusTest 
+                                    ? getLitmusColorAfterReaction(currentReaction.precipitateColor)
+                                    : '#7d5185ff'
+                                }}
+                              >
+                                <div className="litmus-top" style={{ backgroundColor: getReagentColor(selectedReagent) }}></div>
+                                <div className="litmus-bottom"></div>
+                              </div>
+                            </div>
+                          ) : getReagentType(selectedReagent) === 'metal' ? (
+                            <div className="metal-dipping">
+                              <div 
+                                className="metal-rod-dip"
+                                style={{
+                                  '--metal-changed-color': currentReaction && currentReaction.isMetalReaction 
+                                    ? currentReaction.precipitateColor
+                                    : getReagentColor(selectedReagent)
+                                }}
+                              >
+                                <div className="metal-rod-top" style={{ backgroundColor: getReagentColor(selectedReagent) }}></div>
+                                <div className="metal-rod-bottom"></div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="dropper-animation">
+                              <div className="dropper">
+                                <div className="dropper-bulb"></div>
+                                <div className="dropper-tip"></div>
+                                <div className="drop"></div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                       
-                      {/* Hiệu ứng kết tủa/phản ứng */}
-                      {testResults.length > 0 && testResults[testResults.length - 1].color !== 'transparent' && !testResults[testResults.length - 1].hasBubbles && (
-                        <>
-                          {/* Lớp kết tủa chính */}
+                      {/* Bình tam giác chứa dung dịch */}
+                      <div className="erlenmeyer-flask">
+                        <div className="flask-neck"></div>
+                        <div className="flask-body">
                           <div 
-                            className="precipitate"
-                            style={{ backgroundColor: testResults[testResults.length - 1].color }}
+                            className="unknown-solution"
+                            style={{ 
+                              backgroundColor: testResult && testResult.isSolutionChange 
+                                ? testResult.color 
+                                : unknownIon.solutionColor,
+                              position: 'relative',
+                              transition: 'background-color 1.5s ease'
+                            }}
                           >
-                            {/* Các hạt kết tủa nhỏ lắng xuống */}
-                            <div className="precipitate-particles">
-                              {[...Array(12)].map((_, i) => (
+                            {/* Hiệu ứng sủi bọt khí */}
+                            {testResult && testResult.hasBubbles && (
+                              <div className="bubbles-container">
+                                {[...Array(15)].map((_, i) => {
+                                  const sizeClasses = ['tiny', 'tiny', 'small', 'small', 'medium', 'medium', 'large', 'xlarge'];
+                                  const randomSize = sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
+                                  return (
+                                    <div 
+                                      key={i}
+                                      className={`bubble ${randomSize}`}
+                                      style={{
+                                        left: `${15 + Math.random() * 70}%`,
+                                        animationDelay: `${Math.random() * 2.5}s`,
+                                        animationDuration: `${2 + Math.random() * 1.5}s`
+                                      }}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            )}
+                            
+                            {/* Hiệu ứng kết tủa */}
+                            {testResult && 
+                             testResult.color !== 'transparent' && 
+                             !testResult.hasBubbles && 
+                             !testResult.isSolutionChange &&
+                             !testResult.isLitmusTest &&
+                             !testResult.isMetalReaction && (
+                              <>
+                                {/* Lớp kết tủa chính */}
                                 <div 
-                                  key={i}
-                                  className="precipitate-particle"
-                                  style={{
-                                    left: `${Math.random() * 90 + 5}%`,
-                                    animationDelay: `${Math.random() * 0.8}s`,
-                                    animationDuration: `${1 + Math.random() * 0.5}s`,
-                                    backgroundColor: testResults[testResults.length - 1].color
-                                  }}
-                                />
-                              ))}
-                            </div>
+                                  className="precipitate"
+                                  style={{ backgroundColor: testResult.color }}
+                                >
+                                  {/* Các hạt kết tủa nhỏ lắng xuống */}
+                                  <div className="precipitate-particles">
+                                    {[...Array(18)].map((_, i) => {
+                                      const sizeClasses = ['small', 'small', 'medium', 'medium', 'medium', 'large'];
+                                      const randomSize = sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
+                                      return (
+                                        <div 
+                                          key={i}
+                                          className={`precipitate-particle ${randomSize}`}
+                                          style={{
+                                            left: `${Math.random() * 85 + 5}%`,
+                                            animationDelay: `${Math.random() * 1.2}s`,
+                                            animationDuration: `${1.5 + Math.random() * 0.8}s`,
+                                            backgroundColor: testResult.color
+                                          }}
+                                        />
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                            
+                            {/* Hiển thị tờ quỳ đổi màu trong bình */}
+                            {testResult && testResult.isLitmusTest && (
+                              <div className="litmus-in-solution">
+                                <div 
+                                  className="litmus-paper-in-flask"
+                                  style={{ backgroundColor: getLitmusColorAfterReaction(testResult.color) }}
+                                >
+                                  <div className="litmus-shine"></div>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        </>
-                      )}
+                          <div className="flask-label">
+                            {testResult ? testResult.reagent : `Bình ${beakerIndex + 1}`}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flask-label">Dung dịch X</div>
                   </div>
-                </div>
-              </div>
-              
-              <div className="solution-info">
-                <Beaker size={24} />
-                <div>
-                  <p className="info-label">Màu sắc ban đầu:</p>
-                  <p className="info-value">{unknownIon.color}</p>
-                </div>
-              </div>
+                );
+              })}
             </div>
+          </div>
 
-            {/* Kết quả thí nghiệm */}
+          {/* Kết quả thí nghiệm - Hiển thị ngay khi có kết quả */}
+          {testResults.length > 0 && (
             <div className="test-results">
               <h3>📋 Kết quả quan sát:</h3>
-              {testResults.length === 0 ? (
-                <p className="no-tests">Chưa có thí nghiệm nào. Hãy chọn thuốc thử để bắt đầu!</p>
-              ) : (
-                <div className="results-list">
-                  {testResults.map((test, idx) => (
-                    <div key={idx} className="result-item">
-                      <div className="result-header">
-                        <strong>Thí nghiệm {idx + 1}:</strong> Nhỏ {test.reagent}
-                      </div>
+              <div className="results-list">
+                {testResults.map((test, idx) => (
+                  <div key={idx} className="result-item">
+                    <div className="result-header">
+                      <strong>Thí nghiệm {idx + 1}:</strong> {test.reagent}
+                    </div>
+                    <div className="result-content">
+                      {/* Hiển thị tờ quỳ đã đổi màu nếu là quỳ tím */}
+                      {test.reagent.includes('Quỳ') && test.isLitmusTest && (
+                        <div className="litmus-result">
+                          <div 
+                            className="litmus-paper-result" 
+                            style={{ backgroundColor: getLitmusColorAfterReaction(test.color) }}
+                          >
+                            <div className="litmus-shine"></div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Hiển thị thanh kim loại đã đổi màu nếu là phản ứng kim loại */}
+                      {test.reagent.includes('Kim loại') && test.isMetalReaction && (
+                        <div className="metal-result">
+                          <div className="metal-rod-result">
+                            {/* Phần trên: Màu kim loại gốc */}
+                            <div className="metal-result-top" style={{ backgroundColor: getReagentColor(test.reagent) }}></div>
+                            {/* Phần dưới: Màu đã phủ */}
+                            <div className="metal-result-bottom" style={{ backgroundColor: test.color }}></div>
+                          </div>
+                        </div>
+                      )}
+                      
                       <div className="result-phenomenon">
                         <span className="phenomenon-label">Hiện tượng:</span>
                         <span className="phenomenon-text">{test.result}</span>
                       </div>
-                      {!showAnswer && (
-                        <div className="result-equation">
-                          <span className="equation-label">Phương trình:</span>
-                          <code>{test.equation}</code>
-                        </div>
-                      )}
                     </div>
-                  ))}
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Nút gợi ý */}
           {!showAnswer && (
@@ -657,7 +800,7 @@ const NhanBietDungDich = () => {
           {/* Phần chọn đáp án */}
           {canSubmit && !showAnswer && (
             <div className="answer-section">
-              <h3>� Dung dịch X chứa ion nào?</h3>
+              <h3>🔬 Dung dịch X là chất gì?</h3>
               <div className="ion-options">
                 {ionOptions.map((ionKey) => {
                   const ion = ionDatabase[ionKey];

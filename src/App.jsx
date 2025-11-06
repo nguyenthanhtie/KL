@@ -16,8 +16,9 @@ import GhepNguyenTu from './pages/challenges/GhepNguyenTu';
 import TroChoiCanBang from './pages/challenges/TroChoiCanBang';
 import SuyLuanPhanUng from './pages/challenges/SuyLuanPhanUng';
 import DuoiHinhBatChu from './pages/challenges/DuoiHinhBatChu';
-import PhongThiNghiem from './pages/challenges/PhongThiNghiem';
 import NhanBietDungDich from './pages/challenges/NhanBietDungDich';
+import XayDungPhanTu from './pages/challenges/XayDungPhanTu';
+import PhaCheDungDich from './pages/challenges/PhaCheDungDich';
 
 function App() {
   return (
@@ -34,8 +35,9 @@ function App() {
             <Route path="/advanced-challenge/can-bang" element={<TroChoiCanBang />} />
             <Route path="/advanced-challenge/suy-luan" element={<SuyLuanPhanUng />} />
             <Route path="/advanced-challenge/duoi-hinh" element={<DuoiHinhBatChu />} />
-            <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
             <Route path="/advanced-challenge/nhan-biet-dung-dich" element={<NhanBietDungDich />} />
+            <Route path="/advanced-challenge/xay-dung-phan-tu" element={<XayDungPhanTu />} />
+            <Route path="/advanced-challenge/pha-che-dung-dich" element={<PhaCheDungDich />} />
             <Route 
               path="/dashboard" 
               element={

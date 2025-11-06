@@ -1,127 +1,32 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../components/ui/Button';
 import { Trophy, Star, Lock, Clock, Target } from 'lucide-react';
-
-const challenges = [
-  {
-    id: 1,
-    name: 'Đoán Hình Bắt Chữ Hóa Học',
-    description: 'Đoán tên chất hóa học dựa trên hình ảnh và gợi ý. Thử thách khả năng liên tưởng và kiến thức về các chất phổ biến.',
-    icon: '🎯',
-    difficulty: 'Dễ',
-    difficultyColor: 'bg-green-500',
-    time: '5-10 phút',
-    points: 100,
-    status: 'available',
-    link: '/advanced-challenge/duoi-hinh',
-    features: ['10 câu hỏi', 'Có gợi ý', 'Giới hạn thời gian', 'Điểm cao']
-  },
-  {
-    id: 2,
-    name: 'Ghép Nguyên Tử',
-    description: 'Sắp xếp các electron vào đúng lớp vỏ nguyên tử. Thử thách hiểu biết về cấu trúc nguyên tử và phân bố electron.',
-    icon: '⚛️',
-    difficulty: 'Trung bình',
-    difficultyColor: 'bg-yellow-500',
-    time: '10-15 phút',
-    points: 200,
-    status: 'available',
-    link: '/advanced-challenge/ghep-nguyen-tu',
-    features: ['36 nguyên tố', 'Tương tác kéo thả', 'Hình ảnh 3D', '6 thử thách']
-  },
-  {
-    id: 3,
-    name: 'Cân Bằng Phương Trình',
-    description: 'Cân bằng các phương trình hóa học bằng cách tìm hệ số thích hợp. Thử thách kỹ năng tính toán và logic.',
-    icon: '⚖️',
-    difficulty: 'Trung bình',
-    difficultyColor: 'bg-yellow-500',
-    time: '15-20 phút',
-    points: 250,
-    status: 'available',
-    link: '/advanced-challenge/can-bang',
-    features: ['8 phản ứng', 'Tính khối lượng mol', 'Kiểm tra tức thì', 'Độ khó tăng dần']
-  },
-  {
-    id: 4,
-    name: 'Phòng Thí Nghiệm Ảo',
-    description: 'Trải nghiệm các phản ứng hóa học thực tế trong phòng thí nghiệm ảo. Trộn các hóa chất và quan sát hiệu ứng!',
-    icon: '🧪',
-    difficulty: 'Trung bình',
-    difficultyColor: 'bg-blue-500',
-    time: '15-25 phút',
-    points: 400,
-    status: 'available',
-    link: '/advanced-challenge/phong-thi-nghiem',
-    features: ['10 thí nghiệm', 'Hiệu ứng thực tế', 'Học qua hành động', 'Tính điểm cao']
-  },
-  {
-    id: 5,
-    name: 'Suy Luận Phản Ứng',
-    description: 'Dựa vào gợi ý để tìm các chất tham gia và sản phẩm của phản ứng. Thử thách tư duy logic và kiến thức tổng hợp.',
-    icon: '🔬',
-    difficulty: 'Khó',
-    difficultyColor: 'bg-red-500',
-    time: '20-30 phút',
-    points: 300,
-    status: 'available',
-    link: '/advanced-challenge/suy-luan',
-    features: ['8 màn chơi', 'Gợi ý chi tiết', 'Kéo thả chất', 'Kiểm tra phản ứng']
-  },
-  {
-    id: 6,
-    name: 'Nhận Biết Dung Dịch',
-    description: 'Mô phỏng thí nghiệm thực tế! Nhỏ các thuốc thử vào dung dịch X, quan sát hiện tượng và đoán xem đó là ion gì.',
-    icon: '💧',
-    difficulty: 'Trung bình',
-    difficultyColor: 'bg-blue-500',
-    time: '15-20 phút',
-    points: 250,
-    status: 'available',
-    link: '/advanced-challenge/nhan-biet-dung-dich',
-    features: ['8 thí nghiệm', 'Mô phỏng phòng lab', 'Hiệu ứng thực tế', 'Nhiều vòng kiểm tra']
-  },
-  {
-    id: 7,
-    name: 'Ghép Thẻ Hóa Học',
-    description: 'Tìm các cặp thẻ giống nhau về công thức hóa học. Rèn luyện trí nhớ và khả năng nhận diện công thức nhanh.',
-    icon: '🃏',
-    difficulty: 'Dễ',
-    difficultyColor: 'bg-green-500',
-    time: '5-8 phút',
-    points: 150,
-    status: 'coming-soon',
-    features: ['Nhiều cấp độ', 'Tính khối lượng mol', 'Tăng độ khó', 'Thời gian giới hạn']
-  },
-  {
-    id: 7,
-    name: 'Ghép Thẻ Hóa Học',
-    description: 'Tìm các cặp thẻ giống nhau về công thức hóa học. Rèn luyện trí nhớ và khả năng nhận diện công thức nhanh.',
-    icon: '🃏',
-    difficulty: 'Dễ',
-    difficultyColor: 'bg-green-500',
-    time: '5-8 phút',
-    points: 150,
-    status: 'coming-soon',
-    features: ['Nhiều cấp độ', 'Tính khối lượng mol', 'Tăng độ khó', 'Thời gian giới hạn']
-  },
-  {
-    id: 8,
-    name: 'Thử Thách Tổng Hợp',
-    description: 'Kết hợp tất cả các kỹ năng: cân bằng, tính toán, nhận diện công thức. Dành cho người chơi xuất sắc!',
-    icon: '🏆',
-    difficulty: 'Rất khó',
-    difficultyColor: 'bg-purple-600',
-    time: '30-45 phút',
-    points: 500,
-    status: 'coming-soon',
-    features: ['Nhiều dạng bài', 'Giới hạn thời gian', 'Bảng xếp hạng', 'Phần thưởng đặc biệt']
-  }
-];
+import api from '../config/api';
 
 const AdvancedChallenge = () => {
   const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [challenges, setChallenges] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/challenges');
+        setChallenges(response.data);
+        setError(null);
+      } catch (error) {
+        console.error('Error fetching challenges:', error);
+        setError('Không thể tải dữ liệu thử thách. Vui lòng thử lại sau.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChallenges();
+  }, []);
 
   const getDifficultyBadge = (difficulty, color) => {
     return (
@@ -147,106 +52,126 @@ const AdvancedChallenge = () => {
           </p>
         </div>
 
-        {/* Stats Bar */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-          <div className="bg-white rounded-lg p-6 shadow-md text-center">
-            <div className="text-3xl font-bold text-primary-600">8</div>
-            <div className="text-gray-600 mt-1">Thử thách</div>
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            <p className="mt-4 text-gray-600">Đang tải thử thách...</p>
           </div>
-          <div className="bg-white rounded-lg p-6 shadow-md text-center">
-            <div className="text-3xl font-bold text-green-600">0</div>
-            <div className="text-gray-600 mt-1">Đã hoàn thành</div>
-          </div>
-          <div className="bg-white rounded-lg p-6 shadow-md text-center">
-            <div className="text-3xl font-bold text-yellow-600">0</div>
-            <div className="text-gray-600 mt-1">Điểm cao nhất</div>
-          </div>
-          <div className="bg-white rounded-lg p-6 shadow-md text-center">
-            <div className="text-3xl font-bold text-purple-600">-</div>
-            <div className="text-gray-600 mt-1">Xếp hạng</div>
-          </div>
-        </div>
+        )}
 
-        {/* Challenges Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {challenges.map((challenge) => (
-            <div
-              key={challenge.id}
-              className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer"
-              onClick={() => setSelectedChallenge(challenge)}
-            >
-              {/* Card Header */}
-              <div className="bg-gradient-to-r from-primary-500 to-primary-700 p-6 text-white relative">
-                <div className="absolute top-2 right-2">
-                  {challenge.status === 'coming-soon' && (
-                    <Lock className="w-5 h-5 opacity-75" />
-                  )}
-                </div>
-                <div className="text-5xl mb-3">{challenge.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{challenge.name}</h3>
-                {getDifficultyBadge(challenge.difficulty, challenge.difficultyColor)}
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-8">
+            {error}
+          </div>
+        )}
+
+        {/* Content */}
+        {!loading && !error && (
+          <>
+            {/* Stats Bar */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+              <div className="bg-white rounded-lg p-6 shadow-md text-center">
+                <div className="text-3xl font-bold text-primary-600">{challenges.length}</div>
+                <div className="text-gray-600 mt-1">Thử thách</div>
               </div>
-
-              {/* Card Body */}
-              <div className="p-6">
-                <p className="text-gray-600 mb-4 h-20">
-                  {challenge.description}
-                </p>
-
-                {/* Info Grid */}
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <Clock className="w-4 h-4 mr-2" />
-                    {challenge.time}
-                  </div>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <Star className="w-4 h-4 mr-2 text-yellow-500" />
-                    {challenge.points} điểm
-                  </div>
-                </div>
-
-                {/* Features */}
-                <div className="space-y-2 mb-4">
-                  {challenge.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center text-sm text-gray-600">
-                      <Target className="w-3 h-3 mr-2 text-green-500" />
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Action Button */}
-                {challenge.status === 'coming-soon' ? (
-                  <button
-                    disabled
-                    className="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg font-semibold cursor-not-allowed"
-                  >
-                    Sắp ra mắt
-                  </button>
-                ) : challenge.link ? (
-                  <Link to={challenge.link} className="block">
-                    <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
-                      Bắt đầu thử thách
-                    </button>
-                  </Link>
-                ) : (
-                  <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
-                    Bắt đầu thử thách
-                  </button>
-                )}
+              <div className="bg-white rounded-lg p-6 shadow-md text-center">
+                <div className="text-3xl font-bold text-green-600">0</div>
+                <div className="text-gray-600 mt-1">Đã hoàn thành</div>
+              </div>
+              <div className="bg-white rounded-lg p-6 shadow-md text-center">
+                <div className="text-3xl font-bold text-yellow-600">0</div>
+                <div className="text-gray-600 mt-1">Điểm cao nhất</div>
+              </div>
+              <div className="bg-white rounded-lg p-6 shadow-md text-center">
+                <div className="text-3xl font-bold text-purple-600">-</div>
+                <div className="text-gray-600 mt-1">Xếp hạng</div>
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* Back Button */}
-        <div className="text-center">
-          <Link to="/">
-            <Button variant="secondary" className="px-8 py-3">
-              ← Quay về trang chủ
-            </Button>
-          </Link>
-        </div>
+            {/* Challenges Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {challenges.map((challenge) => (
+                <div
+                  key={challenge.id}
+                  className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer"
+                  onClick={() => setSelectedChallenge(challenge)}
+                >
+                  {/* Card Header */}
+                  <div className="bg-gradient-to-r from-primary-500 to-primary-700 p-6 text-white relative">
+                    <div className="absolute top-2 right-2">
+                      {challenge.status === 'coming-soon' && (
+                        <Lock className="w-5 h-5 opacity-75" />
+                      )}
+                    </div>
+                    <div className="text-5xl mb-3">{challenge.icon}</div>
+                    <h3 className="text-xl font-bold mb-2">{challenge.name}</h3>
+                    {getDifficultyBadge(challenge.difficulty, challenge.difficultyColor)}
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="p-6">
+                    <p className="text-gray-600 mb-4 h-20">
+                      {challenge.description}
+                    </p>
+
+                    {/* Info Grid */}
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock className="w-4 h-4 mr-2" />
+                        {challenge.time}
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Star className="w-4 h-4 mr-2 text-yellow-500" />
+                        {challenge.points} điểm
+                      </div>
+                    </div>
+
+                    {/* Features */}
+                    <div className="space-y-2 mb-4">
+                      {challenge.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center text-sm text-gray-600">
+                          <Target className="w-3 h-3 mr-2 text-green-500" />
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Action Button */}
+                    {challenge.status === 'coming-soon' ? (
+                      <button
+                        disabled
+                        className="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg font-semibold cursor-not-allowed"
+                      >
+                        Sắp ra mắt
+                      </button>
+                    ) : challenge.link ? (
+                      <Link to={challenge.link} className="block">
+                        <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
+                          Bắt đầu thử thách
+                        </button>
+                      </Link>
+                    ) : (
+                      <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors">
+                        Bắt đầu thử thách
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Back Button */}
+            <div className="text-center">
+              <Link to="/">
+                <Button variant="secondary" className="px-8 py-3">
+                  ← Quay về trang chủ
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
 
         {/* Challenge Detail Modal (Optional - for future) */}
         {selectedChallenge && (

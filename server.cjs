@@ -54,6 +54,7 @@ mongoose.connection.on('error', (err) => {
 app.use('/api/users', require('./routes/users.cjs'));
 app.use('/api/lessons', require('./routes/lessons.cjs'));
 app.use('/api/progress', require('./routes/progress.cjs'));
+app.use('/api/challenges', require('./routes/challenges.cjs'));
 
 // Health check
 app.get('/api/health', (req, res) => {
