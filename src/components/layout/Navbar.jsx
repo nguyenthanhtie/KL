@@ -23,6 +23,12 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             {user ? (
               <>
+              <Link to="/" className="text-gray-700 hover:text-primary-600 transition">
+                  Trang chủ
+                </Link>
+                <Link to="/advanced-challenge" className="text-gray-700 hover:text-primary-600 transition">
+                  Thử thách 
+                </Link>
                 <Link to="/dashboard" className="text-gray-700 hover:text-primary-600 transition">
                   Học tập
                 </Link>
