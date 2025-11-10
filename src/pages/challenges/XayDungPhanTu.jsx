@@ -508,7 +508,7 @@ const XayDungPhanTu = () => {
               <button onClick={handleRestart} className="btn-restart">
                 Chơi lại
               </button>
-              <Link to="/dashboard" className="btn-home">
+              <Link to="/advanced-challenge" className="btn-home">
                 Về trang chủ
               </Link>
             </div>
@@ -520,23 +520,23 @@ const XayDungPhanTu = () => {
 
   return (
     <div className="xay-dung-phan-tu-container">
-      <div className="game-header">
-        <Link to="/dashboard" className="back-button">
-          <ArrowLeft size={24} />
-          <span>Quay lại</span>
-        </Link>
-        <h1 className="game-title">
-          <Atom className="title-icon" />
-          Xây Dựng Phân Tử
-        </h1>
-        <div className="score-display">
-          <Trophy size={24} />
-          <span>{totalScore} điểm</span>
+      <div className="game-header-combined">
+        <div className="header-top">
+          <Link to="/advanced-challenge" className="back-button">
+            <ArrowLeft size={24} />
+            <span>Quay lại</span>
+          </Link>
+          <h1 className="game-title">
+            <Atom className="title-icon" />
+            Xây Dựng Phân Tử
+          </h1>
+          <div className="score-display">
+            <Trophy size={24} />
+            <span>{totalScore} điểm</span>
+          </div>
         </div>
-      </div>
 
-      <div className="game-content">
-        <div className="progress-section">
+        <div className="progress-section-inline">
           <div className="level-info">
             <span className="level-badge">Cấp độ {currentLevel}</span>
             <span className="molecule-counter">
@@ -547,6 +547,9 @@ const XayDungPhanTu = () => {
             <div className="progress-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>
+      </div>
+
+      <div className="game-content">
 
         <div className="game-layout">
           {/* Mục tiêu */}

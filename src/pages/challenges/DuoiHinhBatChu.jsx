@@ -364,6 +364,17 @@ const DuoiHinhBatChu = () => {
       {/* Header */}
       <div className="bg-white shadow-md">
         <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-3">
+            <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Quay lại
+            </Link>
+            <h1 className="text-xl font-bold text-gray-800 flex items-center">
+              <span className="mr-2">🎯</span>
+              Đoán Hình Bắt Chữ Hóa Học
+            </h1>
+            <div className="w-24"></div>
+          </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <span className="font-bold text-gray-700">Câu {cauHienTai + 1}/{chatHoaHoc.length}</span>

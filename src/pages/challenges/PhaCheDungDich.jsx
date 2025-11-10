@@ -405,7 +405,7 @@ const PhaCheDungDich = () => {
               <button onClick={handleRestart} className="btn-restart">
                 Chơi lại
               </button>
-              <Link to="/dashboard" className="btn-home">
+              <Link to="/advanced-challenge" className="btn-home">
                 Về trang chủ
               </Link>
             </div>
@@ -417,23 +417,23 @@ const PhaCheDungDich = () => {
 
   return (
     <div className="pha-che-container">
-      <div className="game-header">
-        <Link to="/dashboard" className="back-button">
-          <ArrowLeft size={24} />
-          <span>Quay lại</span>
-        </Link>
-        <h1 className="game-title">
-          <FlaskConical className="title-icon" />
-          Pha Chế Dung Dịch - Nồng Độ Mol
-        </h1>
-        <div className="score-display">
-          <Trophy size={24} />
-          <span>{totalScore} điểm</span>
+      <div className="game-header-combined">
+        <div className="header-top">
+          <Link to="/advanced-challenge" className="back-button">
+            <ArrowLeft size={20} />
+            <span>Quay lại</span>
+          </Link>
+          <h1 className="game-title">
+            <FlaskConical className="title-icon" />
+            Pha Chế Dung Dịch - Nồng Độ Mol
+          </h1>
+          <div className="score-display">
+            <Trophy size={20} />
+            <span>{totalScore} điểm</span>
+          </div>
         </div>
-      </div>
-
-      <div className="game-content">
-        <div className="progress-section">
+        
+        <div className="progress-section-inline">
           <div className="challenge-info">
             <span className={`level-badge level-${currentChallenge.level}`}>
               Cấp độ {currentChallenge.level}
@@ -450,7 +450,9 @@ const PhaCheDungDich = () => {
             />
           </div>
         </div>
+      </div>
 
+      <div className="game-content">
         <div className="game-layout">
           {/* Phần mô phỏng bên trái */}
           <div className="simulation-section">

@@ -494,7 +494,7 @@ const NhanBietDungDich = () => {
               <button onClick={handleRestart} className="btn-restart">
                 Chơi lại
               </button>
-              <Link to="/dashboard" className="btn-home">
+              <Link to="/advanced-challenge" className="btn-home">
                 Về trang chủ
               </Link>
             </div>
@@ -507,7 +507,7 @@ const NhanBietDungDich = () => {
   return (
     <div className="suy-luan-container">
       <div className="suy-luan-header">
-        <Link to="/dashboard" className="back-button">
+        <Link to="/advanced-challenge" className="back-button">
           <ArrowLeft size={24} />
           <span>Quay lại</span>
         </Link>

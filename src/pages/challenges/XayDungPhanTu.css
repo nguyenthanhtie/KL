@@ -2,26 +2,62 @@
 .xay-dung-phan-tu-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: 12px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Combined Header with Progress */
+.game-header-combined {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.progress-section-inline {
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.progress-section-inline .level-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.progress-section-inline .progress-bar {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Old game-header for backward compatibility */
 .game-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 12px;
   background: rgba(255, 255, 255, 0.95);
-  padding: 20px 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .back-button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 6px;
+  padding: 8px 16px;
   background: #f0f0f0;
   border: none;
   border-radius: 8px;
@@ -40,8 +76,8 @@
 .game-title {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 28px;
+  gap: 8px;
+  font-size: 20px;
   font-weight: 700;
   color: #333;
   margin: 0;
@@ -60,13 +96,13 @@
 .score-display {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
+  gap: 8px;
+  padding: 8px 16px;
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   border-radius: 50px;
   color: white;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 14px;
   box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
 }
 
@@ -77,9 +113,9 @@
 
 .progress-section {
   background: white;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -87,28 +123,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .level-badge {
-  padding: 8px 20px;
+  padding: 6px 14px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-radius: 20px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .molecule-counter {
   font-weight: 600;
   color: #666;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .progress-bar {
-  height: 12px;
+  height: 8px;
   background: #e0e0e0;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -116,20 +152,20 @@
   height: 100%;
   background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
   transition: width 0.5s ease;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .game-layout {
   display: grid;
-  grid-template-columns: 350px 1fr;
-  gap: 20px;
+  grid-template-columns: 280px 1fr;
+  gap: 12px;
 }
 
 /* Target Section */
 .target-section {
   background: white;
-  padding: 25px;
-  border-radius: 12px;
+  padding: 12px;
+  border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   height: fit-content;
 }
@@ -137,70 +173,70 @@
 .target-section h3 {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 20px 0;
+  gap: 6px;
+  margin: 0 0 10px 0;
   color: #333;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .target-molecule {
   background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
-  padding: 20px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 8px;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 12px;
   border: 2px solid #667eea40;
 }
 
 .target-molecule h2 {
-  margin: 0 0 10px 0;
+  margin: 0 0 6px 0;
   color: #333;
-  font-size: 24px;
+  font-size: 16px;
 }
 
 .target-molecule .formula {
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 700;
   color: #667eea;
-  margin: 10px 0;
+  margin: 6px 0;
   font-family: 'Courier New', monospace;
 }
 
 .points-badge {
   display: inline-block;
-  padding: 6px 16px;
+  padding: 4px 12px;
   background: #4caf50;
   color: white;
-  border-radius: 20px;
+  border-radius: 16px;
   font-weight: 600;
-  font-size: 14px;
-  margin-top: 10px;
+  font-size: 11px;
+  margin-top: 6px;
 }
 
 /* Atoms Inventory */
 .atoms-inventory {
-  margin-bottom: 25px;
+  margin-bottom: 12px;
 }
 
 .atoms-inventory h4 {
-  margin: 0 0 15px 0;
+  margin: 0 0 8px 0;
   color: #555;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .atoms-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
 
 .atom-source {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
+  gap: 8px;
+  padding: 8px;
   background: #f8f9fa;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: grab;
   transition: all 0.3s ease;
   border: 2px solid transparent;
@@ -222,34 +258,34 @@
 }
 
 .atom-circle {
-  width: 45px;
-  height: 45px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 18px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .atom-count {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 13px;
   color: #667eea;
-  min-width: 35px;
+  min-width: 25px;
 }
 
 .atom-name {
   flex: 1;
   color: #666;
-  font-size: 14px;
+  font-size: 11px;
 }
 
 /* Hint Section */
 .hint-section {
-  margin-top: 20px;
+  margin-top: 12px;
 }
 
 .hint-button {
@@ -257,14 +293,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px;
+  gap: 6px;
+  padding: 8px;
   background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 12px;
   transition: all 0.3s ease;
 }
 
@@ -274,59 +311,59 @@
 }
 
 .hint-box {
-  margin-top: 12px;
-  padding: 15px;
+  margin-top: 8px;
+  padding: 10px;
   background: #fff9e6;
-  border-left: 4px solid #ffd700;
+  border-left: 3px solid #ffd700;
   border-radius: 6px;
   display: flex;
   align-items: start;
-  gap: 10px;
+  gap: 8px;
 }
 
 .hint-box p {
   margin: 0;
   color: #666;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 11px;
+  line-height: 1.4;
 }
 
 /* Build Section */
 .build-section {
   background: white;
-  padding: 25px;
-  border-radius: 12px;
+  padding: 12px;
+  border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .build-section h3 {
-  margin: 0 0 15px 0;
+  margin: 0 0 8px 0;
   color: #333;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .instructions {
   background: #e3f2fd;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  border-left: 4px solid #2196f3;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border-left: 3px solid #2196f3;
 }
 
 .instructions p {
-  margin: 5px 0;
+  margin: 3px 0;
   color: #555;
-  font-size: 14px;
+  font-size: 11px;
 }
 
 .build-area {
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 380px;
   background: linear-gradient(to bottom, #f0f4f8 0%, #d9e2ec 100%);
-  border: 3px dashed #cbd5e0;
-  border-radius: 12px;
-  margin-bottom: 20px;
+  border: 2px dashed #cbd5e0;
+  border-radius: 10px;
+  margin-bottom: 10px;
   overflow: hidden;
 }
 
@@ -342,18 +379,18 @@
 
 .placed-atom {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 14px;
   transform: translate(-50%, -50%);
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border: 3px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   z-index: 2;
   transition: all 0.2s ease;
   animation: placeAtom 0.3s ease;
@@ -400,7 +437,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: #999;
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 500;
   text-align: center;
   pointer-events: none;
@@ -409,8 +446,8 @@
 /* Action Buttons */
 .action-buttons {
   display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .btn-reset,
@@ -419,12 +456,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 24px;
+  gap: 6px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -457,8 +494,8 @@
 
 /* Result Box */
 .result-box {
-  padding: 25px;
-  border-radius: 12px;
+  padding: 15px;
+  border-radius: 10px;
   text-align: center;
   animation: slideIn 0.4s ease;
 }
@@ -476,31 +513,31 @@
 
 .result-box.correct {
   background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
-  border: 3px solid #4caf50;
+  border: 2px solid #4caf50;
 }
 
 .result-box.incorrect {
   background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
-  border: 3px solid #ff6b6b;
+  border: 2px solid #ff6b6b;
 }
 
 .result-box h3 {
-  margin: 15px 0 10px 0;
-  font-size: 24px;
+  margin: 10px 0 6px 0;
+  font-size: 16px;
   color: #333;
 }
 
 .result-box p {
-  margin: 8px 0;
+  margin: 5px 0;
   color: #555;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .points-earned {
-  font-size: 28px !important;
+  font-size: 18px !important;
   font-weight: 700;
   color: #4caf50;
-  margin: 15px 0 !important;
+  margin: 10px 0 !important;
 }
 
 .hint-text {
@@ -509,14 +546,14 @@
 }
 
 .btn-next {
-  margin-top: 20px;
-  padding: 14px 32px;
+  margin-top: 12px;
+  padding: 10px 24px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -550,10 +587,10 @@
 
 .result-content {
   background: white;
-  padding: 50px;
-  border-radius: 20px;
+  padding: 30px;
+  border-radius: 16px;
   text-align: center;
-  max-width: 500px;
+  max-width: 450px;
   animation: modalSlideIn 0.5s ease;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
@@ -571,7 +608,7 @@
 
 .result-icon {
   color: #ffd700;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   animation: bounce 1s infinite;
 }
 
@@ -585,26 +622,26 @@
 }
 
 .result-content h2 {
-  margin: 20px 0;
-  font-size: 32px;
+  margin: 15px 0;
+  font-size: 24px;
   color: #333;
 }
 
 .result-stats {
-  margin: 30px 0;
-  padding: 20px;
+  margin: 20px 0;
+  padding: 15px;
   background: #f8f9fa;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .result-stats p {
-  margin: 10px 0;
-  font-size: 18px;
+  margin: 6px 0;
+  font-size: 14px;
   color: #555;
 }
 
 .result-score {
-  font-size: 28px !important;
+  font-size: 20px !important;
   font-weight: 700;
   color: #667eea;
 }
@@ -615,26 +652,26 @@
 }
 
 .result-message {
-  margin: 25px 0;
-  font-size: 20px;
+  margin: 15px 0;
+  font-size: 15px;
   color: #666;
   font-weight: 500;
 }
 
 .result-actions {
   display: flex;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .btn-restart,
 .btn-home {
   flex: 1;
-  padding: 14px 24px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;

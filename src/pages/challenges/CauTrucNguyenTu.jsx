@@ -291,8 +291,8 @@ const CauTrucNguyenTu = () => {
     const generateParticlePositions = (count, maxDisplay = 30) => {
       const displayCount = Math.min(count, maxDisplay);
       const positions = [];
-      const nucleusRadius = 40; // Bán kính hạt nhân (pixels)
-      const particleSize = 8; // Kích thước hạt
+      const nucleusRadius = 24; // Giảm từ 28 xuống 24
+      const particleSize = 5; // Giảm từ 6 xuống 5
       
       for (let i = 0; i < displayCount; i++) {
         let x, y, valid;
@@ -402,8 +402,8 @@ const CauTrucNguyenTu = () => {
                 key={shellIndex} 
                 className={`shell shell-${shellIndex + 1}`}
                 style={{
-                  width: `${150 + shellIndex * 60}px`,
-                  height: `${150 + shellIndex * 60}px`
+                  width: `${115 + shellIndex * 46}px`,
+                  height: `${115 + shellIndex * 46}px`
                 }}
               >
                 {Array(count).fill(0).map((_, i) => {
@@ -413,7 +413,7 @@ const CauTrucNguyenTu = () => {
                       key={`e-${shellIndex}-${i}`}
                       className="electron"
                       style={{
-                        transform: `rotate(${angle}deg) translateX(${75 + shellIndex * 30}px)`,
+                        transform: `rotate(${angle}deg) translateX(${57.5 + shellIndex * 23}px)`,
                         animationDelay: `${i * 0.1}s`
                       }}
                       title="Electron (-)"
@@ -457,8 +457,8 @@ const CauTrucNguyenTu = () => {
               <p>Bạn đã hoàn thành {challenges.length} thử thách về cấu trúc nguyên tử!</p>
               <p>Tỷ lệ: {((score / challenges.reduce((sum, c) => sum + c.points, 0)) * 100).toFixed(1)}%</p>
             </div>
-            <button onClick={() => navigate('/dashboard')} className="btn-return">
-              Quay lại Dashboard
+            <button onClick={() => navigate('/advanced-challenge')} className="btn-return">
+              Quay lại
             </button>
           </div>
         </div>
@@ -470,7 +470,7 @@ const CauTrucNguyenTu = () => {
     <div className="cau-truc-nguyen-tu-container">
       {/* Header */}
       <div className="game-header">
-        <Link to="/dashboard" className="back-button">
+        <Link to="/advanced-challenge" className="back-button">
           <ArrowLeft size={20} />
           Quay lại
         </Link>
@@ -517,146 +517,155 @@ const CauTrucNguyenTu = () => {
           )}
         </div>
 
-        {/* Atom Visualization */}
-        {currentQ.visualization && (
-          <div className="visualization-section">
-            {renderAtomVisualization()}
-          </div>
-        )}
-
-        {/* Particle Summary */}
-        <div className="particle-summary">
-          <div className="summary-item">
-            <div className="summary-icon proton-icon">p⁺</div>
-            <div className="summary-label">Proton</div>
-            <div className="summary-value">{isSubmitted ? currentQ.element.protons : '?'}</div>
-          </div>
-          <div className="summary-item">
-            <div className="summary-icon neutron-icon">n</div>
-            <div className="summary-label">Neutron</div>
-            <div className="summary-value">{isSubmitted ? currentQ.element.neutrons : '?'}</div>
-          </div>
-          <div className="summary-item">
-            <div className="summary-icon electron-icon">e⁻</div>
-            <div className="summary-label">Electron</div>
-            <div className="summary-value">{isSubmitted ? currentQ.element.electrons : '?'}</div>
-          </div>
-        </div>
-
-        {/* Input Section */}
-        <div className="input-section">
-          <h3>Nhập số hạt:</h3>
-          <div className="input-grid">
-            <div className="input-group">
-              <label>
-                <span className="particle-badge proton-badge">p⁺</span>
-                Số Proton:
-              </label>
-              <input
-                type="number"
-                min="0"
-                value={userInputs.protons}
-                onChange={(e) => handleInputChange('protons', e.target.value)}
-                disabled={isSubmitted}
-                className={isSubmitted ? (parseInt(userInputs.protons) === currentQ.element.protons ? 'correct' : 'incorrect') : ''}
-              />
-            </div>
-            <div className="input-group">
-              <label>
-                <span className="particle-badge neutron-badge">n</span>
-                Số Neutron:
-              </label>
-              <input
-                type="number"
-                min="0"
-                value={userInputs.neutrons}
-                onChange={(e) => handleInputChange('neutrons', e.target.value)}
-                disabled={isSubmitted}
-                className={isSubmitted ? (parseInt(userInputs.neutrons) === currentQ.element.neutrons ? 'correct' : 'incorrect') : ''}
-              />
-            </div>
-            <div className="input-group">
-              <label>
-                <span className="particle-badge electron-badge">e⁻</span>
-                Số Electron:
-              </label>
-              <input
-                type="number"
-                min="0"
-                value={userInputs.electrons}
-                onChange={(e) => handleInputChange('electrons', e.target.value)}
-                disabled={isSubmitted}
-                className={isSubmitted ? (parseInt(userInputs.electrons) === currentQ.element.electrons ? 'correct' : 'incorrect') : ''}
-              />
-            </div>
-          </div>
-
-          {/* Formulas */}
-          <div className="formulas-section">
-            <h4>💡 Công thức:</h4>
-            <div className="formula-list">
-              <div className="formula-item">
-                <strong>Số khối (A):</strong> A = p + n = {currentQ.element.massNumber}
+        {/* Two Column Layout */}
+        <div className="two-column-layout">
+          {/* Left Column: Visualization */}
+          <div className="left-column">
+            {/* Atom Visualization */}
+            {currentQ.visualization && (
+              <div className="visualization-section-compact">
+                {renderAtomVisualization()}
               </div>
-              <div className="formula-item">
-                <strong>Số hiệu nguyên tử (Z):</strong> Z = p = {currentQ.element.atomicNumber}
+            )}
+
+            {/* Particle Summary */}
+            <div className="particle-summary-compact">
+              <div className="summary-item">
+                <div className="summary-icon proton-icon">p⁺</div>
+                <div className="summary-label">Proton</div>
+                <div className="summary-value">{isSubmitted ? currentQ.element.protons : '?'}</div>
               </div>
-              <div className="formula-item">
-                <strong>Nguyên tử trung hòa:</strong> p = e
+              <div className="summary-item">
+                <div className="summary-icon neutron-icon">n</div>
+                <div className="summary-label">Neutron</div>
+                <div className="summary-value">{isSubmitted ? currentQ.element.neutrons : '?'}</div>
               </div>
-              <div className="formula-item">
-                <strong>Ion:</strong> e = p - điện tích ion
+              <div className="summary-item">
+                <div className="summary-icon electron-icon">e⁻</div>
+                <div className="summary-label">Electron</div>
+                <div className="summary-value">{isSubmitted ? currentQ.element.electrons : '?'}</div>
               </div>
             </div>
           </div>
 
-          {/* Hint */}
-          {!isSubmitted && (
-            <div className="hint-section">
-              <strong>Gợi ý:</strong> {currentQ.hint}
-            </div>
-          )}
+          {/* Right Column: Input Form */}
+          <div className="right-column">
+            {/* Input Section */}
+            <div className="input-section-compact">
+              <h3>Nhập số hạt:</h3>
+              <div className="input-grid">
+                <div className="input-group">
+                  <label>
+                    <span className="particle-badge proton-badge">p⁺</span>
+                    Số Proton:
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={userInputs.protons}
+                    onChange={(e) => handleInputChange('protons', e.target.value)}
+                    disabled={isSubmitted}
+                    className={isSubmitted ? (parseInt(userInputs.protons) === currentQ.element.protons ? 'correct' : 'incorrect') : ''}
+                  />
+                </div>
+                <div className="input-group">
+                  <label>
+                    <span className="particle-badge neutron-badge">n</span>
+                    Số Neutron:
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={userInputs.neutrons}
+                    onChange={(e) => handleInputChange('neutrons', e.target.value)}
+                    disabled={isSubmitted}
+                    className={isSubmitted ? (parseInt(userInputs.neutrons) === currentQ.element.neutrons ? 'correct' : 'incorrect') : ''}
+                  />
+                </div>
+                <div className="input-group">
+                  <label>
+                    <span className="particle-badge electron-badge">e⁻</span>
+                    Số Electron:
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={userInputs.electrons}
+                    onChange={(e) => handleInputChange('electrons', e.target.value)}
+                    disabled={isSubmitted}
+                    className={isSubmitted ? (parseInt(userInputs.electrons) === currentQ.element.electrons ? 'correct' : 'incorrect') : ''}
+                  />
+                </div>
+              </div>
 
-          {/* Answer feedback */}
-          {isSubmitted && (
-            <div className="answer-feedback">
-              <h4>✅ Đáp án đúng:</h4>
-              <div className="correct-answers">
-                <p>• Số Proton: <strong>{currentQ.element.protons}</strong></p>
-                <p>• Số Neutron: <strong>{currentQ.element.neutrons}</strong></p>
-                <p>• Số Electron: <strong>{currentQ.element.electrons}</strong></p>
+              {/* Formulas */}
+              <div className="formulas-section">
+                <h4>💡 Công thức:</h4>
+                <div className="formula-list">
+                  <div className="formula-item">
+                    <strong>Số khối (A):</strong> A = p + n = {currentQ.element.massNumber}
+                  </div>
+                  <div className="formula-item">
+                    <strong>Số hiệu nguyên tử (Z):</strong> Z = p = {currentQ.element.atomicNumber}
+                  </div>
+                  <div className="formula-item">
+                    <strong>Nguyên tử trung hòa:</strong> p = e
+                  </div>
+                  <div className="formula-item">
+                    <strong>Ion:</strong> e = p - điện tích ion
+                  </div>
+                </div>
+              </div>
+
+              {/* Hint */}
+              {!isSubmitted && (
+                <div className="hint-section">
+                  <strong>Gợi ý:</strong> {currentQ.hint}
+                </div>
+              )}
+
+              {/* Answer feedback */}
+              {isSubmitted && (
+                <div className="answer-feedback">
+                  <h4>✅ Đáp án đúng:</h4>
+                  <div className="correct-answers">
+                    <p>• Số Proton: <strong>{currentQ.element.protons}</strong></p>
+                    <p>• Số Neutron: <strong>{currentQ.element.neutrons}</strong></p>
+                    <p>• Số Electron: <strong>{currentQ.element.electrons}</strong></p>
+                  </div>
+                </div>
+              )}
+
+              {/* Buttons */}
+              <div className="button-section">
+                {!isSubmitted ? (
+                  <button 
+                    onClick={checkAnswer} 
+                    className="submit-btn"
+                    disabled={!userInputs.protons || !userInputs.neutrons || !userInputs.electrons}
+                  >
+                    Kiểm tra đáp án
+                  </button>
+                ) : (
+                  <div className="navigation-buttons">
+                    <button 
+                      onClick={prevChallenge} 
+                      className="btn-nav btn-prev"
+                      disabled={currentChallenge === 0}
+                    >
+                      ← Trước
+                    </button>
+                    <button 
+                      onClick={nextChallenge} 
+                      className="btn-nav btn-next"
+                    >
+                      {currentChallenge === challenges.length - 1 ? 'Hoàn thành' : 'Tiếp theo →'}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Buttons */}
-        <div className="button-section">
-          {!isSubmitted ? (
-            <button 
-              onClick={checkAnswer} 
-              className="submit-btn"
-              disabled={!userInputs.protons || !userInputs.neutrons || !userInputs.electrons}
-            >
-              Kiểm tra đáp án
-            </button>
-          ) : (
-            <div className="navigation-buttons">
-              <button 
-                onClick={prevChallenge} 
-                className="btn-nav btn-prev"
-                disabled={currentChallenge === 0}
-              >
-                ← Trước
-              </button>
-              <button 
-                onClick={nextChallenge} 
-                className="btn-nav btn-next"
-              >
-                {currentChallenge === challenges.length - 1 ? 'Hoàn thành' : 'Tiếp theo →'}
-              </button>
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

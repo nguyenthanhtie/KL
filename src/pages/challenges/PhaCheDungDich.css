@@ -2,19 +2,57 @@
 .pha-che-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  padding: 20px;
+  padding: 12px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Combined Header with Progress */
+.game-header-combined {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.progress-section-inline {
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.progress-section-inline .challenge-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.progress-section-inline .progress-bar {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Old game-header for backward compatibility */
 .game-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 12px;
   background: rgba(255, 255, 255, 0.95);
-  padding: 20px 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .back-button {
@@ -40,8 +78,8 @@
 .game-title {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 28px;
+  gap: 8px;
+  font-size: 20px;
   font-weight: 700;
   color: #333;
   margin: 0;
@@ -60,14 +98,14 @@
 .score-display {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
+  gap: 8px;
+  padding: 8px 16px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50px;
   color: white;
   font-weight: 700;
-  font-size: 18px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  font-size: 15px;
+  box-shadow: 0 3px 12px rgba(102, 126, 234, 0.3);
 }
 
 .game-content {
@@ -77,27 +115,27 @@
 
 .progress-section {
   background: white;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .challenge-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .level-badge {
-  padding: 8px 20px;
+  padding: 4px 12px;
   color: white;
-  border-radius: 20px;
+  border-radius: 16px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .level-badge.level-1 {
@@ -115,22 +153,22 @@
 .challenge-counter {
   font-weight: 600;
   color: #666;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .points-badge {
-  padding: 6px 16px;
+  padding: 4px 12px;
   background: #4caf50;
   color: white;
-  border-radius: 20px;
+  border-radius: 16px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .progress-bar {
-  height: 12px;
+  height: 8px;
   background: #e0e0e0;
-  border-radius: 10px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
@@ -143,44 +181,44 @@
 
 .game-layout {
   display: grid;
-  grid-template-columns: 450px 1fr;
-  gap: 20px;
+  grid-template-columns: 380px 1fr;
+  gap: 12px;
 }
 
 /* Simulation Section */
 .simulation-section {
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .solute-info {
   text-align: center;
-  margin-bottom: 20px;
-  padding: 15px;
+  margin-bottom: 12px;
+  padding: 10px;
   background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .solute-info h3 {
-  margin: 0 0 5px 0;
+  margin: 0 0 4px 0;
   color: #333;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .solute-info .formula {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: #1976d2;
-  margin: 5px 0;
+  margin: 4px 0;
   font-family: 'Courier New', monospace;
 }
 
 .solute-info .molar-mass {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
-  margin: 5px 0 0 0;
+  margin: 4px 0 0 0;
 }
 
 /* Beaker */
@@ -188,13 +226,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
 
 .beaker {
   position: relative;
-  width: 250px;
-  height: 350px;
+  width: 200px;
+  height: 280px;
   background: linear-gradient(to bottom, 
     rgba(255, 255, 255, 0.3) 0%,
     rgba(255, 255, 255, 0.1) 50%,
@@ -221,12 +259,12 @@
 
 .saturated-indicator {
   position: absolute;
-  top: 10px;
+  top: 8px;
   background: rgba(255, 255, 255, 0.9);
-  padding: 5px 15px;
-  border-radius: 20px;
+  padding: 4px 12px;
+  border-radius: 16px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 11px;
   color: #f44336;
   animation: blink 1.5s infinite;
 }
@@ -247,41 +285,41 @@
 .marking {
   position: absolute;
   right: 0;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   color: #546e7a;
-  padding-right: 5px;
+  padding-right: 4px;
   border-right: 2px solid #546e7a;
-  width: 20px;
+  width: 16px;
 }
 
 .concentration-display {
-  margin-top: 20px;
+  margin-top: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  padding: 15px 25px;
+  gap: 10px;
+  padding: 10px 16px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 15px;
+  border-radius: 12px;
   color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 3px 12px rgba(102, 126, 234, 0.3);
 }
 
 .concentration-value {
   display: flex;
   align-items: baseline;
-  gap: 5px;
+  gap: 4px;
 }
 
 .concentration-value .value {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
   font-family: 'Courier New', monospace;
 }
 
 .concentration-value .unit {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
 }
 
@@ -289,40 +327,40 @@
 .controls-panel {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .control-group {
   background: #f8f9fa;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 8px;
   border: 2px solid #e9ecef;
 }
 
 .control-group label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-weight: 600;
   color: #495057;
-  margin-bottom: 10px;
-  font-size: 14px;
+  margin-bottom: 8px;
+  font-size: 12px;
 }
 
 .control-buttons {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .btn-adjust {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border: 2px solid #4facfe;
   background: white;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -338,10 +376,10 @@
 }
 
 .control-value {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   color: #333;
-  min-width: 100px;
+  min-width: 80px;
   text-align: center;
   font-family: 'Courier New', monospace;
 }
@@ -384,81 +422,81 @@
 /* Values Display */
 .values-display {
   background: #f8f9fa;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 8px;
   border: 2px solid #e9ecef;
 }
 
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-weight: 600;
   color: #495057;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
 }
 
 .exact-values {
-  margin-top: 15px;
-  padding: 15px;
+  margin-top: 10px;
+  padding: 10px;
   background: white;
-  border-radius: 8px;
-  border-left: 4px solid #4facfe;
+  border-radius: 6px;
+  border-left: 3px solid #4facfe;
 }
 
 .exact-values p {
-  margin: 8px 0;
+  margin: 6px 0;
   font-family: 'Courier New', monospace;
-  font-size: 16px;
+  font-size: 13px;
   color: #333;
   font-weight: 600;
 }
 
 .formula-display {
   color: #4facfe !important;
-  font-size: 18px !important;
-  margin-top: 12px !important;
-  padding-top: 12px;
+  font-size: 14px !important;
+  margin-top: 8px !important;
+  padding-top: 8px;
   border-top: 2px dashed #e0e0e0;
 }
 
 /* Challenge Section */
 .challenge-section {
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .challenge-card h2 {
-  margin: 0 0 20px 0;
+  margin: 0 0 12px 0;
   color: #333;
-  font-size: 24px;
+  font-size: 18px;
   text-align: center;
 }
 
 .challenge-instruction {
   display: flex;
   align-items: start;
-  gap: 15px;
-  padding: 20px;
+  gap: 10px;
+  padding: 12px;
   background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border-left: 4px solid #2196f3;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border-left: 3px solid #2196f3;
 }
 
 .challenge-instruction p {
   margin: 0;
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.5;
   color: #333;
   font-weight: 500;
 }
@@ -466,65 +504,65 @@
 /* Formulas Reference */
 .formulas-reference {
   background: #fff9e6;
-  padding: 15px 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border-left: 4px solid #ffc107;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border-left: 3px solid #ffc107;
 }
 
 .formulas-reference h4 {
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   color: #333;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .formulas-reference ul {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 16px;
 }
 
 .formulas-reference li {
-  margin: 8px 0;
+  margin: 6px 0;
   color: #666;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .formulas-reference code {
   background: rgba(255, 193, 7, 0.2);
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 2px 6px;
+  border-radius: 3px;
   font-weight: 600;
   color: #f57c00;
   font-family: 'Courier New', monospace;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 /* Answer Input */
 .answer-input {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .answer-input label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   font-weight: 600;
   color: #495057;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .input-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .input-group input {
   flex: 1;
-  padding: 14px 18px;
+  padding: 10px 12px;
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 18px;
+  border-radius: 6px;
+  font-size: 15px;
   font-weight: 600;
   font-family: 'Courier New', monospace;
   transition: all 0.3s ease;
@@ -542,15 +580,15 @@
 }
 
 .input-group .unit {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 700;
   color: #666;
-  min-width: 40px;
+  min-width: 35px;
 }
 
 /* Hint Section */
 .hint-section {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .hint-button {
@@ -558,31 +596,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px;
+  gap: 6px;
+  padding: 8px;
   background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 13px;
   transition: all 0.3s ease;
 }
 
 .hint-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .hint-box {
-  margin-top: 12px;
-  padding: 15px;
+  margin-top: 8px;
+  padding: 10px;
   background: #fff9e6;
-  border-left: 4px solid #ffd700;
-  border-radius: 6px;
+  border-left: 3px solid #ffd700;
+  border-radius: 5px;
   display: flex;
   align-items: start;
-  gap: 10px;
+  gap: 8px;
   animation: slideDown 0.3s ease;
 }
 
@@ -600,15 +639,15 @@
 .hint-box p {
   margin: 0;
   color: #666;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 /* Action Buttons */
 .action-buttons {
   display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .btn-reset,
@@ -617,12 +656,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 24px;
+  gap: 6px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -635,7 +674,7 @@
 .btn-reset:hover {
   background: #d32f2f;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+  box-shadow: 0 3px 10px rgba(244, 67, 54, 0.3);
 }
 
 .btn-check {
@@ -645,13 +684,13 @@
 
 .btn-check:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 3px 10px rgba(79, 172, 254, 0.4);
 }
 
 /* Result Box */
 .result-box {
-  padding: 25px;
-  border-radius: 12px;
+  padding: 16px;
+  border-radius: 10px;
   text-align: center;
   animation: slideIn 0.4s ease;
 }
@@ -678,46 +717,46 @@
 }
 
 .result-box h3 {
-  margin: 0 0 10px 0;
-  font-size: 24px;
+  margin: 0 0 8px 0;
+  font-size: 18px;
   color: #333;
 }
 
 .result-box p {
-  margin: 8px 0;
+  margin: 6px 0;
   color: #555;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .points-earned {
-  font-size: 28px !important;
+  font-size: 20px !important;
   font-weight: 700;
   color: #4caf50;
-  margin: 15px 0 !important;
+  margin: 10px 0 !important;
 }
 
 .hint-text {
   font-style: italic;
   color: #666 !important;
-  font-size: 14px !important;
+  font-size: 12px !important;
 }
 
 .btn-next {
-  margin-top: 20px;
-  padding: 14px 32px;
+  margin-top: 12px;
+  padding: 10px 24px;
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-next:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 4px 16px rgba(79, 172, 254, 0.4);
 }
 
 /* Result Modal */

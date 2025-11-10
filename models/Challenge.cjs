@@ -23,9 +23,21 @@ const challengeSchema = new mongoose.Schema({
     required: true,
     enum: ['Dễ', 'Trung bình', 'Khó', 'Rất khó']
   },
+  difficultyLevel: {
+    type: String,
+    required: true,
+    enum: ['easy', 'medium', 'hard'],
+    default: 'medium'
+  },
   difficultyColor: {
     type: String,
     required: true
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['molecule', 'experiment', 'electrochemistry', 'solution', 'reaction', 'structure', 'game'],
+    default: 'experiment'
   },
   time: {
     type: String,

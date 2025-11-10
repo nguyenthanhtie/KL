@@ -226,8 +226,8 @@ export default function GhepNguyenTu(){
 
           {/* Game Area */}
           <div className="flex gap-6 flex-wrap lg:flex-nowrap">
-            {/* Atom Visualization */}
-            <div className="flex-1 flex justify-center items-center min-h-[400px]">
+            {/* Atom Visualization - 1 part */}
+            <div className="lg:flex-[1] w-full flex justify-center items-center min-h-[400px]">
               <div 
                 className="atom-area relative"
                 onDragOver={onDragOver} 
@@ -238,8 +238,9 @@ export default function GhepNguyenTu(){
                 <div 
                   className="nucleus absolute flex items-center justify-center"
                   style={{
-                    left: center - 24,
-                    top: center - 24,
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)',
                     width: 48,
                     height: 48
                   }}
@@ -260,8 +261,9 @@ export default function GhepNguyenTu(){
                       style={{ 
                         width: r*2, 
                         height: r*2, 
-                        left: center - r, 
-                        top: center - r,
+                        left: '50%',
+                        top: '50%',
+                        transform: `translate(-50%, -50%)`,
                         zIndex: 100 - si 
                       }}
                     >
@@ -299,12 +301,12 @@ export default function GhepNguyenTu(){
               </div>
             </div>
 
-            {/* Control Panel */}
-            <div className="w-full lg:w-64 bg-gray-50 rounded-xl p-5">
-              <h3 className="font-bold text-base mb-3">Kho electron (kéo vào lớp)</h3>
+            {/* Control Panel - 2 parts */}
+            <div className="w-full lg:flex-[2] bg-gray-50 rounded-xl p-5">
+              <h3 className="font-bold text-lg mb-4">Kho electron (kéo vào lớp)</h3>
               
               {/* Electron Bank */}
-              <div className="flex flex-wrap gap-2 mb-5 min-h-[80px] p-3 bg-white rounded-lg border-2 border-dashed border-gray-300"
+              <div className="flex flex-wrap gap-3 mb-6 min-h-[100px] p-4 bg-white rounded-lg border-2 border-dashed border-gray-300"
                 onDragOver={onDragOver} 
                 onDrop={onBankDrop}
               >
@@ -312,7 +314,7 @@ export default function GhepNguyenTu(){
                   <button 
                     key={id} 
                     draggable 
-                    className="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-bold cursor-grab active:cursor-grabbing flex items-center justify-center text-xs"
+                    className="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-bold cursor-grab active:cursor-grabbing flex items-center justify-center text-sm"
                     onDragStart={(e)=>startDrag(e,id)} 
                     onDragEnd={onDragEnd}
                   >
@@ -322,11 +324,11 @@ export default function GhepNguyenTu(){
               </div>
 
               {/* Controls */}
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <button 
                   onClick={validate}
                   disabled={gameCompleted}
-                  className={`w-full py-2.5 rounded-lg font-semibold transition-colors ${
+                  className={`w-full py-3 rounded-lg font-semibold text-lg transition-colors ${
                     gameCompleted 
                       ? 'bg-gray-400 cursor-not-allowed text-white' 
                       : 'bg-blue-600 hover:bg-blue-700 text-white'
@@ -337,7 +339,7 @@ export default function GhepNguyenTu(){
               </div>
 
               {/* Status */}
-              <div className={`mt-4 p-3 rounded-lg text-sm ${
+              <div className={`mt-5 p-4 rounded-lg text-base font-medium ${
                 status.includes('✅') ? 'bg-green-100 text-green-800' :
                 status.includes('❌') ? 'bg-red-100 text-red-800' :
                 status.includes('🎉') ? 'bg-yellow-100 text-yellow-800' :
