@@ -11,6 +11,7 @@ const AdvancedChallenge = () => {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [selectedGrade, setSelectedGrade] = useState('all');
 
   // Danh mục thử thách
   const categories = [
@@ -30,6 +31,16 @@ const AdvancedChallenge = () => {
     { id: 'easy', name: 'Dễ', color: 'bg-green-500' },
     { id: 'medium', name: 'Vừa', color: 'bg-yellow-500' },
     { id: 'hard', name: 'Khó', color: 'bg-red-500' }
+  ];
+
+  // Lớp học
+  const grades = [
+    { id: 'all', name: 'Tất cả' },
+    { id: 8, name: 'Lớp 8' },
+    { id: 9, name: 'Lớp 9' },
+    { id: 10, name: 'Lớp 10' },
+    { id: 11, name: 'Lớp 11' },
+    { id: 12, name: 'Lớp 12' }
   ];
 
   useEffect(() => {
@@ -54,7 +65,8 @@ const AdvancedChallenge = () => {
   const filteredChallenges = challenges.filter(challenge => {
     const categoryMatch = selectedCategory === 'all' || challenge.category === selectedCategory;
     const difficultyMatch = selectedDifficulty === 'all' || challenge.difficultyLevel === selectedDifficulty;
-    return categoryMatch && difficultyMatch;
+    const gradeMatch = selectedGrade === 'all' || challenge.grade === selectedGrade;
+    return categoryMatch && difficultyMatch && gradeMatch;
   });
 
   const getDifficultyBadge = (difficulty, color) => {
@@ -108,93 +120,83 @@ const AdvancedChallenge = () => {
 
         {/* Content */}
         {!loading && !error && (
-          <div className="flex gap-0">
-            {/* Sidebar Filter */}
-            <div className="w-64 flex-shrink-0 bg-white border-r border-gray-200">
-              <div className="p-5 sticky top-0">
+          <div className="flex flex-col gap-0">
+            {/* Compact Filter Bar */}
+            <div className="bg-white border-b border-gray-200 px-6 py-4">
+              <div className="flex flex-wrap items-center gap-4">
                 {/* Category Filter */}
-                <div className="mb-6">
-                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">
+                <div className="flex-1 min-w-[200px]">
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
                     Phân loại
-                  </h3>
-                  <div className="space-y-1">
+                  </label>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white text-sm font-medium"
+                  >
                     {categories.map((category) => (
-                      <button
-                        key={category.id}
-                        onClick={() => setSelectedCategory(category.id)}
-                        className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-between ${
-                          selectedCategory === category.id
-                            ? 'bg-primary-600 text-white shadow-sm'
-                            : 'text-gray-700 hover:bg-gray-100'
-                        }`}
-                      >
-                        <span className="text-sm">{category.name}</span>
-                        {selectedCategory === category.id && (
-                          <span className="bg-white bg-opacity-25 px-2 py-0.5 rounded text-xs font-semibold">
-                            {filteredChallenges.length}
-                          </span>
-                        )}
-                      </button>
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
                     ))}
-                  </div>
+                  </select>
                 </div>
 
                 {/* Difficulty Filter */}
-                <div className="mb-6">
-                  <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">
+                <div className="flex-1 min-w-[150px]">
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
                     Mức độ
-                  </h3>
-                  <div className="space-y-1">
+                  </label>
+                  <select
+                    value={selectedDifficulty}
+                    onChange={(e) => setSelectedDifficulty(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white text-sm font-medium"
+                  >
                     {difficulties.map((difficulty) => (
-                      <button
-                        key={difficulty.id}
-                        onClick={() => setSelectedDifficulty(difficulty.id)}
-                        className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-between ${
-                          selectedDifficulty === difficulty.id
-                            ? `${difficulty.color} text-white shadow-sm`
-                            : 'text-gray-700 hover:bg-gray-100'
-                        }`}
-                      >
-                        <span className="text-sm">{difficulty.name}</span>
-                        {selectedDifficulty === difficulty.id && (
-                          <span className="bg-white bg-opacity-25 px-2 py-0.5 rounded text-xs font-semibold">
-                            {filteredChallenges.length}
-                          </span>
-                        )}
-                      </button>
+                      <option key={difficulty.id} value={difficulty.id}>
+                        {difficulty.name}
+                      </option>
                     ))}
-                  </div>
+                  </select>
                 </div>
 
-                {/* Active Filters */}
-                {(selectedCategory !== 'all' || selectedDifficulty !== 'all') && (
-                  <div className="pt-4 border-t border-gray-200">
+                {/* Grade Filter */}
+                <div className="flex-1 min-w-[150px]">
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                    Lớp học
+                  </label>
+                  <select
+                    value={selectedGrade}
+                    onChange={(e) => setSelectedGrade(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white text-sm font-medium"
+                  >
+                    {grades.map((grade) => (
+                      <option key={grade.id} value={grade.id}>
+                        {grade.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Stats & Clear Button */}
+                <div className="flex items-end gap-3">
+                  <div className="bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
+                    <div className="text-xs text-gray-500 mb-0.5">Kết quả</div>
+                    <div className="text-lg font-bold text-primary-600">{filteredChallenges.length}</div>
+                  </div>
+                  
+                  {(selectedCategory !== 'all' || selectedDifficulty !== 'all' || selectedGrade !== 'all') && (
                     <button
                       onClick={() => {
                         setSelectedCategory('all');
                         setSelectedDifficulty('all');
+                        setSelectedGrade('all');
                       }}
-                      className="w-full text-sm text-primary-600 hover:text-primary-800 font-medium py-2 hover:bg-primary-50 rounded-lg transition-colors"
+                      className="px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-800 hover:bg-primary-50 rounded-lg transition-colors border border-primary-200"
                     >
-                      Xóa tất cả bộ lọc
+                      Xóa bộ lọc
                     </button>
-                  </div>
-                )}
-
-                {/* Stats */}
-                <div className="mt-6 pt-6 border-t border-gray-200 space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Thử thách</span>
-                    <span className="font-bold text-primary-600">{filteredChallenges.length}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Hoàn thành</span>
-                    <span className="font-bold text-green-600">0</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Điểm cao</span>
-                    <span className="font-bold text-yellow-600">0</span>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -216,6 +218,7 @@ const AdvancedChallenge = () => {
                     onClick={() => {
                       setSelectedCategory('all');
                       setSelectedDifficulty('all');
+                      setSelectedGrade('all');
                     }}
                     className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
                   >

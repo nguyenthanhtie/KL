@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb, Beaker, Droplet, FlaskConical, Plus, Minus, RotateCcw } from 'lucide-react';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import './PhaCheDungDich.css';
 
 // Dữ liệu về các chất tan
@@ -246,11 +248,42 @@ const challenges = [
 ];
 
 const PhaCheDungDich = () => {
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('pha-che-dung-dich');
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [completedChallenges, setCompletedChallenges] = useState([]);
+  
+  // Check for saved progress on mount
+  useEffect(() => {
+    if (hasProgress && !gameStarted) {
+      setShowResumeDialog(true);
+    } else if (!gameStarted) {
+      setGameStarted(true);
+    }
+  }, [hasProgress, gameStarted]);
+
+  // Start game - either from beginning or resume
+  const startGame = (fromBeginning = false) => {
+    setShowResumeDialog(false);
+    if (fromBeginning) {
+      clearProgress();
+      setGameStarted(true);
+    } else {
+      // Resume from saved progress
+      const savedData = getProgress();
+      if (savedData) {
+        setCurrentChallengeIndex(savedData.currentChallengeIndex || 0);
+        setScore(savedData.score || 0);
+        setTotalScore(savedData.totalScore || 0);
+        setCompletedChallenges(savedData.completedChallenges || []);
+      }
+      setGameStarted(true);
+    }
+  };
   
   // Lab states
   const [moles, setMoles] = useState(0);
@@ -262,12 +295,12 @@ const PhaCheDungDich = () => {
   const [isCorrect, setIsCorrect] = useState(false);
   const [showValues, setShowValues] = useState(false);
   
-  const currentChallenge = challenges[currentChallengeIndex];
-  const currentSolute = solutes[currentChallenge.solute];
+  const currentChallenge = challenges[currentChallengeIndex] || challenges[0];
+  const currentSolute = solutes[currentChallenge?.solute] || solutes['drink-mix'];
 
   // Tính nồng độ khi moles hoặc volume thay đổi
   useEffect(() => {
-    if (volume > 0) {
+    if (volume > 0 && currentSolute) {
       const newConcentration = moles / volume;
       setConcentration(Math.min(newConcentration, currentSolute.saturatedConcentration));
     } else {
@@ -352,9 +385,18 @@ const PhaCheDungDich = () => {
   // Chuyển câu tiếp theo
   const handleNext = () => {
     if (currentChallengeIndex < challenges.length - 1) {
-      setCurrentChallengeIndex(currentChallengeIndex + 1);
+      const newIndex = currentChallengeIndex + 1;
+      setCurrentChallengeIndex(newIndex);
+      // Save progress after moving to next challenge
+      saveProgress({
+        currentChallengeIndex: newIndex,
+        score,
+        totalScore,
+        completedChallenges
+      });
     } else {
       setGameCompleted(true);
+      clearProgress();
     }
   };
 
@@ -368,6 +410,7 @@ const PhaCheDungDich = () => {
   };
 
   const handleRestart = () => {
+    clearProgress();
     setCurrentChallengeIndex(0);
     setScore(0);
     setTotalScore(0);
@@ -411,6 +454,43 @@ const PhaCheDungDich = () => {
             </div>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (!gameStarted) {
+    return (
+      <div className="pha-che-container">
+        <div className="bg-white shadow-md">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
+                <ArrowLeft size={20} />
+                <span>Quay lại</span>
+              </Link>
+              <h1 className="text-2xl font-bold text-gray-800">
+                <FlaskConical className="inline mr-2" size={28} />
+                Pha Chế Dung Dịch
+              </h1>
+              <div className="w-24"></div>
+            </div>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 py-8">
+          <div className="bg-white rounded-2xl shadow-2xl p-12 text-center">
+            <p className="text-gray-600">Đang tải...</p>
+          </div>
+        </div>
+        <ResumeDialog
+          show={showResumeDialog}
+          onResume={() => startGame(false)}
+          onRestart={() => startGame(true)}
+          progressInfo={{
+            current: (getProgress()?.currentChallengeIndex || 0) + 1,
+            total: challenges.length,
+            score: getProgress()?.totalScore || 0
+          }}
+        />
       </div>
     );
   }
@@ -671,6 +751,17 @@ const PhaCheDungDich = () => {
           </div>
         </div>
       </div>
+
+      <ResumeDialog
+        show={showResumeDialog}
+        onResume={() => startGame(false)}
+        onRestart={() => startGame(true)}
+        progressInfo={{
+          current: (getProgress()?.currentChallengeIndex || 0) + 1,
+          total: challenges.length,
+          score: getProgress()?.totalScore || 0
+        }}
+      />
     </div>
   );
 };

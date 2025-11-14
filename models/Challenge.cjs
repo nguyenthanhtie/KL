@@ -39,6 +39,12 @@ const challengeSchema = new mongoose.Schema({
     enum: ['molecule', 'experiment', 'electrochemistry', 'solution', 'reaction', 'structure', 'game'],
     default: 'experiment'
   },
+  grade: {
+    type: Number,
+    required: true,
+    enum: [8, 9, 10, 11, 12],
+    default: 8
+  },
   time: {
     type: String,
     required: true

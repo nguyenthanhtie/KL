@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb, Atom, CheckCircle, XCircle, RotateCcw } from 'lucide-react';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import './XayDungPhanTu.css';
 
 // Dữ liệu về các nguyên tử
@@ -252,6 +254,9 @@ const moleculesByLevel = {
 };
 
 const XayDungPhanTu = () => {
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('xay-dung-phan-tu');
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [currentMoleculeIndex, setCurrentMoleculeIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -445,13 +450,32 @@ const XayDungPhanTu = () => {
   // Chuyển câu tiếp theo
   const handleNext = () => {
     if (currentMoleculeIndex < currentMolecules.length - 1) {
-      setCurrentMoleculeIndex(currentMoleculeIndex + 1);
+      const newIndex = currentMoleculeIndex + 1;
+      setCurrentMoleculeIndex(newIndex);
+      // Save progress
+      saveProgress({
+        currentLevel,
+        currentMoleculeIndex: newIndex,
+        score,
+        totalScore,
+        completedMolecules
+      });
     } else if (currentLevel < 3) {
-      setCurrentLevel(currentLevel + 1);
+      const newLevel = currentLevel + 1;
+      setCurrentLevel(newLevel);
       setCurrentMoleculeIndex(0);
       setScore(0);
+      // Save progress
+      saveProgress({
+        currentLevel: newLevel,
+        currentMoleculeIndex: 0,
+        score: 0,
+        totalScore,
+        completedMolecules
+      });
     } else {
       setGameCompleted(true);
+      clearProgress();
     }
   };
 
@@ -469,6 +493,7 @@ const XayDungPhanTu = () => {
   };
 
   const handleRestart = () => {
+    clearProgress();
     setCurrentLevel(1);
     setCurrentMoleculeIndex(0);
     setScore(0);
@@ -777,6 +802,17 @@ const XayDungPhanTu = () => {
           </div>
         </div>
       </div>
+
+      <ResumeDialog
+        show={showResumeDialog}
+        onResume={() => startGame(false)}
+        onRestart={() => startGame(true)}
+        progressInfo={{
+          current: (getProgress()?.currentLevel || 1),
+          total: 3,
+          score: getProgress()?.totalScore || 0
+        }}
+      />
     </div>
   );
 };

@@ -21,6 +21,7 @@ import XayDungPhanTu from './pages/challenges/XayDungPhanTu';
 import PhaCheDungDich from './pages/challenges/PhaCheDungDich';
 import CauTrucNguyenTu from './pages/challenges/CauTrucNguyenTu';
 import PhongThiNghiem from './pages/challenges/PhongThiNghiem';
+import TinhOxiHoa from './pages/challenges/TinhOxiHoa';
 
 
 const AppContent = () => {
@@ -44,6 +45,7 @@ const AppContent = () => {
         <Route path="/advanced-challenge/pha-che-dung-dich" element={<PhaCheDungDich />} />
         <Route path="/advanced-challenge/cau-truc-nguyen-tu" element={<CauTrucNguyenTu />} />
         <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
+        <Route path="/advanced-challenge/tinh-oxi-hoa" element={<TinhOxiHoa />} />
         <Route 
           path="/dashboard" 
           element={

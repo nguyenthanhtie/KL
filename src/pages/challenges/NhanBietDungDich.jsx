@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb, Droplet, TestTube, Beaker, FlaskConical, AlertCircle } from 'lucide-react';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import './NhanBietDungDich.css';
 
 // Dữ liệu về các hợp chất và dấu hiệu nhận biết (dành cho lớp 8-9)
@@ -306,10 +308,14 @@ const gameQuestions = [
 ];
 
 const NhanBietDungDich = () => {
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('nhan-biet-dung-dich');
+  
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   
   // Lab experiment states
   const [selectedReagent, setSelectedReagent] = useState(null);
@@ -324,6 +330,39 @@ const NhanBietDungDich = () => {
   
   const currentQ = experimentQuestions[currentQuestion];
   const unknownIon = ionDatabase[currentQ.unknownSolution];
+
+  useEffect(() => {
+    if (hasProgress && !gameStarted && !gameCompleted) {
+      setShowResumeDialog(true);
+    }
+  }, []);
+
+  const startGame = (fromBeginning = false) => {
+    if (fromBeginning) {
+      clearProgress();
+      setCurrentQuestion(0);
+      setScore(0);
+      setCorrectAnswers(0);
+      setGameStarted(true);
+      setShowResumeDialog(false);
+    } else {
+      const saved = getProgress();
+      if (saved) {
+        setCurrentQuestion(saved.currentQuestion);
+        setScore(saved.score);
+        setCorrectAnswers(saved.correctAnswers);
+        setGameStarted(true);
+        setShowResumeDialog(false);
+      } else {
+        startGame(true);
+      }
+    }
+    setTestResults([]);
+    setSelectedAnswer(null);
+    setShowAnswer(false);
+    setShowHint(false);
+    setCanSubmit(false);
+  };
 
   // Tạo danh sách đáp án khi câu hỏi thay đổi
   useEffect(() => {
@@ -436,14 +475,22 @@ const NhanBietDungDich = () => {
   // Chuyển câu tiếp theo
   const handleNextQuestion = () => {
     if (currentQuestion < experimentQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+      const nextIndex = currentQuestion + 1;
+      setCurrentQuestion(nextIndex);
       setTestResults([]);
       setSelectedAnswer(null);
       setShowAnswer(false);
       setShowHint(false);
       setCanSubmit(false);
+      
+      saveProgress({
+        currentQuestion: nextIndex,
+        score,
+        correctAnswers
+      });
     } else {
       setGameCompleted(true);
+      clearProgress();
     }
   };
 
@@ -868,6 +915,17 @@ const NhanBietDungDich = () => {
           )}
         </div>
       </div>
+
+      <ResumeDialog
+        show={showResumeDialog && !gameStarted}
+        onResume={() => startGame(false)}
+        onRestart={() => startGame(true)}
+        progressInfo={getProgress() ? {
+          current: getProgress().currentQuestion + 1,
+          total: experimentQuestions.length,
+          score: getProgress().score
+        } : null}
+      />
     </div>
   );
 };

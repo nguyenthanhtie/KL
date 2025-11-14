@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Timer, Lightbulb, CheckCircle, XCircle, Clock } from 'lucide-react';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import './DuoiHinhBatChu.css';
 
 const DuoiHinhBatChu = () => {
@@ -88,6 +90,8 @@ const DuoiHinhBatChu = () => {
     }
   ];
 
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('duoi-hinh-bat-chu');
+  
   const [cauHienTai, setCauHienTai] = useState(0);
   const [diem, setDiem] = useState(0);
   const [ketQua, setKetQua] = useState('');
@@ -98,7 +102,15 @@ const DuoiHinhBatChu = () => {
   const [answerInput, setAnswerInput] = useState('');
   const [showHint, setShowHint] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
   const mountedRef = useRef(true);
+
+  // Kiểm tra tiến trình khi component mount
+  useEffect(() => {
+    if (hasProgress && !gameDangChay && !gameCompleted) {
+      setShowResumeDialog(true);
+    }
+  }, []);
 
   // Timer
   useEffect(() => {
@@ -131,17 +143,40 @@ const DuoiHinhBatChu = () => {
     return () => window.removeEventListener('keydown', handler);
   }, [gameDangChay, daTraLoi, answerInput]);
 
-  const batDauGame = () => {
-    setGameDangChay(true);
-    setCauHienTai(0);
-    setDiem(0);
-    setLichSu([]);
-    setThoiGian(30);
-    setDaTraLoi(false);
-    setKetQua('');
-    setAnswerInput('');
-    setShowHint(false);
-    setGameCompleted(false);
+  const batDauGame = (fromBeginning = false) => {
+    if (fromBeginning) {
+      clearProgress();
+      setGameDangChay(true);
+      setCauHienTai(0);
+      setDiem(0);
+      setLichSu([]);
+      setThoiGian(30);
+      setDaTraLoi(false);
+      setKetQua('');
+      setAnswerInput('');
+      setShowHint(false);
+      setGameCompleted(false);
+      setShowResumeDialog(false);
+    } else {
+      // Khôi phục tiến trình
+      const saved = getProgress();
+      if (saved) {
+        setCauHienTai(saved.cauHienTai);
+        setDiem(saved.diem);
+        setLichSu(saved.lichSu);
+        setThoiGian(30);
+        setDaTraLoi(false);
+        setKetQua('');
+        setAnswerInput('');
+        setShowHint(false);
+        setGameCompleted(false);
+        setGameDangChay(true);
+        setShowResumeDialog(false);
+      } else {
+        // Không có tiến trình, bắt đầu mới
+        batDauGame(true);
+      }
+    }
   };
 
   const handleTimeout = () => {
@@ -184,19 +219,29 @@ const DuoiHinhBatChu = () => {
 
   const cauTiepTheo = () => {
     if (cauHienTai < chatHoaHoc.length - 1) {
-      setCauHienTai(cauHienTai + 1);
+      const nextIndex = cauHienTai + 1;
+      setCauHienTai(nextIndex);
       setDaTraLoi(false);
       setKetQua('');
       setAnswerInput('');
       setThoiGian(30);
       setShowHint(false);
+      
+      // Lưu tiến trình
+      saveProgress({
+        cauHienTai: nextIndex,
+        diem,
+        lichSu
+      });
     } else {
       setGameDangChay(false);
       setGameCompleted(true);
+      clearProgress(); // Xóa tiến trình khi hoàn thành
     }
   };
 
   const choiLai = () => {
+    clearProgress(); // Xóa tiến trình khi chơi lại
     setGameDangChay(false);
     setGameCompleted(false);
     setCauHienTai(0);
@@ -275,13 +320,25 @@ const DuoiHinhBatChu = () => {
             </div>
 
             <button 
-              onClick={batDauGame}
+              onClick={() => batDauGame(true)}
               className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg"
             >
               🚀 Bắt đầu chơi
             </button>
           </div>
         </div>
+
+        {/* Resume Dialog */}
+        <ResumeDialog
+          show={showResumeDialog}
+          onResume={() => batDauGame(false)}
+          onRestart={() => batDauGame(true)}
+          progressInfo={getProgress() ? {
+            current: getProgress().cauHienTai + 1,
+            total: chatHoaHoc.length,
+            score: getProgress().diem
+          } : null}
+        />
       </div>
     );
   }

@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb } from 'lucide-react';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import './SuyLuanPhanUng.css';
 
 // Game data and utilities
@@ -250,6 +252,9 @@ const ProductZone = ({ children }) => (
 );
 
 export default function SuyLuanPhanUng() {
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('suy-luan-phan-ung');
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   const [level, setLevel] = useState(0);
   const [placements, setPlacements] = useState({});
   const [status, setStatus] = useState('');
@@ -261,10 +266,37 @@ export default function SuyLuanPhanUng() {
   const [completedLevels, setCompletedLevels] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
 
-  const currentLevel = levels[level];
+  // Check for saved progress on mount
+  useEffect(() => {
+    if (hasProgress && !gameStarted) {
+      setShowResumeDialog(true);
+    } else if (!gameStarted) {
+      setGameStarted(true);
+    }
+  }, [hasProgress, gameStarted]);
+
+  // Start game - either from beginning or resume
+  const startGame = (fromBeginning = false) => {
+    setShowResumeDialog(false);
+    if (fromBeginning) {
+      clearProgress();
+      setGameStarted(true);
+    } else {
+      // Resume from saved progress
+      const savedData = getProgress();
+      if (savedData) {
+        setLevel(savedData.level || 0);
+        setCompletedLevels(savedData.completedLevels || 0);
+      }
+      setGameStarted(true);
+    }
+  };
+
+  const currentLevel = levels[level] || levels[0];
 
   // Generate bank items for current level
   const generateBankItems = useCallback(() => {
+    if (!currentLevel || !currentLevel.target) return [];
     const needLeft = [...currentLevel.target.left];
     const exclude = new Set([...currentLevel.target.right, ...needLeft]);
     const extras = pickDistractors(exclude, 4);
@@ -275,6 +307,7 @@ export default function SuyLuanPhanUng() {
 
   // Initialize level
   useEffect(() => {
+    if (!currentLevel || !currentLevel.layout) return;
     const items = generateBankItems();
     setBankItems(items);
     setPlacements({});
@@ -375,11 +408,16 @@ export default function SuyLuanPhanUng() {
       
       if (level < levels.length - 1) {
         setTimeout(() => {
-          setLevel(level + 1);
-          setCompletedLevels(prev => prev + 1);
+          const nextLevel = level + 1;
+          const nextCompleted = completedLevels + 1;
+          setLevel(nextLevel);
+          setCompletedLevels(nextCompleted);
+          // Save progress
+          saveProgress({ level: nextLevel, completedLevels: nextCompleted });
         }, 2000);
       } else {
         setGameCompleted(true);
+        clearProgress();
         setStatus('🎉 Chúc mừng! Bạn đã hoàn thành tất cả 8 màn chơi!');
       }
     } else {
@@ -398,6 +436,7 @@ export default function SuyLuanPhanUng() {
 
   // Render equation elements
   const renderEquation = () => {
+    if (!currentLevel || !currentLevel.layout) return [];
     const elements = [];
     let rCount = 0;
     let pCount = 0;
@@ -467,6 +506,43 @@ export default function SuyLuanPhanUng() {
     return elements;
   };
 
+  if (!gameStarted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-600 to-red-600">
+        <div className="bg-white shadow-md">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Quay lại
+              </Link>
+              <h1 className="text-2xl font-bold text-gray-800 flex items-center">
+                <span className="mr-2">🔬</span>
+                Suy Luận Phản Ứng
+              </h1>
+              <div className="w-24"></div>
+            </div>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 py-8">
+          <div className="bg-white rounded-2xl shadow-2xl p-12 text-center">
+            <p className="text-gray-600">Đang tải...</p>
+          </div>
+        </div>
+        <ResumeDialog
+          show={showResumeDialog}
+          onResume={() => startGame(false)}
+          onRestart={() => startGame(true)}
+          progressInfo={{
+            current: (getProgress()?.level || 0) + 1,
+            total: levels.length,
+            score: getProgress()?.completedLevels || 0
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-600 to-red-600">
       {/* Header */}
@@ -488,6 +564,15 @@ export default function SuyLuanPhanUng() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
+        {!gameStarted ? (
+          <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6 text-center">
+            <p>Đang tải...</p>
+          </div>
+        ) : !currentLevel ? (
+          <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6 text-center">
+            <p>Loading...</p>
+          </div>
+        ) : (
         <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6">
           {/* Progress */}
           <div className="flex items-center justify-between mb-6">
@@ -603,7 +688,19 @@ export default function SuyLuanPhanUng() {
             </div>
           </div>
         </div>
+        )}
       </div>
+
+      <ResumeDialog
+        show={showResumeDialog}
+        onResume={() => startGame(false)}
+        onRestart={() => startGame(true)}
+        progressInfo={{
+          current: (getProgress()?.level || 0) + 1,
+          total: levels.length,
+          score: getProgress()?.completedLevels || 0
+        }}
+      />
     </div>
   );
 }

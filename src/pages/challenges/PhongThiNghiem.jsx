@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trophy, Beaker, Flame, Droplet } from 'lucide-react';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import './PhongThiNghiem.css';
 
 const PhongThiNghiem = () => {
   const navigate = useNavigate();
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('phong-thi-nghiem');
+  
   const [currentChallenge, setCurrentChallenge] = useState(0);
   const [score, setScore] = useState(0);
   const [isReacting, setIsReacting] = useState(false);
@@ -12,6 +16,35 @@ const PhongThiNghiem = () => {
   const [userAnswer, setUserAnswer] = useState({ gas: '', salt: '', color: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+
+  useEffect(() => {
+    if (hasProgress && !gameStarted && !showResults) {
+      setShowResumeDialog(true);
+    }
+  }, []);
+
+  const startGame = (fromBeginning = false) => {
+    if (fromBeginning) {
+      clearProgress();
+      setCurrentChallenge(0);
+      setScore(0);
+      setGameStarted(true);
+      setShowResumeDialog(false);
+    } else {
+      const saved = getProgress();
+      if (saved) {
+        setCurrentChallenge(saved.currentChallenge);
+        setScore(saved.score);
+        setGameStarted(true);
+        setShowResumeDialog(false);
+      } else {
+        startGame(true);
+      }
+    }
+    resetExperiment();
+  };
 
   // Danh sách kim loại
   const metals = [
@@ -302,10 +335,17 @@ const PhongThiNghiem = () => {
   // Chuyển câu tiếp
   const nextChallenge = () => {
     if (currentChallenge < challenges.length - 1) {
-      setCurrentChallenge(currentChallenge + 1);
+      const nextIndex = currentChallenge + 1;
+      setCurrentChallenge(nextIndex);
       resetExperiment();
+      
+      saveProgress({
+        currentChallenge: nextIndex,
+        score
+      });
     } else {
       setShowResults(true);
+      clearProgress();
     }
   };
 
@@ -504,9 +544,12 @@ const PhongThiNghiem = () => {
                 >
                   <option value="">-- Chọn --</option>
                   <option value="colorless">Không màu</option>
+                  <option value="light-blue">Xanh lam nhạt</option>
+
                   <option value="light-green">Xanh lục nhạt</option>
                   <option value="blue">Xanh lam</option>
                   <option value="white-turbid">Vẩn đục trắng</option>
+                  <option value="yellow-brown">Vàng nâu</option>
                   <option value="no-change">Không đổi màu</option>
                 </select>
               </div>
@@ -558,6 +601,17 @@ const PhongThiNghiem = () => {
           </div>
         </div>
       )}
+
+      <ResumeDialog
+        show={showResumeDialog && !gameStarted}
+        onResume={() => startGame(false)}
+        onRestart={() => startGame(true)}
+        progressInfo={getProgress() ? {
+          current: getProgress().currentChallenge + 1,
+          total: challenges.length,
+          score: getProgress().score
+        } : null}
+      />
     </div>
   );
 };

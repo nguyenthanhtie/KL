@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trophy, Atom, Zap, Circle } from 'lucide-react';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import './CauTrucNguyenTu.css';
 
 const CauTrucNguyenTu = () => {
   const navigate = useNavigate();
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('cau-truc-nguyen-tu');
+  
   const [currentChallenge, setCurrentChallenge] = useState(0);
   const [score, setScore] = useState(0);
   const [userInputs, setUserInputs] = useState({
@@ -17,6 +21,15 @@ const CauTrucNguyenTu = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+
+  // Kiểm tra tiến trình khi component mount
+  useEffect(() => {
+    if (hasProgress && !gameStarted && !showResults) {
+      setShowResumeDialog(true);
+    }
+  }, []);
 
   // Danh sách thử thách về cấu trúc nguyên tử
   const challenges = [
@@ -226,6 +239,36 @@ const CauTrucNguyenTu = () => {
 
   const currentQ = challenges[currentChallenge];
 
+  // Start or resume game
+  const startGame = (fromBeginning = false) => {
+    if (fromBeginning) {
+      clearProgress();
+      setCurrentChallenge(0);
+      setScore(0);
+      setGameStarted(true);
+      setShowResumeDialog(false);
+    } else {
+      const saved = getProgress();
+      if (saved) {
+        setCurrentChallenge(saved.currentChallenge);
+        setScore(saved.score);
+        setGameStarted(true);
+        setShowResumeDialog(false);
+      } else {
+        startGame(true);
+      }
+    }
+    setUserInputs({
+      protons: '',
+      neutrons: '',
+      electrons: '',
+      massNumber: '',
+      atomicNumber: '',
+      charge: ''
+    });
+    setIsSubmitted(false);
+  };
+
   // Handle input change
   const handleInputChange = (field, value) => {
     setUserInputs(prev => ({
@@ -252,7 +295,8 @@ const CauTrucNguyenTu = () => {
   // Next challenge
   const nextChallenge = () => {
     if (currentChallenge < challenges.length - 1) {
-      setCurrentChallenge(currentChallenge + 1);
+      const nextIndex = currentChallenge + 1;
+      setCurrentChallenge(nextIndex);
       setUserInputs({
         protons: '',
         neutrons: '',
@@ -262,8 +306,15 @@ const CauTrucNguyenTu = () => {
         charge: ''
       });
       setIsSubmitted(false);
+      
+      // Lưu tiến trình
+      saveProgress({
+        currentChallenge: nextIndex,
+        score
+      });
     } else {
       setShowResults(true);
+      clearProgress(); // Xóa tiến trình khi hoàn thành
     }
   };
 
@@ -668,6 +719,18 @@ const CauTrucNguyenTu = () => {
           </div>
         </div>
       </div>
+
+      {/* Resume Dialog */}
+      <ResumeDialog
+        show={showResumeDialog && !gameStarted}
+        onResume={() => startGame(false)}
+        onRestart={() => startGame(true)}
+        progressInfo={getProgress() ? {
+          current: getProgress().currentChallenge + 1,
+          total: challenges.length,
+          score: getProgress().score
+        } : null}
+      />
     </div>
   );
 };

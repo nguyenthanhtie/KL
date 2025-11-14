@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target } from 'lucide-react';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import periodicData from '../../data/periodic.json';
 import './TroChoiCanBang.css';
 
@@ -48,16 +50,49 @@ function CoefficientControl({ value, onChange, disabled }) {
 }
 
 export default function TroChoiCanBang(){
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('tro-choi-can-bang');
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
-  const reaction = REACTIONS[currentLevel];
-
-  const initialCoeffs = {};
-  reaction.reactants.forEach((r, i) => { initialCoeffs[`r${i}`] = r.coeff; });
-  reaction.products.forEach((p, i) => { initialCoeffs[`p${i}`] = p.coeff; });
-
-  const [coeffs, setCoeffs] = useState(initialCoeffs);
+  const [coeffs, setCoeffs] = useState({});
   const [message, setMessage] = useState('Điều chỉnh hệ số để cân bằng phương trình!');
+
+  const reaction = REACTIONS[currentLevel] || REACTIONS[0];
+
+  // Initialize coefficients when level changes
+  useEffect(() => {
+    if (!reaction) return;
+    const initialCoeffs = {};
+    reaction.reactants.forEach((r, i) => { initialCoeffs[`r${i}`] = 1; });
+    reaction.products.forEach((p, i) => { initialCoeffs[`p${i}`] = 1; });
+    setCoeffs(initialCoeffs);
+  }, [currentLevel]);
+
+  // Check for saved progress on mount
+  useEffect(() => {
+    if (hasProgress && !gameStarted) {
+      setShowResumeDialog(true);
+    } else if (!gameStarted) {
+      setGameStarted(true);
+    }
+  }, [hasProgress, gameStarted]);
+
+  // Start game - either from beginning or resume
+  const startGame = (fromBeginning = false) => {
+    setShowResumeDialog(false);
+    if (fromBeginning) {
+      clearProgress();
+      setGameStarted(true);
+    } else {
+      // Resume from saved progress
+      const savedData = getProgress();
+      if (savedData) {
+        setCurrentLevel(savedData.currentLevel || 0);
+      }
+      setGameStarted(true);
+    }
+  };
 
   const isBalanced = () => {
     const atoms = {};
@@ -120,9 +155,12 @@ export default function TroChoiCanBang(){
           nextReaction.products.forEach((p, i) => { nextCoeffs[`p${i}`] = 1; });
           setCoeffs(nextCoeffs);
           setMessage('Điều chỉnh hệ số để cân bằng phương trình!');
+          // Save progress
+          saveProgress({ currentLevel: nextLevel });
         }, 2000);
       } else {
         setGameCompleted(true);
+        clearProgress();
         setMessage('🎉 Chúc mừng! Bạn đã hoàn thành tất cả 8 phản ứng!');
       }
     } else {
@@ -137,6 +175,43 @@ export default function TroChoiCanBang(){
     setCoeffs(resetCoeffs);
     setMessage('Điều chỉnh hệ số để cân bằng phương trình!');
   };
+
+  if (!gameStarted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-600 via-teal-600 to-blue-700">
+        <div className="bg-white shadow-md">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Quay lại
+              </Link>
+              <h1 className="text-2xl font-bold text-gray-800 flex items-center">
+                <span className="mr-2">⚖️</span>
+                Cân Bằng Phương Trình
+              </h1>
+              <div className="w-24"></div>
+            </div>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 py-8">
+          <div className="bg-white rounded-2xl shadow-2xl p-12 text-center">
+            <p className="text-gray-600">Đang tải...</p>
+          </div>
+        </div>
+        <ResumeDialog
+          show={showResumeDialog}
+          onResume={() => startGame(false)}
+          onRestart={() => startGame(true)}
+          progressInfo={{
+            current: (getProgress()?.currentLevel || 0) + 1,
+            total: REACTIONS.length,
+            score: 0
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-600 via-teal-600 to-blue-700">
@@ -159,6 +234,11 @@ export default function TroChoiCanBang(){
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
+        {!reaction ? (
+          <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6 text-center">
+            <p>Loading...</p>
+          </div>
+        ) : (
         <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6">
           {/* Progress */}
           <div className="flex items-center justify-between mb-6">
@@ -279,7 +359,19 @@ export default function TroChoiCanBang(){
             {message}
           </div>
         </div>
+        )}
       </div>
+
+      <ResumeDialog
+        show={showResumeDialog}
+        onResume={() => startGame(false)}
+        onRestart={() => startGame(true)}
+        progressInfo={{
+          current: (getProgress()?.currentLevel || 0) + 1,
+          total: REACTIONS.length,
+          score: 0
+        }}
+      />
     </div>
   );
 }

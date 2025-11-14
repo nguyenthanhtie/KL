@@ -2,6 +2,8 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target } from 'lucide-react';
 import periodicData from '../../data/periodic.json';
+import useChallengeProgress from '../../hooks/useChallengeProgress';
+import ResumeDialog from '../../components/ResumeDialog';
 import './GhepNguyenTu.css';
 
 // Convert periodic data to elements array (first 36 elements for teaching)
@@ -34,8 +36,12 @@ function getRequiredShells(Z) {
 }
 
 export default function GhepNguyenTu(){
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('ghep-nguyen-tu');
+  
   const [completedCount, setCompletedCount] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   const maxCompletions = 6;
 
   const getRandomElement = () => ELEMENTS[Math.floor(Math.random() * ELEMENTS.length)];
@@ -49,10 +55,39 @@ export default function GhepNguyenTu(){
   const [dragging, setDragging] = useState(null);
 
   useEffect(() => {
-    if (!gameCompleted) {
+    if (hasProgress && !gameStarted && !gameCompleted) {
+      setShowResumeDialog(true);
+    }
+  }, []);
+
+  const startGame = (fromBeginning = false) => {
+    if (fromBeginning) {
+      clearProgress();
+      setCompletedCount(0);
+      setGameCompleted(false);
+      const newElement = getRandomElement();
+      setSelected(newElement);
+      setPlacements({});
+      setGameStarted(true);
+      setShowResumeDialog(false);
+      setStatus(`Thử thách 1/${maxCompletions}: Kéo electron vào lớp đúng cho ${newElement.name} (${newElement.symbol}).`);
+    } else {
+      const saved = getProgress();
+      if (saved) {
+        setCompletedCount(saved.completedCount);
+        setGameStarted(true);
+        setShowResumeDialog(false);
+      } else {
+        startGame(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!gameCompleted && gameStarted) {
       setStatus(`Thử thách ${completedCount + 1}/${maxCompletions}: Kéo electron vào lớp đúng cho ${selected.name} (${selected.symbol}).`);
     }
-  }, [selected, completedCount, gameCompleted, maxCompletions]);
+  }, [selected, completedCount, gameCompleted, maxCompletions, gameStarted]);
 
   const containerSize = DEFAULT_CONTAINER_SIZE;
   const center = containerSize / 2;
@@ -145,6 +180,7 @@ export default function GhepNguyenTu(){
   const nextElement = () => {
     if (completedCount >= maxCompletions) {
       setGameCompleted(true);
+      clearProgress();
       setStatus('🎉 Chúc mừng! Bạn đã hoàn thành tất cả 6 thử thách!');
       return;
     }
@@ -152,8 +188,14 @@ export default function GhepNguyenTu(){
     const newElement = getRandomElement();
     setSelected(newElement);
     setPlacements({});
-    setCompletedCount(prev => prev + 1);
-    setStatus(`Thử thách ${completedCount + 1}/${maxCompletions}: Kéo electron vào lớp đúng cho ${newElement.name} (${newElement.symbol}).`);
+    const newCount = completedCount + 1;
+    setCompletedCount(newCount);
+    
+    saveProgress({
+      completedCount: newCount
+    });
+    
+    setStatus(`Thử thách ${newCount + 1}/${maxCompletions}: Kéo electron vào lớp đúng cho ${newElement.name} (${newElement.symbol}).`);
   };
 
   const validate = ()=>{
@@ -167,6 +209,7 @@ export default function GhepNguyenTu(){
     if(ok){ 
       if (completedCount + 1 >= maxCompletions) {
         setGameCompleted(true);
+        clearProgress();
         setStatus('🎉 Chúc mừng! Bạn đã hoàn thành tất cả 6 thử thách!');
       } else {
         setStatus(`✅ Chính xác! Cấu tạo nguyên tử ${selected.name} đúng. Chuyển sang chất tiếp theo...`);
@@ -351,6 +394,17 @@ export default function GhepNguyenTu(){
           </div>
         </div>
       </div>
+
+      <ResumeDialog
+        show={showResumeDialog && !gameStarted}
+        onResume={() => startGame(false)}
+        onRestart={() => startGame(true)}
+        progressInfo={getProgress() ? {
+          current: getProgress().completedCount + 1,
+          total: maxCompletions,
+          score: undefined
+        } : null}
+      />
     </div>
   );
 }
