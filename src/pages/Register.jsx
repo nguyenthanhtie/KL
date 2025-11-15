@@ -12,7 +12,6 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     displayName: '',
-    grade: 8
   });
   
   const [errors, setErrors] = useState({});
@@ -82,8 +81,7 @@ const Register = () => {
           username: formData.username,
           email: formData.email,
           password: formData.password,
-          displayName: formData.displayName || formData.username,
-          grade: formData.grade
+          displayName: formData.displayName || formData.username
         }),
       });
 
@@ -231,26 +229,6 @@ const Register = () => {
                   </p>
                 )}
               </div>
-              <div>
-                <label htmlFor="grade" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                  <span className="mr-2">🎓</span>
-                  Lớp
-                </label>
-                <select
-                  id="grade"
-                  name="grade"
-                  value={formData.grade}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 hover:border-indigo-300 text-sm"
-                >
-                  <option value={8}>Lớp 8</option>
-                  <option value={9}>Lớp 9</option>
-                  <option value={10}>Lớp 10</option>
-                  <option value={11}>Lớp 11</option>
-                  <option value={12}>Lớp 12</option>
-                </select>
-              </div>
-
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
                   <span className="mr-2">🔐</span>

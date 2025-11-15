@@ -22,6 +22,7 @@ import PhaCheDungDich from './pages/challenges/PhaCheDungDich';
 import CauTrucNguyenTu from './pages/challenges/CauTrucNguyenTu';
 import PhongThiNghiem from './pages/challenges/PhongThiNghiem';
 import TinhOxiHoa from './pages/challenges/TinhOxiHoa';
+import PlacementTest from './pages/PlacementTest';
 
 
 const AppContent = () => {
@@ -73,6 +74,10 @@ const AppContent = () => {
               <Profile />
             </ProtectedRoute>
           } 
+        />
+        <Route 
+          path="/placement-test" 
+          element={<PlacementTest />}
         />
       </Routes>
     </div>

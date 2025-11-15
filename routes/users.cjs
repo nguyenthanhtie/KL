@@ -330,4 +330,31 @@ router.patch('/profile/:identifier', async (req, res) => {
   }
 });
 
+// Endpoint to update user's grade
+router.post('/update-grade', async (req, res) => {
+  try {
+    const { grade, userId } = req.body; // Assuming userId is sent in the body
+
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    const user = await User.findOne({ $or: [{ userId }, { firebaseUid: userId }] });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+    }
+
+    user.profile.grade = grade;
+    await user.save();
+
+    const userResponse = user.toObject();
+    delete userResponse.hashedPassword;
+
+    res.json(userResponse);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;

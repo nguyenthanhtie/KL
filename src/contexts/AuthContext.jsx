@@ -26,44 +26,53 @@ export const AuthProvider = ({ children }) => {
 
   // Sync Firebase user with database
   const syncUserWithDatabase = async (firebaseUser) => {
-    if (!firebaseUser) return;
+    if (!firebaseUser) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
 
+    setLoading(true);
     try {
-      // Check if user exists in database
-      const response = await api.get(`/users/profile/${firebaseUser.uid}`);
-      
-      // User exists, no need to create
-      console.log('User profile found:', response.data.username);
-    } catch (error) {
-      // User doesn't exist, create profile
-      if (error.response?.status === 404) {
-        try {
-          await api.post('/users/profile', {
+      let dbUser = null;
+      try {
+        // First, try to get the user profile from your DB
+        const response = await api.get(`/users/profile/${firebaseUser.uid}`);
+        dbUser = response.data;
+      } catch (error) {
+        // If user is not found (404), create them in your DB
+        if (error.response?.status === 404) {
+          console.log('User not found in DB, creating profile...');
+          const createResponse = await api.post('/users/profile', {
             email: firebaseUser.email,
             firebaseUid: firebaseUser.uid,
             displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0],
             username: firebaseUser.email?.split('@')[0]
           });
+          dbUser = createResponse.data;
           console.log('User profile created for:', firebaseUser.email);
-        } catch (createError) {
-          console.error('Error creating user profile:', createError);
+        } else {
+          // For other errors, re-throw to be caught by the outer catch block
+          throw error;
         }
-      } else {
-        console.error('Error checking user profile:', error);
       }
+      
+      // Merge Firebase auth data with your DB data
+      setUser({ ...firebaseUser, ...dbUser });
+
+    } catch (error) {
+      console.error('Error syncing user with database:', error);
+      // Fallback to just Firebase user data if DB sync fails
+      setUser(firebaseUser); 
+    } finally {
+      // Always set loading to false after the process is complete
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setUser(user);
-      
-      // Sync user with database when authenticated
-      if (user) {
-        await syncUserWithDatabase(user);
-      }
-      
-      setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      syncUserWithDatabase(user);
     });
 
     return unsubscribe;
@@ -88,6 +97,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
+    setUser,
     signup,
     login,
     loginWithGoogle,

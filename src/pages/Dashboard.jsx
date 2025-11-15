@@ -18,6 +18,16 @@ const Dashboard = () => {
   });
   const [lessonsProgress, setLessonsProgress] = useState({}); // Store progress by lessonId
   const [classes, setClasses] = useState([]);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [userGrade, setUserGrade] = useState(8); // Add missing state for userGrade
+
+  useEffect(() => {
+    if (user && user.profile) {
+      setUserGrade(user.profile.grade);
+      setSelectedClass(user.profile.grade);
+    }
+  }, [user]);
+
 
   // Fetch user progress from API
   useEffect(() => {
@@ -177,6 +187,10 @@ const Dashboard = () => {
         
         <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
           {[8, 9, 10, 11, 12].map((gradeId) => {
+            const isCurrent = gradeId === userGrade;
+            const isAccessible = gradeId <= userGrade;
+            const isSelected = gradeId === selectedClass;
+
             const gradeColors = {
               8: 'from-blue-400 to-blue-600',
               9: 'from-green-400 to-green-600',
@@ -192,12 +206,28 @@ const Dashboard = () => {
               12: '🎓'
             };
             
+            const handleClick = () => {
+              if (isAccessible) {
+                setSelectedClass(gradeId);
+              } else {
+                alert(`Bạn phải hoàn thành chương trình lớp ${userGrade} trước khi truy cập lớp ${gradeId}.`);
+              }
+            };
+
             return (
               <div
                 key={gradeId}
-                onClick={() => navigate(`/class/${gradeId}`)}
-                className={`bg-gradient-to-br ${gradeColors[gradeId]} text-white rounded-xl p-6 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg`}
+                onClick={handleClick}
+                className={`relative bg-gradient-to-br ${gradeColors[gradeId]} text-white rounded-xl p-6 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg ${!isAccessible ? 'opacity-50 cursor-not-allowed' : ''} ${isSelected ? 'ring-4 ring-yellow-400' : ''}`}
               >
+                {!isAccessible && (
+                  <div className="absolute inset-0 bg-black/60 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                    <svg className="w-10 h-10 text-white/90" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+                {isCurrent && <div className="absolute top-2 right-2 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full">Hiện tại</div>}
                 <div className="text-4xl mb-2 text-center">{gradeIcons[gradeId]}</div>
                 <h3 className="text-xl font-bold text-center">Lớp {gradeId}</h3>
               </div>
@@ -209,7 +239,7 @@ const Dashboard = () => {
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Lộ trình học tập của bạn</h2>
         
         <div className="space-y-6">
-          {classes.map((classData) => (
+          {classes.filter(c => c.classId === selectedClass).map((classData) => (
             <Card key={classData.classId} className="overflow-hidden">
               {/* Header */}
               <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 -m-6 mb-6">
