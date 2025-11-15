@@ -43,17 +43,28 @@ export const AuthProvider = ({ children }) => {
         // If user is not found (404), create them in your DB
         if (error.response?.status === 404) {
           console.log('User not found in DB, creating profile...');
-          const createResponse = await api.post('/users/profile', {
-            email: firebaseUser.email,
-            firebaseUid: firebaseUser.uid,
-            displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0],
-            username: firebaseUser.email?.split('@')[0]
-          });
-          dbUser = createResponse.data;
-          console.log('User profile created for:', firebaseUser.email);
+          try {
+            const createResponse = await api.post('/users/profile', {
+              email: firebaseUser.email,
+              firebaseUid: firebaseUser.uid,
+              displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0],
+              username: firebaseUser.email?.split('@')[0]
+            });
+            dbUser = createResponse.data;
+            console.log('User profile created for:', firebaseUser.email);
+          } catch (createError) {
+            console.error('Failed to create user profile:', createError);
+            // Fallback: continue with Firebase user only
+            setUser(firebaseUser);
+            setLoading(false);
+            return;
+          }
         } else {
-          // For other errors, re-throw to be caught by the outer catch block
-          throw error;
+          // For other errors, log and continue with Firebase user
+          console.error('Error fetching user profile:', error);
+          setUser(firebaseUser);
+          setLoading(false);
+          return;
         }
       }
       

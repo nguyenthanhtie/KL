@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target } from 'lucide-react';
-import useChallengeProgress from '../../hooks/useChallengeProgress';
-import ResumeDialog from '../../components/ResumeDialog';
-import periodicData from '../../data/periodic.json';
+import useChallengeProgress from '../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../components/ResumeDialog';
+import periodicData from '../../../data/periodic.json';
 import './TroChoiCanBang.css';
 
 // Reactions - from simple to complex

@@ -18,8 +18,33 @@ const Login = () => {
     try {
       setError('');
       setLoading(true);
-      await login(email, password);
-      navigate('/dashboard');
+      const result = await login(email, password);
+      
+      // Đợi AuthContext sync user với database
+      setTimeout(async () => {
+        try {
+          // Lấy user profile từ API để có thông tin mới nhất
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/users/profile/${result.user.uid}`);
+          if (response.ok) {
+            const userData = await response.json();
+            
+            // Kiểm tra xem user đã có chương trình học chưa
+            if (userData.programs && userData.programs.length > 0) {
+              const activeProgram = userData.programs.find(p => p.isActive);
+              if (activeProgram) {
+                // Đã có chương trình học -> đến trang home của chương trình đó
+                navigate(`/program/${activeProgram.programId}`);
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching user profile:', err);
+        }
+        
+        // Chưa có chương trình học -> đến trang chọn chương trình
+        navigate('/');
+      }, 500);
     } catch (error) {
       setError('Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.');
       console.error(error);
@@ -32,8 +57,33 @@ const Login = () => {
     try {
       setError('');
       setLoading(true);
-      await loginWithGoogle();
-      navigate('/dashboard');
+      const result = await loginWithGoogle();
+      
+      // Đợi AuthContext sync user với database
+      setTimeout(async () => {
+        try {
+          // Lấy user profile từ API để có thông tin mới nhất
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/users/profile/${result.user.uid}`);
+          if (response.ok) {
+            const userData = await response.json();
+            
+            // Kiểm tra xem user đã có chương trình học chưa
+            if (userData.programs && userData.programs.length > 0) {
+              const activeProgram = userData.programs.find(p => p.isActive);
+              if (activeProgram) {
+                // Đã có chương trình học -> đến trang home của chương trình đó
+                navigate(`/program/${activeProgram.programId}`);
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching user profile:', err);
+        }
+        
+        // Chưa có chương trình học -> đến trang chọn chương trình
+        navigate('/');
+      }, 500);
     } catch (error) {
       setError('Đăng nhập với Google thất bại.');
       console.error(error);

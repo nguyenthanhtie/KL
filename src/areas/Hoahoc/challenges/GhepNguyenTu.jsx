@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target } from 'lucide-react';
-import periodicData from '../../data/periodic.json';
-import useChallengeProgress from '../../hooks/useChallengeProgress';
-import ResumeDialog from '../../components/ResumeDialog';
+import periodicData from '../../../data/periodic.json';
+import useChallengeProgress from '../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../components/ResumeDialog';
 import './GhepNguyenTu.css';
 
 // Convert periodic data to elements array (first 36 elements for teaching)

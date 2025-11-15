@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Timer, Lightbulb, CheckCircle, XCircle, Clock } from 'lucide-react';
-import useChallengeProgress from '../../hooks/useChallengeProgress';
-import ResumeDialog from '../../components/ResumeDialog';
+import useChallengeProgress from '../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../components/ResumeDialog';
 import './DuoiHinhBatChu.css';
 
 const DuoiHinhBatChu = () => {

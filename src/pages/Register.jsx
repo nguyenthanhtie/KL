@@ -16,7 +16,6 @@ const Register = () => {
   
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [registrationMethod, setRegistrationMethod] = useState('local');
   
   const { signup, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
@@ -65,71 +64,60 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleLocalRegistration = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!validateForm()) return;
 
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/users/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          displayName: formData.displayName || formData.username
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Đăng ký thất bại');
-      }
-
-      alert('Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.');
-      navigate('/login');
-    } catch (error) {
-      setErrors({ submit: error.message });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleFirebaseRegistration = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
-
-    setLoading(true);
-    try {
+      // 1. Tạo tài khoản Firebase
       const userCredential = await signup(formData.email, formData.password);
       
-      const response = await fetch(`${API_BASE_URL}/users/profile`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          firebaseUid: userCredential.user.uid,
-          displayName: formData.displayName || formData.username,
-          username: formData.username
-        }),
-      });
+      // 2. Tạo profile trong database
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/profile`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            firebaseUid: userCredential.user.uid,
+            displayName: formData.displayName || formData.username,
+            username: formData.username
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Không thể tạo profile người dùng');
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.message || 'Không thể tạo profile người dùng');
+        }
+      } catch (profileError) {
+        console.error('Profile creation error:', profileError);
+        // Nếu tạo profile thất bại, vẫn cho đăng nhập
+        // AuthContext sẽ tự động tạo profile khi sync
       }
 
-      navigate('/dashboard');
+      // 3. User mới đăng ký -> chưa có chương trình học -> đến trang chọn chương trình
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     } catch (error) {
       console.error('Registration error:', error);
-      setErrors({ submit: error.message || 'Đăng ký thất bại' });
+      let errorMessage = 'Đăng ký thất bại';
+      
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'Email này đã được sử dụng';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Email không hợp lệ';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Mật khẩu quá yếu';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      setErrors({ submit: errorMessage });
     } finally {
       setLoading(false);
     }
@@ -139,8 +127,33 @@ const Register = () => {
     try {
       setErrors({});
       setLoading(true);
-      await loginWithGoogle();
-      navigate('/dashboard');
+      const result = await loginWithGoogle();
+      
+      // Đợi AuthContext sync user với database
+      setTimeout(async () => {
+        try {
+          // Lấy user profile từ API để có thông tin mới nhất
+          const response = await fetch(`${API_BASE_URL}/users/profile/${result.user.uid}`);
+          if (response.ok) {
+            const userData = await response.json();
+            
+            // Kiểm tra xem user đã có chương trình học chưa
+            if (userData.programs && userData.programs.length > 0) {
+              const activeProgram = userData.programs.find(p => p.isActive);
+              if (activeProgram) {
+                // Đã có chương trình học -> đến trang home của chương trình đó
+                navigate(`/program/${activeProgram.programId}`);
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching user profile:', err);
+        }
+        
+        // Chưa có chương trình học -> đến trang chọn chương trình
+        navigate('/');
+      }, 500);
     } catch (error) {
       setErrors({ submit: 'Đăng ký với Google thất bại.' });
       console.error(error);
@@ -176,7 +189,7 @@ const Register = () => {
 
 
         <Card className="p-5 bg-white/85 backdrop-blur-md border border-white/20 shadow-2xl rounded-3xl hover:shadow-3xl transition-all duration-300">
-          <form onSubmit={registrationMethod === 'local' ? handleLocalRegistration : handleFirebaseRegistration}>
+          <form onSubmit={handleSubmit}>
             <div className="space-y-3">
                       <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-1">

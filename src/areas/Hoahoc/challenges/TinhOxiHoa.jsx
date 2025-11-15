@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trophy, Zap, Play, RotateCcw, Lightbulb } from 'lucide-react';
-import useChallengeProgress from '../../hooks/useChallengeProgress';
-import ResumeDialog from '../../components/ResumeDialog';
+import useChallengeProgress from '../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../components/ResumeDialog';
 import './TinhOxiHoa.css';
 
 const TinhOxiHoa = () => {

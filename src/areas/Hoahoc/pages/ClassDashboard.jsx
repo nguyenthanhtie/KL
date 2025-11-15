@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { API_URL } from '../config/api';
-import { useAuth } from '../contexts/AuthContext';
-import Card from '../components/ui/Card';
-import ProgressBar from '../components/ui/ProgressBar';
+import { API_URL } from '../../../config/api';
+import { useAuth } from '../../../contexts/AuthContext';
+import Card from '../../../components/ui/Card';
+import ProgressBar from '../../../components/ui/ProgressBar';
 
 const ClassDashboard = () => {
   const { classId } = useParams();

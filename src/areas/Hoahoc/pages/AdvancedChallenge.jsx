@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Button from '../components/ui/Button';
+import Button from '../../../components/ui/Button';
 import { Trophy, Lock, Clock, Award, CheckCircle2 } from 'lucide-react';
-import api from '../config/api';
+import api from '../../../config/api';
 
 const AdvancedChallenge = () => {
   const [selectedChallenge, setSelectedChallenge] = useState(null);

@@ -357,4 +357,36 @@ router.post('/update-grade', async (req, res) => {
   }
 });
 
+// Endpoint để đăng ký chương trình học
+router.post('/enroll-program', async (req, res) => {
+  try {
+    const { userId, programId, programName, initialClassId } = req.body;
+
+    if (!userId || !programId) {
+      return res.status(400).json({ message: 'User ID và Program ID là bắt buộc' });
+    }
+
+    const user = await User.findOne({ $or: [{ userId }, { firebaseUid: userId }] });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+    }
+
+    // Đăng ký chương trình học
+    const program = user.enrollProgram(programId, programName, initialClassId);
+    await user.save();
+
+    const userResponse = user.toObject();
+    delete userResponse.hashedPassword;
+
+    res.json({ 
+      message: 'Đăng ký chương trình thành công',
+      user: userResponse,
+      program 
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;

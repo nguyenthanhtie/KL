@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { API_URL } from '../config/api';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
-import Modal from '../components/ui/Modal';
-import LevelSelector from '../components/ui/LevelSelector';
+import { API_URL } from '../../../config/api';
+import Card from '../../../components/ui/Card';
+import Button from '../../../components/ui/Button';
+import Modal from '../../../components/ui/Modal';
+import LevelSelector from '../../../components/ui/LevelSelector';
 
 const Lesson = () => {
   const { classId, chapterId, lessonId } = useParams();

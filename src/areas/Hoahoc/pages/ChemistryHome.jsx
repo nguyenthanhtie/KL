@@ -1,0 +1,477 @@
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
+import Button from '../../../components/ui/Button';
+import { useEffect, useState } from 'react';
+import { BookOpen, Trophy, Target, Clock, Star, Flame, Zap, Award, TrendingUp, Play } from 'lucide-react';
+
+const ChemistryHome = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [programData, setProgramData] = useState(null);
+
+  useEffect(() => {
+    // Kiểm tra xem user đã đăng ký chương trình Hóa học chưa
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry' && p.isActive);
+    if (!chemistryProgram) {
+      // Chưa đăng ký -> chuyển đến placement test
+      navigate('/placement-test/chemistry');
+      return;
+    }
+
+    setProgramData(chemistryProgram);
+  }, [user, navigate]);
+
+  if (!programData) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Đang tải...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const stats = programData.programProgress?.statistics || {
+    totalLessons: 0,
+    completedLessons: 0,
+    totalStars: 0,
+    totalPoints: 0,
+    averageScore: 0,
+    totalTimeSpent: 0
+  };
+
+  const currentClass = programData.programProgress?.currentClass || { classId: 8, className: 'Lớp 8' };
+  const completionRate = stats.totalLessons > 0 
+    ? Math.round((stats.completedLessons / stats.totalLessons) * 100) 
+    : 0;
+
+  const grades = [
+    { 
+      grade: 8, 
+      topics: ['Chất - Nguyên tử - Phân tử', 'Phản ứng hóa học', 'Mol và tính toán', 'Oxi - Không khí', 'Hiđro - Nước'], 
+      chapters: 7, 
+      lessons: 28,
+      icon: '⚗️'
+    },
+    { 
+      grade: 9, 
+      topics: ['Phi kim', 'Kim loại', 'Hợp chất hữu cơ', 'Hóa học và cuộc sống'], 
+      chapters: 6, 
+      lessons: 24,
+      icon: '🔬'
+    },
+    { 
+      grade: 10, 
+      topics: ['Nguyên tử', 'Bảng tuần hoàn', 'Liên kết hóa học', 'Phản ứng oxi hóa khử'], 
+      chapters: 8, 
+      lessons: 32,
+      icon: '⚛️'
+    },
+    { 
+      grade: 11, 
+      topics: ['Sự điện li', 'Nhóm Halogen', 'Nhóm Oxi', 'Tốc độ phản ứng', 'Nitơ - Photpho'], 
+      chapters: 7, 
+      lessons: 30,
+      icon: '🧪'
+    },
+    { 
+      grade: 12, 
+      topics: ['Este - Lipit', 'Cacbohiđrat', 'Amin - Amino axi t', 'Polime', 'Kim loại', 'Hóa học hữu cơ tổng hợp'], 
+      chapters: 9, 
+      lessons: 36,
+      icon: '🧬'
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Floating Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative py-8 px-4">
+        <div className="container mx-auto max-w-7xl">
+          {/* Back Button */}
+          <button
+            onClick={() => navigate('/')}
+            className="mb-6 text-gray-600 hover:text-blue-600 flex items-center gap-2 transition-all hover:gap-3"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span className="font-medium">Chọn môn học khác</span>
+          </button>
+
+          {/* Welcome Card */}
+          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl p-8 mb-6 text-white shadow-2xl relative overflow-hidden">
+            {/* Decorative Elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex-1">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-5xl shadow-lg">
+                      🧪
+                    </div>
+                    <div>
+                      <h1 className="text-3xl md:text-4xl font-bold mb-1">
+                        Chào mừng trở lại, {user?.displayName || 'Học sinh'}! 👋
+                      </h1>
+                      <p className="text-blue-100 text-lg">
+                        Tiếp tục hành trình khám phá Hóa học cùng chúng tôi
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Current Progress */}
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-blue-100 text-sm mb-1">Đang học</p>
+                    <p className="text-2xl font-bold">{currentClass.className}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-blue-100 text-sm mb-1">Tiến độ</p>
+                    <p className="text-2xl font-bold">{completionRate}%</p>
+                  </div>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-green-400 to-emerald-500 h-full rounded-full transition-all duration-500 shadow-lg"
+                    style={{ width: `${completionRate}%` }}
+                  ></div>
+                </div>
+                <div className="flex justify-between mt-3 text-sm text-blue-100">
+                  <span>{stats.completedLessons} / {stats.totalLessons} bài học</span>
+                  <span>{stats.totalStars} ⭐</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-blue-600" />
+                </div>
+                <span className="text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                  +{Math.floor(Math.random() * 5) + 1} tuần này
+                </span>
+              </div>
+              <p className="text-3xl font-bold text-gray-800 mb-1">{stats.completedLessons}</p>
+              <p className="text-sm text-gray-600">Bài đã hoàn thành</p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                  <Star className="w-6 h-6 text-yellow-600" />
+                </div>
+                <Flame className="w-5 h-5 text-orange-500" />
+              </div>
+              <p className="text-3xl font-bold text-gray-800 mb-1">{stats.totalStars}</p>
+              <p className="text-sm text-gray-600">Sao tích lũy</p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <Trophy className="w-6 h-6 text-purple-600" />
+                </div>
+                <TrendingUp className="w-5 h-5 text-green-500" />
+              </div>
+              <p className="text-3xl font-bold text-gray-800 mb-1">{stats.totalPoints}</p>
+              <p className="text-sm text-gray-600">Điểm thành tích</p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                  <Clock className="w-6 h-6 text-green-600" />
+                </div>
+                <Zap className="w-5 h-5 text-yellow-500" />
+              </div>
+              <p className="text-3xl font-bold text-gray-800 mb-1">
+                {Math.floor(stats.totalTimeSpent / 60)}
+              </p>
+              <p className="text-sm text-gray-600">Phút học tập</p>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="group bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Play className="w-7 h-7" />
+                </div>
+                <svg className="w-6 h-6 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Tiếp tục học</h3>
+              <p className="text-blue-100 text-sm">Học tiếp bài học gần nhất</p>
+            </button>
+
+            <button
+              onClick={() => navigate('/advanced-challenge')}
+              className="group bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Target className="w-7 h-7" />
+                </div>
+                <svg className="w-6 h-6 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Thử thách</h3>
+              <p className="text-purple-100 text-sm">Làm bài tập nâng cao</p>
+            </button>
+
+            <button
+              onClick={() => navigate('/profile')}
+              className="group bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Award className="w-7 h-7" />
+                </div>
+                <svg className="w-6 h-6 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Hồ sơ</h3>
+              <p className="text-emerald-100 text-sm">Xem thành tích của bạn</p>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Path */}
+      <section className="py-8 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <div className="mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
+              <span className="text-4xl">🎯</span>
+              Lộ trình học tập
+            </h2>
+            <p className="text-gray-600">Chương trình Hóa học từ lớp 8 đến lớp 12</p>
+          </div>
+
+          <div className="space-y-4">
+            {grades.map(({ grade, topics, chapters, lessons, icon }) => {
+              const isCurrentGrade = currentClass.classId === grade;
+              const classProgress = programData.programProgress?.classProgress?.find(c => c.classId === grade);
+              const isUnlocked = classProgress?.isUnlocked || grade <= currentClass.classId;
+              const isCompleted = classProgress?.completedAt;
+              const progress = classProgress 
+                ? Math.round((classProgress.chapters?.filter(ch => ch.completedAt).length || 0) / (chapters || 1) * 100)
+                : 0;
+
+              return (
+                <div 
+                  key={grade}
+                  className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all hover:shadow-xl ${
+                    !isUnlocked ? 'opacity-60' : ''
+                  }`}
+                >
+                  <div className={`p-6 ${
+                    isCurrentGrade 
+                      ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500' 
+                      : ''
+                  }`}>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg ${
+                          isCurrentGrade 
+                            ? 'bg-gradient-to-br from-blue-500 to-indigo-600' 
+                            : isUnlocked
+                            ? 'bg-gradient-to-br from-gray-100 to-gray-200'
+                            : 'bg-gray-100'
+                        }`}>
+                          {icon}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-3 mb-1">
+                            <h3 className="text-2xl font-bold text-gray-800">
+                              Lớp {grade}
+                            </h3>
+                            {isCurrentGrade && (
+                              <span className="bg-blue-500 text-white text-sm px-3 py-1 rounded-full font-medium flex items-center gap-1">
+                                <Zap className="w-4 h-4" />
+                                Đang học
+                              </span>
+                            )}
+                            {isCompleted && (
+                              <span className="bg-green-500 text-white text-sm px-3 py-1 rounded-full font-medium flex items-center gap-1">
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                Hoàn thành
+                              </span>
+                            )}
+                            {!isUnlocked && (
+                              <span className="bg-gray-300 text-gray-600 text-sm px-3 py-1 rounded-full font-medium flex items-center gap-1">
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                                </svg>
+                                Khóa
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-gray-600 flex items-center gap-3 text-sm">
+                            <span className="flex items-center gap-1">
+                              <BookOpen className="w-4 h-4" />
+                              {chapters} chương
+                            </span>
+                            <span className="text-gray-400">•</span>
+                            <span>{lessons} bài học</span>
+                            {isUnlocked && !isCompleted && (
+                              <>
+                                <span className="text-gray-400">•</span>
+                                <span className="text-blue-600 font-medium">{progress}% hoàn thành</span>
+                              </>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {isUnlocked && (
+                        <button
+                          onClick={() => navigate(`/class/${grade}`)}
+                          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all hover:scale-105 shadow-lg flex items-center gap-2"
+                        >
+                          {isCurrentGrade ? 'Học tiếp' : 'Xem chi tiết'}
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Progress Bar */}
+                    {isUnlocked && !isCompleted && (
+                      <div className="mb-4">
+                        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                          <div 
+                            className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500"
+                            style={{ width: `${progress}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Topics */}
+                    <div className="flex flex-wrap gap-2">
+                      {topics.map((topic, idx) => (
+                        <span 
+                          key={idx}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                            isUnlocked 
+                              ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
+                              : 'bg-gray-200 text-gray-400'
+                          }`}
+                        >
+                          {topic}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-12 px-4 bg-gradient-to-b from-transparent to-blue-50/50">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-3">
+              Tại sao chọn chương trình Hóa học của chúng tôi?
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Phương pháp học hiện đại, hiệu quả cao
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-lg">
+                🎯
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Học theo trình độ</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Nội dung được thiết kế phù hợp với từng lớp học, từ cơ bản đến nâng cao, 
+                giúp học sinh tiếp thu kiến thức một cách logic và hiệu quả.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-lg">
+                🔬
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Thực hành tương tác</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Thí nghiệm ảo 3D và bài tập thực hành đa dạng giúp học sinh trải nghiệm 
+                và hiểu sâu các hiện tượng hóa học một cách sinh động.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-lg">
+                📊
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Theo dõi tiến độ</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Hệ thống đánh giá và báo cáo chi tiết giúp học sinh và phụ huynh 
+                theo dõi quá trình học tập và điều chỉnh phương pháp phù hợp.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <style jsx>{`
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default ChemistryHome;

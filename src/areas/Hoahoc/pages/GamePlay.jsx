@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { API_URL } from '../config/api';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
-import QuizHeader from './gamelist/QuizHeader';
-import QuizTypeBadge from './gamelist/QuizTypeBadge';
-import MultipleChoice from './gamelist/MultipleChoice';
-import TrueFalse from './gamelist/TrueFalse';
-import FillInBlank from './gamelist/FillInBlank';
-import Matching from './gamelist/Matching';
-import Ordering from './gamelist/Ordering';
-import DragDrop from './gamelist/DragDrop';
-import ResultModal from './gamelist/ResultModal';
+import { API_URL } from '../../../config/api';
+import Card from '../../../components/ui/Card';
+import Button from '../../../components/ui/Button';
+import QuizHeader from '../gamelist/QuizHeader';
+import QuizTypeBadge from '../gamelist/QuizTypeBadge';
+import MultipleChoice from '../gamelist/MultipleChoice';
+import TrueFalse from '../gamelist/TrueFalse';
+import FillInBlank from '../gamelist/FillInBlank';
+import Matching from '../gamelist/Matching';
+import Ordering from '../gamelist/Ordering';
+import DragDrop from '../gamelist/DragDrop';
+import ResultModal from '../gamelist/ResultModal';
 
 const GamePlay = () => {
   const { classId, chapterId, lessonId, level } = useParams(); // Thêm level param

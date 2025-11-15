@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext';
-import { API_URL } from '../config/api';
-import Card from '../components/ui/Card';
-import ProgressBar from '../components/ui/ProgressBar';
-import Button from '../components/ui/Button';
+import { useAuth } from '../../../contexts/AuthContext';
+import { API_URL } from '../../../config/api';
+import Card from '../../../components/ui/Card';
+import ProgressBar from '../../../components/ui/ProgressBar';
+import Button from '../../../components/ui/Button';
 
 const Dashboard = () => {
   const { user } = useAuth();

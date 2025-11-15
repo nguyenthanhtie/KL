@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const Lesson = require('./models/Lesson.cjs');
-const lessons8 = require('./class8/index.cjs');
-const lessons9 = require('./class9/index.cjs');
-const lessons10 = require('./class10/index.cjs');
-const lessons11 = require('./class11/index.cjs');
-const lessons12 = require('./class12/index.cjs');
+const lessons8 = require('./areas/Hoahoc/class8/index.cjs');
+const lessons9 = require('./areas/Hoahoc/class9/index.cjs');
+const lessons10 = require('./areas/Hoahoc/class10/index.cjs');
+const lessons11 = require('./areas/Hoahoc/class11/index.cjs');
+const lessons12 = require('./areas/Hoahoc/class12/index.cjs');
 const Challenge = require('./models/Challenge.cjs');
-const lessons = require('./class8/index.cjs');
+const lessons = require('./areas/Hoahoc/class8/index.cjs');
 require('dotenv').config();
 
 const challenges = [

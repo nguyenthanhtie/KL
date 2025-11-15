@@ -1,39 +1,42 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
+import ProgramSelection from './pages/ProgramSelection';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import ClassDashboard from './pages/ClassDashboard';
-import Lesson from './pages/Lesson';
-import LessonSimple from './pages/LessonSimple';
-import GamePlay from './pages/GamePlay';
 import Profile from './pages/Profile';
-import AdvancedChallenge from './pages/AdvancedChallenge';
-import GhepNguyenTu from './pages/challenges/GhepNguyenTu';
-import TroChoiCanBang from './pages/challenges/TroChoiCanBang';
-import SuyLuanPhanUng from './pages/challenges/SuyLuanPhanUng';
-import DuoiHinhBatChu from './pages/challenges/DuoiHinhBatChu';
-import NhanBietDungDich from './pages/challenges/NhanBietDungDich';
-import XayDungPhanTu from './pages/challenges/XayDungPhanTu';
-import PhaCheDungDich from './pages/challenges/PhaCheDungDich';
-import CauTrucNguyenTu from './pages/challenges/CauTrucNguyenTu';
-import PhongThiNghiem from './pages/challenges/PhongThiNghiem';
-import TinhOxiHoa from './pages/challenges/TinhOxiHoa';
 import PlacementTest from './pages/PlacementTest';
+
+// Hóa học area
+import ChemistryHome from './areas/Hoahoc/pages/ChemistryHome';
+import Dashboard from './areas/Hoahoc/pages/Dashboard';
+import ClassDashboard from './areas/Hoahoc/pages/ClassDashboard';
+import Lesson from './areas/Hoahoc/pages/Lesson';
+import LessonSimple from './areas/Hoahoc/pages/LessonSimple';
+import GamePlay from './areas/Hoahoc/pages/GamePlay';
+import AdvancedChallenge from './areas/Hoahoc/pages/AdvancedChallenge';
+import GhepNguyenTu from './areas/Hoahoc/challenges/GhepNguyenTu';
+import TroChoiCanBang from './areas/Hoahoc/challenges/TroChoiCanBang';
+import SuyLuanPhanUng from './areas/Hoahoc/challenges/SuyLuanPhanUng';
+import DuoiHinhBatChu from './areas/Hoahoc/challenges/DuoiHinhBatChu';
+import NhanBietDungDich from './areas/Hoahoc/challenges/NhanBietDungDich';
+import XayDungPhanTu from './areas/Hoahoc/challenges/XayDungPhanTu';
+import PhaCheDungDich from './areas/Hoahoc/challenges/PhaCheDungDich';
+import CauTrucNguyenTu from './areas/Hoahoc/challenges/CauTrucNguyenTu';
+import PhongThiNghiem from './areas/Hoahoc/challenges/PhongThiNghiem';
+import TinhOxiHoa from './areas/Hoahoc/challenges/TinhOxiHoa';
 
 
 const AppContent = () => {
   const location = useLocation();
-  const isChallengePage = location.pathname.startsWith('/advanced-challenge/');
 
   return (
     <div className="min-h-screen">
-      {!isChallengePage && <Navbar />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<ProgramSelection />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/program/chemistry" element={<ChemistryHome />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/advanced-challenge" element={<AdvancedChallenge />} />
@@ -76,7 +79,7 @@ const AppContent = () => {
           } 
         />
         <Route 
-          path="/placement-test" 
+          path="/placement-test/:programId?" 
           element={<PlacementTest />}
         />
       </Routes>

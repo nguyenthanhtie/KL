@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb, Atom, CheckCircle, XCircle, RotateCcw } from 'lucide-react';
-import useChallengeProgress from '../../hooks/useChallengeProgress';
-import ResumeDialog from '../../components/ResumeDialog';
+import useChallengeProgress from '../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../components/ResumeDialog';
 import './XayDungPhanTu.css';
 
 // Dữ liệu về các nguyên tử

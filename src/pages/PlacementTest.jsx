@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { API_BASE_URL } from '../config/api';
@@ -198,6 +198,7 @@ const PlacementTest = () => {
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { programId } = useParams();
   const { user, setUser } = useAuth();
 
   const handleOptionChange = (questionIndex, option) => {
@@ -241,7 +242,8 @@ const PlacementTest = () => {
     const totalScore = Object.values(scoresByLevel).reduce((acc, level) => acc + level.correct, 0);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/users/update-grade`, {
+      // 1. Cập nhật grade cho user
+      const gradeResponse = await fetch(`${API_BASE_URL}/users/update-grade`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -249,17 +251,63 @@ const PlacementTest = () => {
         body: JSON.stringify({ grade: assignedGrade, userId: user.uid }),
       });
 
-      const data = await response.json();
+      const gradeData = await gradeResponse.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Cập nhật lớp thất bại');
+      if (!gradeResponse.ok) {
+        throw new Error(gradeData.message || 'Cập nhật lớp thất bại');
       }
-      
-      // Update user context
-      setUser(prevUser => ({...prevUser, profile: { ...prevUser.profile, grade: assignedGrade }}));
+
+      // 2. Đăng ký chương trình học (nếu có programId)
+      if (programId) {
+        const programNames = {
+          chemistry: 'Hóa học',
+          physics: 'Vật lý',
+          biology: 'Sinh học',
+          math: 'Toán học'
+        };
+
+        const enrollResponse = await fetch(`${API_BASE_URL}/users/enroll-program`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            userId: user.uid,
+            programId: programId,
+            programName: programNames[programId] || programId,
+            initialClassId: assignedGrade
+          }),
+        });
+
+        const enrollData = await enrollResponse.json();
+
+        if (!enrollResponse.ok) {
+          throw new Error(enrollData.message || 'Đăng ký chương trình thất bại');
+        }
+
+        // Cập nhật user trong context
+        setUser(prevUser => ({
+          ...prevUser, 
+          profile: { ...prevUser.profile, grade: assignedGrade },
+          programs: enrollData.user.programs
+        }));
+      } else {
+        // Chỉ cập nhật grade nếu không có programId
+        setUser(prevUser => ({
+          ...prevUser, 
+          profile: { ...prevUser.profile, grade: assignedGrade }
+        }));
+      }
 
       alert(`Bạn đã hoàn thành bài kiểm tra! Điểm của bạn là ${totalScore}/${questions.length}. Lớp đề xuất cho bạn là: Lớp ${assignedGrade}`);
-      navigate('/dashboard');
+      
+      // 3. Chuyển đến trang home của chương trình
+      if (programId) {
+        navigate(`/program/${programId}`);
+      } else {
+        // Fallback nếu không có programId
+        navigate('/');
+      }
 
     } catch (error) {
       console.error("Error updating grade:", error);
