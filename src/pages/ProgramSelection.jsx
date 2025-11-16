@@ -64,18 +64,19 @@ const ProgramSelection = () => {
     }
 
     if (!user) {
-      navigate('/login', { state: { from: `/program/${program.id}` } });
+      // Chưa đăng nhập -> chuyển đến trang login
+      navigate('/login', { state: { from: `/placement-test/${program.id}` } });
       return;
     }
 
     // Kiểm tra xem user đã đăng ký chương trình này chưa
-    const hasProgram = user.programs?.some(p => p.programId === program.id && p.isActive);
+    const userProgram = user.programs?.find(p => p.programId === program.id);
     
-    if (hasProgram) {
-      // Đã đăng ký -> chuyển đến trang Home của môn đó
+    if (userProgram && userProgram.placementTestCompleted) {
+      // Đã làm placement test và đăng ký -> chuyển đến trang học
       navigate(`/program/${program.id}`);
     } else {
-      // Chưa đăng ký -> chuyển đến placement test
+      // Chưa làm placement test -> chuyển đến placement test
       navigate(`/placement-test/${program.id}`);
     }
   };

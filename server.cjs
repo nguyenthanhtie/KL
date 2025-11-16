@@ -51,6 +51,7 @@ mongoose.connection.on('error', (err) => {
 });
 
 // Routes
+app.use('/api/auth', require('./routes/auth.cjs'));
 app.use('/api/users', require('./routes/users.cjs'));
 app.use('/api/lessons', require('./routes/lessons.cjs'));
 app.use('/api/progress', require('./routes/progress.cjs'));

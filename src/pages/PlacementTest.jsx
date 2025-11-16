@@ -212,6 +212,7 @@ const PlacementTest = () => {
     e.preventDefault();
     setLoading(true);
 
+    // Tính điểm theo từng cấp độ
     const scoresByLevel = {};
     questions.forEach((q, index) => {
       if (!scoresByLevel[q.level]) {
@@ -223,95 +224,108 @@ const PlacementTest = () => {
       }
     });
 
+    // Xác định lớp phù hợp dựa trên kết quả
     let assignedGrade = 8;
-    const gradeLevels = [8, 9, 10, 11];
+    const gradeLevels = [8, 9, 10, 11, 12];
 
     for (const level of gradeLevels) {
       const levelScore = scoresByLevel[level];
       if (levelScore && levelScore.total > 0) {
         const percentage = (levelScore.correct / levelScore.total);
-        if (percentage > 0.6) {
-          assignedGrade = level + 1;
+        if (percentage >= 0.7) { // Đạt 70% trở lên
+          assignedGrade = Math.min(level + 1, 12); // Chuyển lên lớp cao hơn
         } else {
-          assignedGrade = level;
+          assignedGrade = level; // Ở lại lớp hiện tại
           break;
         }
       }
     }
     
     const totalScore = Object.values(scoresByLevel).reduce((acc, level) => acc + level.correct, 0);
+    const totalQuestions = questions.length;
 
     try {
-      // 1. Cập nhật grade cho user
-      const gradeResponse = await fetch(`${API_BASE_URL}/users/update-grade`, {
+      if (!user || !user.email) {
+        console.error('User object:', user);
+        throw new Error('Bạn cần đăng nhập để hoàn thành bài kiểm tra');
+      }
+
+      console.log('Submitting placement test for user:', user.email);
+
+      // Lấy programId từ URL params
+      const programNames = {
+        chemistry: 'Hóa học',
+        physics: 'Vật lý',
+        biology: 'Sinh học',
+        math: 'Toán học'
+      };
+
+      const selectedProgramName = programNames[programId] || 'Chương trình học';
+
+      console.log('Calling API with:', {
+        userId: user.email,
+        programId,
+        programName: selectedProgramName,
+        initialClassId: assignedGrade,
+        placementTestScore: totalScore,
+        placementTestTotal: totalQuestions
+      });
+
+      // Gọi API để lưu kết quả và đăng ký chương trình
+      const response = await fetch(`${API_BASE_URL}/users/enroll-program`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ grade: assignedGrade, userId: user.uid }),
+        body: JSON.stringify({ 
+          userId: user.email, // Dùng email hoặc firebaseUid
+          programId: programId,
+          programName: selectedProgramName,
+          initialClassId: assignedGrade,
+          placementTestScore: totalScore,
+          placementTestTotal: totalQuestions
+        }),
       });
 
-      const gradeData = await gradeResponse.json();
+      const data = await response.json();
 
-      if (!gradeResponse.ok) {
-        throw new Error(gradeData.message || 'Cập nhật lớp thất bại');
+      console.log('API Response:', { status: response.status, data });
+
+      if (!response.ok) {
+        console.error('API Error:', data);
+        throw new Error(data.message || 'Không thể lưu kết quả kiểm tra');
       }
 
-      // 2. Đăng ký chương trình học (nếu có programId)
-      if (programId) {
-        const programNames = {
-          chemistry: 'Hóa học',
-          physics: 'Vật lý',
-          biology: 'Sinh học',
-          math: 'Toán học'
-        };
+      console.log('✅ Placement test submitted successfully');
 
-        const enrollResponse = await fetch(`${API_BASE_URL}/users/enroll-program`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            userId: user.uid,
-            programId: programId,
-            programName: programNames[programId] || programId,
-            initialClassId: assignedGrade
-          }),
-        });
+      // Cập nhật user trong context
+      setUser(prevUser => ({
+        ...prevUser, 
+        profile: { ...prevUser?.profile, grade: assignedGrade },
+        programs: data.user.programs
+      }));
 
-        const enrollData = await enrollResponse.json();
+      // Cập nhật localStorage để đảm bảo data consistency
+      const updatedUser = {
+        ...user,
+        profile: { ...user?.profile, grade: assignedGrade },
+        programs: data.user.programs
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
 
-        if (!enrollResponse.ok) {
-          throw new Error(enrollData.message || 'Đăng ký chương trình thất bại');
-        }
-
-        // Cập nhật user trong context
-        setUser(prevUser => ({
-          ...prevUser, 
-          profile: { ...prevUser.profile, grade: assignedGrade },
-          programs: enrollData.user.programs
-        }));
-      } else {
-        // Chỉ cập nhật grade nếu không có programId
-        setUser(prevUser => ({
-          ...prevUser, 
-          profile: { ...prevUser.profile, grade: assignedGrade }
-        }));
-      }
-
-      alert(`Bạn đã hoàn thành bài kiểm tra! Điểm của bạn là ${totalScore}/${questions.length}. Lớp đề xuất cho bạn là: Lớp ${assignedGrade}`);
+      // Hiển thị kết quả
+      alert(`🎉 Chúc mừng bạn đã hoàn thành bài kiểm tra!\n\n` +
+            `📊 Điểm số: ${totalScore}/${totalQuestions}\n` +
+            `🎓 Lớp phù hợp: Lớp ${assignedGrade}\n` +
+            `📚 Chương trình: ${selectedProgramName}\n\n` +
+            `Bạn sẽ được chuyển đến trang học tập ngay bây giờ!`);
       
-      // 3. Chuyển đến trang home của chương trình
-      if (programId) {
-        navigate(`/program/${programId}`);
-      } else {
-        // Fallback nếu không có programId
-        navigate('/');
-      }
+      // Chuyển đến dashboard của chương trình
+      navigate(`/program/${programId}`);
 
     } catch (error) {
-      console.error("Error updating grade:", error);
-      alert(`Có lỗi xảy ra: ${error.message}`);
+      console.error("Error submitting placement test:", error);
+      alert(`❌ Có lỗi xảy ra: ${error.message}\n\nVui lòng thử lại sau.`);
     } finally {
       setLoading(false);
     }

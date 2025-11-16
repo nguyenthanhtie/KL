@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-  // Thông tin tài khoản cơ bản
+  // Thông tin tài khoản
   username: {
     type: String,
     required: true,
@@ -10,11 +11,6 @@ const userSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 30
   },
-  userId: {
-    type: String,
-    unique: true,
-    sparse: true
-  },
   email: {
     type: String,
     required: true,
@@ -22,23 +18,36 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     trim: true
   },
-  // Mật khẩu mã hóa (nếu không dùng Firebase Auth)
-  hashedPassword: {
-    type: String,
-    // required: false vì có thể dùng Firebase Auth
+  password: {
+    type: String // Để trống nếu đăng nhập bằng Google
   },
-  // Firebase UID (nếu dùng Firebase Auth)
   firebaseUid: {
     type: String,
     unique: true,
-    sparse: true // Cho phép null nếu không dùng Firebase
+    sparse: true // Cho phép null
+  },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true // Cho phép null
   },
   displayName: {
     type: String,
     default: ''
   },
+  avatar: {
+    type: String,
+    default: ''
+  },
   
-  // Thông tin học tập
+  // Profile information
+  profile: {
+    grade: Number, // Lớp học hiện tại sau khi làm placement test
+    bio: String,
+    avatar: String
+  },
+  
+  // XP và Level
   xp: {
     type: Number,
     default: 0,
@@ -49,206 +58,39 @@ const userSchema = new mongoose.Schema({
     default: 1,
     min: 1
   },
-  currentLesson: {
-    classId: {
-      type: Number,
-      default: 8
-    },
-    chapterId: {
-      type: Number,
-      default: 1
-    },
-    lessonId: {
-      type: Number,
-      default: 1
-    },
-    lessonTitle: {
-      type: String,
-      default: 'Bài 1: Chất – Tính chất của chất'
-    }
-  },
   
-  // Tiến độ học tập chi tiết
-  progress: {
-    completedLessons: [{
-      classId: Number,
-      chapterId: Number,
-      lessonId: Number,
-      pathId: Number, // legacy field for backward compatibility
-      completedAt: Date,
-      score: Number,
-      timeSpent: Number, // thời gian học (giây)
-      attempts: {
-        type: Number,
-        default: 1
-      }
-    }],
-    currentStreak: {
-      type: Number,
-      default: 0
-    },
-    totalPoints: {
-      type: Number,
-      default: 0
-    },
-    lastActiveDate: Date,
-    totalStudyTime: {
-      type: Number,
-      default: 0 // tổng thời gian học (giây)
-    }
-  },
-
-  // Các chương trình học đã đăng ký
+  // Chương trình học
   programs: [{
     programId: {
       type: String,
       required: true,
-      enum: ['chemistry', 'physics', 'biology', 'math'] // Các môn học có sẵn
+      enum: ['chemistry', 'physics', 'biology', 'math']
     },
-    programName: {
-      type: String,
-      required: true
-    },
-    enrolledAt: {
-      type: Date,
-      default: Date.now
-    },
+    programName: String,
+    currentClass: Number, // Lớp đang học (8, 9, 10, 11, 12)
+    currentLesson: Number, // Bài đang học
     isActive: {
       type: Boolean,
       default: true
     },
-    // Tiến độ trong chương trình này
-    programProgress: {
-      // Lớp hiện tại đang học trong chương trình
-      currentClass: {
-        classId: Number,
-        className: String
+    placementTestCompleted: {
+      type: Boolean,
+      default: false
+    },
+    placementTestScore: Number,
+    enrolledAt: {
+      type: Date,
+      default: Date.now
+    },
+    progress: {
+      completedLessons: [Number], // Danh sách ID các bài đã hoàn thành
+      totalScore: {
+        type: Number,
+        default: 0
       },
-      // Các lớp đã hoàn thành
-      completedClasses: [{
-        classId: Number,
-        className: String,
-        completedAt: Date,
-        finalScore: Number
-      }],
-      // Chi tiết tiến độ theo lớp-chương-bài
-      classProgress: [{
-        classId: {
-          type: Number,
-          required: true
-        },
-        className: String,
-        isUnlocked: {
-          type: Boolean,
-          default: false
-        },
-        startedAt: Date,
-        completedAt: Date,
-        // Tiến độ theo chương
-        chapters: [{
-          chapterId: {
-            type: Number,
-            required: true
-          },
-          chapterName: String,
-          isUnlocked: {
-            type: Boolean,
-            default: false
-          },
-          startedAt: Date,
-          completedAt: Date,
-          // Tiến độ theo bài học
-          lessons: [{
-            lessonId: {
-              type: Number,
-              required: true
-            },
-            lessonTitle: String,
-            isUnlocked: {
-              type: Boolean,
-              default: false
-            },
-            isCompleted: {
-              type: Boolean,
-              default: false
-            },
-            attempts: {
-              type: Number,
-              default: 0
-            },
-            bestScore: {
-              type: Number,
-              default: 0
-            },
-            lastScore: Number,
-            stars: {
-              basic: { type: Boolean, default: false },
-              intermediate: { type: Boolean, default: false },
-              advanced: { type: Boolean, default: false }
-            },
-            totalStars: {
-              type: Number,
-              default: 0,
-              min: 0,
-              max: 3
-            },
-            startedAt: Date,
-            completedAt: Date,
-            lastAttemptAt: Date,
-            timeSpent: {
-              type: Number,
-              default: 0 // thời gian học (giây)
-            }
-          }]
-        }]
-      }],
-      // Thống kê tổng quan cho chương trình
-      statistics: {
-        totalLessons: { type: Number, default: 0 },
-        completedLessons: { type: Number, default: 0 },
-        totalStars: { type: Number, default: 0 },
-        totalPoints: { type: Number, default: 0 },
-        averageScore: { type: Number, default: 0 },
-        totalTimeSpent: { type: Number, default: 0 }
-      }
+      lastStudyDate: Date
     }
   }],
-  
-  // Thông tin cá nhân
-  profile: {
-    avatar: {
-      type: String,
-      default: ''
-    },
-    grade: {
-      type: Number,
-      default: 8
-    },
-    school: {
-      type: String,
-      default: ''
-    },
-    bio: {
-      type: String,
-      default: ''
-    }
-  },
-  
-  // Cài đặt
-  settings: {
-    language: {
-      type: String,
-      default: 'vi'
-    },
-    notifications: {
-      type: Boolean,
-      default: true
-    },
-    soundEffects: {
-      type: Boolean,
-      default: true
-    }
-  },
   
   createdAt: {
     type: Date,
@@ -260,86 +102,47 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Middleware để cập nhật updatedAt và tạo userId
+// Middleware tự động cập nhật updatedAt
 userSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
-  
-  // Tự động tạo userId nếu chưa có
-  if (!this.userId) {
-    this.userId = 'USER_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-  }
-  
   next();
 });
 
-// Method để tính level dựa trên XP
-userSchema.methods.calculateLevel = function() {
-  // Công thức: Level = Math.floor(XP / 100) + 1
-  // Ví dụ: 0-99 XP = Level 1, 100-199 XP = Level 2, ...
-  const newLevel = Math.floor(this.xp / 100) + 1;
-  if (newLevel !== this.level) {
-    this.level = newLevel;
-    return true; // Level up occurred
-  }
-  return false;
+// Methods - Authentication
+userSchema.methods.setPassword = async function(password) {
+  this.password = await bcrypt.hash(password, 10);
 };
 
-// Method để thêm XP
+userSchema.methods.comparePassword = async function(candidatePassword) {
+  if (!this.password) return false;
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Methods - XP & Level
 userSchema.methods.addXP = function(amount) {
-  const oldLevel = this.level;
   this.xp += amount;
-  this.progress.totalPoints += amount;
+  const newLevel = Math.floor(this.xp / 100) + 1;
+  const leveledUp = newLevel > this.level;
+  this.level = newLevel;
   
-  const leveledUp = this.calculateLevel();
-  
-  return {
-    newXP: this.xp,
-    newLevel: this.level,
-    leveledUp,
-    xpGained: amount
-  };
+  return { xp: this.xp, level: this.level, leveledUp };
 };
 
-// Method để cập nhật bài học hiện tại
-userSchema.methods.updateCurrentLesson = function(classId, chapterId, lessonId, lessonTitle) {
-  this.currentLesson = {
-    classId,
-    chapterId,
-    lessonId,
-    lessonTitle
-  };
-};
+// Methods - Program
+userSchema.methods.enrollProgram = function(programId, programName, currentClass = null) {
+  const existing = this.programs.find(p => p.programId === programId);
+  if (existing) return existing;
 
-// Method để đăng ký chương trình học mới
-userSchema.methods.enrollProgram = function(programId, programName, initialClassId = 8) {
-  // Kiểm tra xem đã đăng ký chương trình chưa
-  const existingProgram = this.programs.find(p => p.programId === programId);
-  if (existingProgram) {
-    existingProgram.isActive = true;
-    return existingProgram;
-  }
-
-  // Tạo chương trình mới
   const newProgram = {
     programId,
     programName,
+    currentClass: currentClass, // Lớp được chọn khi đăng ký
+    currentLesson: null, // Để trống khi đăng nhập lần đầu
     enrolledAt: new Date(),
-    isActive: true,
-    programProgress: {
-      currentClass: {
-        classId: initialClassId,
-        className: `Lớp ${initialClassId}`
-      },
-      completedClasses: [],
-      classProgress: [],
-      statistics: {
-        totalLessons: 0,
-        completedLessons: 0,
-        totalStars: 0,
-        totalPoints: 0,
-        averageScore: 0,
-        totalTimeSpent: 0
-      }
+    progress: {
+      completedLessons: [],
+      totalScore: 0,
+      lastStudyDate: null
     }
   };
 
@@ -347,160 +150,31 @@ userSchema.methods.enrollProgram = function(programId, programName, initialClass
   return newProgram;
 };
 
-// Method để lấy chương trình đang hoạt động
-userSchema.methods.getActiveProgram = function(programId) {
-  return this.programs.find(p => p.programId === programId && p.isActive);
-};
-
-// Method để cập nhật tiến độ bài học trong chương trình
-userSchema.methods.updateLessonProgress = function(programId, classId, chapterId, lessonId, progressData) {
+userSchema.methods.updateProgramProgress = function(programId, classId, lessonId, score) {
   const program = this.programs.find(p => p.programId === programId);
   if (!program) return null;
 
-  // Tìm hoặc tạo class progress
-  let classProgress = program.programProgress.classProgress.find(c => c.classId === classId);
-  if (!classProgress) {
-    classProgress = {
-      classId,
-      className: `Lớp ${classId}`,
-      isUnlocked: true,
-      startedAt: new Date(),
-      chapters: []
-    };
-    program.programProgress.classProgress.push(classProgress);
-  }
-
-  // Tìm hoặc tạo chapter progress
-  let chapterProgress = classProgress.chapters.find(ch => ch.chapterId === chapterId);
-  if (!chapterProgress) {
-    chapterProgress = {
-      chapterId,
-      chapterName: `Chương ${chapterId}`,
-      isUnlocked: true,
-      startedAt: new Date(),
-      lessons: []
-    };
-    classProgress.chapters.push(chapterProgress);
-  }
-
-  // Tìm hoặc tạo lesson progress
-  let lessonProgress = chapterProgress.lessons.find(l => l.lessonId === lessonId);
-  if (!lessonProgress) {
-    lessonProgress = {
-      lessonId,
-      lessonTitle: progressData.lessonTitle || `Bài ${lessonId}`,
-      isUnlocked: true,
-      isCompleted: false,
-      attempts: 0,
-      bestScore: 0,
-      stars: {
-        basic: false,
-        intermediate: false,
-        advanced: false
-      },
-      totalStars: 0,
-      timeSpent: 0
-    };
-    chapterProgress.lessons.push(lessonProgress);
-  }
-
-  // Cập nhật thông tin bài học
-  lessonProgress.attempts += 1;
-  lessonProgress.lastAttemptAt = new Date();
+  // Cập nhật lớp và bài hiện tại
+  program.currentClass = classId;
+  program.currentLesson = lessonId;
   
-  if (!lessonProgress.startedAt) {
-    lessonProgress.startedAt = new Date();
+  // Thêm bài đã hoàn thành
+  if (lessonId && !program.progress.completedLessons.includes(lessonId)) {
+    program.progress.completedLessons.push(lessonId);
   }
-
-  if (progressData.score !== undefined) {
-    lessonProgress.lastScore = progressData.score;
-    if (progressData.score > lessonProgress.bestScore) {
-      lessonProgress.bestScore = progressData.score;
-    }
+  
+  // Cập nhật điểm
+  if (score) {
+    program.progress.totalScore += score;
   }
-
-  if (progressData.timeSpent) {
-    lessonProgress.timeSpent += progressData.timeSpent;
-  }
-
-  if (progressData.stars) {
-    lessonProgress.stars = { ...lessonProgress.stars, ...progressData.stars };
-    lessonProgress.totalStars = 
-      (lessonProgress.stars.basic ? 1 : 0) +
-      (lessonProgress.stars.intermediate ? 1 : 0) +
-      (lessonProgress.stars.advanced ? 1 : 0);
-  }
-
-  if (progressData.isCompleted) {
-    lessonProgress.isCompleted = true;
-    lessonProgress.completedAt = new Date();
-  }
-
-  // Cập nhật statistics
-  this.updateProgramStatistics(programId);
-
-  return lessonProgress;
+  
+  program.progress.lastStudyDate = new Date();
+  
+  return program;
 };
 
-// Method để cập nhật thống kê chương trình
-userSchema.methods.updateProgramStatistics = function(programId) {
-  const program = this.programs.find(p => p.programId === programId);
-  if (!program) return;
-
-  let totalLessons = 0;
-  let completedLessons = 0;
-  let totalStars = 0;
-  let totalPoints = 0;
-  let totalTimeSpent = 0;
-  let scoreSum = 0;
-  let scoreCount = 0;
-
-  program.programProgress.classProgress.forEach(classP => {
-    classP.chapters.forEach(chapterP => {
-      chapterP.lessons.forEach(lessonP => {
-        totalLessons++;
-        if (lessonP.isCompleted) completedLessons++;
-        totalStars += lessonP.totalStars || 0;
-        totalPoints += lessonP.bestScore || 0;
-        totalTimeSpent += lessonP.timeSpent || 0;
-        if (lessonP.bestScore) {
-          scoreSum += lessonP.bestScore;
-          scoreCount++;
-        }
-      });
-    });
-  });
-
-  program.programProgress.statistics = {
-    totalLessons,
-    completedLessons,
-    totalStars,
-    totalPoints,
-    averageScore: scoreCount > 0 ? Math.round(scoreSum / scoreCount) : 0,
-    totalTimeSpent
-  };
-};
-
-// Method để mở khóa lớp mới
-userSchema.methods.unlockClass = function(programId, classId) {
-  const program = this.programs.find(p => p.programId === programId);
-  if (!program) return false;
-
-  let classProgress = program.programProgress.classProgress.find(c => c.classId === classId);
-  if (!classProgress) {
-    classProgress = {
-      classId,
-      className: `Lớp ${classId}`,
-      isUnlocked: true,
-      startedAt: new Date(),
-      chapters: []
-    };
-    program.programProgress.classProgress.push(classProgress);
-  } else {
-    classProgress.isUnlocked = true;
-  }
-
-  return true;
+userSchema.methods.getProgram = function(programId) {
+  return this.programs.find(p => p.programId === programId);
 };
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import ProgramSelection from './pages/ProgramSelection';
-import Login from './pages/Login';
-import Register from './pages/Register';
 import Profile from './pages/Profile';
 import PlacementTest from './pages/PlacementTest';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 // Hóa học area
 import ChemistryHome from './areas/Hoahoc/pages/ChemistryHome';
@@ -34,11 +33,11 @@ const AppContent = () => {
   return (
     <div className="min-h-screen">
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/" element={<ProgramSelection />} />
         <Route path="/home" element={<Home />} />
         <Route path="/program/chemistry" element={<ChemistryHome />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/advanced-challenge" element={<AdvancedChallenge />} />
         <Route path="/advanced-challenge/ghep-nguyen-tu" element={<GhepNguyenTu />} />
         <Route path="/advanced-challenge/can-bang" element={<TroChoiCanBang />} />
@@ -53,9 +52,7 @@ const AppContent = () => {
         <Route 
           path="/dashboard" 
           element={
-            <ProtectedRoute>
               <Dashboard />
-            </ProtectedRoute>
           } 
         />
         <Route 
@@ -73,9 +70,7 @@ const AppContent = () => {
         <Route 
           path="/profile" 
           element={
-            <ProtectedRoute>
               <Profile />
-            </ProtectedRoute>
           } 
         />
         <Route 

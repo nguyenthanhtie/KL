@@ -1,392 +1,446 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const User = require('../models/User.cjs');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User.cjs');
 
-// Tạo tài khoản mới (Local registration)
+// Register route
 router.post('/register', async (req, res) => {
   try {
-    const { username, email, password, displayName, grade } = req.body;
+    console.log('📝 Register request received:', { 
+      username: req.body.username, 
+      email: req.body.email 
+    });
     
+    const { username, email, password, isGoogleAuth } = req.body;
+
     // Validation
-    if (!username || !email || !password) {
+    if (!username || !email || (!password && !isGoogleAuth)) {
+      console.log('❌ Validation failed: Missing required fields');
       return res.status(400).json({ 
-        message: 'Username, email và password là bắt buộc' 
+        message: 'Vui lòng điền đầy đủ thông tin' 
       });
     }
-    
-    if (password.length < 6) {
-      return res.status(400).json({ 
-        message: 'Mật khẩu phải có ít nhất 6 ký tự' 
-      });
-    }
-    
-    // Kiểm tra username và email đã tồn tại
+
+    // Check if user exists in MongoDB
     const existingUser = await User.findOne({ 
-      $or: [{ username }, { email }] 
+      $or: [{ email }, { username }] 
     });
     
     if (existingUser) {
+      console.log('❌ User already exists:', email);
+      const field = existingUser.email === email ? 'Email' : 'Tên người dùng';
       return res.status(400).json({ 
-        message: existingUser.username === username ? 
-          'Tên người dùng đã tồn tại' : 'Email đã được sử dụng' 
+        message: `${field} đã được sử dụng` 
       });
     }
-    
-    // Mã hóa mật khẩu
-    const hashedPassword = await bcrypt.hash(password, 12);
-    
-    // Tạo user mới với đầy đủ thông tin
-    const user = new User({
+
+    // Hash password if not Google auth
+    let hashedPassword = '';
+    if (!isGoogleAuth && password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    // Create new user in MongoDB
+    const newUser = new User({
       username,
       email,
       hashedPassword,
-      displayName: displayName || username,
+      displayName: username,
       xp: 0,
       level: 1,
-      currentLesson: {
-        classId: 8,
-        chapterId: 1,
-        lessonId: 1,
-        lessonTitle: 'Bài 1: Chất – Tính chất của chất'
-      },
       progress: {
         completedLessons: [],
         currentStreak: 0,
         totalPoints: 0,
         totalStudyTime: 0
       },
-      profile: {
-        grade: grade || 8
+      learningPrograms: [],
+      achievements: [],
+      settings: {
+        notifications: true,
+        soundEffects: true,
+        dailyGoal: 30
       }
     });
+
+    await newUser.save();
     
-    await user.save();
-    
-    // Trả về thông tin user (không bao gồm mật khẩu)
-    const userResponse = user.toObject();
-    delete userResponse.hashedPassword;
-    
+    console.log('✅ User registered successfully:', { 
+      id: newUser._id, 
+      email: newUser.email
+    });
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: newUser._id.toString(), email: newUser.email },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
     res.status(201).json({
-      message: 'Tạo tài khoản thành công',
-      user: userResponse
+      message: 'User registered successfully',
+      token,
+      user: {
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+        displayName: newUser.displayName,
+        xp: newUser.xp,
+        level: newUser.level,
+        learningPrograms: newUser.learningPrograms
+      }
     });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ message: 'Lỗi server: ' + error.message });
+    console.error('❌ Register error:', error);
+    
+    // Handle MongoDB duplicate key error
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern)[0];
+      const fieldName = field === 'email' ? 'Email' : 'Tên người dùng';
+      return res.status(400).json({ 
+        message: `${fieldName} đã được sử dụng` 
+      });
+    }
+    
+    res.status(500).json({ message: 'Lỗi server', error: error.message });
   }
 });
 
-// Đăng nhập (Local login)
+// Login route
 router.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    console.log('📝 Login request received:', { email: req.body.email });
     
-    if (!username || !password) {
+    const { email, password } = req.body;
+
+    // Validation
+    if (!email || !password) {
+      console.log('❌ Validation failed: Missing credentials');
       return res.status(400).json({ 
-        message: 'Username và password là bắt buộc' 
+        message: 'Vui lòng nhập email và mật khẩu' 
       });
     }
-    
-    // Tìm user bằng username hoặc email
-    const user = await User.findOne({
-      $or: [{ username }, { email: username }]
-    });
-    
-    if (!user || !user.hashedPassword) {
-      return res.status(401).json({ 
-        message: 'Tên đăng nhập hoặc mật khẩu không đúng' 
+
+    // Find user in MongoDB
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log('❌ User not found:', email);
+      return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
+    }
+
+    // Check password
+    if (!user.hashedPassword) {
+      console.log('❌ User has no password (might be OAuth user):', email);
+      return res.status(400).json({ 
+        message: 'Vui lòng đăng nhập bằng Google' 
       });
     }
-    
-    // Kiểm tra mật khẩu
-    const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);
-    
-    if (!isPasswordValid) {
-      return res.status(401).json({ 
-        message: 'Tên đăng nhập hoặc mật khẩu không đúng' 
-      });
+
+    const isMatch = await bcrypt.compare(password, user.hashedPassword);
+    if (!isMatch) {
+      console.log('❌ Password mismatch for:', email);
+      return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
     }
-    
-    // Cập nhật last active
+
+    // Update last active date
     user.progress.lastActiveDate = new Date();
     await user.save();
-    
-    // Trả về thông tin user (không bao gồm mật khẩu)
-    const userResponse = user.toObject();
-    delete userResponse.hashedPassword;
-    
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: user._id.toString(), email: user.email },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
+    console.log('✅ Login successful:', { id: user._id, email: user.email });
+
     res.json({
-      message: 'Đăng nhập thành công',
-      user: userResponse
+      message: 'Login successful',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        displayName: user.displayName,
+        xp: user.xp,
+        level: user.level,
+        learningPrograms: user.learningPrograms
+      }
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Lỗi server: ' + error.message });
+    console.error('❌ Login error:', error);
+    res.status(500).json({ message: 'Lỗi server', error: error.message });
   }
 });
 
-// Get user profile by userId or firebaseUid
-router.get('/profile/:identifier', async (req, res) => {
+// Google OAuth login/register
+router.post('/auth/google', async (req, res) => {
   try {
-    const { identifier } = req.params;
-    
-    // Tìm user bằng userId, firebaseUid, hoặc username
-    const user = await User.findOne({
-      $or: [
-        { userId: identifier },
-        { firebaseUid: identifier },
-        { username: identifier }
-      ]
-    }).select('-hashedPassword'); // Không trả về mật khẩu
-    
+    const { email, username, googleId, displayName } = req.body;
+
+    // Find or create user in MongoDB
+    let user = await User.findOne({ email });
+
     if (!user) {
-      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
-    }
-    
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Create or update user (Firebase Auth integration)
-router.post('/profile', async (req, res) => {
-  try {
-    const { email, firebaseUid, displayName, username } = req.body;
-    
-    let user = await User.findOne({ firebaseUid });
-    
-    if (user) {
-      // Update existing user
-      user.email = email;
-      user.displayName = displayName || user.displayName;
-      user.progress.lastActiveDate = new Date();
-      await user.save();
-    } else {
-      // Create new user với Firebase Auth
-      const generatedUsername = username || displayName || email.split('@')[0];
-      
-      // Đảm bảo username là unique
-      let finalUsername = generatedUsername;
-      let counter = 1;
-      while (await User.findOne({ username: finalUsername })) {
-        finalUsername = `${generatedUsername}${counter}`;
-        counter++;
-      }
-      
+      // Create new user for Google auth
       user = new User({
-        username: finalUsername,
+        username: username || email.split('@')[0],
         email,
-        firebaseUid,
-        displayName: displayName || finalUsername,
+        displayName: displayName || username,
+        firebaseUid: googleId,
         xp: 0,
         level: 1,
-        currentLesson: {
-          classId: 8,
-          chapterId: 1,
-          lessonId: 1,
-          lessonTitle: 'Bài 1: Chất – Tính chất của chất'
-        },
         progress: {
           completedLessons: [],
           currentStreak: 0,
           totalPoints: 0,
           totalStudyTime: 0
+        },
+        learningPrograms: [],
+        achievements: [],
+        settings: {
+          notifications: true,
+          soundEffects: true,
+          dailyGoal: 30
         }
       });
-      await user.save();
-    }
-    
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// Cập nhật tiến độ học tập
-router.patch('/progress/:identifier', async (req, res) => {
-  try {
-    const { completedLesson, xpGained, timeSpent, lessonUpdate } = req.body;
-    
-    const user = await User.findOne({
-      $or: [
-        { userId: req.params.identifier },
-        { firebaseUid: req.params.identifier },
-        { username: req.params.identifier }
-      ]
-    });
-    
-    if (!user) {
-      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
-    }
-    
-    let levelUpResult = null;
-    
-    // Thêm XP
-    if (xpGained && xpGained > 0) {
-      levelUpResult = user.addXP(xpGained);
-    }
-    
-    // Thêm bài học đã hoàn thành
-    if (completedLesson) {
-      const existingLesson = user.progress.completedLessons.find(
-        l => l.classId === completedLesson.classId && 
-             l.chapterId === completedLesson.chapterId && 
-             l.lessonId === completedLesson.lessonId
-      );
       
-      if (!existingLesson) {
-        user.progress.completedLessons.push({
-          ...completedLesson,
-          completedAt: new Date(),
-          timeSpent: timeSpent || 0
-        });
-      } else {
-        // Update existing lesson with better score if applicable
-        if (completedLesson.score > existingLesson.score) {
-          existingLesson.score = completedLesson.score;
-          existingLesson.attempts = (existingLesson.attempts || 1) + 1;
-        }
-      }
+      await user.save();
+      console.log('✅ New Google user created:', { id: user._id, email: user.email });
+    } else {
+      console.log('✅ Existing Google user logged in:', { id: user._id, email: user.email });
     }
-    
-    // Cập nhật bài học hiện tại
-    if (lessonUpdate) {
-      user.updateCurrentLesson(
-        lessonUpdate.classId,
-        lessonUpdate.chapterId,
-        lessonUpdate.lessonId,
-        lessonUpdate.lessonTitle
-      );
-    }
-    
-    // Cập nhật thời gian học
-    if (timeSpent && timeSpent > 0) {
-      user.progress.totalStudyTime += timeSpent;
-    }
-    
-    // Update streak
-    const today = new Date().setHours(0, 0, 0, 0);
-    const lastActive = user.progress.lastActiveDate ? 
-      new Date(user.progress.lastActiveDate).setHours(0, 0, 0, 0) : 0;
-    
-    if (today - lastActive === 86400000) { // 1 day difference
-      user.progress.currentStreak += 1;
-    } else if (today - lastActive > 86400000) {
-      user.progress.currentStreak = 1;
-    }
-    
-    user.progress.lastActiveDate = new Date();
-    await user.save();
-    
-    // Trả về kết quả với thông tin level up nếu có
-    const userResponse = user.toObject();
-    delete userResponse.hashedPassword;
-    
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: user._id.toString(), email: user.email },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
     res.json({
-      user: userResponse,
-      levelUp: levelUpResult
+      message: 'Google authentication successful',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        displayName: user.displayName,
+        xp: user.xp,
+        level: user.level,
+        learningPrograms: user.learningPrograms
+      }
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('❌ Google auth error:', error);
+    res.status(500).json({ message: 'Lỗi server', error: error.message });
   }
 });
 
-// Cập nhật thông tin cá nhân
-router.patch('/profile/:identifier', async (req, res) => {
+// Update learning progress
+router.post('/progress', async (req, res) => {
   try {
-    const { displayName, profile, settings } = req.body;
-    
-    const user = await User.findOne({
-      $or: [
-        { userId: req.params.identifier },
-        { firebaseUid: req.params.identifier },
-        { username: req.params.identifier }
-      ]
-    });
-    
+    const { userId, program, grade, lesson } = req.body;
+
+    const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+      return res.status(404).json({ message: 'User not found' });
     }
+
+    // Find or create learning program
+    let learningProgram = user.learningPrograms.find(p => p.program === program);
     
-    // Cập nhật thông tin
-    if (displayName) user.displayName = displayName;
-    if (profile) {
-      user.profile = { ...user.profile, ...profile };
+    if (!learningProgram) {
+      learningProgram = {
+        program, // e.g., "Hóa học"
+        grades: []
+      };
+      user.learningPrograms.push(learningProgram);
     }
-    if (settings) {
-      user.settings = { ...user.settings, ...settings };
-    }
+
+    // Find or create grade
+    let gradeData = learningProgram.grades.find(g => g.grade === grade);
     
+    if (!gradeData) {
+      gradeData = {
+        grade, // e.g., "Lớp 8"
+        lessons: []
+      };
+      learningProgram.grades.push(gradeData);
+    }
+
+    // Add lesson if not exists
+    if (!gradeData.lessons.includes(lesson)) {
+      gradeData.lessons.push(lesson);
+      user.xp += 10; // Add XP for completing lesson
+    }
+
     await user.save();
-    
-    const userResponse = user.toObject();
-    delete userResponse.hashedPassword;
-    
-    res.json(userResponse);
+    console.log('✅ Progress updated for user:', userId);
+
+    res.json({
+      message: 'Progress updated',
+      user: {
+        id: user.id,
+        xp: user.xp,
+        learningPrograms: user.learningPrograms
+      }
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
-// Endpoint to update user's grade
+// Update user grade after placement test
 router.post('/update-grade', async (req, res) => {
   try {
-    const { grade, userId } = req.body; // Assuming userId is sent in the body
+    const { userId, grade } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ message: 'User ID is required' });
-    }
-
-    const user = await User.findOne({ $or: [{ userId }, { firebaseUid: userId }] });
-
+    // Tìm user theo firebaseUid hoặc _id
+    const user = await User.findOne({ $or: [{ firebaseUid: userId }, { _id: userId }] });
+    
     if (!user) {
-      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
+    // Cập nhật grade vào profile nếu có
+    if (!user.profile) {
+      user.profile = {};
+    }
     user.profile.grade = grade;
+    
     await user.save();
+    console.log('✅ Grade updated for user:', userId, 'to grade:', grade);
 
-    const userResponse = user.toObject();
-    delete userResponse.hashedPassword;
-
-    res.json(userResponse);
+    res.json({
+      message: 'Grade updated successfully',
+      user: {
+        id: user._id,
+        grade: grade
+      }
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('❌ Update grade error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
-// Endpoint để đăng ký chương trình học
+// Enroll user in a program after placement test
 router.post('/enroll-program', async (req, res) => {
   try {
-    const { userId, programId, programName, initialClassId } = req.body;
+    const { userId, programId, programName, initialClassId, placementTestScore, placementTestTotal } = req.body;
 
-    if (!userId || !programId) {
-      return res.status(400).json({ message: 'User ID và Program ID là bắt buộc' });
+    console.log('📝 Enrolling user:', { userId, programId, initialClassId });
+
+    // Tìm user theo email trước (vì PlacementTest gửi email), sau đó firebaseUid
+    let user;
+    try {
+      // Thử tìm theo email hoặc firebaseUid trước
+      user = await User.findOne({ 
+        $or: [
+          { email: userId },
+          { firebaseUid: userId }
+        ] 
+      });
+      
+      // Nếu không tìm thấy và userId có format ObjectId, thử tìm theo _id
+      if (!user && userId.match(/^[0-9a-fA-F]{24}$/)) {
+        user = await User.findById(userId);
+      }
+    } catch (error) {
+      console.log('⚠️ Error finding user:', error.message);
     }
-
-    const user = await User.findOne({ $or: [{ userId }, { firebaseUid: userId }] });
-
+    
     if (!user) {
-      return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+      console.log('❌ User not found:', userId);
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // Đăng ký chương trình học
-    const program = user.enrollProgram(programId, programName, initialClassId);
+    console.log('✅ Found user:', user.email);
+
+    // Kiểm tra xem đã đăng ký chương trình này chưa
+    const existingProgram = user.programs.find(p => p.programId === programId);
+    
+    if (existingProgram) {
+      console.log('⚠️ Program already enrolled, updating...');
+      // Nếu đã có, cập nhật thông tin
+      existingProgram.currentClass = initialClassId;
+      existingProgram.placementTestCompleted = true;
+      existingProgram.placementTestScore = placementTestScore || 0;
+      existingProgram.isActive = true;
+    } else {
+      // Chưa có, thêm mới
+      user.programs.push({
+        programId,
+        programName,
+        currentClass: initialClassId,
+        currentLesson: null,
+        isActive: true,
+        placementTestCompleted: true,
+        placementTestScore: placementTestScore || 0,
+        enrolledAt: new Date(),
+        progress: {
+          completedLessons: [],
+          totalScore: 0,
+          lastStudyDate: null
+        }
+      });
+    }
+
+    // Cập nhật grade vào profile
+    if (!user.profile) {
+      user.profile = {};
+    }
+    user.profile.grade = initialClassId;
+    
     await user.save();
+    console.log('✅ Program enrolled successfully for user:', user.email);
 
-    const userResponse = user.toObject();
-    delete userResponse.hashedPassword;
-
-    res.json({ 
-      message: 'Đăng ký chương trình thành công',
-      user: userResponse,
-      program 
+    res.json({
+      success: true,
+      message: 'Program enrolled successfully',
+      user: {
+        id: user._id,
+        email: user.email,
+        programs: user.programs,
+        profile: user.profile
+      }
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('❌ Enroll program error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error', 
+      error: error.message 
+    });
+  }
+});
+
+// Get user profile
+router.get('/profile/:userId', async (req, res) => {
+  try {
+    const user = await User.findOne({ $or: [{ firebaseUid: req.params.userId }, { _id: req.params.userId }] });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      xp: user.xp,
+      level: user.level,
+      programs: user.programs,
+      profile: user.profile,
+      firebaseUid: user.firebaseUid
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
 module.exports = router;
+

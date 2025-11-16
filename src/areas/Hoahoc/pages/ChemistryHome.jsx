@@ -2,12 +2,47 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import Button from '../../../components/ui/Button';
 import { useEffect, useState } from 'react';
-import { BookOpen, Trophy, Target, Clock, Star, Flame, Zap, Award, TrendingUp, Play } from 'lucide-react';
+import { BookOpen, Trophy, Target, Clock, Star, Flame, Zap, Award, TrendingUp, Play, LogOut, ChevronDown } from 'lucide-react';
 
 const ChemistryHome = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [programData, setProgramData] = useState(null);
+  const [showProgramDropdown, setShowProgramDropdown] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  const availablePrograms = [
+    { id: 'chemistry', name: 'Hóa học', icon: '🧪', path: '/program/chemistry', available: true },
+    { id: 'physics', name: 'Vật lý', icon: '⚛️', path: '/program/physics', available: false },
+    { id: 'biology', name: 'Sinh học', icon: '🧬', path: '/program/biology', available: false },
+    { id: 'math', name: 'Toán học', icon: '📐', path: '/program/math', available: false }
+  ];
+
+  const handleProgramChange = (program) => {
+    if (!program.available) {
+      alert(`Chương trình ${program.name} sắp ra mắt!`);
+      return;
+    }
+
+    // Kiểm tra xem user đã đăng ký chương trình này chưa
+    const hasProgram = user.programs?.some(p => p.programId === program.id && p.isActive);
+    
+    if (hasProgram) {
+      navigate(program.path);
+    } else {
+      // Chưa đăng ký -> chuyển đến placement test
+      navigate(`/placement-test/${program.id}`);
+    }
+    setShowProgramDropdown(false);
+  };
 
   useEffect(() => {
     // Kiểm tra xem user đã đăng ký chương trình Hóa học chưa
@@ -23,6 +58,8 @@ const ChemistryHome = () => {
       return;
     }
 
+    console.log('Chemistry Program Data:', chemistryProgram);
+    console.log('Current Class:', chemistryProgram.currentClass);
     setProgramData(chemistryProgram);
   }, [user, navigate]);
 
@@ -46,7 +83,9 @@ const ChemistryHome = () => {
     totalTimeSpent: 0
   };
 
-  const currentClass = programData.programProgress?.currentClass || { classId: 8, className: 'Lớp 8' };
+  // Get current class from programData.currentClass (set by placement test)
+  const currentClassId = programData.currentClass || 8;
+  const currentClass = { classId: currentClassId, className: `Lớp ${currentClassId}` };
   const completionRate = stats.totalLessons > 0 
     ? Math.round((stats.completedLessons / stats.totalLessons) * 100) 
     : 0;
@@ -101,16 +140,87 @@ const ChemistryHome = () => {
       {/* Hero Section */}
       <section className="relative py-8 px-4">
         <div className="container mx-auto max-w-7xl">
-          {/* Back Button */}
-          <button
-            onClick={() => navigate('/')}
-            className="mb-6 text-gray-600 hover:text-blue-600 flex items-center gap-2 transition-all hover:gap-3"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span className="font-medium">Chọn môn học khác</span>
-          </button>
+          {/* Navigation Bar */}
+          <div className="flex items-center justify-between mb-6">
+            {/* Program Selector Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setShowProgramDropdown(!showProgramDropdown)}
+                className="flex items-center gap-3 px-5 py-2.5 bg-white hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-all shadow-md hover:shadow-lg border border-gray-200"
+              >
+                <span className="text-2xl">🧪</span>
+                <span>Hóa học</span>
+                <ChevronDown className={`w-5 h-5 transition-transform ${showProgramDropdown ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Dropdown Menu */}
+              {showProgramDropdown && (
+                <>
+                  {/* Backdrop */}
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowProgramDropdown(false)}
+                  ></div>
+                  
+                  {/* Dropdown Content */}
+                  <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+                    <div className="p-3">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 py-2">
+                        Chọn chương trình học
+                      </p>
+                      {availablePrograms.map((program) => {
+                        const isActive = program.id === 'chemistry';
+                        const isEnrolled = user.programs?.some(p => p.programId === program.id && p.isActive);
+                        
+                        return (
+                          <button
+                            key={program.id}
+                            onClick={() => handleProgramChange(program)}
+                            disabled={!program.available && !isEnrolled}
+                            className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${
+                              isActive 
+                                ? 'bg-blue-50 text-blue-700 border-2 border-blue-200' 
+                                : program.available
+                                ? 'hover:bg-gray-50 text-gray-700'
+                                : 'opacity-50 cursor-not-allowed text-gray-400'
+                            }`}
+                          >
+                            <span className="text-2xl">{program.icon}</span>
+                            <div className="flex-1 text-left">
+                              <p className="font-semibold">{program.name}</p>
+                              {isActive && (
+                                <p className="text-xs text-blue-600">Đang học</p>
+                              )}
+                              {!program.available && !isActive && (
+                                <p className="text-xs">Sắp ra mắt</p>
+                              )}
+                              {isEnrolled && !isActive && (
+                                <p className="text-xs text-green-600">Đã đăng ký</p>
+                              )}
+                            </div>
+                            {isActive && (
+                              <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-red-50 text-gray-700 hover:text-red-600 rounded-xl font-medium transition-all shadow-md hover:shadow-lg border border-gray-200 hover:border-red-300"
+            >
+              <LogOut className="w-5 h-5" />
+              <span>Đăng xuất</span>
+            </button>
+          </div>
 
           {/* Welcome Card */}
           <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl p-8 mb-6 text-white shadow-2xl relative overflow-hidden">

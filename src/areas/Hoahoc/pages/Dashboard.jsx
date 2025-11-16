@@ -22,9 +22,20 @@ const Dashboard = () => {
   const [userGrade, setUserGrade] = useState(8); // Add missing state for userGrade
 
   useEffect(() => {
-    if (user && user.profile) {
-      setUserGrade(user.profile.grade);
-      setSelectedClass(user.profile.grade);
+    if (user) {
+      // Lấy thông tin grade từ user.programs nếu có
+      const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry');
+      if (chemistryProgram && chemistryProgram.currentClass) {
+        setUserGrade(chemistryProgram.currentClass);
+        setSelectedClass(chemistryProgram.currentClass);
+      } else if (user.profile?.grade) {
+        setUserGrade(user.profile.grade);
+        setSelectedClass(user.profile.grade);
+      } else {
+        // Mặc định là lớp 8 nếu chưa có thông tin
+        setUserGrade(8);
+        setSelectedClass(8);
+      }
     }
   }, [user]);
 
