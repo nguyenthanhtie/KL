@@ -1,18 +1,16 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getAnalytics } from 'firebase/analytics';
 
 // Firebase configuration
-// NOTE: consider moving these values to environment variables for production
 const firebaseConfig = {
-  apiKey: "AIzaSyAogvxsayMucg8hSHB2xQmUIw92fltevmY",
-  authDomain: "leanrmore-8547f.firebaseapp.com",
-  projectId: "leanrmore-8547f",
-  // storageBucket should follow the pattern <projectId>.appspot.com
-  storageBucket: "leanrmore-8547f.appspot.com",
-  messagingSenderId: "468458404277",
-  appId: "1:468458404277:web:7b2a570caf8a46a397c1fc",
-  measurementId: "G-ZBYZVRLK2M"
+  apiKey: "AIzaSyDiGT3aKjuKRjzW2ZG4nnPnhSZ0V-msU6o",
+  authDomain: "doan-79e5f.firebaseapp.com",
+  projectId: "doan-79e5f",
+  storageBucket: "doan-79e5f.firebasestorage.app",
+  messagingSenderId: "673061549064",
+  appId: "1:673061549064:web:ca6851c82c379aa0020dbd",
+  measurementId: "G-ZGFNYB9VHL"
 };
 
 // Initialize Firebase
@@ -20,6 +18,12 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication
 export const auth = getAuth(app);
+
+// Initialize Google Provider for Authentication
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account' // Force account selection every time
+});
 
 // Initialize Analytics safely (avoid errors during SSR or when unsupported)
 let analytics = null;
