@@ -1,9 +1,9 @@
 module.exports = {
   classId: 8,
-  chapterId: 3,
+  chapterId: 1, // Phải là chương 1
   lessonId: 11,
-  title: "Bài 11: ...",
-  description: "...",
+  title: "Bài 11: Bài luyện tập 2 - Tổng hợp Chương 1",
+  description: "Chuyển đổi giữa các đại lượng",
   level: "Advanced",
   order: 11,
   theory: `

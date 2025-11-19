@@ -1,8 +1,8 @@
 module.exports = {
   classId: 8,
-  chapterId: 8,
+  chapterId: 4,
   lessonId: 28,
-  title: "Bài 28: Sơ lược về Bảng tuần hoàn các nguyên tố hóa học",
+  title: "Bài 28: Bài thực hành 4 - Tổng hợp Chương 4",
   description: "Tìm hiểu cấu trúc của Bảng tuần hoàn, quy luật biến đổi tính chất của các nguyên tố và ý nghĩa của nó trong hóa học.",
   level: "Intermediate",
   order: 28,

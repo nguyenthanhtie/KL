@@ -1,13 +1,13 @@
 module.exports = {
   classId: 8,
-  chapterId: 7,
+  chapterId: 4,
   lessonId: 26,
   title: "Bài 26: Sự ăn mòn kim loại và bảo vệ kim loại",
   description: "Tìm hiểu về hiện tượng ăn mòn kim loại, các yếu tố ảnh hưởng và các phương pháp hiệu quả để bảo vệ kim loại không bị ăn mòn.",
   level: "Intermediate",
   order: 26,
   theory: `
-    <h2>🛡️ Sự ăn mòn kim loại và Cách bảo vệ</h2>
+    <h2>�️ Sự ăn mòn kim loại và Cách bảo vệ</h2>
     <p>Sự ăn mòn kim loại là một quá trình tự nhiên gây ra những thiệt hại to lớn. Hiểu rõ về nó sẽ giúp chúng ta có biện pháp bảo vệ hiệu quả.</p>
     
     <h3>I. Ăn mòn kim loại là gì?</h3>

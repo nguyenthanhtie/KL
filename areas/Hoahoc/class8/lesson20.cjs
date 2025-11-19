@@ -1,8 +1,8 @@
 module.exports = {
   classId: 8,
-  chapterId: 5,
+  chapterId: 3, // Phải là chương 3
   lessonId: 20,
-  title: "Bài 20: Điều chế Hiđro - Phản ứng thế",
+  title: "Bài 20: Tính theo công thức hóa học",
   description: "Tìm hiểu các phương pháp điều chế khí Hiđro trong phòng thí nghiệm và trong công nghiệp, cùng với khái niệm về phản ứng thế.",
   level: "Beginner",
   order: 20,

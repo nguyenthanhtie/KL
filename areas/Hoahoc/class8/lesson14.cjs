@@ -1,6 +1,6 @@
 module.exports = {
   classId: 8,
-  chapterId: 3,
+  chapterId: 2,
   lessonId: 14,
   title: "Bài 14: Tính theo phương trình hoá học",
   description: "Học cách giải các bài toán hóa học định lượng dựa vào phương trình hóa học, bao gồm cả bài toán chất dư và hiệu suất phản ứng.",

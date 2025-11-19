@@ -1,8 +1,8 @@
 module.exports = {
   classId: 8,
-  chapterId: 5,
+  chapterId: 3, // Phải là chương 3
   lessonId: 18,
-  title: "Bài 18: Hiđro - Tính chất và ứng dụng",
+  title: "Bài 18: Mol",
   description: "Khám phá về nguyên tố Hiđro, tính chất vật lí, tính chất hóa học (tính khử) và các ứng dụng quan trọng của nó.",
   level: "Beginner",
   order: 18,

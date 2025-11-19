@@ -6,7 +6,6 @@ const lessons10 = require('./areas/Hoahoc/class10/index.cjs');
 const lessons11 = require('./areas/Hoahoc/class11/index.cjs');
 const lessons12 = require('./areas/Hoahoc/class12/index.cjs');
 const Challenge = require('./models/Challenge.cjs');
-const lessons = require('./areas/Hoahoc/class8/index.cjs');
 require('dotenv').config();
 
 const challenges = [
@@ -196,11 +195,11 @@ async function seedDatabase() {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://2200002540_db_user:Luan123@dan-1211.epxn7qi.mongodb.net/chemlearn?retryWrites=true&w=majority');
     console.log('✓ Đã kết nối MongoDB');
 
-    // Seed lessons
+    // Xóa dữ liệu cũ
     await Lesson.deleteMany({});
-    console.log('✓ Đã xóa dữ liệu cũ');
+    console.log('✓ Đã xóa dữ liệu bài học cũ');
 
-    // Combine all lessons from all classes
+    // Combine all lessons from all classes (CHỈ INSERT 1 LẦN)
     const allLessons = [
       ...lessons8,
       ...lessons9,
@@ -217,15 +216,22 @@ async function seedDatabase() {
     console.log('  - Lớp 11:', lessons11.length, 'bài');
     console.log('  - Lớp 12:', lessons12.length, 'bài');
     console.log('✓ Tổng cộng:', allLessons.length, 'bài học');
-    console.log('✓ Đã xóa dữ liệu bài học cũ');
 
-    await Lesson.insertMany(lessons);
-    console.log('✓ Đã thêm', lessons.length, 'bài học Hóa 8');
+    // Tạo index unique để ngăn chặn trùng lặp trong tương lai
+    try {
+      await mongoose.connection.collection('lessons').createIndex(
+        { classId: 1, lessonId: 1 },
+        { unique: true, background: true }
+      );
+      console.log('✓ Đã tạo index unique cho (classId, lessonId)');
+    } catch (idxErr) {
+      console.warn('⚠️ Index unique đã tồn tại hoặc có lỗi:', idxErr.message);
+    }
 
     // Seed challenges
     await Challenge.deleteMany({});
     console.log('✓ Đã xóa dữ liệu thử thách cũ');
-
+    
     await Challenge.insertMany(challenges);
     console.log('✓ Đã thêm', challenges.length, 'thử thách');
 

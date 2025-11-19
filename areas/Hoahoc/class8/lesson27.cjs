@@ -1,8 +1,8 @@
 module.exports = {
   classId: 8,
-  chapterId: 8,
+  chapterId: 4,
   lessonId: 27,
-  title: "Bài 27: Phi kim - Tính chất chung",
+  title: "Bài 27: Bài luyện tập 5 - Oxi và không khí",
   description: "Khám phá các tính chất vật lý và hóa học đặc trưng của phi kim, tập trung vào Clo và Cacbon.",
   level: "Beginner",
   order: 27,

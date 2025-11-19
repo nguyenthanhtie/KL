@@ -1,6 +1,6 @@
 module.exports = {
   classId: 8,
-  chapterId: 1,
+  chapterId: 0, // Mở đầu - không thuộc chương nào
   lessonId: 1,
   title: "Bài 1: Mở đầu môn Hoá học",
   description: "Giới thiệu về môn Hoá học, tầm quan trọng và ứng dụng trong đời sống",

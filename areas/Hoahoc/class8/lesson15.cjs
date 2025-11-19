@@ -1,197 +1,218 @@
 module.exports = {
   classId: 8,
-  chapterId: 4,
+  chapterId: 2, // Đổi từ 3 về 2
   lessonId: 15,
-  title: "Bài 15: Nước",
-  description: "Tìm hiểu về thành phần, tính chất vật lí, tính chất hóa học và vai trò của nước trong đời sống và sản xuất.",
+  title: "Bài 15: Định luật bảo toàn khối lượng",
+  description: "Tìm hiểu định luật bảo toàn khối lượng trong phản ứng hóa học",
   level: "Beginner",
   order: 15,
   theory: `
-    <h2>💧 Nước - H₂O</h2>
-    <p>Nước là một hợp chất hóa học quen thuộc và vô cùng quan trọng, có công thức hóa học là H₂O. Nó bao phủ khoảng 71% bề mặt Trái Đất.</p>
-    
-    <h3>1. Thành phần hóa học của Nước</h3>
-    <p>Nước là hợp chất tạo bởi hai nguyên tố là Hiđro (H) và Oxi (O).</p>
-    <ul>
-      <li><strong>Sự tổng hợp nước:</strong> Đốt cháy khí hiđro trong khí oxi, ta thu được nước.
-        <p style="text-align: center; font-weight: bold;">2H₂ + O₂ → 2H₂O</p>
-      </li>
-      <li><strong>Sự phân hủy nước:</strong> Dùng dòng điện để phân hủy nước, ta thu được khí hiđro và khí oxi.
-        <p style-="text-align: center; font-weight: bold;">2H₂O --(điện phân)--> 2H₂ + O₂</p>
-      </li>
-      <li><strong>Tỉ lệ thành phần:</strong> Về khối lượng, tỉ lệ giữa H và O là 1:8. Về thể tích, 2 phần khí H₂ kết hợp với 1 phần khí O₂.</li>
-    </ul>
+      <h2>⚖️ Định luật bảo toàn khối lượng</h2>
+      
+      <h3>📚 Phát biểu</h3>
+      <div style="background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
+        <p style="font-size: 18px; font-weight: bold; text-align: center;">
+          "Trong một phản ứng hóa học, tổng khối lượng các chất sản phẩm bằng tổng khối lượng các chất tham gia phản ứng."
+        </p>
+        <p style="text-align: center; margin-top: 10px;">
+          <strong>m<sub>sản phẩm</sub> = m<sub>chất tham gia</sub></strong>
+        </p>
+      </div>
 
-    <h3>2. Tính chất của Nước</h3>
-    <h4>a. Tính chất vật lí</h4>
-    <div style="background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
+      <h3>🔬 Thí nghiệm minh họa</h3>
+      <div style="background: #dcfce7; padding: 15px; border-left: 4px solid #16a34a; margin: 15px 0;">
+        <h4>Thí nghiệm: Đốt cháy sắt trong bình kín</h4>
+        <p><strong>Tiến hành:</strong></p>
+        <p>1. Cân bình kín chứa bột sắt: m₁ = 100g</p>
+        <p>2. Đốt nóng để sắt cháy trong oxi</p>
+        <p>3. Để nguội và cân lại: m₂ = 100g</p>
+        <p><strong>Kết luận:</strong> m₁ = m₂ → Khối lượng không đổi</p>
+        <p><strong>Phương trình:</strong> 3Fe + 2O₂ → Fe₃O₄</p>
+      </div>
+
+      <h3>💡 Giải thích</h3>
+      <div style="background: #fef3c7; padding: 15px; border-left: 4px solid #d97706; margin: 15px 0;">
+        <p>Trong phản ứng hóa học:</p>
+        <p>• Số nguyên tử mỗi nguyên tố <strong>không đổi</strong></p>
+        <p>• Các nguyên tử chỉ <strong>sắp xếp lại</strong> thành chất mới</p>
+        <p>• Do đó: Tổng khối lượng <strong>được bảo toàn</strong></p>
+      </div>
+
+      <h3>⚠️ Chú ý quan trọng</h3>
       <ul>
-        <li><strong>Trạng thái:</strong> Nước là chất lỏng, không màu, không mùi, không vị.</li>
-        <li><strong>Nhiệt độ sôi:</strong> 100°C (ở áp suất 1 atm).</li>
-        <li><strong>Nhiệt độ đông đặc:</strong> 0°C.</li>
-        <li><strong>Khối lượng riêng:</strong> 1 g/ml (ở 4°C).</li>
-        <li><strong>Tính hòa tan:</strong> Nước có thể hòa tan được nhiều chất rắn (muối, đường), lỏng (cồn, axit), và khí (amoniac, hiđro clorua).</li>
+        <li>Định luật chỉ đúng trong <strong>hệ kín</strong> (không có chất thoát ra hoặc vào)</li>
+        <li>Nếu có khí thoát ra → Khối lượng hệ thống <strong>giảm</strong></li>
+        <li>Nếu có khí từ ngoài vào → Khối lượng hệ thống <strong>tăng</strong></li>
       </ul>
-    </div>
-
-    <h4>b. Tính chất hóa học</h4>
-    <div style="background: #dcfce7; padding: 15px; border-left: 4px solid #16a34a; margin: 15px 0;">
-      <p>Nước là một chất hóa học có hoạt động trung bình, có thể tác dụng với kim loại, oxit bazơ và oxit axit.</p>
-      <ol>
-        <li><strong>Tác dụng với kim loại:</strong> Nước tác dụng với một số kim loại ở nhiệt độ thường (Na, K, Ca, Ba...) tạo thành bazơ và giải phóng khí H₂.
-          <p>Ví dụ: 2Na + 2H₂O → 2NaOH + H₂</p>
-        </li>
-        <li><strong>Tác dụng với oxit bazơ:</strong> Nhiều oxit bazơ tác dụng với nước tạo ra dung dịch bazơ (kiềm).
-          <p>Ví dụ: CaO + H₂O → Ca(OH)₂</p>
-        </li>
-        <li><strong>Tác dụng với oxit axit:</strong> Nhiều oxit axit tác dụng với nước tạo ra dung dịch axit.
-          <p>Ví dụ: P₂O₅ + 3H₂O → 2H₃PO₄</p>
-        </li>
-      </ol>
-    </div>
-
-    <h3>3. Vai trò của Nước</h3>
-    <p>Nước có vai trò cực kỳ quan trọng:</p>
-    <ul>
-      <li>Là thành phần chính trong cơ thể sinh vật.</li>
-      <li>Là dung môi cho nhiều phản ứng hóa học trong cơ thể.</li>
-      <li>Tham gia vào quá trình sản xuất công nghiệp, nông nghiệp.</li>
-      <li>Là nguồn năng lượng (thủy điện).</li>
-    </ul>
-    <p>Vì vậy, chúng ta cần phải bảo vệ nguồn nước sạch và sử dụng tiết kiệm.</p>
-  `,
+    `,
   game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
     basic: [
       {
         type: "multiple-choice",
-        question: "Công thức hóa học của nước là gì?",
-        options: ["HO₂", "H₂O", "H₂O₂", "HO"],
+        question: "Định luật bảo toàn khối lượng phát biểu như thế nào?",
+        options: [
+          "Khối lượng luôn tăng sau phản ứng",
+          "Tổng khối lượng sản phẩm bằng tổng khối lượng chất tham gia",
+          "Khối lượng luôn giảm sau phản ứng",
+          "Khối lượng không liên quan đến phản ứng"
+        ],
         correctAnswer: 1,
-        explanation: "✅ Nước được tạo thành từ 2 nguyên tử Hiđro và 1 nguyên tử Oxi.",
+        explanation: "✅ Trong phản ứng hóa học: m<sub>sản phẩm</sub> = m<sub>chất tham gia</sub>",
         points: 10
       },
       {
         type: "true-false",
-        question: "Nước là một đơn chất.",
-        correctAnswer: false,
-        explanation: "❌ Sai, nước là một hợp chất vì nó được tạo thành từ hai nguyên tố hóa học là H và O.",
+        question: "Trong phản ứng hóa học, số nguyên tử mỗi nguyên tố không đổi.",
+        correctAnswer: true,
+        explanation: "✅ Đúng! Các nguyên tử chỉ sắp xếp lại, không sinh ra hay mất đi.",
         points: 10
       },
       {
         type: "multiple-choice",
-        question: "Ở điều kiện thường, nước ở trạng thái nào?",
-        options: ["Rắn", "Lỏng", "Khí", "Plasma"],
+        question: "Định luật bảo toàn khối lượng đúng trong điều kiện nào?",
+        options: [
+          "Bất kỳ điều kiện nào",
+          "Chỉ trong hệ kín",
+          "Chỉ khi có khí thoát ra",
+          "Chỉ khi nhiệt độ cao"
+        ],
         correctAnswer: 1,
-        explanation: "✅ Nước tồn tại ở trạng thái lỏng trong khoảng nhiệt độ từ 0°C đến 100°C.",
+        explanation: "✅ Định luật chỉ đúng trong HỆ KÍN (không có chất thoát ra hay vào).",
         points: 10
       },
       {
         type: "fill-in-blank",
-        question: "Nước sôi ở ___°C (tại áp suất 1 atm).",
-        correctAnswer: "100",
-        explanation: "✅ Đây là nhiệt độ sôi tiêu chuẩn của nước.",
+        question: "Công thức định luật bảo toàn khối lượng: m<sub>sản phẩm</sub> = m<sub>___</sub>",
+        correctAnswer: "chất tham gia",
+        hint: "💡 Các chất trước phản ứng",
+        explanation: "✅ m<sub>sản phẩm</sub> = m<sub>chất tham gia</sub>",
         points: 10
       },
       {
         type: "true-false",
-        question: "Nước có thể hòa tan được tất cả các chất.",
-        correctAnswer: false,
-        explanation: "❌ Sai, nước là một dung môi tốt nhưng không phải dung môi vạn năng. Ví dụ, dầu ăn không tan trong nước.",
+        question: "Nếu đốt cháy sắt trong không khí, khối lượng sản phẩm lớn hơn khối lượng sắt ban đầu.",
+        correctAnswer: true,
+        explanation: "✅ Đúng! Vì sắt kết hợp với oxi trong không khí tạo oxit sắt nặng hơn.",
         points: 10
       }
     ],
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
     intermediate: [
       {
-        type: "multiple-choice",
-        question: "Phản ứng nào sau đây chứng tỏ nước tác dụng với kim loại?",
-        options: ["2H₂ + O₂ → 2H₂O", "CaO + H₂O → Ca(OH)₂", "2Na + 2H₂O → 2NaOH + H₂", "P₂O₅ + 3H₂O → 2H₃PO₄"],
-        correctAnswer: 2,
-        explanation: "✅ Phản ứng giữa Natri (kim loại) và nước tạo ra Natri hiđroxit và khí Hiđro.",
+        type: "matching",
+        question: "🔗 Ghép trường hợp với kết quả",
+        pairs: [
+          { left: "Phản ứng trong bình kín", right: "Khối lượng không đổi" },
+          { left: "Có khí thoát ra ngoài", right: "Khối lượng giảm" },
+          { left: "Có khí từ ngoài vào", right: "Khối lượng tăng" },
+          { left: "Đốt Mg trong O₂ dư", right: "Khối lượng tăng" }
+        ],
+        explanation: "✅ Tuyệt vời! Bạn hiểu rõ các trường hợp áp dụng định luật.",
         points: 15
       },
       {
-        type: "matching",
-        question: "🔗 Ghép sản phẩm đúng với phản ứng của nước.",
-        pairs: [
-          { left: "Nước + K (Kali)", right: "Dung dịch bazơ + H₂" },
-          { left: "Nước + SO₃ (Lưu huỳnh trioxit)", right: "Dung dịch axit" },
-          { left: "Nước + BaO (Bari oxit)", right: "Dung dịch bazơ" }
+        type: "fill-in-blank",
+        question: "Đốt 12g C trong oxi, thu được 44g CO₂. Khối lượng oxi đã phản ứng là ___ g.",
+        correctAnswer: "32",
+        hint: "💡 m<sub>O₂</sub> = m<sub>CO₂</sub> - m<sub>C</sub>",
+        explanation: "✅ m<sub>O₂</sub> = 44 - 12 = 32g",
+        points: 15
+      },
+      {
+        type: "multiple-choice",
+        question: "Tại sao khối lượng giấy giảm khi đốt cháy trong không khí?",
+        options: [
+          "Vì giấy biến mất",
+          "Vì có khí CO₂ và hơi nước thoát ra",
+          "Vì định luật bảo toàn khối lượng sai",
+          "Vì giấy bay đi"
         ],
-        explanation: "✅ Bạn đã hiểu rõ các tính chất hóa học của nước.",
+        correctAnswer: 1,
+        explanation: "✅ Khí CO₂ và hơi nước thoát ra ngoài nên khối lượng hệ thống giảm.",
         points: 15
       },
       {
         type: "ordering",
-        question: "📋 Sắp xếp các kim loại sau theo mức độ phản ứng với nước giảm dần.",
-        options: ["Fe (Sắt)", "Na (Natri)", "Cu (Đồng)", "Ca (Canxi)"],
-        correctOrder: ["Na (Natri)", "Ca (Canxi)", "Fe (Sắt)", "Cu (Đồng)"],
-        explanation: "✅ Na và Ca phản ứng mạnh với nước ở nhiệt độ thường, Fe phản ứng ở nhiệt độ cao, Cu không phản ứng.",
-        points: 15
-      },
-       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành phương trình điện phân nước.",
-        slots: [
-          { id: 1, label: "2H₂O →", accepts: ["2H₂"] },
-          { id: 2, label: "+", accepts: ["O₂"] }
+        question: "📋 Sắp xếp các bước áp dụng định luật bảo toàn khối lượng",
+        options: [
+          "Xác định các chất tham gia",
+          "Xác định các chất sản phẩm",
+          "Tính tổng khối lượng chất tham gia",
+          "Tính tổng khối lượng sản phẩm",
+          "So sánh hai tổng khối lượng"
         ],
-        options: ["2H₂", "O₂", "H₂O₂"],
-        explanation: "✅ Điện phân nước tạo ra 2 thể tích khí Hiđro và 1 thể tích khí Oxi.",
+        correctOrder: [
+          "Xác định các chất tham gia",
+          "Xác định các chất sản phẩm",
+          "Tính tổng khối lượng chất tham gia",
+          "Tính tổng khối lượng sản phẩm",
+          "So sánh hai tổng khối lượng"
+        ],
+        explanation: "✅ Đúng trình tự áp dụng định luật!",
         points: 15
       },
       {
         type: "fill-in-blank",
-        question: "Khi cho CaO vào nước, dung dịch thu được làm quỳ tím chuyển sang màu ___.",
-        correctAnswer: "xanh",
-        hint: "💡 CaO + H₂O tạo ra Ca(OH)₂, là một bazơ.",
-        explanation: "✅ Dung dịch bazơ làm quỳ tím hóa xanh.",
+        question: "Đốt 7g Fe trong oxi thu được 10g Fe₃O₄. Khối lượng O₂ đã dùng là ___ g.",
+        correctAnswer: "3",
+        hint: "💡 Dùng định luật bảo toàn khối lượng",
+        explanation: "✅ m<sub>O₂</sub> = 10 - 7 = 3g",
         points: 15
       }
     ],
-    // ⚡ CẤP ĐỘ NÂNG CAO
     advanced: [
       {
-        type: "multiple-choice",
-        question: "Điện phân hoàn toàn 18g nước, thu được tổng thể tích khí H₂ và O₂ (đktc) là:",
-        options: ["11.2 lít", "22.4 lít", "33.6 lít", "44.8 lít"],
-        correctAnswer: 2,
-        explanation: "✅ nH₂O = 18/18 = 1 mol. PTHH: 2H₂O → 2H₂ + O₂. Từ 1 mol H₂O tạo ra 1 mol H₂ và 0.5 mol O₂. Tổng số mol khí = 1.5 mol. V = 1.5 * 22.4 = 33.6 lít.",
+        type: "drag-drop",
+        question: "🧩 Hoàn thành: Định luật bảo toàn khối lượng: Tổng ___ của các chất ___ bằng tổng ___ của các chất ___.",
+        inline: true,
+        slots: [
+          { id: 1, label: "Đại lượng", correct: "khối lượng" },
+          { id: 2, label: "Trước phản ứng", correct: "tham gia" },
+          { id: 3, label: "Đại lượng", correct: "khối lượng" },
+          { id: 4, label: "Sau phản ứng", correct: "sản phẩm" }
+        ],
+        options: ["khối lượng", "tham gia", "khối lượng", "sản phẩm"],
+        explanation: "✅ Tổng KHỐI LƯỢNG các chất THAM GIA = Tổng KHỐI LƯỢNG các chất SẢN PHẨM.",
         points: 20
       },
       {
-        type: "true-false",
-        question: "Nước đá (nước ở thể rắn) nặng hơn nước lỏng, nên nó chìm trong nước.",
-        correctAnswer: false,
-        explanation: "❌ Sai, do cấu trúc tinh thể đặc biệt, nước đá có khối lượng riêng nhỏ hơn nước lỏng, do đó nó nổi trên mặt nước.",
-        points: 20
-      },
-      {
         type: "multiple-choice",
-        question: "Dãy chất nào sau đây chỉ gồm các chất tan tốt trong nước?",
-        options: ["NaCl, CaCO₃, C₂H₅OH", "C₆H₁₂O₆ (đường), NaOH, BaSO₄", "NaCl, C₁₂H₂₂O₁₁ (đường saccarozơ), HCl", "Fe(OH)₂, AgCl, CH₃COOH"],
+        question: "Đốt 5,6g Fe trong bình kín chứa 2,4g O₂. Sau phản ứng thu được m gam Fe₃O₄ và còn dư Fe. Giá trị m là:",
+        options: ["6,4g", "7,2g", "8,0g", "Không tính được"],
         correctAnswer: 2,
-        explanation: "✅ NaCl (muối ăn), đường saccarozơ và axit clohiđric đều tan tốt trong nước. CaCO₃, BaSO₄, Fe(OH)₂, AgCl là các chất kết tủa.",
+        explanation: "✅ m = 5,6 + 2,4 = 8,0g (bảo toàn khối lượng trong bình kín)",
         points: 20
       },
       {
         type: "fill-in-blank",
-        question: "Để dập tắt đám cháy do xăng, dầu, người ta không dùng nước vì xăng, dầu nhẹ hơn nước và ___ trong nước.",
-        correctAnswer: "không tan",
-        explanation: "✅ Dùng nước sẽ làm đám cháy lan rộng hơn.",
+        question: "Nung nóng 24,5g KClO₃ thu được 14,9g KCl và V lít O₂ (đktc). Khối lượng O₂ là ___ g. (Cho O=16)",
+        correctAnswer: "9,6",
+        hint: "💡 m<sub>O₂</sub> = m<sub>KClO₃</sub> - m<sub>KCl</sub>",
+        explanation: "✅ m<sub>O₂</sub> = 24,5 - 14,9 = 9,6g",
         points: 20
       },
       {
         type: "matching",
-        question: "🧠 Ghép vai trò của nước với ứng dụng thực tế.",
+        question: "🧠 Phân tích các trường hợp",
         pairs: [
-          { left: "Dung môi hòa tan", right: "Pha nước chanh, nấu canh" },
-          { left: "Tham gia phản ứng hóa học", right: "Sản xuất vôi tôi Ca(OH)₂" },
-          { left: "Sinh hoạt con người", right: "Tắm, giặt, uống" },
-          { left: "Sản xuất nông nghiệp", right: "Tưới tiêu cây trồng" }
+          { left: "Đốt Mg trong bình kín chứa O₂", right: "Khối lượng hệ không đổi" },
+          { left: "Đốt Mg ngoài không khí", right: "Khối lượng Mg tăng (hút O₂)" },
+          { left: "Nung KClO₃ trong bình hở", right: "Khối lượng giảm (O₂ thoát ra)" },
+          { left: "Nung CaCO₃ trong bình kín", right: "Khối lượng không đổi" }
         ],
-        explanation: "✅ Nước thực sự là nguồn sống không thể thiếu!",
+        explanation: "✅ Xuất sắc! Bạn phân biệt được hệ kín và hệ hở.",
+        points: 20
+      },
+      {
+        type: "multiple-choice",
+        question: "Phát biểu nào SAI về định luật bảo toàn khối lượng?",
+        options: [
+          "Định luật đúng với mọi phản ứng hóa học",
+          "Khối lượng luôn bằng nhau trong hệ kín",
+          "Khối lượng hệ mở có thể thay đổi do khí thoát ra/vào",
+          "Định luật chỉ đúng ở nhiệt độ thấp"
+        ],
+        correctAnswer: 3,
+        explanation: "❌ SAI! Định luật đúng ở MỌI nhiệt độ, chỉ cần là hệ kín.",
         points: 20
       }
     ]

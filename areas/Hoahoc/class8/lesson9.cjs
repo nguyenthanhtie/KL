@@ -1,8 +1,8 @@
 module.exports = {
   classId: 8,
-  chapterId: 2,
+  chapterId: 1, // Phải là chương 1
   lessonId: 9,
-  title: "Bài 9: Phương trình hoá học",
+  title: "Bài 9: Bài luyện tập 1 - Hóa trị cơ bản",
   description: "Lập và cân bằng phương trình hóa học",
   level: "Intermediate",
   order: 9,

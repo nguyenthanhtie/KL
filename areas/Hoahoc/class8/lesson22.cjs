@@ -1,8 +1,8 @@
 module.exports = {
   classId: 8,
-  chapterId: 6,
+  chapterId: 3, // Phải là chương 3
   lessonId: 22,
-  title: "Bài 22: Axit - Bazơ - Muối",
+  title: "Bài 22: Bài luyện tập 4 - Tổng hợp Chương 3",
   description: "Làm quen với ba loại hợp chất vô cơ quan trọng: Axit, Bazơ và Muối. Học cách định nghĩa, phân loại và gọi tên chúng.",
   level: "Beginner",
   order: 22,

@@ -1,207 +1,215 @@
 module.exports = {
   classId: 8,
-  chapterId: 4,
+  chapterId: 2, // Đổi từ 3 về 2
   lessonId: 17,
-  title: "Bài 17: Dung dịch",
-  description: "Tìm hiểu về dung dịch, dung môi, chất tan, nồng độ phần trăm và nồng độ mol của dung dịch.",
+  title: "Bài 17: Bài luyện tập 3 - Tổng hợp Chương 2",
+  description: "Ôn tập và luyện tập về phản ứng hóa học, định luật bảo toàn khối lượng và phương trình hóa học",
   level: "Intermediate",
   order: 17,
   theory: `
-    <h2>🥤 Dung dịch</h2>
-    <p>Dung dịch là một khái niệm quen thuộc trong hóa học và đời sống, ví dụ như nước đường, nước muối, nước chanh...</p>
-    
-    <h3>1. Dung môi, chất tan và dung dịch</h3>
-    <div style="background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
-      <ul>
-        <li><strong>Dung môi:</strong> Là chất có khả năng hòa tan chất khác để tạo thành dung dịch. Nước là dung môi phổ biến nhất.</li>
-        <li><strong>Chất tan:</strong> Là chất bị hòa tan trong dung môi. Ví dụ: đường, muối.</li>
-        <li><strong>Dung dịch:</strong> Là hỗn hợp đồng nhất của dung môi và chất tan.</li>
-      </ul>
-      <p style="text-align: center; font-weight: bold; font-size: 1.2em;">Dung dịch = Dung môi + Chất tan</p>
-    </div>
-
-    <h3>2. Dung dịch chưa bão hòa và dung dịch bão hòa</h3>
-    <ul>
-      <li><strong>Dung dịch chưa bão hòa:</strong> Là dung dịch có thể hòa tan thêm chất tan.</li>
-      <li><strong>Dung dịch bão hòa:</strong> Là dung dịch không thể hòa tan thêm chất tan ở một nhiệt độ xác định.</li>
-    </ul>
-
-    <h3>3. Nồng độ dung dịch</h3>
-    <p>Nồng độ dung dịch cho biết lượng chất tan có trong một lượng dung dịch hoặc dung môi xác định. Có hai loại nồng độ thường dùng:</p>
-    
-    <h4>a. Nồng độ phần trăm (C%)</h4>
-    <div style="background: #fefce8; padding: 15px; border-left: 4px solid #eab308; margin: 15px 0;">
-      <p><strong>Định nghĩa:</strong> Nồng độ phần trăm của một dung dịch cho biết khối lượng chất tan có trong 100g dung dịch.</p>
-      <p><strong>Công thức:</strong></p>
-      <div style="text-align: center; font-size: 1.2em; font-weight: bold; margin: 15px 0; padding: 10px; background: #fffbeb;">
-        C% = (m<sub>ct</sub> / m<sub>dd</sub>) × 100%
+      <h2>📝 Ôn tập Chương 2: Phản ứng Hóa học</h2>
+      
+      <h3>🔍 Tóm tắt kiến thức</h3>
+      <div style="background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
+        <h4>1. Phản ứng hóa học</h4>
+        <p>• Là quá trình biến đổi chất này thành chất khác</p>
+        <p>• Dấu hiệu: Có chất mới sinh ra</p>
+        <p>• Có thể kèm theo: Đổi màu, tỏa nhiệt, phát sáng, có khí, kết tủa</p>
       </div>
-      <p>Trong đó:</p>
-      <ul>
-        <li><strong>m<sub>ct</sub>:</strong> khối lượng chất tan (g)</li>
-        <li><strong>m<sub>dd</sub>:</strong> khối lượng dung dịch (g)</li>
-        <li><strong>m<sub>dd</sub> = m<sub>ct</sub> + m<sub>dm</sub></strong> (m<sub>dm</sub> là khối lượng dung môi)</li>
-      </ul>
-      <p><em>Ví dụ: Dung dịch NaCl 20% nghĩa là trong 100g dung dịch có chứa 20g NaCl và 80g H₂O.</em></p>
-    </div>
-
-    <h4>b. Nồng độ mol (Cₘ)</h4>
-    <div style="background: #ecfdf5; padding: 15px; border-left: 4px solid #10b981; margin: 15px 0;">
-      <p><strong>Định nghĩa:</strong> Nồng độ mol của một dung dịch cho biết số mol chất tan có trong 1 lít dung dịch.</p>
-      <p><strong>Công thức:</strong></p>
-      <div style="text-align: center; font-size: 1.2em; font-weight: bold; margin: 15px 0; padding: 10px; background: #f0fdf4;">
-        Cₘ = n / V
+      
+      <div style="background: #dcfce7; padding: 15px; border-left: 4px solid #16a34a; margin: 15px 0;">
+        <h4>2. Định luật bảo toàn khối lượng</h4>
+        <p style="text-align: center; font-size: 18px;">
+          <strong>m<sub>sản phẩm</sub> = m<sub>chất tham gia</sub></strong>
+        </p>
+        <p>• Đúng trong hệ kín</p>
+        <p>• Số nguyên tử mỗi nguyên tố không đổi</p>
       </div>
-      <p>Trong đó:</p>
-      <ul>
-        <li><strong>n:</strong> số mol chất tan (mol)</li>
-        <li><strong>V:</strong> thể tích dung dịch (lít)</li>
-      </ul>
-      <p><em>Ví dụ: Dung dịch NaOH 2M (hoặc 2 mol/l) nghĩa là trong 1 lít dung dịch có chứa 2 mol NaOH.</em></p>
-    </div>
-  `,
+
+      <div style="background: #fef3c7; padding: 15px; border-left: 4px solid #d97706; margin: 15px 0;">
+        <h4>3. Phương trình hóa học</h4>
+        <p><strong>Các bước lập:</strong></p>
+        <p>① Viết sơ đồ phản ứng</p>
+        <p>② Cân bằng số nguyên tử</p>
+        <p>③ Viết phương trình hoàn chỉnh</p>
+        <p><strong>Lưu ý:</strong> Chỉ đổi HỆ SỐ, không đổi CHỈ SỐ</p>
+      </div>
+
+      <h3>📊 Bảng tổng hợp</h3>
+      <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <tr style="background: #e5e7eb;">
+          <th style="border: 1px solid #9ca3af; padding: 10px;">Khái niệm</th>
+          <th style="border: 1px solid #9ca3af; padding: 10px;">Nội dung chính</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #9ca3af; padding: 10px;">Phản ứng hóa học</td>
+          <td style="border: 1px solid #9ca3af; padding: 10px;">Biến đổi chất → Chất mới</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #9ca3af; padding: 10px;">Định luật bảo toàn KL</td>
+          <td style="border: 1px solid #9ca3af; padding: 10px;">Tổng m trước = Tổng m sau</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #9ca3af; padding: 10px;">Phương trình hóa học</td>
+          <td style="border: 1px solid #9ca3af; padding: 10px;">Biểu diễn phản ứng bằng CTHH</td>
+        </tr>
+      </table>
+    `,
   game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
     basic: [
       {
         type: "multiple-choice",
-        question: "Trong dung dịch nước đường, nước đóng vai trò là gì?",
-        options: ["Chất tan", "Dung môi", "Dung dịch", "Chất điện li"],
-        correctAnswer: 1,
-        explanation: "✅ Nước là chất hòa tan đường, nên nước là dung môi.",
+        question: "Dấu hiệu nào chứng tỏ có phản ứng hóa học?",
+        options: [
+          "Nước đóng băng",
+          "Đường tan trong nước",
+          "Sắt bị gỉ",
+          "Nước bay hơi"
+        ],
+        correctAnswer: 2,
+        explanation: "✅ Sắt bị gỉ là phản ứng hóa học (có chất mới Fe₂O₃ sinh ra).",
         points: 10
       },
       {
         type: "true-false",
-        question: "Dung dịch là hỗn hợp đồng nhất của dung môi và chất tan.",
-        correctAnswer: true,
-        explanation: "✅ Đúng, đây là định nghĩa của dung dịch.",
+        question: "Định luật bảo toàn khối lượng đúng trong mọi điều kiện.",
+        correctAnswer: false,
+        explanation: "❌ Sai! Chỉ đúng trong HỆ KÍN.",
         points: 10
       },
       {
         type: "multiple-choice",
-        question: "Đơn vị của nồng độ mol là gì?",
-        options: ["g/mol", "%", "mol/lít", "g/lít"],
-        correctAnswer: 2,
-        explanation: "✅ Nồng độ mol (Cₘ) được tính bằng số mol chất tan trên một lít dung dịch.",
+        question: "Khi cân bằng phương trình, ta chỉ được thay đổi gì?",
+        options: ["Chỉ số", "Hệ số", "Công thức", "Tên chất"],
+        correctAnswer: 1,
+        explanation: "✅ Chỉ được đổi HỆ SỐ, không đổi chỉ số trong công thức.",
         points: 10
       },
       {
         type: "fill-in-blank",
-        question: "Khối lượng dung dịch bằng tổng khối lượng chất tan và khối lượng ___.",
-        correctAnswer: "dung môi",
-        explanation: "✅ m(dung dịch) = m(chất tan) + m(dung môi).",
+        question: "Phản ứng hóa học là quá trình biến đổi chất này thành chất ___.",
+        correctAnswer: "khác",
+        hint: "💡 Tạo ra chất mới",
+        explanation: "✅ Biến đổi chất này thành chất KHÁC (chất mới).",
         points: 10
       },
       {
         type: "true-false",
-        question: "Dung dịch bão hòa có thể hòa tan thêm chất tan.",
-        correctAnswer: false,
-        explanation: "❌ Sai, dung dịch bão hòa đã chứa lượng chất tan tối đa ở nhiệt độ đó.",
+        question: "Phương trình 2H₂ + O₂ → 2H₂O tuân theo định luật bảo toàn khối lượng.",
+        correctAnswer: true,
+        explanation: "✅ Đúng! Số nguyên tử H và O bằng nhau 2 vế.",
         points: 10
       }
     ],
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
     intermediate: [
       {
-        type: "multiple-choice",
-        question: "Hòa tan 10g NaCl vào 40g nước. Nồng độ phần trăm của dung dịch thu được là:",
-        options: ["10%", "20%", "25%", "40%"],
-        correctAnswer: 1,
-        explanation: "✅ m(dd) = 10 + 40 = 50g. C% = (10 / 50) * 100% = 20%.",
+        type: "matching",
+        question: "🔗 Ghép khái niệm với ví dụ",
+        pairs: [
+          { left: "Phản ứng hóa học", right: "Sắt cháy trong oxi" },
+          { left: "Biến đổi vật lý", right: "Nước đóng băng" },
+          { left: "Định luật bảo toàn KL", right: "m trước = m sau" },
+          { left: "Phương trình hóa học", right: "2H₂ + O₂ → 2H₂O" }
+        ],
+        explanation: "✅ Tuyệt vời! Bạn phân biệt đúng các khái niệm.",
         points: 15
       },
       {
-        type: "matching",
-        question: "🔗 Ghép công thức với tên đại lượng tương ứng.",
-        pairs: [
-          { left: "C% = (m_ct / m_dd) × 100%", right: "Nồng độ phần trăm" },
-          { left: "Cₘ = n / V", right: "Nồng độ mol" },
-          { left: "m_dd = m_ct + m_dm", right: "Khối lượng dung dịch" }
+        type: "fill-in-blank",
+        question: "Đốt 12g C trong oxi, thu được 44g CO₂. Khối lượng O₂ phản ứng là ___ g.",
+        correctAnswer: "32",
+        hint: "💡 Dùng định luật bảo toàn khối lượng",
+        explanation: "✅ m(O₂) = 44 - 12 = 32g",
+        points: 15
+      },
+      {
+        type: "multiple-choice",
+        question: "Phương trình nào cân bằng ĐÚNG?",
+        options: [
+          "Fe + O₂ → Fe₃O₄",
+          "2Fe + O₂ → Fe₂O₃",
+          "3Fe + 2O₂ → Fe₃O₄",
+          "Fe + 2O₂ → FeO₂"
         ],
-        explanation: "✅ Bạn đã thuộc hết các công thức quan trọng rồi đấy!",
+        correctAnswer: 2,
+        explanation: "✅ 3Fe + 2O₂ → Fe₃O₄ (Fe: 3=3, O: 4=4)",
         points: 15
       },
       {
         type: "ordering",
-        question: "📋 Sắp xếp các bước để pha chế 100g dung dịch NaCl 10%.",
+        question: "📋 Sắp xếp các bước giải bài toán bảo toàn khối lượng",
         options: [
-          "Cân 10g NaCl",
-          "Cân 90g (hoặc đong 90ml) nước cất",
-          "Cho NaCl vào cốc chứa nước, khuấy đều cho tan hết"
+          "Xác định các chất tham gia và sản phẩm",
+          "Viết công thức tổng quát",
+          "Thay số và tính toán",
+          "Kiểm tra kết quả"
         ],
         correctOrder: [
-          "Cân 10g NaCl",
-          "Cân 90g (hoặc đong 90ml) nước cất",
-          "Cho NaCl vào cốc chứa nước, khuấy đều cho tan hết"
+          "Xác định các chất tham gia và sản phẩm",
+          "Viết công thức tổng quát",
+          "Thay số và tính toán",
+          "Kiểm tra kết quả"
         ],
-        explanation: "✅ Đây là quy trình chuẩn để pha chế một dung dịch theo nồng độ phần trăm.",
-        points: 15
-      },
-       {
-        type: "drag-drop",
-        question: "🧩 Tính C% của dung dịch khi hòa tan 25g đường vào 75g nước.",
-        slots: [
-          { id: 1, label: "m_ct =", accepts: ["25g"] },
-          { id: 2, label: "m_dd =", accepts: ["100g"] },
-          { id: 3, label: "C% =", accepts: ["25%"] }
-        ],
-        options: ["25g", "100g", "25%", "75g"],
-        explanation: "✅ m_dd = 25 + 75 = 100g. C% = (25/100)*100 = 25%.",
+        explanation: "✅ Đúng trình tự giải bài!",
         points: 15
       },
       {
         type: "fill-in-blank",
-        question: "Hòa tan 0.5 mol NaOH vào nước để được 2 lít dung dịch. Nồng độ mol của dung dịch là ___ M.",
-        correctAnswer: "0.25",
-        hint: "💡 Cₘ = n / V",
-        explanation: "✅ Cₘ = 0.5 mol / 2 lít = 0.25 mol/l hay 0.25M.",
+        question: "Cân bằng: ___ Al + ___ O₂ → 2Al₂O₃. Hệ số Al là ___.",
+        correctAnswer: "4",
+        hint: "💡 Al₂O₃ có 2 Al",
+        explanation: "✅ 4Al + 3O₂ → 2Al₂O₃",
         points: 15
       }
     ],
-    // ⚡ CẤP ĐỘ NÂNG CAO
     advanced: [
       {
+        type: "drag-drop",
+        question: "🧩 Hoàn thành: Trong phản ứng hóa học, số ___ mỗi nguyên tố ___, do đó tổng ___ được bảo toàn.",
+        inline: true,
+        slots: [
+          { id: 1, label: "Đại lượng", correct: "nguyên tử" },
+          { id: 2, label: "Trạng thái", correct: "không đổi" },
+          { id: 3, label: "Kết quả", correct: "khối lượng" }
+        ],
+        options: ["nguyên tử", "không đổi", "khối lượng", "thay đổi"],
+        explanation: "✅ Số NGUYÊN TỬ KHÔNG ĐỔI → Tổng KHỐI LƯỢNG bảo toàn.",
+        points: 20
+      },
+      {
         type: "multiple-choice",
-        question: "Cần bao nhiêu gam NaOH để pha chế 200ml dung dịch NaOH 2M? (Na=23, O=16, H=1)",
-        options: ["8g", "16g", "40g", "80g"],
+        question: "Đốt 5,4g Al trong O₂ dư thu được m gam Al₂O₃. Giá trị m là: (Al=27, O=16)",
+        options: ["8,1g", "10,2g", "15,3g", "20,4g"],
         correctAnswer: 1,
-        explanation: "✅ V = 200ml = 0.2 lít. n = Cₘ * V = 2 * 0.2 = 0.4 mol. m = n * M = 0.4 * 40 = 16g.",
-        points: 20
-      },
-      {
-        type: "true-false",
-        question: "Độ tan của một chất rắn trong nước luôn tăng khi nhiệt độ tăng.",
-        correctAnswer: false,
-        explanation: "❌ Sai, đa số các chất rắn có độ tan tăng theo nhiệt độ, nhưng có một số trường hợp ngoại lệ, ví dụ như Na₂SO₄ có độ tan giảm khi nhiệt độ tăng quá 32.4°C.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Trộn 200g dung dịch H₂SO₄ 10% với 300g dung dịch H₂SO₄ 25%. Dung dịch mới có nồng độ là:",
-        options: ["19%", "17.5%", "15%", "20%"],
-        correctAnswer: 0,
-        explanation: "✅ m_ct1 = 200*10% = 20g. m_ct2 = 300*25% = 75g. m_ct(tổng) = 95g. m_dd(tổng) = 500g. C% = (95/500)*100% = 19%.",
+        explanation: "✅ n(Al)=5,4/27=0,2 mol → n(Al₂O₃)=0,1 mol → m=0,1×102=10,2g",
         points: 20
       },
       {
         type: "fill-in-blank",
-        question: "Một dung dịch H₂SO₄ có nồng độ 98% và khối lượng riêng D = 1.84 g/ml. Nồng độ mol của dung dịch này là ___ M.",
-        correctAnswer: "18.4",
-        hint: "💡 Xét 1 lít dung dịch. Cₘ = (10 × C% × D) / M",
-        explanation: "✅ Cₘ = (10 * 98 * 1.84) / 98 = 18.4M. Đây là dung dịch H₂SO₄ đậm đặc.",
+        question: "Phương trình: C₂H₆ + ___ O₂ → 2CO₂ + 3H₂O. Hệ số O₂ là ___.",
+        correctAnswer: "3,5",
+        hint: "💡 Tổng O bên phải = 2×2 + 3 = 7",
+        explanation: "✅ C₂H₆ + 3,5O₂ → 2CO₂ + 3H₂O (hoặc nhân 2: 2C₂H₆ + 7O₂ → 4CO₂ + 6H₂O)",
         points: 20
       },
       {
         type: "matching",
-        question: "🧠 Ghép bài toán với công thức áp dụng chính.",
+        question: "🧠 Phân tích phản ứng",
         pairs: [
-          { left: "Pha loãng dung dịch", right: "V₁C₁ = V₂C₂ (C là Cₘ hoặc C%)" },
-          { left: "Tính C% từ Cₘ", right: "C% = (Cₘ × M) / (10 × D)" },
-          { left: "Trộn 2 dung dịch cùng chất tan", right: "Áp dụng quy tắc đường chéo" },
-          { left: "Tính khối lượng chất tan cần thêm", right: "m_ct = m_dd × (C%_sau - C%_trước) / (100 - C%_sau)" }
+          { left: "2Mg + O₂ → 2MgO", right: "Phản ứng hóa hợp" },
+          { left: "2KClO₃ → 2KCl + 3O₂", right: "Phản ứng phân hủy" },
+          { left: "Zn + 2HCl → ZnCl₂ + H₂", right: "Phản ứng thế" },
+          { left: "CuO + H₂ → Cu + H₂O", right: "Phản ứng oxi hóa-khử" }
         ],
-        explanation: "✅ Nắm vững các công thức biến đổi này sẽ giúp bạn giải quyết nhanh các bài toán phức tạp về dung dịch.",
+        explanation: "✅ Xuất sắc! Bạn phân loại đúng các phản ứng.",
+        points: 20
+      },
+      {
+        type: "multiple-choice",
+        question: "Cho phản ứng: aFe₃O₄ + bH₂ → cFe + dH₂O. Tỉ lệ a:b:c:d là:",
+        options: ["1:4:3:4", "1:3:3:3", "2:8:6:8", "1:2:3:2"],
+        correctAnswer: 0,
+        explanation: "✅ Fe₃O₄ + 4H₂ → 3Fe + 4H₂O → 1:4:3:4",
         points: 20
       }
     ]

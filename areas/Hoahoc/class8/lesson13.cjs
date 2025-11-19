@@ -1,6 +1,6 @@
 module.exports = {
   classId: 8,
-  chapterId: 3,
+  chapterId: 2,
   lessonId: 13,
   title: "Bài 13: Phản ứng hóa học",
   description: "Tìm hiểu về phản ứng hóa học, điều kiện xảy ra và dấu hiệu nhận biết",
