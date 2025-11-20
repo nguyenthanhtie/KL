@@ -10,17 +10,8 @@ const LessonSimple = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Tạo key để lưu trạng thái đã đọc
-  const getReadStatusKey = () => `lesson_read_${classId}_${chapterId}_${lessonId}`;
-
-  // Kiểm tra xem đã đọc bài học này chưa
-  const hasReadLesson = () => {
-    return localStorage.getItem(getReadStatusKey()) === 'true';
-  };
-
-  // Đánh dấu đã đọc và chuyển sang trò chơi
-  const handleMarkAsRead = () => {
-    localStorage.setItem(getReadStatusKey(), 'true');
+  // Bắt đầu trò chơi (không còn cơ chế bỏ qua tự động khi đã đọc trước đó)
+  const handleStartGame = () => {
     navigate(`/gameplay/${classId}/${chapterId}/${lessonId}`);
   };
 
@@ -39,13 +30,7 @@ const LessonSimple = () => {
         setLessonData(response.data);
         setError(null);
 
-        // Chỉ chuyển hướng nếu load thành công VÀ đã đọc bài này rồi
-        if (response.data && hasReadLesson()) {
-          console.log('Lesson already read, redirecting to gameplay...');
-          setTimeout(() => {
-            navigate(`/gameplay/${classId}/${chapterId}/${lessonId}`);
-          }, 500);
-        }
+        // Bỏ cơ chế tự động chuyển sang gameplay nếu đã đọc trước đó
       } catch (err) {
         console.error('Error fetching lesson:', err);
         console.error('Error details:', err.response);
@@ -107,7 +92,7 @@ const LessonSimple = () => {
         {/* Nút đã đọc */}
         <div style={{ marginTop: '30px', textAlign: 'center' }}>
           <button
-            onClick={handleMarkAsRead}
+            onClick={handleStartGame}
             style={{
               padding: '15px 40px',
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -132,10 +117,10 @@ const LessonSimple = () => {
               e.target.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
             }}
           >
-            <span>✓</span> Đã đọc - Bắt đầu trò chơi
+            🎮 Bắt đầu trò chơi
           </button>
           <p style={{ marginTop: '15px', color: '#666', fontSize: '14px' }}>
-            Sau khi đánh dấu đã đọc, lần sau bạn sẽ chuyển thẳng đến trò chơi
+            Bạn cần đọc nội dung trước rồi chủ động chọn bắt đầu trò chơi.
           </p>
         </div>
       </div>

@@ -50,21 +50,20 @@ module.exports = {
         <p>🔥 Cẩn thận khi dùng đèn cồn</p>
       </div>
     `,
-  game: {
-    basic: [
-      {
-        type: "multiple-choice",
-        question: "Mục đích của bài thực hành là gì?",
-        options: [
-          "Chơi với hóa chất",
-          "Quan sát và phân biệt các chất",
-          "Làm phép màu",
-          "Không có mục đích"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Mục đích là quan sát và phân biệt các chất khác nhau.",
-        points: 10
-      },
+  game: [
+    {
+      type: "multiple-choice",
+      question: "Mục đích của bài thực hành là gì?",
+      options: [
+        "Chơi với hóa chất",
+        "Quan sát và phân biệt các chất",
+        "Làm phép màu",
+        "Không có mục đích"
+      ],
+      correctAnswer: 1,
+      explanation: "✅ Mục đích là quan sát và phân biệt các chất khác nhau.",
+      points: 10
+    },
       {
         type: "true-false",
         question: "Sắt có thể bị nam châm hút.",
@@ -94,10 +93,8 @@ module.exports = {
         correctAnswer: 2,
         explanation: "✅ Sắt bị nam châm hút.",
         points: 10
-      }
-    ],
-    intermediate: [
-      {
+      },
+    {
         type: "matching",
         question: "🔗 Ghép chất với tính chất",
         pairs: [
@@ -107,7 +104,7 @@ module.exports = {
           { left: "Nước cất", right: "Trong suốt, không màu" }
         ],
         explanation: "✅ Tuyệt vời! Bạn phân biệt đúng các chất.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -115,7 +112,7 @@ module.exports = {
         correctAnswer: "nam châm",
         hint: "💡 Dụng cụ có tính từ",
         explanation: "✅ Dùng NAM CHÂM để phân biệt sắt.",
-        points: 15
+        points: 10
       },
       {
         type: "ordering",
@@ -133,7 +130,7 @@ module.exports = {
           "Ghi chép kết quả"
         ],
         explanation: "✅ Đúng trình tự thí nghiệm!",
-        points: 15
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -146,7 +143,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Đeo kính để bảo vệ mắt khỏi hóa chất.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -154,11 +151,9 @@ module.exports = {
         correctAnswer: "trắng, nước",
         hint: "💡 Màu sắc và dung môi",
         explanation: "✅ Muối ăn màu TRẮNG và tan trong NƯỚC.",
-        points: 15
-      }
-    ],
-    advanced: [
-      {
+        points: 10
+      },
+    {
         type: "drag-drop",
         question: "🧩 Hoàn thành: Trong thí nghiệm, ta quan sát ___, ___ và ___ của các chất.",
         inline: true,
@@ -169,7 +164,7 @@ module.exports = {
         ],
         options: ["màu sắc", "trạng thái", "tính chất đặc trưng", "khối lượng"],
         explanation: "✅ Quan sát MÀU SẮC, TRẠNG THÁI và TÍNH CHẤT ĐẶC TRƯNG.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -182,7 +177,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Ghi chép để SO SÁNH và RÚT RA KẾT LUẬN khoa học.",
-        points: 20
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -190,7 +185,7 @@ module.exports = {
         correctAnswer: "từ",
         hint: "💡 Tính chất liên quan đến nam châm",
         explanation: "✅ Chất bị nam châm hút có TÍNH TỪ.",
-        points: 20
+        points: 10
       },
       {
         type: "matching",
@@ -215,8 +210,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Nam châm giúp TÁCH SẮT ra khỏi hỗn hợp (ứng dụng thực tế).",
-        points: 20
+        points: 10
       }
-    ]
-  }
+  ]
 };

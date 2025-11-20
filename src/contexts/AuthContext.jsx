@@ -17,14 +17,40 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       const savedUser = localStorage.getItem('user');
       
+      console.log('🔍 Checking auth on mount:', { 
+        hasToken: !!token, 
+        hasSavedUser: !!savedUser 
+      });
+      
       if (token && savedUser) {
         try {
-          setUser(JSON.parse(savedUser));
+          const userData = JSON.parse(savedUser);
+          setUser(userData);
+          console.log('✅ User restored from localStorage:', userData.email);
+          
+          // Optionally verify token is still valid by fetching fresh user data
+          // This ensures data is up-to-date after reload
+          try {
+            const userUid = userData.firebaseUid || userData.uid;
+            if (userUid) {
+              const response = await api.get(`/users/firebase/${userUid}`);
+              if (response.data) {
+                localStorage.setItem('user', JSON.stringify(response.data));
+                setUser(response.data);
+                console.log('✅ User data refreshed from server');
+              }
+            }
+          } catch (refreshError) {
+            console.warn('⚠️ Could not refresh user data, using cached data:', refreshError.message);
+            // Keep using cached data if refresh fails (e.g., offline)
+          }
         } catch (error) {
-          console.error('Error parsing user data:', error);
+          console.error('❌ Error parsing user data:', error);
           localStorage.removeItem('token');
           localStorage.removeItem('user');
         }
+      } else {
+        console.log('ℹ️ No saved session found');
       }
       setLoading(false);
     };
@@ -72,13 +98,32 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('user'));
+      const userUid = currentUser?.firebaseUid || currentUser?.uid;
+      
+      if (!userUid) return;
+      
+      const response = await api.get(`/users/firebase/${userUid}`);
+      if (response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data));
+        setUser(response.data);
+        console.log('✅ User data refreshed');
+      }
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    }
+  };
+
   const value = {
     user,
     setUser,
     loading,
     login,
     register,
-    logout
+    logout,
+    refreshUser
   };
 
   return (

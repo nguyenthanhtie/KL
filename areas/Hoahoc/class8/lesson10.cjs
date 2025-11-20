@@ -44,22 +44,20 @@ module.exports = {
         <p>Số nguyên tử C: N = n × N<sub>A</sub> = 2 × 6,022×10²³ = 1,2×10²⁴ nguyên tử</p>
       </div>
     `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-        type: "multiple-choice",
-        question: "Mol là đơn vị đo gì?",
-        options: [
-          "Khối lượng",
-          "Lượng chất",
-          "Thể tích",
-          "Nhiệt độ"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Mol là đơn vị đo lượng chất.",
-        points: 10
-      },
+  game: [
+    {
+      type: "multiple-choice",
+      question: "Mol là đơn vị đo gì?",
+      options: [
+        "Khối lượng",
+        "Lượng chất",
+        "Thể tích",
+        "Nhiệt độ"
+      ],
+      correctAnswer: 1,
+      explanation: "✅ Mol là đơn vị đo lượng chất.",
+      points: 10
+    },
       {
         type: "true-false",
         question: "Số Avogadro bằng 6,022 × 10²³.",
@@ -99,12 +97,8 @@ module.exports = {
         correctAnswer: 1,
         explanation: "✅ n = m/M (số mol = khối lượng/khối lượng mol)",
         points: 10
-      }
-    ],
-
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
-      {
+      },
+    {
         type: "matching",
         question: "🔗 Ghép đại lượng với đơn vị",
         pairs: [
@@ -114,7 +108,7 @@ module.exports = {
           { left: "Số hạt (N)", right: "hạt" }
         ],
         explanation: "✅ Tuyệt vời! Bạn nhớ đơn vị của các đại lượng.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -122,7 +116,7 @@ module.exports = {
         correctAnswer: "23",
         hint: "💡 Một số rất lớn!",
         explanation: "✅ Chính xác! N_A = 6,022 × 10²³",
-        points: 15
+        points: 10
       },
       {
         type: "ordering",
@@ -140,7 +134,7 @@ module.exports = {
           "Tính toán kết quả"
         ],
         explanation: "✅ Đúng rồi! Đây là quy trình tính toán chuẩn.",
-        points: 15
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -153,7 +147,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ n = m/M = 32/32 = 1 mol",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -161,13 +155,9 @@ module.exports = {
         correctAnswer: "18",
         hint: "💡 M = 2×1 + 16",
         explanation: "✅ Đúng! M_H₂O = 2×1 + 16 = 18 g/mol",
-        points: 15
-      }
-    ],
-
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
-      {
+        points: 10
+      },
+    {
         type: "drag-drop",
         question: "🧩 Hoàn thành công thức: n = ___ / M = N / ___",
         inline: true,
@@ -177,7 +167,7 @@ module.exports = {
         ],
         options: ["m", "M", "N", "NA"],
         explanation: "✅ Hoàn hảo! n = m/M = N/N_A",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -190,7 +180,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "❌ SAI! 1 mol O₂ (32g) và 1 mol H₂ (2g) có khối lượng KHÁC NHAU!",
-        points: 20
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -198,7 +188,7 @@ module.exports = {
         correctAnswer: "3.011",
         hint: "💡 N = n × N_A = 0,5 × 6,022×10²³",
         explanation: "✅ Xuất sắc! N = 0,5 × 6,022×10²³ = 3,011×10²³ nguyên tử",
-        points: 20
+        points: 10
       },
       {
         type: "matching",
@@ -210,7 +200,7 @@ module.exports = {
           { left: "3 mol H₂ (M=2)", right: "6 gam" }
         ],
         explanation: "✅ Tuyệt vời! Bạn tính toán chính xác: m = n × M",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -223,8 +213,7 @@ module.exports = {
         ],
         correctAnswer: 0,
         explanation: "✅ n = 8,8/44 = 0,2 mol → N = 0,2 × 6,022×10²³ = 1,2×10²³ phân tử",
-        points: 20
+        points: 10
       }
-    ]
-  }
+  ]
 };

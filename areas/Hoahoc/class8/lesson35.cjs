@@ -83,165 +83,206 @@ module.exports = {
         </tr>
       </table>
     `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Axit có khả năng làm quỳ tím chuyển sang màu gì?",
+    options: [
+      "Xanh",
+      "Đỏ",
+      "Vàng",
+      "Không đổi màu"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Axit làm quỳ tím hóa ĐỎ.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Bazơ làm quỳ tím chuyển sang màu xanh.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Bazơ làm quỳ tím hóa XANH.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Muối ăn có công thức hóa học là gì?",
+    options: [
+      "NaOH",
+      "HCl",
+      "NaCl",
+      "CaCO₃"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ Muối ăn là NaCl (natri clorua).",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Axit có chứa ion ___ trong dung dịch.",
+    correctAnswer: "H⁺",
+    hint: "💡 Ion mang điện tích dương của hydro",
+    explanation: "✅ Axit phân ly ra ion H⁺.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "NaOH được gọi là xút ăn da.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! NaOH (natri hidroxit) là xút, ăn da nên rất nguy hiểm.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép chất với loại tương ứng",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Axit có khả năng làm quỳ tím chuyển sang màu gì?",
-        options: ["Xanh", "Đỏ", "Vàng", "Không đổi màu"],
-        correctAnswer: 1,
-        explanation: "✅ Axit làm quỳ tím hóa ĐỎ.",
-        points: 10
+        left: "HCl",
+        right: "Axit"
       },
       {
-        type: "true-false",
-        question: "Bazơ làm quỳ tím chuyển sang màu xanh.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Bazơ làm quỳ tím hóa XANH.",
-        points: 10
+        left: "NaOH",
+        right: "Bazơ"
       },
       {
-        type: "multiple-choice",
-        question: "Muối ăn có công thức hóa học là gì?",
-        options: ["NaOH", "HCl", "NaCl", "CaCO₃"],
-        correctAnswer: 2,
-        explanation: "✅ Muối ăn là NaCl (natri clorua).",
-        points: 10
+        left: "NaCl",
+        right: "Muối"
       },
       {
-        type: "fill-in-blank",
-        question: "Axit có chứa ion ___ trong dung dịch.",
-        correctAnswer: "H⁺",
-        hint: "💡 Ion mang điện tích dương của hydro",
-        explanation: "✅ Axit phân ly ra ion H⁺.",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "NaOH được gọi là xút ăn da.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! NaOH (natri hidroxit) là xút, ăn da nên rất nguy hiểm.",
-        points: 10
+        left: "Ca(OH)₂",
+        right: "Bazơ"
       }
     ],
-    intermediate: [
+    explanation: "✅ Tuyệt vời! Bạn phân biệt được axit, bazơ, muối.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Phản ứng: HCl + NaOH → ___ + H₂O",
+    correctAnswer: "NaCl",
+    hint: "💡 Muối được tạo thành",
+    explanation: "✅ HCl + NaOH → NaCl + H₂O (phản ứng trung hòa)",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng nào tạo ra muối?",
+    options: [
+      "H₂ + O₂ → H₂O",
+      "HCl + NaOH → NaCl + H₂O",
+      "2H₂O → 2H₂ + O₂",
+      "C + O₂ → CO₂"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Axit + Bazơ → Muối + Nước",
+    points: 10
+  },
+  {
+    type: "ordering",
+    question: "📋 Sắp xếp các chất theo độ pH tăng dần (axit → trung tính → bazơ)",
+    options: [
+      "HCl (axit mạnh)",
+      "Nước tinh khiết",
+      "NaOH (bazơ mạnh)"
+    ],
+    correctOrder: [
+      "HCl (axit mạnh)",
+      "Nước tinh khiết",
+      "NaOH (bazơ mạnh)"
+    ],
+    explanation: "✅ Axit có pH < 7, trung tính pH = 7, bazơ pH > 7",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Bazơ có chứa nhóm ___ trong phân tử.",
+    correctAnswer: "OH",
+    hint: "💡 Nhóm hidroxit",
+    explanation: "✅ Bazơ chứa nhóm OH (hidroxit).",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành: Axit + Bazơ → ___ + ___",
+    inline: true,
+    slots: [
       {
-        type: "matching",
-        question: "🔗 Ghép chất với loại tương ứng",
-        pairs: [
-          { left: "HCl", right: "Axit" },
-          { left: "NaOH", right: "Bazơ" },
-          { left: "NaCl", right: "Muối" },
-          { left: "Ca(OH)₂", right: "Bazơ" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn phân biệt được axit, bazơ, muối.",
-        points: 15
+        id: 1,
+        label: "Sản phẩm 1",
+        correct: "Muối"
       },
       {
-        type: "fill-in-blank",
-        question: "Phản ứng: HCl + NaOH → ___ + H₂O",
-        correctAnswer: "NaCl",
-        hint: "💡 Muối được tạo thành",
-        explanation: "✅ HCl + NaOH → NaCl + H₂O (phản ứng trung hòa)",
-        points: 15
-      },
-      {
-        type: "multiple-choice",
-        question: "Phản ứng nào tạo ra muối?",
-        options: [
-          "H₂ + O₂ → H₂O",
-          "HCl + NaOH → NaCl + H₂O",
-          "2H₂O → 2H₂ + O₂",
-          "C + O₂ → CO₂"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Axit + Bazơ → Muối + Nước",
-        points: 15
-      },
-      {
-        type: "ordering",
-        question: "📋 Sắp xếp các chất theo độ pH tăng dần (axit → trung tính → bazơ)",
-        options: [
-          "HCl (axit mạnh)",
-          "Nước tinh khiết",
-          "NaOH (bazơ mạnh)"
-        ],
-        correctOrder: [
-          "HCl (axit mạnh)",
-          "Nước tinh khiết",
-          "NaOH (bazơ mạnh)"
-        ],
-        explanation: "✅ Axit có pH < 7, trung tính pH = 7, bazơ pH > 7",
-        points: 15
-      },
-      {
-        type: "fill-in-blank",
-        question: "Bazơ có chứa nhóm ___ trong phân tử.",
-        correctAnswer: "OH",
-        hint: "💡 Nhóm hidroxit",
-        explanation: "✅ Bazơ chứa nhóm OH (hidroxit).",
-        points: 15
+        id: 2,
+        label: "Sản phẩm 2",
+        correct: "Nước"
       }
     ],
-    advanced: [
+    options: [
+      "Muối",
+      "Nước",
+      "Khí",
+      "Kim loại"
+    ],
+    explanation: "✅ Axit + Bazơ → MUỐI + NƯỚC (phản ứng trung hòa)",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng nào SAI?",
+    options: [
+      "Zn + 2HCl → ZnCl₂ + H₂",
+      "HCl + NaOH → NaCl + H₂O",
+      "NaOH + HCl → Na + H₂O + Cl₂",
+      "CuO + H₂SO₄ → CuSO₄ + H₂O"
+    ],
+    correctAnswer: 2,
+    explanation: "❌ Sai! NaOH + HCl → NaCl + H₂O (không tạo Na và Cl₂ riêng biệt)",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Để nhận biết axit và bazơ, ta dùng chất chỉ thị ___ tím.",
+    correctAnswer: "quỳ",
+    hint: "💡 Chất chỉ thị màu",
+    explanation: "✅ Dùng giấy QUỲ TÍM: axit hóa đỏ, bazơ hóa xanh.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🧠 Ghép phản ứng với tên loại phản ứng",
+    pairs: [
       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành: Axit + Bazơ → ___ + ___",
-        inline: true,
-        slots: [
-          { id: 1, label: "Sản phẩm 1", correct: "Muối" },
-          { id: 2, label: "Sản phẩm 2", correct: "Nước" }
-        ],
-        options: ["Muối", "Nước", "Khí", "Kim loại"],
-        explanation: "✅ Axit + Bazơ → MUỐI + NƯỚC (phản ứng trung hòa)",
-        points: 20
+        left: "HCl + NaOH → NaCl + H₂O",
+        right: "Phản ứng trung hòa"
       },
       {
-        type: "multiple-choice",
-        question: "Phản ứng nào SAI?",
-        options: [
-          "Zn + 2HCl → ZnCl₂ + H₂",
-          "HCl + NaOH → NaCl + H₂O",
-          "NaOH + HCl → Na + H₂O + Cl₂",
-          "CuO + H₂SO₄ → CuSO₄ + H₂O"
-        ],
-        correctAnswer: 2,
-        explanation: "❌ Sai! NaOH + HCl → NaCl + H₂O (không tạo Na và Cl₂ riêng biệt)",
-        points: 20
+        left: "Zn + H₂SO₄ → ZnSO₄ + H₂",
+        right: "Phản ứng thế"
       },
       {
-        type: "fill-in-blank",
-        question: "Để nhận biết axit và bazơ, ta dùng chất chỉ thị ___ tím.",
-        correctAnswer: "quỳ",
-        hint: "💡 Chất chỉ thị màu",
-        explanation: "✅ Dùng giấy QUỲ TÍM: axit hóa đỏ, bazơ hóa xanh.",
-        points: 20
+        left: "CuO + 2HCl → CuCl₂ + H₂O",
+        right: "Oxit + Axit"
       },
       {
-        type: "matching",
-        question: "🧠 Ghép phản ứng với tên loại phản ứng",
-        pairs: [
-          { left: "HCl + NaOH → NaCl + H₂O", right: "Phản ứng trung hòa" },
-          { left: "Zn + H₂SO₄ → ZnSO₄ + H₂", right: "Phản ứng thế" },
-          { left: "CuO + 2HCl → CuCl₂ + H₂O", right: "Oxit + Axit" },
-          { left: "2NaOH + CuSO₄ → Cu(OH)₂ + Na₂SO₄", right: "Bazơ + Muối" }
-        ],
-        explanation: "✅ Xuất sắc! Bạn hiểu rõ các loại phản ứng.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Tại sao không được nếm thử dung dịch NaOH?",
-        options: [
-          "Vì không có vị gì",
-          "Vì rất độc, ăn mòn da và niêm mạc",
-          "Vì quá đắt",
-          "Vì có mùi khó chịu"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ NaOH rất nguy hiểm, ăn mòn da, niêm mạc, gây bỏng nghiêm trọng!",
-        points: 20
+        left: "2NaOH + CuSO₄ → Cu(OH)₂ + Na₂SO₄",
+        right: "Bazơ + Muối"
       }
-    ]
+    ],
+    explanation: "✅ Xuất sắc! Bạn hiểu rõ các loại phản ứng.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tại sao không được nếm thử dung dịch NaOH?",
+    options: [
+      "Vì không có vị gì",
+      "Vì rất độc, ăn mòn da và niêm mạc",
+      "Vì quá đắt",
+      "Vì có mùi khó chịu"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ NaOH rất nguy hiểm, ăn mòn da, niêm mạc, gây bỏng nghiêm trọng!",
+    points: 10
   }
+]
 };

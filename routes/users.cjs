@@ -239,7 +239,67 @@ router.post('/auth/google', async (req, res) => {
   }
 });
 
-// Update learning progress
+// Submit lesson completion and update progress
+router.post('/submit-lesson', async (req, res) => {
+  try {
+    const { firebaseUid, programId, pathId, lessonId, score, totalQuestions } = req.body;
+
+    const user = await User.findOne({ firebaseUid });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Calculate percentage and stars
+    const percentage = (score / totalQuestions) * 100;
+    const completed = percentage >= 50; // Need at least 50% to complete (1 star)
+
+    console.log('📝 Updating lesson progress:', { 
+      programId, 
+      pathId, 
+      lessonId, 
+      score, 
+      totalQuestions,
+      percentage: percentage.toFixed(2),
+      completed
+    });
+
+    // Update program progress using the model method
+    const updatedProgram = user.updateProgramProgress(programId, pathId, lessonId, score);
+
+    if (!updatedProgram) {
+      return res.status(404).json({ message: 'Program not found in user profile' });
+    }
+
+    // Update lesson stars based on percentage
+    const stars = user.updateLessonStars(programId, pathId, lessonId, percentage);
+
+    // Add XP based on stars: 1 star=20 XP, 2 stars=40 XP, 3 stars=60 XP
+    if (completed && stars > 0) {
+      const xpGain = stars * 20;
+      user.xp = (user.xp || 0) + xpGain;
+      console.log(`✨ Added ${xpGain} XP to user (${stars} stars)`);
+    }
+
+    await user.save();
+    console.log('✅ Lesson progress updated successfully');
+
+    res.json({
+      message: 'Lesson completed',
+      completed,
+      stars,
+      score,
+      totalQuestions,
+      percentage: percentage.toFixed(2),
+      xpGained: completed && stars > 0 ? stars * 20 : 0,
+      program: updatedProgram
+    });
+  } catch (error) {
+    console.error('❌ Error updating lesson progress:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Update learning progress (legacy - kept for backward compatibility)
 router.post('/progress', async (req, res) => {
   try {
     const { userId, program, grade, lesson } = req.body;
@@ -415,6 +475,31 @@ router.post('/enroll-program', async (req, res) => {
       message: 'Server error', 
       error: error.message 
     });
+  }
+});
+
+// Get user by firebaseUid
+router.get('/firebase/:firebaseUid', async (req, res) => {
+  try {
+    const user = await User.findOne({ firebaseUid: req.params.firebaseUid });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      xp: user.xp,
+      level: user.level,
+      programs: user.programs,
+      profile: user.profile,
+      firebaseUid: user.firebaseUid
+    });
+  } catch (error) {
+    console.error('❌ Error fetching user by firebaseUid:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 

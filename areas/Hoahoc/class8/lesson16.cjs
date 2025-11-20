@@ -48,9 +48,8 @@ module.exports = {
         <li>Hệ số phải là số nguyên <strong>tối giản</strong></li>
       </ul>
     `,
-  game: {
-    basic: [
-      {
+  game: [
+{
         type: "multiple-choice",
         question: "Phương trình hóa học là gì?",
         options: [
@@ -92,10 +91,8 @@ module.exports = {
         correctAnswer: false,
         explanation: "❌ Sai! Phải là: 2H₂ + O₂ → 2H₂O",
         points: 10
-      }
-    ],
-    intermediate: [
-      {
+      },
+{
         type: "matching",
         question: "🔗 Ghép phương trình với tên phản ứng",
         pairs: [
@@ -105,7 +102,7 @@ module.exports = {
           { left: "2Mg + O₂ → 2MgO", right: "Magie cháy" }
         ],
         explanation: "✅ Tuyệt vời! Bạn nhận biết đúng các phản ứng.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -113,7 +110,7 @@ module.exports = {
         correctAnswer: "4",
         hint: "💡 Cân bằng O trước",
         explanation: "✅ 4Al + 3O₂ → 2Al₂O₃",
-        points: 15
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -126,7 +123,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ 2H₂ + O₂ → 2H₂O (H: 4=4, O: 2=2)",
-        points: 15
+        points: 10
       },
       {
         type: "ordering",
@@ -144,7 +141,7 @@ module.exports = {
           "Viết phương trình hoàn chỉnh"
         ],
         explanation: "✅ Đúng trình tự lập phương trình!",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -152,11 +149,9 @@ module.exports = {
         correctAnswer: "2:1:2",
         hint: "💡 Nhìn vào hệ số",
         explanation: "✅ Tỉ lệ mol = Hệ số = 2:1:2",
-        points: 15
-      }
-    ],
-    advanced: [
-      {
+        points: 10
+      },
+{
         type: "drag-drop",
         question: "🧩 Cân bằng: ___ Fe + ___ O₂ → ___ Fe₃O₄",
         inline: true,
@@ -167,7 +162,7 @@ module.exports = {
         ],
         options: ["1", "2", "3", "4"],
         explanation: "✅ 3Fe + 2O₂ → Fe₃O₄",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -175,7 +170,7 @@ module.exports = {
         options: ["6", "7", "8", "9"],
         correctAnswer: 2,
         explanation: "✅ 2Al + 6HCl → 2AlCl₃ + 3H₂ → Tổng = 2+6+2+3 = 13... Đáp án sai trong options. Đúng phải là: 2+6+2+3=13",
-        points: 20
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -183,7 +178,7 @@ module.exports = {
         correctAnswer: "5",
         hint: "💡 Cân bằng O: bên phải có 3×2 + 4 = 10 O",
         explanation: "✅ C₃H₈ + 5O₂ → 3CO₂ + 4H₂O",
-        points: 20
+        points: 10
       },
       {
         type: "matching",
@@ -195,7 +190,7 @@ module.exports = {
           { left: "C + O₂ → CO₂", right: "1 mol C + 1 mol O₂ → 1 mol CO₂" }
         ],
         explanation: "✅ Xuất sắc! Hệ số = số mol trong phương trình.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -203,8 +198,8 @@ module.exports = {
         options: ["2:3:1", "3:2:1", "4:3:2", "4:2:3"],
         correctAnswer: 2,
         explanation: "✅ 4Fe + 3O₂ → 2Fe₂O₃ → a:b:c = 4:3:2",
-        points: 20
+        points: 10
       }
-    ]
-  }
+
+  ]
 };

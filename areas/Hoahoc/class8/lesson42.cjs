@@ -83,160 +83,224 @@ module.exports = {
         <p>✅ Rửa sạch dụng cụ sau khi sử dụng</p>
       </div>
     `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Để pha 100g dung dịch NaCl 10%, cần bao nhiêu gam NaCl?",
+    options: [
+      "5g",
+      "10g",
+      "15g",
+      "20g"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ m<sub>NaCl</sub> = (10 × 100)/100 = 10g",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Khi pha loãng dung dịch, khối lượng chất tan không đổi.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Chỉ thêm nước, chất tan không thay đổi.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Để pha 100g dung dịch NaCl 10%, cần bao nhiêu gam nước?",
+    options: [
+      "10g",
+      "50g",
+      "90g",
+      "100g"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ m<sub>nước</sub> = 100 - 10 = 90g",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Khi cô đặc dung dịch, ta làm bay hơi ___.",
+    correctAnswer: "nước",
+    hint: "💡 Dung môi",
+    explanation: "✅ Cô đặc bằng cách làm bay hơi NƯỚC.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Cân điện tử phải có độ chính xác 0,1g khi pha chế dung dịch.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Cần cân chính xác để đảm bảo nồng độ.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép bước với thao tác",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Để pha 100g dung dịch NaCl 10%, cần bao nhiêu gam NaCl?",
-        options: ["5g", "10g", "15g", "20g"],
-        correctAnswer: 1,
-        explanation: "✅ m<sub>NaCl</sub> = (10 × 100)/100 = 10g",
-        points: 10
+        left: "Bước 1",
+        right: "Tính toán m<sub>ct</sub> và m<sub>dm</sub>"
       },
       {
-        type: "true-false",
-        question: "Khi pha loãng dung dịch, khối lượng chất tan không đổi.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Chỉ thêm nước, chất tan không thay đổi.",
-        points: 10
+        left: "Bước 2",
+        right: "Cân chất tan"
       },
       {
-        type: "multiple-choice",
-        question: "Để pha 100g dung dịch NaCl 10%, cần bao nhiêu gam nước?",
-        options: ["10g", "50g", "90g", "100g"],
-        correctAnswer: 2,
-        explanation: "✅ m<sub>nước</sub> = 100 - 10 = 90g",
-        points: 10
+        left: "Bước 3",
+        right: "Đong dung môi"
       },
       {
-        type: "fill-in-blank",
-        question: "Khi cô đặc dung dịch, ta làm bay hơi ___.",
-        correctAnswer: "nước",
-        hint: "💡 Dung môi",
-        explanation: "✅ Cô đặc bằng cách làm bay hơi NƯỚC.",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Cân điện tử phải có độ chính xác 0,1g khi pha chế dung dịch.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Cần cân chính xác để đảm bảo nồng độ.",
-        points: 10
+        left: "Bước 4",
+        right: "Hòa tan và khuấy đều"
       }
     ],
-    intermediate: [
+    explanation: "✅ Đúng trình tự pha chế dung dịch!",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Từ 50g dung dịch 20%, muốn pha loãng thành dung dịch 10%, cần thêm ___ g nước.",
+    correctAnswer: "50",
+    hint: "💡 Khối lượng chất tan không đổi",
+    explanation: "✅ m<sub>ct</sub> = 10g → m<sub>dd mới</sub> = 100g → Thêm 50g nước",
+    points: 10
+  },
+  {
+    type: "ordering",
+    question: "📋 Sắp xếp các bước pha loãng dung dịch",
+    options: [
+      "Tính khối lượng nước cần thêm",
+      "Lấy lượng dung dịch ban đầu",
+      "Thêm nước và khuấy đều",
+      "Kiểm tra nồng độ"
+    ],
+    correctOrder: [
+      "Tính khối lượng nước cần thêm",
+      "Lấy lượng dung dịch ban đầu",
+      "Thêm nước và khuấy đều",
+      "Kiểm tra nồng độ"
+    ],
+    explanation: "✅ Đúng trình tự pha loãng!",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Khi cô đặc dung dịch bằng cách đun nóng, điều gì xảy ra?",
+    options: [
+      "Chất tan bay hơi",
+      "Nước bay hơi, nồng độ tăng",
+      "Nồng độ giảm",
+      "Không có gì thay đổi"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Nước bay hơi → khối lượng dung dịch giảm → nồng độ TĂNG.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Công thức pha loãng: C%₁ × m<sub>dd1</sub> = C%₂ × ___.",
+    correctAnswer: "m<sub>dd2</sub>",
+    hint: "💡 Khối lượng dung dịch sau",
+    explanation: "✅ C%₁ × m<sub>dd1</sub> = C%₂ × m<sub>dd2</sub>",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành: Khi pha loãng từ C%₁ thành C%₂ (C%₁ > C%₂), ta có: ___ × ___ = ___ × ___, từ đó tính được khối lượng ___ cần thêm.",
+    inline: true,
+    slots: [
       {
-        type: "matching",
-        question: "🔗 Ghép bước với thao tác",
-        pairs: [
-          { left: "Bước 1", right: "Tính toán m<sub>ct</sub> và m<sub>dm</sub>" },
-          { left: "Bước 2", right: "Cân chất tan" },
-          { left: "Bước 3", right: "Đong dung môi" },
-          { left: "Bước 4", right: "Hòa tan và khuấy đều" }
-        ],
-        explanation: "✅ Đúng trình tự pha chế dung dịch!",
-        points: 15
+        id: 1,
+        label: "Nồng độ 1",
+        correct: "C%₁"
       },
       {
-        type: "fill-in-blank",
-        question: "Từ 50g dung dịch 20%, muốn pha loãng thành dung dịch 10%, cần thêm ___ g nước.",
-        correctAnswer: "50",
-        hint: "💡 Khối lượng chất tan không đổi",
-        explanation: "✅ m<sub>ct</sub> = 10g → m<sub>dd mới</sub> = 100g → Thêm 50g nước",
-        points: 15
+        id: 2,
+        label: "KL dd 1",
+        correct: "m<sub>dd1</sub>"
       },
       {
-        type: "ordering",
-        question: "📋 Sắp xếp các bước pha loãng dung dịch",
-        options: [
-          "Tính khối lượng nước cần thêm",
-          "Lấy lượng dung dịch ban đầu",
-          "Thêm nước và khuấy đều",
-          "Kiểm tra nồng độ"
-        ],
-        correctOrder: [
-          "Tính khối lượng nước cần thêm",
-          "Lấy lượng dung dịch ban đầu",
-          "Thêm nước và khuấy đều",
-          "Kiểm tra nồng độ"
-        ],
-        explanation: "✅ Đúng trình tự pha loãng!",
-        points: 15
+        id: 3,
+        label: "Nồng độ 2",
+        correct: "C%₂"
       },
       {
-        type: "multiple-choice",
-        question: "Khi cô đặc dung dịch bằng cách đun nóng, điều gì xảy ra?",
-        options: [
-          "Chất tan bay hơi",
-          "Nước bay hơi, nồng độ tăng",
-          "Nồng độ giảm",
-          "Không có gì thay đổi"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Nước bay hơi → khối lượng dung dịch giảm → nồng độ TĂNG.",
-        points: 15
+        id: 4,
+        label: "KL dd 2",
+        correct: "m<sub>dd2</sub>"
       },
       {
-        type: "fill-in-blank",
-        question: "Công thức pha loãng: C%₁ × m<sub>dd1</sub> = C%₂ × ___.",
-        correctAnswer: "m<sub>dd2</sub>",
-        hint: "💡 Khối lượng dung dịch sau",
-        explanation: "✅ C%₁ × m<sub>dd1</sub> = C%₂ × m<sub>dd2</sub>",
-        points: 15
+        id: 5,
+        label: "Chất thêm",
+        correct: "nước"
       }
     ],
-    advanced: [
+    options: [
+      "C%₁",
+      "m<sub>dd1</sub>",
+      "C%₂",
+      "m<sub>dd2</sub>",
+      "nước"
+    ],
+    explanation: "✅ C%₁ × m<sub>dd1</sub> = C%₂ × m<sub>dd2</sub>, sau đó tính khối lượng NƯỚC cần thêm.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Có 200g dung dịch muối 15%. Cần thêm bao nhiêu gam muối để được dung dịch 20%?",
+    options: [
+      "10g",
+      "12,5g",
+      "15g",
+      "20g"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Gọi x là khối lượng muối thêm:\n(30 + x)/(200 + x) = 20/100 → x = 12,5g",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Đun bay hơi 50g nước từ 100g dung dịch NaCl 10%, nồng độ mới là ___%. (Làm tròn 1 chữ số)",
+    correctAnswer: "20",
+    hint: "💡 m<sub>ct</sub> không đổi = 10g, m<sub>dd mới</sub> = ?",
+    explanation: "✅ m<sub>ct</sub> = 10g, m<sub>dd mới</sub> = 50g → C% = 10/50 × 100% = 20%",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🧠 Phân tích thao tác pha chế",
+    pairs: [
       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành: Khi pha loãng từ C%₁ thành C%₂ (C%₁ > C%₂), ta có: ___ × ___ = ___ × ___, từ đó tính được khối lượng ___ cần thêm.",
-        inline: true,
-        slots: [
-          { id: 1, label: "Nồng độ 1", correct: "C%₁" },
-          { id: 2, label: "KL dd 1", correct: "m<sub>dd1</sub>" },
-          { id: 3, label: "Nồng độ 2", correct: "C%₂" },
-          { id: 4, label: "KL dd 2", correct: "m<sub>dd2</sub>" },
-          { id: 5, label: "Chất thêm", correct: "nước" }
-        ],
-        options: ["C%₁", "m<sub>dd1</sub>", "C%₂", "m<sub>dd2</sub>", "nước"],
-        explanation: "✅ C%₁ × m<sub>dd1</sub> = C%₂ × m<sub>dd2</sub>, sau đó tính khối lượng NƯỚC cần thêm.",
-        points: 20
+        left: "Pha từ chất rắn",
+        right: "Cân chất tan + Đong nước"
       },
       {
-        type: "multiple-choice",
-        question: "Có 200g dung dịch muối 15%. Cần thêm bao nhiêu gam muối để được dung dịch 20%?",
-        options: ["10g", "12,5g", "15g", "20g"],
-        correctAnswer: 1,
-        explanation: "✅ Gọi x là khối lượng muối thêm:\n(30 + x)/(200 + x) = 20/100 → x = 12,5g",
-        points: 20
+        left: "Pha loãng",
+        right: "Thêm nước vào dung dịch đặc"
       },
       {
-        type: "fill-in-blank",
-        question: "Đun bay hơi 50g nước từ 100g dung dịch NaCl 10%, nồng độ mới là ___%. (Làm tròn 1 chữ số)",
-        correctAnswer: "20",
-        hint: "💡 m<sub>ct</sub> không đổi = 10g, m<sub>dd mới</sub> = ?",
-        explanation: "✅ m<sub>ct</sub> = 10g, m<sub>dd mới</sub> = 50g → C% = 10/50 × 100% = 20%",
-        points: 20
+        left: "Cô đặc",
+        right: "Làm bay hơi nước"
       },
       {
-        type: "matching",
-        question: "🧠 Phân tích thao tác pha chế",
-        pairs: [
-          { left: "Pha từ chất rắn", right: "Cân chất tan + Đong nước" },
-          { left: "Pha loãng", right: "Thêm nước vào dung dịch đặc" },
-          { left: "Cô đặc", right: "Làm bay hơi nước" },
-          { left: "Pha đặc hơn", right: "Thêm chất tan vào dung dịch" }
-        ],
-        explanation: "✅ Xuất sắc! Bạn hiểu rõ các phương pháp pha chế.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Trộn 100g dd A (20%) với 200g dd A (10%). Nồng độ % dd mới là:",
-        options: ["12%", "13,33%", "15%", "16,67%"],
-        correctAnswer: 1,
-        explanation: "✅ m<sub>ct</sub> = 100×20/100 + 200×10/100 = 40g\nm<sub>dd</sub> = 300g → C% = 40/300 × 100% = 13,33%",
-        points: 20
+        left: "Pha đặc hơn",
+        right: "Thêm chất tan vào dung dịch"
       }
-    ]
+    ],
+    explanation: "✅ Xuất sắc! Bạn hiểu rõ các phương pháp pha chế.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Trộn 100g dd A (20%) với 200g dd A (10%). Nồng độ % dd mới là:",
+    options: [
+      "12%",
+      "13,33%",
+      "15%",
+      "16,67%"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ m<sub>ct</sub> = 100×20/100 + 200×10/100 = 40g\nm<sub>dd</sub> = 300g → C% = 40/300 × 100% = 13,33%",
+    points: 10
   }
+]
 };

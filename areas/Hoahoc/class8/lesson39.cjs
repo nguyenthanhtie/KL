@@ -62,178 +62,213 @@ module.exports = {
         <li>🥤 Nước ngọt có ga mát hơn (CO₂ tan nhiều)</li>
       </ul>
     `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Độ tan của một chất là gì?",
+    options: [
+      "Khối lượng chất tan trong 1 lít nước",
+      "Số gam chất tan tối đa trong 100g nước ở nhiệt độ xác định",
+      "Thể tích dung dịch",
+      "Khối lượng dung môi"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Độ tan (S) = số gam chất tan TỐI ĐA trong 100g nước ở nhiệt độ xác định.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Độ tan của đa số chất rắn tăng khi nhiệt độ tăng.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Đa số chất rắn tan nhiều hơn khi nước nóng.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Đơn vị của độ tan là gì?",
+    options: [
+      "gam",
+      "g/100g H₂O",
+      "mol/lít",
+      "%"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Độ tan có đơn vị: gam/100g nước (g/100g H₂O).",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Dung dịch ___ là dung dịch không thể hòa tan thêm chất tan ở nhiệt độ đó.",
+    correctAnswer: "bão hòa",
+    hint: "💡 Dung dịch đã đủ chất tan",
+    explanation: "✅ Dung dịch BÃO HÒA không tan thêm được.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Độ tan của khí giảm khi nhiệt độ tăng.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Khí tan ít hơn khi nước nóng (VD: CO₂ trong nước ngọt).",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép yếu tố với ảnh hưởng",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Độ tan của một chất là gì?",
-        options: [
-          "Khối lượng chất tan trong 1 lít nước",
-          "Số gam chất tan tối đa trong 100g nước ở nhiệt độ xác định",
-          "Thể tích dung dịch",
-          "Khối lượng dung môi"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Độ tan (S) = số gam chất tan TỐI ĐA trong 100g nước ở nhiệt độ xác định.",
-        points: 10
+        left: "Nhiệt độ tăng",
+        right: "Độ tan chất rắn tăng"
       },
       {
-        type: "true-false",
-        question: "Độ tan của đa số chất rắn tăng khi nhiệt độ tăng.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Đa số chất rắn tan nhiều hơn khi nước nóng.",
-        points: 10
+        left: "Nhiệt độ tăng",
+        right: "Độ tan chất khí giảm"
       },
       {
-        type: "multiple-choice",
-        question: "Đơn vị của độ tan là gì?",
-        options: [
-          "gam",
-          "g/100g H₂O",
-          "mol/lít",
-          "%"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Độ tan có đơn vị: gam/100g nước (g/100g H₂O).",
-        points: 10
+        left: "Bản chất chất tan",
+        right: "Mỗi chất độ tan khác nhau"
       },
       {
-        type: "fill-in-blank",
-        question: "Dung dịch ___ là dung dịch không thể hòa tan thêm chất tan ở nhiệt độ đó.",
-        correctAnswer: "bão hòa",
-        hint: "💡 Dung dịch đã đủ chất tan",
-        explanation: "✅ Dung dịch BÃO HÒA không tan thêm được.",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Độ tan của khí giảm khi nhiệt độ tăng.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Khí tan ít hơn khi nước nóng (VD: CO₂ trong nước ngọt).",
-        points: 10
+        left: "Dung dịch bão hòa",
+        right: "Không tan thêm được"
       }
     ],
-    intermediate: [
+    explanation: "✅ Tuyệt vời! Bạn hiểu các yếu tố ảnh hưởng độ tan.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Ở 20°C, độ tan của NaCl là 36g/100g H₂O nghĩa là tan tối đa ___ gam NaCl trong 100g nước.",
+    correctAnswer: "36",
+    hint: "💡 Đọc giá trị độ tan",
+    explanation: "✅ Độ tan 36g/100g H₂O = tan tối đa 36 gam.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tại sao đường tan nhanh hơn trong nước nóng?",
+    options: [
+      "Vì nước nóng có nhiều hơn",
+      "Vì độ tan tăng khi nhiệt độ tăng",
+      "Vì đường thích nước nóng",
+      "Vì nước nóng nhẹ hơn"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Độ tan của đường TĂNG khi nhiệt độ tăng.",
+    points: 10
+  },
+  {
+    type: "ordering",
+    question: "📋 Sắp xếp độ tan của KNO₃ theo nhiệt độ tăng dần",
+    options: [
+      "0°C: 13,3g",
+      "20°C: 31,6g",
+      "60°C: 110g",
+      "100°C: 246g"
+    ],
+    correctOrder: [
+      "0°C: 13,3g",
+      "20°C: 31,6g",
+      "60°C: 110g",
+      "100°C: 246g"
+    ],
+    explanation: "✅ Đúng! Độ tan KNO₃ tăng mạnh theo nhiệt độ.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Dung dịch ___ là dung dịch có thể hòa tan thêm chất tan.",
+    correctAnswer: "chưa bão hòa",
+    hint: "💡 Dung dịch chưa đủ chất tan",
+    explanation: "✅ Dung dịch CHƯA BÃO HÒA còn tan thêm được.",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành: Độ tan = số gam chất tan ___ trong ___ gam nước ở nhiệt độ ___.",
+    inline: true,
+    slots: [
       {
-        type: "matching",
-        question: "🔗 Ghép yếu tố với ảnh hưởng",
-        pairs: [
-          { left: "Nhiệt độ tăng", right: "Độ tan chất rắn tăng" },
-          { left: "Nhiệt độ tăng", right: "Độ tan chất khí giảm" },
-          { left: "Bản chất chất tan", right: "Mỗi chất độ tan khác nhau" },
-          { left: "Dung dịch bão hòa", right: "Không tan thêm được" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn hiểu các yếu tố ảnh hưởng độ tan.",
-        points: 15
+        id: 1,
+        label: "Mức độ",
+        correct: "tối đa"
       },
       {
-        type: "fill-in-blank",
-        question: "Ở 20°C, độ tan của NaCl là 36g/100g H₂O nghĩa là tan tối đa ___ gam NaCl trong 100g nước.",
-        correctAnswer: "36",
-        hint: "💡 Đọc giá trị độ tan",
-        explanation: "✅ Độ tan 36g/100g H₂O = tan tối đa 36 gam.",
-        points: 15
+        id: 2,
+        label: "Khối lượng nước",
+        correct: "100"
       },
       {
-        type: "multiple-choice",
-        question: "Tại sao đường tan nhanh hơn trong nước nóng?",
-        options: [
-          "Vì nước nóng có nhiều hơn",
-          "Vì độ tan tăng khi nhiệt độ tăng",
-          "Vì đường thích nước nóng",
-          "Vì nước nóng nhẹ hơn"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Độ tan của đường TĂNG khi nhiệt độ tăng.",
-        points: 15
-      },
-      {
-        type: "ordering",
-        question: "📋 Sắp xếp độ tan của KNO₃ theo nhiệt độ tăng dần",
-        options: [
-          "0°C: 13,3g",
-          "20°C: 31,6g",
-          "60°C: 110g",
-          "100°C: 246g"
-        ],
-        correctOrder: [
-          "0°C: 13,3g",
-          "20°C: 31,6g",
-          "60°C: 110g",
-          "100°C: 246g"
-        ],
-        explanation: "✅ Đúng! Độ tan KNO₃ tăng mạnh theo nhiệt độ.",
-        points: 15
-      },
-      {
-        type: "fill-in-blank",
-        question: "Dung dịch ___ là dung dịch có thể hòa tan thêm chất tan.",
-        correctAnswer: "chưa bão hòa",
-        hint: "💡 Dung dịch chưa đủ chất tan",
-        explanation: "✅ Dung dịch CHƯA BÃO HÒA còn tan thêm được.",
-        points: 15
+        id: 3,
+        label: "Điều kiện",
+        correct: "xác định"
       }
     ],
-    advanced: [
+    options: [
+      "tối đa",
+      "100",
+      "xác định",
+      "bất kỳ"
+    ],
+    explanation: "✅ Độ tan = số gam chất tan TỐI ĐA trong 100g nước ở nhiệt độ XÁC ĐỊNH.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Ở 20°C, độ tan của KNO₃ là 31,6g/100g H₂O. Hòa tan 50g KNO₃ vào 100g nước ở 20°C, dung dịch thu được là:",
+    options: [
+      "Dung dịch chưa bão hòa",
+      "Dung dịch bão hòa, còn dư 18,4g KNO₃",
+      "Dung dịch bão hòa không dư",
+      "Không tạo dung dịch"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Tan tối đa 31,6g, còn dư: 50 - 31,6 = 18,4g KNO₃.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Nếu độ tan của muối A ở 20°C là 30g/100g H₂O, thì trong 200g nước ở 20°C tan tối đa ___ gam muối A.",
+    correctAnswer: "60",
+    hint: "💡 Gấp đôi lượng nước",
+    explanation: "✅ 200g nước = 2 × 100g → tan 2 × 30 = 60g.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🧠 Phân tích ứng dụng độ tan",
+    pairs: [
       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành: Độ tan = số gam chất tan ___ trong ___ gam nước ở nhiệt độ ___.",
-        inline: true,
-        slots: [
-          { id: 1, label: "Mức độ", correct: "tối đa" },
-          { id: 2, label: "Khối lượng nước", correct: "100" },
-          { id: 3, label: "Điều kiện", correct: "xác định" }
-        ],
-        options: ["tối đa", "100", "xác định", "bất kỳ"],
-        explanation: "✅ Độ tan = số gam chất tan TỐI ĐA trong 100g nước ở nhiệt độ XÁC ĐỊNH.",
-        points: 20
+        left: "Hòa tan đường vào trà nóng",
+        right: "Độ tan tăng theo nhiệt độ"
       },
       {
-        type: "multiple-choice",
-        question: "Ở 20°C, độ tan của KNO₃ là 31,6g/100g H₂O. Hòa tan 50g KNO₃ vào 100g nước ở 20°C, dung dịch thu được là:",
-        options: [
-          "Dung dịch chưa bão hòa",
-          "Dung dịch bão hòa, còn dư 18,4g KNO₃",
-          "Dung dịch bão hòa không dư",
-          "Không tạo dung dịch"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Tan tối đa 31,6g, còn dư: 50 - 31,6 = 18,4g KNO₃.",
-        points: 20
+        left: "Nước ngọt để lạnh ngon hơn",
+        right: "Độ tan CO₂ tăng khi lạnh"
       },
       {
-        type: "fill-in-blank",
-        question: "Nếu độ tan của muối A ở 20°C là 30g/100g H₂O, thì trong 200g nước ở 20°C tan tối đa ___ gam muối A.",
-        correctAnswer: "60",
-        hint: "💡 Gấp đôi lượng nước",
-        explanation: "✅ 200g nước = 2 × 100g → tan 2 × 30 = 60g.",
-        points: 20
+        left: "Sản xuất muối từ nước biển",
+        right: "Làm bốc hơi nước"
       },
       {
-        type: "matching",
-        question: "🧠 Phân tích ứng dụng độ tan",
-        pairs: [
-          { left: "Hòa tan đường vào trà nóng", right: "Độ tan tăng theo nhiệt độ" },
-          { left: "Nước ngọt để lạnh ngon hơn", right: "Độ tan CO₂ tăng khi lạnh" },
-          { left: "Sản xuất muối từ nước biển", right: "Làm bốc hơi nước" },
-          { left: "Tinh chế KNO₃", right: "Kết tinh khi hạ nhiệt độ" }
-        ],
-        explanation: "✅ Xuất sắc! Bạn hiểu ứng dụng của độ tan.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Tại sao không nên đun sôi nước có gas (CO₂)?",
-        options: [
-          "Vì nước sẽ cạn",
-          "Vì CO₂ bay hết, mất gas",
-          "Vì nước sẽ đổi màu",
-          "Vì tốn điện"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Độ tan của khí GIẢM khi nhiệt độ tăng, CO₂ sẽ thoát ra → MẤT GAS.",
-        points: 20
+        left: "Tinh chế KNO₃",
+        right: "Kết tinh khi hạ nhiệt độ"
       }
-    ]
+    ],
+    explanation: "✅ Xuất sắc! Bạn hiểu ứng dụng của độ tan.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tại sao không nên đun sôi nước có gas (CO₂)?",
+    options: [
+      "Vì nước sẽ cạn",
+      "Vì CO₂ bay hết, mất gas",
+      "Vì nước sẽ đổi màu",
+      "Vì tốn điện"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Độ tan của khí GIẢM khi nhiệt độ tăng, CO₂ sẽ thoát ra → MẤT GAS.",
+    points: 10
   }
+]
 };

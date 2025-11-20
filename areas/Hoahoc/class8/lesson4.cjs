@@ -57,21 +57,20 @@ module.exports = {
         <strong>Số proton = Số electron</strong>
       </p>
     `,
-  game: {
-    basic: [
-      {
-        type: "multiple-choice",
-        question: "Nguyên tử là gì?",
-        options: [
-          "Hạt lớn nhất trong tự nhiên",
-          "Hạt vô cùng nhỏ, trung hòa điện",
-          "Chỉ có ở phòng thí nghiệm",
-          "Không tồn tại"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Nguyên tử là hạt vô cùng nhỏ, trung hòa về điện.",
-        points: 10
-      },
+  game: [
+    {
+      type: "multiple-choice",
+      question: "Nguyên tử là gì?",
+      options: [
+        "Hạt lớn nhất trong tự nhiên",
+        "Hạt vô cùng nhỏ, trung hòa điện",
+        "Chỉ có ở phòng thí nghiệm",
+        "Không tồn tại"
+      ],
+      correctAnswer: 1,
+      explanation: "✅ Nguyên tử là hạt vô cùng nhỏ, trung hòa về điện.",
+      points: 10
+    },
       {
         type: "true-false",
         question: "Hạt nhân nguyên tử mang điện tích dương.",
@@ -101,10 +100,8 @@ module.exports = {
         correctAnswer: true,
         explanation: "✅ Đúng! Điện tích (+) của proton cân bằng với (-) của electron.",
         points: 10
-      }
-    ],
-    intermediate: [
-      {
+      },
+    {
         type: "matching",
         question: "🔗 Ghép hạt với đặc điểm",
         pairs: [
@@ -114,7 +111,7 @@ module.exports = {
           { left: "Hạt nhân", right: "Chứa p và n" }
         ],
         explanation: "✅ Tuyệt vời! Bạn phân biệt đúng các hạt.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -122,7 +119,7 @@ module.exports = {
         correctAnswer: "hạt nhân",
         hint: "💡 Nơi có proton và neutron",
         explanation: "✅ Khối lượng tập trung ở HẠT NHÂN (p và n nặng).",
-        points: 15
+        points: 10
       },
       {
         type: "ordering",
@@ -130,7 +127,7 @@ module.exports = {
         options: ["Electron", "Proton", "Neutron"],
         correctOrder: ["Electron", "Proton", "Neutron"],
         explanation: "✅ Electron nhẹ nhất ≈ 0, Proton và Neutron ≈ 1.",
-        points: 15
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -143,7 +140,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Số proton (+) = Số electron (-) → Trung hòa điện.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -151,11 +148,9 @@ module.exports = {
         correctAnswer: "hạt nhân",
         hint: "💡 Trung tâm nguyên tử",
         explanation: "✅ Electron chuyển động xung quanh HẠT NHÂN.",
-        points: 15
-      }
-    ],
-    advanced: [
-      {
+        points: 10
+      },
+    {
         type: "drag-drop",
         question: "🧩 Hoàn thành: Nguyên tử gồm ___ ở trung tâm và ___ chuyển động xung quanh.",
         inline: true,
@@ -165,7 +160,7 @@ module.exports = {
         ],
         options: ["hạt nhân", "electron", "proton", "neutron"],
         explanation: "✅ Nguyên tử = HẠT NHÂN + ELECTRON xung quanh.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -173,7 +168,7 @@ module.exports = {
         options: ["11", "12", "23", "Không xác định"],
         correctAnswer: 0,
         explanation: "✅ Số e = Số p = 11 (nguyên tử trung hòa điện).",
-        points: 20
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -181,7 +176,7 @@ module.exports = {
         correctAnswer: "8",
         hint: "💡 Nguyên tử trung hòa điện",
         explanation: "✅ Số p = Số e = 8.",
-        points: 20
+        points: 10
       },
       {
         type: "matching",
@@ -193,7 +188,7 @@ module.exports = {
           { left: "Khối lượng chính", right: "Hạt nhân" }
         ],
         explanation: "✅ Xuất sắc! Bạn hiểu rõ cấu tạo nguyên tử.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -206,8 +201,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Electron có khối lượng ≈ 1/1840 khối lượng proton, gần bằng 0.",
-        points: 20
+        points: 10
       }
-    ]
-  }
+  ]
 };

@@ -84,6 +84,11 @@ const userSchema = new mongoose.Schema({
     },
     progress: {
       completedLessons: [Number], // Danh sách ID các bài đã hoàn thành
+      lessonStars: {
+        type: Map,
+        of: Number,
+        default: new Map() // Key: uniqueLessonId, Value: số sao (1-3)
+      },
       totalScore: {
         type: Number,
         default: 0
@@ -151,26 +156,106 @@ userSchema.methods.enrollProgram = function(programId, programName, currentClass
 };
 
 userSchema.methods.updateProgramProgress = function(programId, classId, lessonId, score) {
-  const program = this.programs.find(p => p.programId === programId);
-  if (!program) return null;
+  let program = this.programs.find(p => p.programId === programId);
+  
+  // Nếu chưa có program, tự động tạo mới
+  if (!program) {
+    const programNames = {
+      chemistry: 'Hóa học',
+      physics: 'Vật lý',
+      biology: 'Sinh học',
+      math: 'Toán học'
+    };
+    
+    const newProgram = {
+      programId: programId,
+      programName: programNames[programId] || programId,
+      currentClass: parseInt(classId),
+      currentLesson: parseInt(lessonId), // Đặt luôn lessonId khi tạo
+      isActive: true,
+      placementTestCompleted: false,
+      enrolledAt: new Date(),
+      progress: {
+        completedLessons: [],
+        totalScore: 0,
+        lastStudyDate: null
+      }
+    };
+    
+    this.programs.push(newProgram);
+    // Lấy lại reference từ array sau khi push
+    program = this.programs[this.programs.length - 1];
+    console.log('✅ Auto-created program:', programId, 'with lesson:', lessonId);
+  }
 
   // Cập nhật lớp và bài hiện tại
-  program.currentClass = classId;
-  program.currentLesson = lessonId;
+  program.currentClass = parseInt(classId);
+  program.currentLesson = parseInt(lessonId);
   
-  // Thêm bài đã hoàn thành
-  if (lessonId && !program.progress.completedLessons.includes(lessonId)) {
-    program.progress.completedLessons.push(lessonId);
+  console.log('📝 Updating program:', {
+    programId,
+    currentClass: program.currentClass,
+    currentLesson: program.currentLesson
+  });
+  
+  // Tạo unique ID cho bài học: classId * 1000 + lessonId
+  // Ví dụ: Lớp 8, Bài 1 -> 8001, Lớp 9, Bài 1 -> 9001
+  const uniqueLessonId = parseInt(classId) * 1000 + parseInt(lessonId);
+  
+  // Thêm bài đã hoàn thành (kiểm tra trùng)
+  if (!program.progress.completedLessons) {
+    program.progress.completedLessons = [];
+  }
+  
+  if (lessonId && !program.progress.completedLessons.includes(uniqueLessonId)) {
+    program.progress.completedLessons.push(uniqueLessonId);
+    console.log('✅ Added completed lesson:', uniqueLessonId);
   }
   
   // Cập nhật điểm
   if (score) {
-    program.progress.totalScore += score;
+    program.progress.totalScore = (program.progress.totalScore || 0) + score;
   }
   
   program.progress.lastStudyDate = new Date();
   
+  // Đánh dấu programs array đã thay đổi để Mongoose lưu đúng
+  this.markModified('programs');
+  
   return program;
+};
+
+// Update lesson stars based on score percentage
+userSchema.methods.updateLessonStars = function(programId, classId, lessonId, percentage) {
+  const program = this.programs.find(p => p.programId === programId);
+  if (!program) return null;
+
+  const uniqueLessonId = parseInt(classId) * 1000 + parseInt(lessonId);
+  
+  // Initialize lessonStars Map if not exists
+  if (!program.progress.lessonStars) {
+    program.progress.lessonStars = new Map();
+  }
+
+  // Calculate stars: >=50%: 1 star, >=80%: 2 stars, 100%: 3 stars
+  let stars = 0;
+  if (percentage >= 100) {
+    stars = 3;
+  } else if (percentage >= 80) {
+    stars = 2;
+  } else if (percentage >= 50) {
+    stars = 1;
+  }
+
+  // Only update if new stars are better than existing
+  const currentStars = program.progress.lessonStars.get(uniqueLessonId.toString()) || 0;
+  if (stars > currentStars) {
+    program.progress.lessonStars.set(uniqueLessonId.toString(), stars);
+    console.log(`⭐ Updated lesson ${uniqueLessonId} stars: ${currentStars} → ${stars}`);
+  }
+
+  this.markModified('programs');
+  return stars;
 };
 
 userSchema.methods.getProgram = function(programId) {

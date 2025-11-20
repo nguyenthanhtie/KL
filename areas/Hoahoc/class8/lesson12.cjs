@@ -150,181 +150,169 @@ module.exports = {
         </div>
       </div>
     `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-        type: "true-false",
-        question: "Nước đá tan chảy thành nước lỏng là hiện tượng vật lí.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Nước chỉ thay đổi trạng thái từ rắn sang lỏng, vẫn là chất H₂O.",
-        points: 10
-      },
-      {
-        type: "multiple-choice",
-        question: "Hiện tượng nào sau đây là hiện tượng hóa học?",
-        options: [
-          "Nước sôi",
-          "Đường tan trong nước",
-          "Giấy bị cháy",
-          "Nước đá tan chảy"
-        ],
-        correctAnswer: 2,
-        explanation: "✅ Giấy cháy tạo ra tro và khí, là chất mới → hiện tượng hóa học.",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Hiện tượng vật lí là hiện tượng chất ban đầu biến đổi thành chất mới.",
-        correctAnswer: false,
-        explanation: "❌ Sai! Hiện tượng vật lí vẫn giữ nguyên chất ban đầu, chỉ thay đổi trạng thái/hình dạng.",
-        points: 10
-      },
-      {
-        type: "multiple-choice",
-        question: "Dấu hiệu nào cho thấy đã xảy ra hiện tượng hóa học?",
-        options: [
-          "Chất rắn tan trong nước",
-          "Nước bay hơi",
-          "Có khí thoát ra",
-          "Nước đông đá"
-        ],
-        correctAnswer: 2,
-        explanation: "✅ Có khí thoát ra là dấu hiệu của phản ứng hóa học.",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Khi đun nóng, đường chuyển từ rắn sang lỏng là hiện tượng vật lí.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Đường chỉ nóng chảy, vẫn còn là đường.",
-        points: 10
-      }
-    ],
-
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
-      {
-        type: "matching",
-        question: "🔗 Ghép hiện tượng với loại biến đổi",
-        pairs: [
-          { left: "Muối tan trong nước", right: "Hiện tượng vật lí" },
-          { left: "Sắt gỉ trong không khí ẩm", right: "Hiện tượng hóa học" },
-          { left: "Nước bay hơi", right: "Hiện tượng vật lí" }
-        ],
-        explanation: "✅ Chính xác! Bạn đã phân biệt được hai loại hiện tượng.",
-        points: 15
-      },
-      {
-        type: "ordering",
-        question: "📋 Sắp xếp các hiện tượng xảy ra khi đun nóng đường theo thứ tự",
-        options: [
-          "Đường ở dạng rắn ban đầu",
-          "Đường nóng chảy thành dung dịch trong suốt",
-          "Đường chuyển thành chất màu đen (than)",
-          "Có giọt nước ngưng tụ"
-        ],
-        correctOrder: [
-          "Đường ở dạng rắn ban đầu",
-          "Đường nóng chảy thành dung dịch trong suốt",
-          "Đường chuyển thành chất màu đen (than)",
-          "Có giọt nước ngưng tụ"
-        ],
-        explanation: "✅ Đúng rồi! Bước đầu là hiện tượng vật lí, sau đó là hóa học.",
-        points: 15
-      },
-
-      {
-        type: "fill-in-blank",
-        question: "Khi trộn bột sắt và lưu huỳnh rồi đun nóng, thu được chất rắn màu ___ không bị nam châm hút.",
-        correctAnswer: "xám",
-        hint: "💡 Xem lại thí nghiệm về sắt và lưu huỳnh",
-        explanation: "✅ Chất mới có màu xám và không còn tính chất của sắt.",
-        points: 15
-      },
-      
-      {
-        type: "multiple-choice",
-        question: "Hiện tượng nào sau đây KHÔNG phải là dấu hiệu của hiện tượng hóa học?",
-        options: [
-          "Đổi màu",
-          "Thay đổi trạng thái",
-          "Tỏa nhiệt",
-          "Có kết tủa"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Thay đổi trạng thái là dấu hiệu của hiện tượng vật lí.",
-        points: 15
-      },
-      {
-        type: "true-false",
-        question: "Khi đun nóng mạnh đường đến khi chuyển thành than, đã xảy ra cả hai hiện tượng vật lí và hóa học.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Đầu tiên đường nóng chảy (vật lí), sau đó biến thành than và nước (hóa học).",
-        points: 15
-      }
-    ],
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
-      {
-        type: "drag-drop",
-        question: "🧩 Phân loại các hiện tượng sau",
-        inline: false,
-        categories: ["Hiện tượng vật lí", "Hiện tượng hóa học"],
-        items: [
-          { id: 1, text: "Nước đá tan", category: "Hiện tượng vật lí" },
-          { id: 2, text: "Thịt bị thối", category: "Hiện tượng hóa học" },
-          { id: 3, text: "Muối tan trong nước", category: "Hiện tượng vật lí" },
-          { id: 4, text: "Sữa bị chua", category: "Hiện tượng hóa học" }
-        ],
-        explanation: "✅ Xuất sắc! Bạn phân biệt rõ hai loại hiện tượng.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Trong thí nghiệm đun nóng hỗn hợp sắt và lưu huỳnh, tại sao chất tạo thành không bị nam châm hút?",
-        options: [
-          "Vì sắt đã nóng chảy",
-          "Vì sắt đã biến thành chất mới không có tính chất của sắt",
-          "Vì lưu huỳnh che phủ sắt",
-          "Vì nhiệt độ quá cao"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Sắt đã tác dụng với lưu huỳnh tạo thành hợp chất mới (sắt sunfua) không còn tính chất từ tính.",
-        points: 20
-      },
-      {
-        type: "matching",
-        question: "🧠 Ghép hiện tượng với giải thích đúng",
-        pairs: [
-          { left: "Hơi nước ngưng tụ trên kính", right: "Vật lí - Chỉ đổi trạng thái" },
-          { left: "Thức ăn bị mốc", right: "Hóa học - Chất biến đổi" },
-          { left: "Cồn bay hơi", right: "Vật lí - Vẫn là cồn" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn hiểu sâu về bản chất hai hiện tượng.",
-        points: 20
-      },
-      {
-        type: "fill-in-blank",
-        question: "Khi đun nóng đường, hiện tượng ___ xảy ra trước, sau đó mới đến hiện tượng ___.",
-        correctAnswer: "vật lí#hóa học",
-        hint: "💡 Đường nóng chảy trước, sau đó mới biến thành than",
-        explanation: "✅ Đầu tiên đường nóng chảy (vật lí), sau đó phân hủy thành than và nước (hóa học).",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Một học sinh quan sát thấy: lá cây xanh → lá vàng → lá rụng. Đây là hiện tượng gì?",
-        options: [
-          "Chỉ có hiện tượng vật lí",
-          "Chỉ có hiện tượng hóa học",
-          "Cả hai hiện tượng vật lí và hóa học",
-          "Không phải hai hiện tượng trên"
-        ],
-        correctAnswer: 2,
-        explanation: "✅ Lá chuyển màu do chất diệp lục bị phân hủy (hóa học), lá rụng là hiện tượng vật lí.",
-        points: 20
-      }
-    ]
-  }
+  game: [
+    {
+      type: "true-false",
+      question: "Nước đá tan chảy thành nước lỏng là hiện tượng vật lí.",
+      correctAnswer: true,
+      explanation: "✅ Đúng! Nước chỉ thay đổi trạng thái từ rắn sang lỏng, vẫn là chất H₂O.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Hiện tượng nào sau đây là hiện tượng hóa học?",
+      options: [
+        "Nước sôi",
+        "Đường tan trong nước",
+        "Giấy bị cháy",
+        "Nước đá tan chảy"
+      ],
+      correctAnswer: 2,
+      explanation: "✅ Giấy cháy tạo ra tro và khí, là chất mới → hiện tượng hóa học.",
+      points: 10
+    },
+    {
+      type: "true-false",
+      question: "Hiện tượng vật lí là hiện tượng chất ban đầu biến đổi thành chất mới.",
+      correctAnswer: false,
+      explanation: "❌ Sai! Hiện tượng vật lí vẫn giữ nguyên chất ban đầu, chỉ thay đổi trạng thái/hình dạng.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Dấu hiệu nào cho thấy đã xảy ra hiện tượng hóa học?",
+      options: [
+        "Chất rắn tan trong nước",
+        "Nước bay hơi",
+        "Có khí thoát ra",
+        "Nước đông đá"
+      ],
+      correctAnswer: 2,
+      explanation: "✅ Có khí thoát ra là dấu hiệu của phản ứng hóa học.",
+      points: 10
+    },
+    {
+      type: "true-false",
+      question: "Khi đun nóng, đường chuyển từ rắn sang lỏng là hiện tượng vật lí.",
+      correctAnswer: true,
+      explanation: "✅ Đúng! Đường chỉ nóng chảy, vẫn còn là đường.",
+      points: 10
+    },
+    {
+      type: "matching",
+      question: "🔗 Ghép hiện tượng với loại biến đổi",
+      pairs: [
+        { left: "Muối tan trong nước", right: "Hiện tượng vật lí" },
+        { left: "Sắt gỉ trong không khí ẩm", right: "Hiện tượng hóa học" },
+        { left: "Nước bay hơi", right: "Hiện tượng vật lí" }
+      ],
+      explanation: "✅ Chính xác! Bạn đã phân biệt được hai loại hiện tượng.",
+      points: 10
+    },
+    {
+      type: "ordering",
+      question: "📋 Sắp xếp các hiện tượng xảy ra khi đun nóng đường theo thứ tự",
+      options: [
+        "Đường ở dạng rắn ban đầu",
+        "Đường nóng chảy thành dung dịch trong suốt",
+        "Đường chuyển thành chất màu đen (than)",
+        "Có giọt nước ngưng tụ"
+      ],
+      correctOrder: [
+        "Đường ở dạng rắn ban đầu",
+        "Đường nóng chảy thành dung dịch trong suốt",
+        "Đường chuyển thành chất màu đen (than)",
+        "Có giọt nước ngưng tụ"
+      ],
+      explanation: "✅ Đúng rồi! Bước đầu là hiện tượng vật lí, sau đó là hóa học.",
+      points: 10
+    },
+    {
+      type: "fill-in-blank",
+      question: "Khi trộn bột sắt và lưu huỳnh rồi đun nóng, thu được chất rắn màu ___ không bị nam châm hút.",
+      correctAnswer: "xám",
+      hint: "💡 Xem lại thí nghiệm về sắt và lưu huỳnh",
+      explanation: "✅ Chất mới có màu xám và không còn tính chất của sắt.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Hiện tượng nào sau đây KHÔNG phải là dấu hiệu của hiện tượng hóa học?",
+      options: [
+        "Đổi màu",
+        "Thay đổi trạng thái",
+        "Tỏa nhiệt",
+        "Có kết tủa"
+      ],
+      correctAnswer: 1,
+      explanation: "✅ Thay đổi trạng thái là dấu hiệu của hiện tượng vật lí.",
+      points: 10
+    },
+    {
+      type: "true-false",
+      question: "Khi đun nóng mạnh đường đến khi chuyển thành than, đã xảy ra cả hai hiện tượng vật lí và hóa học.",
+      correctAnswer: true,
+      explanation: "✅ Đúng! Đầu tiên đường nóng chảy (vật lí), sau đó biến thành than và nước (hóa học).",
+      points: 10
+    },
+    {
+      type: "drag-drop",
+      question: "🧩 Phân loại các hiện tượng sau",
+      inline: false,
+      categories: ["Hiện tượng vật lí", "Hiện tượng hóa học"],
+      items: [
+        { id: 1, text: "Nước đá tan", category: "Hiện tượng vật lí" },
+        { id: 2, text: "Thịt bị thối", category: "Hiện tượng hóa học" },
+        { id: 3, text: "Muối tan trong nước", category: "Hiện tượng vật lí" },
+        { id: 4, text: "Sữa bị chua", category: "Hiện tượng hóa học" }
+      ],
+      explanation: "✅ Xuất sắc! Bạn phân biệt rõ hai loại hiện tượng.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Trong thí nghiệm đun nóng hỗn hợp sắt và lưu huỳnh, tại sao chất tạo thành không bị nam châm hút?",
+      options: [
+        "Vì sắt đã nóng chảy",
+        "Vì sắt đã biến thành chất mới không có tính chất của sắt",
+        "Vì lưu huỳnh che phủ sắt",
+        "Vì nhiệt độ quá cao"
+      ],
+      correctAnswer: 1,
+      explanation: "✅ Sắt đã tác dụng với lưu huỳnh tạo thành hợp chất mới (sắt sunfua) không còn tính chất từ tính.",
+      points: 10
+    },
+    {
+      type: "matching",
+      question: "🧠 Ghép hiện tượng với giải thích đúng",
+      pairs: [
+        { left: "Hơi nước ngưng tụ trên kính", right: "Vật lí - Chỉ đổi trạng thái" },
+        { left: "Thức ăn bị mốc", right: "Hóa học - Chất biến đổi" },
+        { left: "Cồn bay hơi", right: "Vật lí - Vẫn là cồn" }
+      ],
+      explanation: "✅ Tuyệt vời! Bạn hiểu sâu về bản chất hai hiện tượng.",
+      points: 10
+    },
+    {
+      type: "fill-in-blank",
+      question: "Khi đun nóng đường, hiện tượng ___ xảy ra trước, sau đó mới đến hiện tượng ___.",
+      correctAnswer: "vật lí#hóa học",
+      hint: "💡 Đường nóng chảy trước, sau đó mới biến thành than",
+      explanation: "✅ Đầu tiên đường nóng chảy (vật lí), sau đó phân hủy thành than và nước (hóa học).",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Một học sinh quan sát thấy: lá cây xanh → lá vàng → lá rụng. Đây là hiện tượng gì?",
+      options: [
+        "Chỉ có hiện tượng vật lí",
+        "Chỉ có hiện tượng hóa học",
+        "Cả hai hiện tượng vật lí và hóa học",
+        "Không phải hai hiện tượng trên"
+      ],
+      correctAnswer: 2,
+      explanation: "✅ Lá chuyển màu do chất diệp lục bị phân hủy (hóa học), lá rụng là hiện tượng vật lí.",
+      points: 10
+    }
+  ]
 };

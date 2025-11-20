@@ -298,20 +298,12 @@ const PlacementTest = () => {
 
       console.log('✅ Placement test submitted successfully');
 
-      // Cập nhật user trong context
-      setUser(prevUser => ({
-        ...prevUser, 
-        profile: { ...prevUser?.profile, grade: assignedGrade },
-        programs: data.user.programs
-      }));
-
-      // Cập nhật localStorage để đảm bảo data consistency
-      const updatedUser = {
-        ...user,
-        profile: { ...user?.profile, grade: assignedGrade },
-        programs: data.user.programs
-      };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      // Cập nhật user trong context với data từ server
+      if (data.user) {
+        setUser(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        console.log('✅ User data updated from server');
+      }
 
       // Hiển thị kết quả
       alert(`🎉 Chúc mừng bạn đã hoàn thành bài kiểm tra!\n\n` +

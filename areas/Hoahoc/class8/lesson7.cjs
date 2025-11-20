@@ -50,22 +50,20 @@ module.exports = {
         <li>Số lượng: 2 nguyên tử H, 1 nguyên tử O</li>
       </ul>
     `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-            "type": "multiple-choice",
-            "question": "Công thức hóa học dùng để làm gì?",
-            "options": [
-                  "Biểu diễn chất",
-                  "Tính toán",
-                  "Vẽ hình",
-                  "Đo lường"
-            ],
-            "correctAnswer": 0,
-            "explanation": "✅ Công thức hóa học dùng để biểu diễn chất bằng ký hiệu.",
-            "points": 10
-      },
+  game: [
+    {
+      "type": "multiple-choice",
+      "question": "Công thức hóa học dùng để làm gì?",
+      "options": [
+        "Biểu diễn chất",
+        "Tính toán",
+        "Vẽ hình",
+        "Đo lường"
+      ],
+      "correctAnswer": 0,
+      "explanation": "✅ Công thức hóa học dùng để biểu diễn chất bằng ký hiệu.",
+      "points": 10
+    },
       {
             "type": "true-false",
             "question": "Trong H₂O, chỉ số 2 nghĩa là có 2 nguyên tử H.",
@@ -105,12 +103,8 @@ module.exports = {
             "correctAnswer": 1,
             "explanation": "✅ CO₂ có chỉ số 2 ở O nên có 2 nguyên tử Oxi.",
             "points": 10
-      }
-],
-
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
-      {
+      },
+    {
             "type": "matching",
             "question": "🔗 Ghép công thức với tên",
             "pairs": [
@@ -132,7 +126,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ Bạn đã nhớ tên các chất phổ biến!",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -140,7 +134,7 @@ module.exports = {
             "correctAnswer": "2, 1, 4",
             "hint": "💡 Nhìn vào chỉ số trong công thức",
             "explanation": "✅ H₂SO₄: 2H + 1S + 4O.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -153,7 +147,7 @@ module.exports = {
             ],
             "correctAnswer": 1,
             "explanation": "✅ O₃ (ozon) có 3 nguyên tử Oxi.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -161,7 +155,7 @@ module.exports = {
             "correctAnswer": "4",
             "hint": "💡 1N + 3H = ?",
             "explanation": "✅ NH₃ có 1N + 3H = 4 nguyên tử.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "ordering",
@@ -179,13 +173,9 @@ module.exports = {
                   "H₂SO₄ (7)"
             ],
             "explanation": "✅ NaCl:2, H₂O:3, NH₃:4, H₂SO₄:7.",
-            "points": 15
-      }
-],
-
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
-      {
+            "points": 10
+      },
+    {
             "type": "drag-drop",
             "question": "🧩 Công thức H₂SO₄ gồm ___ nguyên tố: H, ___, và O.",
             "inline": true,
@@ -208,7 +198,7 @@ module.exports = {
                   "N"
             ],
             "explanation": "✅ H₂SO₄ có 3 nguyên tố: H, S, O.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -221,7 +211,7 @@ module.exports = {
             ],
             "correctAnswer": 2,
             "explanation": "✅ X₂Y₃ = 2 nguyên tử X + 3 nguyên tử Y = 5 nguyên tử.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -229,7 +219,7 @@ module.exports = {
             "correctAnswer": "2, 2",
             "hint": "💡 Chỉ số ngoài ngoặc nhân với chỉ số trong ngoặc",
             "explanation": "✅ (OH)₂ = 2 nhóm OH = 2O + 2H.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "matching",
@@ -253,7 +243,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ Tính đúng số nguyên tử trong mỗi công thức!",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -266,8 +256,7 @@ module.exports = {
             ],
             "correctAnswer": 2,
             "explanation": "✅ (SO₄)₃ = 3 nhóm SO₄ = 3×4 = 12 nguyên tử O.",
-            "points": 20
+            "points": 10
       }
-]
-  }
+  ]
 };

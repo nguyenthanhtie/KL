@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User.cjs');
 
 // Đăng ký với email/password
@@ -43,15 +44,28 @@ router.post('/register', async (req, res) => {
     await newUser.save();
     console.log('✅ User registered successfully:', newUser.email);
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: newUser._id, 
+        email: newUser.email,
+        firebaseUid: newUser.firebaseUid 
+      },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
     res.json({
       success: true,
       message: 'Đăng ký thành công',
+      token: token,
       user: {
         id: newUser._id,
         username: newUser.username,
         email: newUser.email,
         displayName: newUser.displayName,
         firebaseUid: newUser.firebaseUid,
+        uid: newUser.firebaseUid, // Add uid alias for compatibility
         xp: newUser.xp,
         level: newUser.level,
         programs: newUser.programs,
@@ -104,15 +118,28 @@ router.post('/google-login', async (req, res) => {
       console.log('✅ Existing user logged in:', user.email);
     }
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: user._id, 
+        email: user.email,
+        firebaseUid: user.firebaseUid 
+      },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
     res.json({
       success: true,
       message: 'Đăng nhập thành công',
+      token: token,
       user: {
         id: user._id,
         username: user.username,
         email: user.email,
         displayName: user.displayName,
         firebaseUid: user.firebaseUid,
+        uid: user.firebaseUid, // Add uid alias for compatibility
         xp: user.xp,
         level: user.level,
         programs: user.programs,

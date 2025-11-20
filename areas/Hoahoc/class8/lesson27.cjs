@@ -77,132 +77,179 @@ module.exports = {
       </ul>
     </div>
   `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Tính chất hóa học đặc trưng của phi kim là gì?",
+    options: [
+      "Tính khử",
+      "Tính oxi hóa",
+      "Tính lưỡng tính",
+      "Tính trơ"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Phi kim có xu hướng nhận electron trong các phản ứng hóa học, thể hiện tính oxi hóa.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Tất cả các phi kim đều ở trạng thái khí ở điều kiện thường.",
+    correctAnswer: false,
+    explanation: "❌ Sai, phi kim tồn tại ở cả 3 trạng thái: rắn (C, S), lỏng (Br), và khí (O₂, N₂).",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Sản phẩm khi cho lưu huỳnh (S) cháy trong oxi là:",
+    options: [
+      "SO",
+      "SO₂",
+      "SO₃",
+      "H₂S"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ S + O₂ --(t°)--> SO₂ (lưu huỳnh đioxit hay khí sunfurơ).",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Dạng thù hình nào của cacbon có khả năng dẫn điện?",
+    correctAnswer: "than chì",
+    explanation: "✅ Than chì (graphite) có cấu trúc lớp, các electron linh động giúp nó dẫn được điện.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Khí clo có màu xanh lá và không độc.",
+    correctAnswer: false,
+    explanation: "❌ Sai, khí clo có màu vàng lục, mùi hắc và rất độc.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Nước clo có tính tẩy màu là do sự có mặt của chất nào?",
+    options: [
+      "HCl",
+      "H₂O",
+      "Cl₂",
+      "HClO"
+    ],
+    correctAnswer: 3,
+    explanation: "✅ Cl₂ + H₂O ⇌ HCl + HClO. Axit hipoclorơ (HClO) là chất oxi hóa mạnh, có khả năng phá vỡ các hợp chất màu.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép phi kim với ứng dụng quan trọng của nó.",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Tính chất hóa học đặc trưng của phi kim là gì?",
-        options: ["Tính khử", "Tính oxi hóa", "Tính lưỡng tính", "Tính trơ"],
-        correctAnswer: 1,
-        explanation: "✅ Phi kim có xu hướng nhận electron trong các phản ứng hóa học, thể hiện tính oxi hóa.",
-        points: 10
+        left: "Clo (Cl₂)",
+        right: "Sát trùng nước sinh hoạt"
       },
       {
-        type: "true-false",
-        question: "Tất cả các phi kim đều ở trạng thái khí ở điều kiện thường.",
-        correctAnswer: false,
-        explanation: "❌ Sai, phi kim tồn tại ở cả 3 trạng thái: rắn (C, S), lỏng (Br), và khí (O₂, N₂).",
-        points: 10
+        left: "Cacbon (C)",
+        right: "Làm nhiên liệu, điện cực"
       },
       {
-        type: "multiple-choice",
-        question: "Sản phẩm khi cho lưu huỳnh (S) cháy trong oxi là:",
-        options: ["SO", "SO₂", "SO₃", "H₂S"],
-        correctAnswer: 1,
-        explanation: "✅ S + O₂ --(t°)--> SO₂ (lưu huỳnh đioxit hay khí sunfurơ).",
-        points: 10
-      },
-      {
-        type: "fill-in-blank",
-        question: "Dạng thù hình nào của cacbon có khả năng dẫn điện?",
-        correctAnswer: "than chì",
-        explanation: "✅ Than chì (graphite) có cấu trúc lớp, các electron linh động giúp nó dẫn được điện.",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Khí clo có màu xanh lá và không độc.",
-        correctAnswer: false,
-        explanation: "❌ Sai, khí clo có màu vàng lục, mùi hắc và rất độc.",
-        points: 10
+        left: "Lưu huỳnh (S)",
+        right: "Sản xuất axit sunfuric"
       }
     ],
-    intermediate: [
+    explanation: "✅ Mỗi phi kim có những tính chất đặc trưng, dẫn đến các ứng dụng riêng biệt trong đời sống và công nghiệp.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng nào sau đây thể hiện tính khử của Cacbon?",
+    options: [
+      "C + O₂ → CO₂",
+      "3C + 4Al → Al₄C₃",
+      "C + 2H₂ → CH₄",
+      "Cả 3 phản ứng"
+    ],
+    correctAnswer: 0,
+    explanation: "✅ Trong phản ứng C + O₂ → CO₂, số oxi hóa của C tăng từ 0 lên +4, thể hiện tính khử.",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành phương trình: Cl₂ + 2NaOH → NaCl + ? + H₂O",
+    inline: true,
+    slots: [
       {
-        type: "multiple-choice",
-        question: "Nước clo có tính tẩy màu là do sự có mặt của chất nào?",
-        options: ["HCl", "H₂O", "Cl₂", "HClO"],
-        correctAnswer: 3,
-        explanation: "✅ Cl₂ + H₂O ⇌ HCl + HClO. Axit hipoclorơ (HClO) là chất oxi hóa mạnh, có khả năng phá vỡ các hợp chất màu.",
-        points: 15
-      },
-      {
-        type: "matching",
-        question: "🔗 Ghép phi kim với ứng dụng quan trọng của nó.",
-        pairs: [
-          { left: "Clo (Cl₂)", right: "Sát trùng nước sinh hoạt" },
-          { left: "Cacbon (C)", right: "Làm nhiên liệu, điện cực" },
-          { left: "Lưu huỳnh (S)", right: "Sản xuất axit sunfuric" }
-        ],
-        explanation: "✅ Mỗi phi kim có những tính chất đặc trưng, dẫn đến các ứng dụng riêng biệt trong đời sống và công nghiệp.",
-        points: 15
-      },
-      {
-        type: "multiple-choice",
-        question: "Phản ứng nào sau đây thể hiện tính khử của Cacbon?",
-        options: ["C + O₂ → CO₂", "3C + 4Al → Al₄C₃", "C + 2H₂ → CH₄", "Cả 3 phản ứng"],
-        correctAnswer: 0,
-        explanation: "✅ Trong phản ứng C + O₂ → CO₂, số oxi hóa của C tăng từ 0 lên +4, thể hiện tính khử.",
-        points: 15
-      },
-       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành phương trình: Cl₂ + 2NaOH → NaCl + ? + H₂O",
-        inline: true,
-        slots: [
-          { id: 1, label: "Sản phẩm", correct: "NaClO" }
-        ],
-        options: ["NaClO", "NaClO₂", "NaClO₃", "Cl₂O"],
-        explanation: "✅ Phản ứng tạo ra nước Javen, một hỗn hợp của Natri clorua (NaCl) và Natri hipoclorit (NaClO).",
-        points: 15
-      },
-      {
-        type: "true-false",
-        question: "Kim cương và than chì đều được cấu tạo từ các nguyên tử cacbon.",
-        correctAnswer: true,
-        explanation: "✅ Đúng, chúng là các dạng thù hình của nhau. Sự khác biệt về cấu trúc tinh thể làm cho tính chất vật lý của chúng hoàn toàn khác nhau.",
-        points: 15
+        id: 1,
+        label: "Sản phẩm",
+        correct: "NaClO"
       }
     ],
-    advanced: [
-      {
-        type: "multiple-choice",
-        question: "Dẫn khí CO₂ vào dung dịch Ca(OH)₂ dư, hiện tượng xảy ra là:",
-        options: ["Có khí thoát ra", "Dung dịch trong suốt", "Xuất hiện kết tủa trắng", "Dung dịch chuyển màu xanh"],
-        correctAnswer: 2,
-        explanation: "✅ CO₂ (oxit axit) + Ca(OH)₂ (bazơ) → CaCO₃↓ (kết tủa trắng) + H₂O.",
-        points: 20
-      },
-      {
-        type: "true-false",
-        question: "Trong phản ứng với kim loại, Flo luôn thể hiện số oxi hóa -1.",
-        correctAnswer: true,
-        explanation: "✅ Đúng, Flo là phi kim có độ âm điện lớn nhất, nên trong mọi hợp chất nó luôn có số oxi hóa -1.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Để khử độc khí clo bị rò rỉ trong phòng thí nghiệm, người ta có thể phun sương dung dịch nào sau đây?",
-        options: ["HCl", "Nước vôi trong Ca(OH)₂", "NaCl", "Nước cất"],
-        correctAnswer: 1,
-        explanation: "✅ Clo phản ứng với dung dịch kiềm như Ca(OH)₂ hoặc NaOH để tạo thành muối, làm giảm nồng độ khí độc trong không khí.",
-        points: 20
-      },
-      {
-        type: "fill-in-blank",
-        question: "Than ___ có cấu trúc xốp, diện tích bề mặt lớn nên có khả năng hấp phụ mạnh, được dùng trong mặt nạ phòng độc và máy lọc nước.",
-        correctAnswer: "hoạt tính",
-        explanation: "✅ Than hoạt tính được tạo ra bằng cách xử lý cacbon ở nhiệt độ cao để tạo ra vô số lỗ rỗng nhỏ, giúp nó hấp phụ tốt các chất khí và chất tan.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Phản ứng C + CuO → Cu + CO₂ thuộc loại phản ứng nào?",
-        options: ["Phản ứng thế", "Phản ứng hóa hợp", "Phản ứng phân hủy", "Phản ứng oxi hóa - khử"],
-        correctAnswer: 3,
-        explanation: "✅ Đây là phản ứng oxi hóa - khử, trong đó C là chất khử và CuO là chất oxi hóa. Nó cũng có thể được xem là một dạng phản ứng thế.",
-        points: 20
-      }
-    ]
+    options: [
+      "NaClO",
+      "NaClO₂",
+      "NaClO₃",
+      "Cl₂O"
+    ],
+    explanation: "✅ Phản ứng tạo ra nước Javen, một hỗn hợp của Natri clorua (NaCl) và Natri hipoclorit (NaClO).",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Kim cương và than chì đều được cấu tạo từ các nguyên tử cacbon.",
+    correctAnswer: true,
+    explanation: "✅ Đúng, chúng là các dạng thù hình của nhau. Sự khác biệt về cấu trúc tinh thể làm cho tính chất vật lý của chúng hoàn toàn khác nhau.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Dẫn khí CO₂ vào dung dịch Ca(OH)₂ dư, hiện tượng xảy ra là:",
+    options: [
+      "Có khí thoát ra",
+      "Dung dịch trong suốt",
+      "Xuất hiện kết tủa trắng",
+      "Dung dịch chuyển màu xanh"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ CO₂ (oxit axit) + Ca(OH)₂ (bazơ) → CaCO₃↓ (kết tủa trắng) + H₂O.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Trong phản ứng với kim loại, Flo luôn thể hiện số oxi hóa -1.",
+    correctAnswer: true,
+    explanation: "✅ Đúng, Flo là phi kim có độ âm điện lớn nhất, nên trong mọi hợp chất nó luôn có số oxi hóa -1.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Để khử độc khí clo bị rò rỉ trong phòng thí nghiệm, người ta có thể phun sương dung dịch nào sau đây?",
+    options: [
+      "HCl",
+      "Nước vôi trong Ca(OH)₂",
+      "NaCl",
+      "Nước cất"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Clo phản ứng với dung dịch kiềm như Ca(OH)₂ hoặc NaOH để tạo thành muối, làm giảm nồng độ khí độc trong không khí.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Than ___ có cấu trúc xốp, diện tích bề mặt lớn nên có khả năng hấp phụ mạnh, được dùng trong mặt nạ phòng độc và máy lọc nước.",
+    correctAnswer: "hoạt tính",
+    explanation: "✅ Than hoạt tính được tạo ra bằng cách xử lý cacbon ở nhiệt độ cao để tạo ra vô số lỗ rỗng nhỏ, giúp nó hấp phụ tốt các chất khí và chất tan.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng C + CuO → Cu + CO₂ thuộc loại phản ứng nào?",
+    options: [
+      "Phản ứng thế",
+      "Phản ứng hóa hợp",
+      "Phản ứng phân hủy",
+      "Phản ứng oxi hóa - khử"
+    ],
+    correctAnswer: 3,
+    explanation: "✅ Đây là phản ứng oxi hóa - khử, trong đó C là chất khử và CuO là chất oxi hóa. Nó cũng có thể được xem là một dạng phản ứng thế.",
+    points: 10
   }
+]
 };

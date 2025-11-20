@@ -36,22 +36,20 @@ module.exports = {
       <p>• O có hóa trị II</p>
       <p>• Công thức: Al<sub>2</sub>O<sub>3</sub> (vì 2×III = 3×II = 6)</p>
     `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-            "type": "multiple-choice",
-            "question": "Hóa trị là gì?",
-            "options": [
-                  "Khối lượng nguyên tử",
-                  "Khả năng liên kết của nguyên tử",
-                  "Số electron",
-                  "Số proton"
-            ],
-            "correctAnswer": 1,
-            "explanation": "✅ Hóa trị biểu thị khả năng liên kết của nguyên tử.",
-            "points": 10
-      },
+  game: [
+    {
+      "type": "multiple-choice",
+      "question": "Hóa trị là gì?",
+      "options": [
+        "Khối lượng nguyên tử",
+        "Khả năng liên kết của nguyên tử",
+        "Số electron",
+        "Số proton"
+      ],
+      "correctAnswer": 1,
+      "explanation": "✅ Hóa trị biểu thị khả năng liên kết của nguyên tử.",
+      "points": 10
+    },
       {
             "type": "true-false",
             "question": "Hidro (H) có hóa trị I.",
@@ -91,12 +89,8 @@ module.exports = {
             "correctAnswer": 2,
             "explanation": "✅ Al (Nhôm) có hóa trị III.",
             "points": 10
-      }
-],
-
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
-      {
+      },
+    {
             "type": "matching",
             "question": "🔗 Ghép nguyên tố với hóa trị",
             "pairs": [
@@ -118,7 +112,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ Nhớ hóa trị các nguyên tố cơ bản!",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -126,7 +120,7 @@ module.exports = {
             "correctAnswer": "B",
             "hint": "💡 Công thức AxBy",
             "explanation": "✅ Quy tắc: x × htA = y × htB.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -139,7 +133,7 @@ module.exports = {
             ],
             "correctAnswer": 2,
             "explanation": "✅ MgCl₂ vì 1×II = 2×I = 2.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -147,7 +141,7 @@ module.exports = {
             "correctAnswer": "III, II",
             "hint": "💡 Nhôm và Oxi",
             "explanation": "✅ Al: III, O: II (2×III = 3×II = 6).",
-            "points": 15
+            "points": 10
       },
       {
             "type": "ordering",
@@ -163,13 +157,9 @@ module.exports = {
                   "Al (III)"
             ],
             "explanation": "✅ I < II < III.",
-            "points": 15
-      }
-],
-
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
-      {
+            "points": 10
+      },
+    {
             "type": "drag-drop",
             "question": "🧩 Lập công thức Ca (II) và O (II): Ca___O___.",
             "inline": true,
@@ -192,7 +182,7 @@ module.exports = {
                   "không có"
             ],
             "explanation": "✅ CaO (1×II = 1×II, không cần chỉ số).",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -205,7 +195,7 @@ module.exports = {
             ],
             "correctAnswer": 1,
             "explanation": "✅ Fe₂O₃ vì 2×III = 3×II = 6.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -213,7 +203,7 @@ module.exports = {
             "correctAnswer": "3, 2",
             "hint": "💡 Áp dụng quy tắc hóa trị",
             "explanation": "✅ A₃B₂ (3×II = 2×III = 6).",
-            "points": 20
+            "points": 10
       },
       {
             "type": "matching",
@@ -233,7 +223,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ Kiểm tra: x×htA = y×htB!",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -246,8 +236,7 @@ module.exports = {
             ],
             "correctAnswer": 1,
             "explanation": "✅ Al₂S₃ vì 2×III = 3×II = 6.",
-            "points": 20
+            "points": 10
       }
-]
-  }
+  ]
 };

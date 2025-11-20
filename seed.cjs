@@ -208,7 +208,39 @@ async function seedDatabase() {
       ...lessons12
     ];
 
-    await Lesson.insertMany(allLessons);
+    // Transform game structure from array to object with quizzes
+    const transformedLessons = allLessons.map(lesson => {
+      if (Array.isArray(lesson.game)) {
+        // If game is an array, wrap it in quizzes property
+        return {
+          ...lesson,
+          game: {
+            quizzes: lesson.game
+          }
+        };
+      }
+      // If game is already an object (legacy structure with basic/intermediate/advanced)
+      // keep it as is, or transform to quizzes if needed
+      if (lesson.game && typeof lesson.game === 'object' && !lesson.game.quizzes) {
+        const quizzes = [
+          ...(lesson.game.basic || []),
+          ...(lesson.game.intermediate || []),
+          ...(lesson.game.advanced || [])
+        ];
+        return {
+          ...lesson,
+          game: {
+            quizzes: quizzes.length > 0 ? quizzes : undefined,
+            basic: lesson.game.basic,
+            intermediate: lesson.game.intermediate,
+            advanced: lesson.game.advanced
+          }
+        };
+      }
+      return lesson;
+    });
+
+    await Lesson.insertMany(transformedLessons);
     console.log('✓ Đã thêm bài học:');
     console.log('  - Lớp 8:', lessons8.length, 'bài');
     console.log('  - Lớp 9:', lessons9.length, 'bài');

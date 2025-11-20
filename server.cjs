@@ -6,9 +6,21 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:5000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Add COOP headers to prevent popup blocking
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  next();
+});
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -54,7 +66,6 @@ mongoose.connection.on('error', (err) => {
 app.use('/api/auth', require('./routes/auth.cjs'));
 app.use('/api/users', require('./routes/users.cjs'));
 app.use('/api/lessons', require('./routes/lessons.cjs'));
-app.use('/api/progress', require('./routes/progress.cjs'));
 app.use('/api/challenges', require('./routes/challenges.cjs'));
 
 // Health check

@@ -43,26 +43,68 @@ const Dashboard = () => {
   // Fetch user progress from API
   useEffect(() => {
     const fetchProgress = async () => {
-      if (!user?.uid) return;
+      const userUid = user?.firebaseUid || user?.uid;
+      if (!userUid) return;
       
       try {
-        const response = await axios.get(`${API_URL}/progress/user/${user.uid}`);
-        const progressData = response.data;
+        const response = await axios.get(`${API_URL}/users/firebase/${userUid}`);
+        const userData = response.data;
         
-        // Convert array to object keyed by lessonId
+        // Find chemistry program
+        const chemProgram = userData.programs?.find(p => p.programId === 'chemistry');
+        
+        if (!chemProgram) {
+          console.log('No chemistry program found for user');
+          return;
+        }
+        
+        // Parse completedLessons from format [8001, 8002] to lessonId map
         const progressMap = {};
-        progressData.forEach(p => {
-          progressMap[p.lessonId] = p;
+        
+        // Get lessonStars Map
+        const lessonStarsMap = chemProgram.progress.lessonStars || {};
+        
+        console.log('🔍 Dashboard - Debug lessonStars:', {
+          raw: chemProgram.progress.lessonStars,
+          type: typeof chemProgram.progress.lessonStars,
+          keys: Object.keys(lessonStarsMap),
+          values: Object.values(lessonStarsMap)
         });
+        
+        chemProgram.progress.completedLessons?.forEach(uniqueId => {
+          // uniqueId format: classId * 1000 + lessonId
+          // Example: 8001 = class 8, lesson 1
+          const lessonClassId = Math.floor(uniqueId / 1000);
+          const lessonId = uniqueId % 1000;
+          
+          const stars = lessonStarsMap[uniqueId.toString()] || 0;
+          // Use uniqueId as key to avoid overwriting lessons with same lessonId
+          progressMap[uniqueId] = {
+            uniqueId: uniqueId,
+            lessonId: lessonId,
+            classId: lessonClassId,
+            completed: true,
+            score: chemProgram.progress.totalScore,
+            stars: stars
+          };
+        });
+        
         setLessonsProgress(progressMap);
         
         // Calculate stats
-        const completed = progressData.filter(p => p.completed).length;
+        const completedCount = chemProgram.progress.completedLessons?.length || 0;
         setUserProgress({
-          totalLessons: 28,
-          completedLessons: completed,
+          totalLessons: 51, // Total across all classes
+          completedLessons: completedCount,
           currentStreak: 0, // TODO: implement streak logic
-          totalPoints: progressData.reduce((sum, p) => sum + (p.score || 0), 0)
+          totalPoints: chemProgram.progress.totalScore || 0
+        });
+        
+        console.log('📊 Dashboard progress loaded:', {
+          completedLessons: chemProgram.progress.completedLessons,
+          totalScore: chemProgram.progress.totalScore,
+          lessonStarsMap: lessonStarsMap,
+          parsedProgress: progressMap
         });
       } catch (error) {
         console.error('Error fetching progress:', error);
@@ -101,7 +143,8 @@ const Dashboard = () => {
     fetchLessons();
   }, []);
 
-  const handleStartLesson = (classId, chapterId, lessonId) => {
+  const handleStartLesson = (classId, chapterId, lessonId, isLocked) => {
+    if (isLocked) return;
     navigate(`/lesson/${classId}/${chapterId}/${lessonId}`);
   };
 
@@ -250,7 +293,26 @@ const Dashboard = () => {
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Lộ trình học tập của bạn</h2>
         
         <div className="space-y-6">
-          {classes.filter(c => c.classId === selectedClass).map((classData) => (
+          {classes.filter(c => c.classId === selectedClass).map((classData) => {
+            // Build unlocked lesson set (same rule: after first incomplete, lock subsequent unless already completed)
+            const allLessonsOrdered = classData.chapters
+              .flatMap(ch => ch.lessons.map(ls => ({ ...ls, chapterRef: ch.chapterId })))
+              .sort((a, b) => a.lessonId - b.lessonId);
+            const unlocked = new Set();
+            let lockAfterFirstIncomplete = false;
+            for (const l of allLessonsOrdered) {
+              // Calculate uniqueId for progress lookup
+              const uniqueId = classData.classId * 1000 + l.lessonId;
+              if (!lockAfterFirstIncomplete) {
+                unlocked.add(l.lessonId);
+                const prog = lessonsProgress[uniqueId];
+                if (!prog?.completed) lockAfterFirstIncomplete = true;
+              } else {
+                const prog = lessonsProgress[uniqueId];
+                if (prog?.completed) unlocked.add(l.lessonId);
+              }
+            }
+            return (
             <Card key={classData.classId} className="overflow-hidden">
               {/* Header */}
               <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 -m-6 mb-6">
@@ -283,13 +345,30 @@ const Dashboard = () => {
                   <div key={chapter.chapterId} className="p-4 bg-gray-50 rounded-lg">
                     <h4 className="font-semibold text-gray-800 mb-3">{getChapterTitle(chapter.chapterId)}</h4>
                     <div className="space-y-3">
-                      {chapter.lessons.map((lesson, index) => {
-                        // Lấy progress data cho bài học này
-                        const progress = lessonsProgress[lesson.lessonId] || {
-                          stars: { basic: false, intermediate: false, advanced: false },
-                          totalStars: 0,
-                          completed: false
+                      {chapter.lessons.map((lesson) => {
+                        // Calculate uniqueId for this lesson
+                        const uniqueId = classData.classId * 1000 + lesson.lessonId;
+                        
+                        // Get progress data for this lesson using uniqueId
+                        const progress = lessonsProgress[uniqueId] || {
+                          star: false,
+                          highestScore: 0,
+                          completed: false,
+                          stars: 0
                         };
+                        
+                        // Debug log for lesson 2
+                        if (lesson.lessonId === 2) {
+                          console.log('🐛 Lesson 2 Debug:', {
+                            lessonId: lesson.lessonId,
+                            classId: classData.classId,
+                            uniqueId: uniqueId,
+                            progress: progress,
+                            allProgress: lessonsProgress
+                          });
+                        }
+                        
+                        const isLocked = !unlocked.has(lesson.lessonId);
                         // Xác định màu sắc và badge theo loại bài
                         const getLessonType = (lesson) => {
                           if (lesson.title.includes('Thực hành') || lesson.title.includes('Điều chế') || lesson.title.includes('Pha chế')) return 'lab';
@@ -308,7 +387,8 @@ const Dashboard = () => {
                         return (
                           <div 
                             key={lesson.lessonId}
-                            className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                            className={`relative flex items-center justify-between p-3 rounded-lg shadow-sm transition-shadow ${isLocked ? 'bg-gray-100 opacity-60 cursor-not-allowed' : 'bg-white hover:shadow-md cursor-pointer'}`}
+                            onClick={() => handleStartLesson(classData.classId, chapter.chapterId, lesson.lessonId, isLocked)}
                           >
                             <div className="flex items-center space-x-4">
                               <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl ${
@@ -327,34 +407,32 @@ const Dashboard = () => {
                                 </div>
                                 <p className="text-sm text-gray-500">{lesson.description}</p>
                                 <div className="flex items-center gap-3 mt-2">
-                                  {/* Hiển thị sao theo cấp độ */}
-                                  <div className="flex items-center gap-1">
-                                    <span className={`text-lg ${progress.stars?.basic ? 'text-yellow-400' : 'text-gray-300'}`}>⭐</span>
-                                    <span className="text-xs text-gray-500">Cơ bản</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <span className={`text-lg ${progress.stars?.intermediate ? 'text-yellow-400' : 'text-gray-300'}`}>⭐</span>
-                                    <span className="text-xs text-gray-500">Trung bình</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <span className={`text-lg ${progress.stars?.advanced ? 'text-yellow-400' : 'text-gray-300'}`}>⭐</span>
-                                    <span className="text-xs text-gray-500">Nâng cao</span>
-                                  </div>
-                                  <span className="text-xs font-medium text-gray-600 ml-2">
-                                    ({progress.totalStars || 0}/3 ⭐)
-                                  </span>
+                                  {/* Display stars earned - only show actual stars earned */}
+                                  {progress.completed && progress.stars > 0 && (
+                                    <div className="flex items-center gap-1">
+                                      {[...Array(progress.stars)].map((_, i) => (
+                                        <span key={i} className="text-lg text-yellow-400">
+                                          ⭐
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
                               <Button
-                                onClick={() => handleStartLesson(classData.classId, chapter.chapterId, lesson.lessonId)}
-                                variant={progress.completed ? 'secondary' : 'primary'}
+                                onClick={() => handleStartLesson(classData.classId, chapter.chapterId, lesson.lessonId, isLocked)}
+                                variant={isLocked ? 'secondary' : (progress.completed ? 'secondary' : 'primary')}
+                                disabled={isLocked}
                                 className="text-sm"
                               >
-                                {progress.completed ? '🔄 Ôn tập' : '▶️ Bắt đầu'}
+                                {isLocked ? '🔒 Khóa' : (progress.completed ? '🔄 Ôn tập' : '▶️ Bắt đầu')}
                               </Button>
                             </div>
+                            {isLocked && (
+                              <div className="absolute inset-0 rounded-lg bg-white/40 backdrop-blur-[1px]" />
+                            )}
                           </div>
                         );
                       })}
@@ -363,7 +441,8 @@ const Dashboard = () => {
                 ))}
               </div>
             </Card>
-          ))}
+          );
+          })}
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { API_URL } from '../../../config/api';
 import Card from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import Modal from '../../../components/ui/Modal';
-import LevelSelector from '../../../components/ui/LevelSelector';
 
 const Lesson = () => {
   const { classId, chapterId, lessonId } = useParams();
@@ -19,8 +18,7 @@ const Lesson = () => {
   const [score, setScore] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState('theory');
-  const [progress, setProgress] = useState(null); // Progress data with stars
-  const [showLevelSelector, setShowLevelSelector] = useState(false); // Modal chọn cấp độ
+  const [progress, setProgress] = useState(null)
 
   // Fetch lesson data and progress from API
   useEffect(() => {
@@ -35,19 +33,29 @@ const Lesson = () => {
         );
         setLessonData(lessonResponse.data);
         
-        // Fetch progress data nếu đã đăng nhập
+        // Get progress from user data (stored in programs)
         if (user?.uid) {
           try {
-            const progressResponse = await axios.get(
-              `${API_URL}/progress/${user.uid}/${classId}/${lessonId}`
+            const userResponse = await axios.get(
+              `${API_URL}/users/firebase/${user.uid}`
             );
-            setProgress(progressResponse.data);
-          } catch (err) {
-            // Chưa có progress, set giá trị mặc định
+            const userData = userResponse.data;
+            
+            // Find lesson progress in user's programs
+            const program = userData.programs?.find(p => p.programId === 'chemistry');
+            const uniqueLessonId = `${classId}-${lessonId}`;
+            const hasCompleted = program?.progress?.completedLessons?.includes(uniqueLessonId);
+            
             setProgress({ 
-              stars: { basic: false, intermediate: false, advanced: false },
-              totalStars: 0,
-              levelScores: { basic: 0, intermediate: 0, advanced: 0 }
+              star: hasCompleted,
+              completed: hasCompleted,
+              highestScore: hasCompleted ? 100 : 0
+            });
+          } catch (err) {
+            // No progress yet, set default
+            setProgress({ 
+              star: false,
+              highestScore: 0
             });
           }
         }
@@ -151,7 +159,42 @@ const Lesson = () => {
     }
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const userUid = user?.firebaseUid || user?.uid;
+      
+      if (userUid) {
+        // Save progress to database
+        const progressData = {
+          firebaseUid: userUid,
+          programId: 'chemistry',
+          pathId: parseInt(classId),
+          lessonId: parseInt(lessonId),
+          score: score,
+          totalQuestions: quizzes.length
+        };
+
+        console.log('📤 Saving progress:', progressData);
+        
+        await axios.post(`${API_URL}/users/submit-lesson`, progressData);
+        
+        console.log('✅ Progress saved successfully');
+        
+        // Fetch updated user data from server
+        const updatedUserResponse = await axios.get(`${API_URL}/users/firebase/${userUid}`);
+        if (updatedUserResponse.data) {
+          // Update localStorage with fresh user data
+          localStorage.setItem('user', JSON.stringify(updatedUserResponse.data));
+          console.log('✅ User data refreshed in localStorage');
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error saving progress:', error);
+      // Still navigate even if save fails
+    }
+    
+    // Navigate back to dashboard
     navigate('/dashboard');
   };
 
@@ -190,21 +233,18 @@ const Lesson = () => {
                     {progress.totalStars || 0}/3 ⭐
                   </div>
                   <div className="flex gap-3">
-                    <div className={`flex items-center gap-1 ${progress.stars?.basic ? 'text-yellow-500' : 'text-gray-300'}`}>
-                      <span className="text-lg">⭐</span>
-                      <span className="text-sm">Cơ bản</span>
+                    <div className={`flex items-center gap-2 ${progress?.star ? 'text-yellow-500' : 'text-gray-300'}`}>
+                      <span className="text-2xl">⭐</span>
+                      <span className="text-sm font-medium">{progress?.star ? 'Đã đạt sao' : 'Chưa đạt sao'}</span>
                     </div>
-                    <div className={`flex items-center gap-1 ${progress.stars?.intermediate ? 'text-yellow-500' : 'text-gray-300'}`}>
-                      <span className="text-lg">⭐</span>
-                      <span className="text-sm">Trung bình</span>
-                    </div>
-                    <div className={`flex items-center gap-1 ${progress.stars?.advanced ? 'text-yellow-500' : 'text-gray-300'}`}>
-                      <span className="text-lg">⭐</span>
-                      <span className="text-sm">Nâng cao</span>
-                    </div>
+                    {progress?.highestScore > 0 && (
+                      <div className="text-sm text-gray-600">
+                        Điểm cao nhất: <span className="font-bold text-blue-600">{progress.highestScore}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
-                <Button onClick={() => setShowLevelSelector(true)} className="bg-gradient-to-r from-blue-500 to-purple-600">
+                <Button onClick={() => navigate(`/gameplay/${classId}/${chapterId}/${lessonId}`)} className="bg-gradient-to-r from-blue-500 to-purple-600">
                   🎮 Chơi ngay
                 </Button>
               </div>
@@ -491,7 +531,7 @@ const Lesson = () => {
         >
           <div className="text-center py-6">
             <div className="text-6xl mb-4">
-              {score === lessonData.quizzes.length ? '🏆' : score >= lessonData.quizzes.length * 0.7 ? '⭐' : '📝'}
+              {score === quizzes.length ? '🏆' : score >= quizzes.length * 0.7 ? '⭐' : '📝'}
             </div>
             <h3 className="text-2xl font-bold text-gray-800 mb-2">
               Điểm của bạn: {score}/{quizzes.length}
@@ -507,21 +547,6 @@ const Lesson = () => {
               Quay về Dashboard
             </Button>
           </div>
-        </Modal>
-        
-        {/* Level Selector Modal */}
-        <Modal
-          isOpen={showLevelSelector}
-          onClose={() => setShowLevelSelector(false)}
-          title=""
-        >
-          <LevelSelector
-            progress={progress}
-            onSelectLevel={(level) => {
-              setShowLevelSelector(false);
-              navigate(`/gameplay/${classId}/${chapterId}/${lessonId}/${level}`);
-            }}
-          />
         </Modal>
       </div>
     </div>

@@ -55,9 +55,8 @@ module.exports = {
         </tr>
       </table>
     `,
-  game: {
-    basic: [
-      {
+  game: [
+{
         type: "multiple-choice",
         question: "Dấu hiệu nào chứng tỏ có phản ứng hóa học?",
         options: [
@@ -99,10 +98,8 @@ module.exports = {
         correctAnswer: true,
         explanation: "✅ Đúng! Số nguyên tử H và O bằng nhau 2 vế.",
         points: 10
-      }
-    ],
-    intermediate: [
-      {
+      },
+{
         type: "matching",
         question: "🔗 Ghép khái niệm với ví dụ",
         pairs: [
@@ -112,7 +109,7 @@ module.exports = {
           { left: "Phương trình hóa học", right: "2H₂ + O₂ → 2H₂O" }
         ],
         explanation: "✅ Tuyệt vời! Bạn phân biệt đúng các khái niệm.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -120,7 +117,7 @@ module.exports = {
         correctAnswer: "32",
         hint: "💡 Dùng định luật bảo toàn khối lượng",
         explanation: "✅ m(O₂) = 44 - 12 = 32g",
-        points: 15
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -133,7 +130,7 @@ module.exports = {
         ],
         correctAnswer: 2,
         explanation: "✅ 3Fe + 2O₂ → Fe₃O₄ (Fe: 3=3, O: 4=4)",
-        points: 15
+        points: 10
       },
       {
         type: "ordering",
@@ -151,7 +148,7 @@ module.exports = {
           "Kiểm tra kết quả"
         ],
         explanation: "✅ Đúng trình tự giải bài!",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -159,11 +156,9 @@ module.exports = {
         correctAnswer: "4",
         hint: "💡 Al₂O₃ có 2 Al",
         explanation: "✅ 4Al + 3O₂ → 2Al₂O₃",
-        points: 15
-      }
-    ],
-    advanced: [
-      {
+        points: 10
+      },
+{
         type: "drag-drop",
         question: "🧩 Hoàn thành: Trong phản ứng hóa học, số ___ mỗi nguyên tố ___, do đó tổng ___ được bảo toàn.",
         inline: true,
@@ -174,7 +169,7 @@ module.exports = {
         ],
         options: ["nguyên tử", "không đổi", "khối lượng", "thay đổi"],
         explanation: "✅ Số NGUYÊN TỬ KHÔNG ĐỔI → Tổng KHỐI LƯỢNG bảo toàn.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -182,7 +177,7 @@ module.exports = {
         options: ["8,1g", "10,2g", "15,3g", "20,4g"],
         correctAnswer: 1,
         explanation: "✅ n(Al)=5,4/27=0,2 mol → n(Al₂O₃)=0,1 mol → m=0,1×102=10,2g",
-        points: 20
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -190,7 +185,7 @@ module.exports = {
         correctAnswer: "3,5",
         hint: "💡 Tổng O bên phải = 2×2 + 3 = 7",
         explanation: "✅ C₂H₆ + 3,5O₂ → 2CO₂ + 3H₂O (hoặc nhân 2: 2C₂H₆ + 7O₂ → 4CO₂ + 6H₂O)",
-        points: 20
+        points: 10
       },
       {
         type: "matching",
@@ -202,7 +197,7 @@ module.exports = {
           { left: "CuO + H₂ → Cu + H₂O", right: "Phản ứng oxi hóa-khử" }
         ],
         explanation: "✅ Xuất sắc! Bạn phân loại đúng các phản ứng.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -210,8 +205,8 @@ module.exports = {
         options: ["1:4:3:4", "1:3:3:3", "2:8:6:8", "1:2:3:2"],
         correctAnswer: 0,
         explanation: "✅ Fe₃O₄ + 4H₂ → 3Fe + 4H₂O → 1:4:3:4",
-        points: 20
+        points: 10
       }
-    ]
-  }
+
+  ]
 };
