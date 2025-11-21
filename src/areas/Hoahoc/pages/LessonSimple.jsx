@@ -64,7 +64,7 @@ const LessonSimple = () => {
           <pre style={{ background: '#111', color: '#fff', padding: '10px', borderRadius: '6px', display: 'inline-block' }}>npm run seed</pre>
           <div style={{ marginTop: '6px' }}>Sau đó F5 trang và thử lại.</div>
         </div>
-        <button style={{ marginTop: '16px' }} onClick={() => navigate('/dashboard')}>Quay về Dashboard</button>
+        <button style={{ marginTop: '16px' }} onClick={() => navigate('/program/chemistry/dashboard')}>Quay về Dashboard</button>
       </div>
     );
   }
@@ -73,7 +73,7 @@ const LessonSimple = () => {
     return (
       <div style={{ padding: '40px', textAlign: 'center' }}>
         <h2>📚 Không tìm thấy bài học</h2>
-        <button onClick={() => navigate('/dashboard')}>Quay về Dashboard</button>
+        <button onClick={() => navigate('/program/chemistry/dashboard')}>Quay về Dashboard</button>
       </div>
     );
   }

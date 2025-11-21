@@ -95,7 +95,7 @@ const Lesson = () => {
             <div className="text-6xl mb-4">⚠️</div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Có lỗi xảy ra</h2>
             <p className="text-gray-600 mb-6">{error}</p>
-            <Button onClick={() => navigate('/dashboard')}>
+            <Button onClick={() => navigate('/program/chemistry/dashboard')}>
               Quay về Dashboard
             </Button>
           </Card>
@@ -113,7 +113,7 @@ const Lesson = () => {
             <div className="text-6xl mb-4">📚</div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Không tìm thấy bài học</h2>
             <p className="text-gray-600 mb-6">Bài học này không tồn tại hoặc đã bị xóa.</p>
-            <Button onClick={() => navigate('/dashboard')}>
+            <Button onClick={() => navigate('/program/chemistry/dashboard')}>
               Quay về Dashboard
             </Button>
           </Card>
@@ -195,7 +195,7 @@ const Lesson = () => {
     }
     
     // Navigate back to dashboard
-    navigate('/dashboard');
+    navigate('/program/chemistry/dashboard');
   };
 
   return (

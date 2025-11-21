@@ -590,12 +590,11 @@ const GamePlay = () => {
         score={score}
         totalPoints={quizzes.reduce((sum, q) => sum + q.points, 0)}
         onRestart={restartGame}
-        onBack={() => navigate('/dashboard')}
+        onBack={() => navigate('/program/chemistry/dashboard')}
         onNext={goToNextLesson}
         hasNextLesson={!!nextLesson}
       />
     </div>
   );
 };
-
 export default GamePlay;

@@ -327,7 +327,7 @@ const ChemistryHome = () => {
           {/* Quick Actions */}
           <div className="grid md:grid-cols-3 gap-4 mb-6">
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/program/chemistry/dashboard')}
               className="group bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
             >
               <div className="flex items-center justify-between mb-3">

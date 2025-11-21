@@ -50,7 +50,7 @@ const AppContent = () => {
         <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
         <Route path="/advanced-challenge/tinh-oxi-hoa" element={<TinhOxiHoa />} />
         <Route 
-          path="/dashboard" 
+          path="/program/chemistry/dashboard" 
           element={
               <Dashboard />
           } 

@@ -72,19 +72,13 @@ const ResultModal = ({
         <div className="flex gap-3 justify-center">
           {canProgress ? (
             // Nếu đạt ≥60%, cho phép tiếp tục hoặc về dashboard
-            <>
-              <Button onClick={onRestart} variant="outline">
-                🔄 Chơi lại
-              </Button>
-              {hasNextLesson ? (
+            <>              
                 <Button onClick={onNext}>
                   ➡️ Bài học tiếp theo
                 </Button>
-              ) : (
                 <Button onClick={onBack}>
                   🏠 Trở về Dashboard
                 </Button>
-              )}
             </>
           ) : (
             // Nếu <60%, chỉ cho chơi lại hoặc về dashboard
