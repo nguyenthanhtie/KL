@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema({
     },
     programName: String,
     currentClass: Number, // Lớp đang học (8, 9, 10, 11, 12)
-    currentLesson: Number, // Bài đang học
+    // currentLesson: Number, // Bài đang học (removed - progress tracked in progress.completedLessons)
     isActive: {
       type: Boolean,
       default: true
@@ -138,11 +138,10 @@ userSchema.methods.enrollProgram = function(programId, programName, currentClass
   const existing = this.programs.find(p => p.programId === programId);
   if (existing) return existing;
 
-  const newProgram = {
+    const newProgram = {
     programId,
     programName,
     currentClass: currentClass, // Lớp được chọn khi đăng ký
-    currentLesson: null, // Để trống khi đăng nhập lần đầu
     enrolledAt: new Date(),
     progress: {
       completedLessons: [],
@@ -171,7 +170,6 @@ userSchema.methods.updateProgramProgress = function(programId, classId, lessonId
       programId: programId,
       programName: programNames[programId] || programId,
       currentClass: parseInt(classId),
-      currentLesson: parseInt(lessonId), // Đặt luôn lessonId khi tạo
       isActive: true,
       placementTestCompleted: false,
       enrolledAt: new Date(),
@@ -190,12 +188,10 @@ userSchema.methods.updateProgramProgress = function(programId, classId, lessonId
 
   // Cập nhật lớp và bài hiện tại
   program.currentClass = parseInt(classId);
-  program.currentLesson = parseInt(lessonId);
   
   console.log('📝 Updating program:', {
     programId,
-    currentClass: program.currentClass,
-    currentLesson: program.currentLesson
+    currentClass: program.currentClass
   });
   
   // Tạo unique ID cho bài học: classId * 1000 + lessonId

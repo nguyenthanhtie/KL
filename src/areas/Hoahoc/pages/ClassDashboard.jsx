@@ -212,7 +212,7 @@ const ClassDashboard = () => {
         {/* Header */}
         <div className="mb-8">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/program/chemistry/dashboard')}
             className="text-gray-600 hover:text-gray-800 mb-4 flex items-center"
           >
             ← Quay lại chọn lớp

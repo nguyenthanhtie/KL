@@ -436,7 +436,6 @@ router.post('/enroll-program', async (req, res) => {
         programId,
         programName,
         currentClass: initialClassId,
-        currentLesson: null,
         isActive: true,
         placementTestCompleted: true,
         placementTestScore: placementTestScore || 0,

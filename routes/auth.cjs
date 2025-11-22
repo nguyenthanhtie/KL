@@ -182,7 +182,6 @@ router.post('/email-login', async (req, res) => {
         level: user.level,
         programs: user.programs,
         profile: user.profile,
-        currentLesson: user.currentLesson
       }
     });
   } catch (error) {
@@ -217,7 +216,6 @@ router.get('/me/:userId', async (req, res) => {
         level: user.level,
         programs: user.programs,
         profile: user.profile,
-        currentLesson: user.currentLesson
       }
     });
   } catch (error) {
