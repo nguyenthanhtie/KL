@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react';
 import Button from '../../../components/ui/Button';
 import { Trophy, Lock, Clock, Award, CheckCircle2 } from 'lucide-react';
 import api from '../../../config/api';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const AdvancedChallenge = () => {
+  const { user } = useAuth();
   const [selectedChallenge, setSelectedChallenge] = useState(null);
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,26 +14,12 @@ const AdvancedChallenge = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [selectedGrade, setSelectedGrade] = useState('all');
+  const [selectedSort, setSelectedSort] = useState('default');
 
-  // Danh mục thử thách
-  const categories = [
-    { id: 'all', name: 'Tất cả' },
-    { id: 'molecule', name: 'Phân tử' },
-    { id: 'experiment', name: 'Thí nghiệm' },
-    { id: 'electrochemistry', name: 'Điện hóa' },
-    { id: 'solution', name: 'Dung dịch' },
-    { id: 'reaction', name: 'Phản ứng' },
-    { id: 'structure', name: 'Cấu tạo' },
-    { id: 'game', name: 'Trò chơi' }
-  ];
-
-  // Mức độ
-  const difficulties = [
-    { id: 'all', name: 'Tất cả', color: 'bg-gray-500' },
-    { id: 'easy', name: 'Dễ', color: 'bg-green-500' },
-    { id: 'medium', name: 'Vừa', color: 'bg-yellow-500' },
-    { id: 'hard', name: 'Khó', color: 'bg-red-500' }
-  ];
+  // Categories and difficulties removed here (moved to a centralized source or loaded from API)
+  // Placeholders kept to avoid runtime errors; replace with real data source as needed.
+  const categories = [];
+  const difficulties = [];
 
   // Lớp học
   const grades = [
@@ -43,15 +31,37 @@ const AdvancedChallenge = () => {
     { id: 12, name: 'Lớp 12' }
   ];
 
+  // Sắp xếp
+  const sortOptions = [
+    { id: 'default', name: 'Mặc định' },
+    { id: 'grade-asc', name: 'Lớp ↑' },
+    { id: 'grade-desc', name: 'Lớp ↓' },
+    { id: 'difficulty', name: 'Mức độ' },
+    { id: 'points-desc', name: 'Điểm giảm dần' }
+  ];
+
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
         setLoading(true);
-        const response = await api.get('/challenges');
-        setChallenges(response.data);
+        console.log('🔍 Fetching challenges for user:', user);
+        // If user is logged in, fetch challenges with unlock status
+        const userId = user?._id || user?.id; // Support both _id and id
+        if (user && userId) {
+          console.log('✅ User logged in, fetching with unlock status:', userId);
+          const response = await api.get(`/challenges/user/${userId}`);
+          console.log('📊 Challenges received:', response.data);
+          console.log('🎯 Challenge 1 unlock status:', response.data.find(c => c.id === 1)?.isUnlocked);
+          setChallenges(response.data);
+        } else {
+          console.log('⚠️ No user, fetching all challenges as locked');
+          // If not logged in, fetch all challenges (all will be locked)
+          const response = await api.get('/challenges');
+          setChallenges(response.data.map(c => ({ ...c, isUnlocked: false })));
+        }
         setError(null);
       } catch (error) {
-        console.error('Error fetching challenges:', error);
+        console.error('❌ Error fetching challenges:', error);
         setError('Không thể tải dữ liệu thử thách. Vui lòng thử lại sau.');
       } finally {
         setLoading(false);
@@ -59,7 +69,7 @@ const AdvancedChallenge = () => {
     };
 
     fetchChallenges();
-  }, []);
+  }, [user]);
 
   // Lọc thử thách
   const filteredChallenges = challenges.filter(challenge => {
@@ -67,6 +77,38 @@ const AdvancedChallenge = () => {
     const difficultyMatch = selectedDifficulty === 'all' || challenge.difficultyLevel === selectedDifficulty;
     const gradeMatch = selectedGrade === 'all' || challenge.grade === selectedGrade;
     return categoryMatch && difficultyMatch && gradeMatch;
+  });
+
+  // Áp dụng sắp xếp lên kết quả đã lọc
+  const sortedChallenges = [...filteredChallenges].sort((a, b) => {
+    const getDifficultyOrder = (d) => {
+      if (!d) return 2; // trung bình nếu không xác định
+      const key = (d || '').toString().toLowerCase();
+      if (key.includes('easy') || key === 'easy' || key === 'dễ') return 1;
+      if (key.includes('hard') || key === 'hard' || key === 'khó') return 3;
+      return 2;
+    };
+
+    switch (selectedSort) {
+      case 'grade-asc': {
+        const ga = Number(a.grade || 0);
+        const gb = Number(b.grade || 0);
+        return ga - gb;
+      }
+      case 'grade-desc': {
+        const ga = Number(a.grade || 0);
+        const gb = Number(b.grade || 0);
+        return gb - ga;
+      }
+      case 'difficulty': {
+        return getDifficultyOrder(a.difficulty || a.difficultyLevel) - getDifficultyOrder(b.difficulty || b.difficultyLevel);
+      }
+      case 'points-desc': {
+        return (b.points || 0) - (a.points || 0);
+      }
+      default:
+        return 0;
+    }
   });
 
   const getDifficultyBadge = (difficulty, color) => {
@@ -124,43 +166,7 @@ const AdvancedChallenge = () => {
             {/* Compact Filter Bar */}
             <div className="bg-white border-b border-gray-200 px-6 py-4">
               <div className="flex flex-wrap items-center gap-4">
-                {/* Category Filter */}
-                <div className="flex-1 min-w-[200px]">
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
-                    Phân loại
-                  </label>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white text-sm font-medium"
-                  >
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Difficulty Filter */}
-                <div className="flex-1 min-w-[150px]">
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
-                    Mức độ
-                  </label>
-                  <select
-                    value={selectedDifficulty}
-                    onChange={(e) => setSelectedDifficulty(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white text-sm font-medium"
-                  >
-                    {difficulties.map((difficulty) => (
-                      <option key={difficulty.id} value={difficulty.id}>
-                        {difficulty.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Grade Filter */}
+                {/* Grade Filter (moved first) */}
                 <div className="flex-1 min-w-[150px]">
                   <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
                     Lớp học
@@ -178,19 +184,36 @@ const AdvancedChallenge = () => {
                   </select>
                 </div>
 
+                {/* Sort Filter */}
+                <div className="min-w-[160px]">
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                    Sắp xếp
+                  </label>
+                  <select
+                    value={selectedSort}
+                    onChange={(e) => setSelectedSort(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white text-sm font-medium"
+                  >
+                    {sortOptions.map((opt) => (
+                      <option key={opt.id} value={opt.id}>{opt.name}</option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* Stats & Clear Button */}
                 <div className="flex items-end gap-3">
                   <div className="bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
                     <div className="text-xs text-gray-500 mb-0.5">Kết quả</div>
-                    <div className="text-lg font-bold text-primary-600">{filteredChallenges.length}</div>
+                      <div className="text-lg font-bold text-primary-600">{filteredChallenges.length}</div>
                   </div>
                   
-                  {(selectedCategory !== 'all' || selectedDifficulty !== 'all' || selectedGrade !== 'all') && (
+                  {(selectedCategory !== 'all' || selectedDifficulty !== 'all' || selectedGrade !== 'all' || selectedSort !== 'default') && (
                     <button
                       onClick={() => {
                         setSelectedCategory('all');
                         setSelectedDifficulty('all');
                         setSelectedGrade('all');
+                        setSelectedSort('default');
                       }}
                       className="px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-800 hover:bg-primary-50 rounded-lg transition-colors border border-primary-200"
                     >
@@ -226,16 +249,18 @@ const AdvancedChallenge = () => {
                   </button>
                 </div>
               ) : (
-                filteredChallenges.map((challenge) => (
+                sortedChallenges.map((challenge) => {
+                  const isLocked = !challenge.isUnlocked && challenge.prerequisite?.classId;
+                  return (
                   <div
                     key={challenge.id}
-                    className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer"
-                    onClick={() => setSelectedChallenge(challenge)}
+                    className={`bg-white rounded-xl shadow-lg transition-all duration-300 overflow-hidden group ${isLocked ? 'opacity-75 cursor-not-allowed' : 'hover:shadow-2xl cursor-pointer'}`}
+                    onClick={() => !isLocked && setSelectedChallenge(challenge)}
                   >
                     {/* Card Header */}
-                    <div className="bg-gradient-to-r from-primary-500 to-primary-700 p-6 text-white relative">
+                    <div className={`bg-gradient-to-r p-6 text-white relative ${isLocked ? 'from-gray-400 to-gray-600' : 'from-primary-500 to-primary-700'}`}>
                       <div className="absolute top-2 right-2">
-                        {challenge.status === 'coming-soon' && (
+                        {(challenge.status === 'coming-soon' || isLocked) && (
                           <Lock className="w-5 h-5 opacity-75" />
                         )}
                       </div>
@@ -273,7 +298,22 @@ const AdvancedChallenge = () => {
                       </div>
 
                       {/* Action Button */}
-                      {challenge.status === 'coming-soon' ? (
+                      {isLocked ? (
+                        <div>
+                          <button
+                            disabled
+                            className="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg font-semibold cursor-not-allowed mb-2"
+                          >
+                            <Lock className="w-4 h-4 inline mr-2" />
+                            Đã khóa
+                          </button>
+                          {challenge.prerequisiteInfo && (
+                            <p className="text-xs text-gray-500 text-center">
+                              Hoàn thành bài {challenge.prerequisiteInfo.lessonId} lớp {challenge.prerequisiteInfo.classId} để mở khóa
+                            </p>
+                          )}
+                        </div>
+                      ) : challenge.status === 'coming-soon' ? (
                         <button
                           disabled
                           className="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg font-semibold cursor-not-allowed"
@@ -293,7 +333,8 @@ const AdvancedChallenge = () => {
                       )}
                     </div>
                   </div>
-                ))
+                  );
+                })
               )}
               </div>
 
@@ -361,14 +402,43 @@ const AdvancedChallenge = () => {
                 </ul>
               </div>
 
+              {/* Lock info if challenge is locked */}
+              {!selectedChallenge.isUnlocked && selectedChallenge.prerequisiteInfo && (
+                <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <Lock className="w-5 h-5 text-yellow-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-yellow-800 mb-1">Thử thách đã khóa</h4>
+                      <p className="text-sm text-yellow-700">
+                        Bạn cần hoàn thành <strong>Bài {selectedChallenge.prerequisiteInfo.lessonId} - Lớp {selectedChallenge.prerequisiteInfo.classId}</strong> để mở khóa thử thách này.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex gap-3">
-                {selectedChallenge.status === 'coming-soon' ? (
+                {!selectedChallenge.isUnlocked && selectedChallenge.prerequisite?.classId ? (
+                  <button
+                    disabled
+                    className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <Lock className="w-4 h-4" />
+                    Đã khóa
+                  </button>
+                ) : selectedChallenge.status === 'coming-soon' ? (
                   <button
                     disabled
                     className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold cursor-not-allowed"
                   >
                     Sắp ra mắt
                   </button>
+                ) : selectedChallenge.link ? (
+                  <Link to={selectedChallenge.link} className="flex-1">
+                    <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
+                      Bắt đầu ngay
+                    </button>
+                  </Link>
                 ) : (
                   <button className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
                     Bắt đầu ngay

@@ -403,7 +403,18 @@
   color: white;
   box-shadow: 0 0 6px rgba(33, 150, 243, 0.8);
   cursor: help;
-  animation: electron-glow 2s infinite alternate;
+  /* Orbit uses CSS variables set from React and runs alongside glow animation */
+  transform-origin: 50% 50%;
+  animation: orbit var(--duration, 10s) linear infinite var(--delay, 0s), electron-glow 2s infinite alternate;
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(var(--angle)) translateX(var(--radius));
+  }
+  to {
+    transform: rotate(calc(var(--angle) + 360deg)) translateX(var(--radius));
+  }
 }
 
 @keyframes electron-glow {

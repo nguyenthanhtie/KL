@@ -47,8 +47,9 @@ export default function GhepNguyenTu(){
   const getRandomElement = () => ELEMENTS[Math.floor(Math.random() * ELEMENTS.length)];
   const [selected, setSelected] = useState(() => getRandomElement());
   
-  const electrons = useMemo(()=>Array.from({length:selected.Z},(_,i)=>`e${i+1}`),[selected]);
-  const expected = useMemo(()=>distributeElectrons(selected.Z),[selected]);
+  const atomicNumber = Number(selected?.atomicNumber) || 0;
+  const electrons = useMemo(()=>Array.from({length: atomicNumber},(_,i)=>`e${i+1}`),[atomicNumber]);
+  const expected = useMemo(()=>distributeElectrons(atomicNumber),[atomicNumber]);
 
   const [placements, setPlacements] = useState({});
   const [status, setStatus] = useState('');
@@ -92,7 +93,7 @@ export default function GhepNguyenTu(){
   const containerSize = DEFAULT_CONTAINER_SIZE;
   const center = containerSize / 2;
   const electronSize = DEFAULT_ELECTRON_SIZE;
-  const numShells = getRequiredShells(selected.Z);
+  const numShells = getRequiredShells(atomicNumber);
   const baseRadius = DEFAULT_BASE_RADIUS;
   const radiusStep = Math.min(48, (containerSize/2 - baseRadius - 32) / Math.max(1, numShells - 1)); // Giảm 20%
   const radii = Array.from({length: numShells}, (_, i) => baseRadius + i * radiusStep);
@@ -256,7 +257,7 @@ export default function GhepNguyenTu(){
                 <span className="font-bold text-lg">Thử thách: {completedCount + 1}/{maxCompletions}</span>
               </div>
               <div className="text-sm text-gray-600">
-                <span className="font-semibold text-xl">{selected.symbol}</span> • {selected.name} • Z = {selected.Z} • Khối lượng: {selected.mass?.toFixed(1) || 'N/A'}
+                <span className="font-semibold text-xl">{selected.symbol}</span> • {selected.name} • Z = {atomicNumber} • Khối lượng: {selected.mass?.toFixed(1) || 'N/A'}
               </div>
             </div>
             {gameCompleted && (
@@ -314,30 +315,32 @@ export default function GhepNguyenTu(){
                         {shellName}
                       </div>
 
-                      {items.map((id, idx)=>{
-                        const n = items.length;
-                        if(n === 0) return null;
-                        const angle = (idx / n) * Math.PI * 2 - Math.PI/2;
-                        const localX = r + r * Math.cos(angle) - electronSize/2;
-                        const localY = r + r * Math.sin(angle) - electronSize/2;
-                        return (
-                          <div key={id}
-                            draggable
-                            onDragStart={(e)=>startDrag(e,id)}
-                            onDragEnd={onDragEnd}
-                            onClick={()=>setPlacements(prev=>{ const n = {...prev}; delete n[id]; return n; })}
-                            className="electron absolute rounded-full bg-blue-500 hover:bg-blue-600 cursor-grab active:cursor-grabbing flex items-center justify-center text-white text-xs font-bold"
-                            style={{ 
-                              left: localX, 
-                              top: localY, 
-                              width: electronSize, 
-                              height: electronSize 
-                            }}
-                          >
-                            e⁻
-                          </div>
-                        );
-                      })}
+                      <div className="shell-rotator" style={{ width: '100%', height: '100%', position: 'absolute', left: 0, top: 0, transformOrigin: '50% 50%', animation: `rotate-shell-local ${10 + si * 4}s linear infinite` }}>
+                        {items.map((id, idx)=>{
+                          const n = items.length;
+                          if(n === 0) return null;
+                          const angle = (idx / n) * Math.PI * 2 - Math.PI/2;
+                          const localX = r + r * Math.cos(angle) - electronSize/2;
+                          const localY = r + r * Math.sin(angle) - electronSize/2;
+                          return (
+                            <div key={id}
+                              draggable
+                              onDragStart={(e)=>startDrag(e,id)}
+                              onDragEnd={onDragEnd}
+                              onClick={()=>setPlacements(prev=>{ const n = {...prev}; delete n[id]; return n; })}
+                              className="electron absolute rounded-full bg-blue-500 hover:bg-blue-600 cursor-grab active:cursor-grabbing flex items-center justify-center text-white text-xs font-bold"
+                              style={{ 
+                                left: localX, 
+                                top: localY, 
+                                width: electronSize, 
+                                height: electronSize 
+                              }}
+                            >
+                              e⁻
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   );
                 })}

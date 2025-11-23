@@ -28,16 +28,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Database connection: use env URI if provided, otherwise fallback.
-const rawUri = process.env.MONGODB_URI;
-let MONGODB_URI = rawUri || defaultUri;
-
-// If an env URI is provided but lacks a DB name, insert '/doan' before any query string.
-if (rawUri && !/mongodb\.net\/[^\/?]+/.test(rawUri)) {
-  MONGODB_URI = rawUri.replace(/(mongodb:\/\/[^\/]+|mongodb\+srv:\/\/[^\/]+)(?:\/?)([^?]*)(\?.*)?/, (m, host, path, query) => {
-    return `${host}/doan${query || ''}`;
-  });
-}
+// Database connection
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://2200002540_db_user:Luan123@dan-1211.epxn7qi.mongodb.net/chemlearn?retryWrites=true&w=majority';
 
 // Set mongoose options
 mongoose.set('strictQuery', false);

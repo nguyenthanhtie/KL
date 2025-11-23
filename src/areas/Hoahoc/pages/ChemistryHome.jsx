@@ -333,7 +333,7 @@ const ChemistryHome = () => {
                     </div>
                     <div>
                       <h1 className="text-3xl md:text-4xl font-bold mb-1">
-                        Chào mừng trở lại, {user?.displayName || 'Học sinh'}! 👋
+                        Chào mừng trở lại, {user?.displayName || user?.username || 'Học sinh'}! 👋
                       </h1>
                       <p className="text-blue-100 text-lg">
                         Tiếp tục hành trình khám phá Hóa học cùng chúng tôi

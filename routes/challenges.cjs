@@ -13,6 +13,65 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get challenges with unlock status for a specific user
+router.get('/user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const User = require('../models/User.cjs');
+    
+    // Get user data
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Get all challenges
+    const challenges = await Challenge.find().sort({ id: 1 });
+    
+    // Find chemistry program progress
+    const chemistryProgram = user.programs.find(p => p.programId === 'chemistry');
+    const completedLessons = chemistryProgram?.progress?.completedLessons || [];
+    
+    // Debug log
+    console.log('🔍 Checking unlock status for user:', userId);
+    console.log('📚 Completed lessons:', completedLessons);
+    console.log('📊 Completed lessons types:', completedLessons.map(l => typeof l));
+    
+    // Check unlock status for each challenge
+    const challengesWithStatus = challenges.map(challenge => {
+      const challengeObj = challenge.toObject();
+      
+      // If no prerequisite, challenge is unlocked
+      if (!challenge.prerequisite || !challenge.prerequisite.classId || !challenge.prerequisite.lessonId) {
+        challengeObj.isUnlocked = true;
+        return challengeObj;
+      }
+      
+      // Calculate unique lesson ID: classId * 1000 + lessonId
+      const requiredLessonId = challenge.prerequisite.classId * 1000 + challenge.prerequisite.lessonId;
+      
+      // Check if user has completed the required lesson (convert both to numbers for comparison)
+      const isUnlocked = completedLessons.some(lessonId => Number(lessonId) === Number(requiredLessonId));
+      challengeObj.isUnlocked = isUnlocked;
+      
+      console.log(`🎯 Challenge ${challenge.id} (${challenge.name}): requires ${requiredLessonId}, unlocked: ${isUnlocked}`);
+      challengeObj.prerequisiteInfo = {
+        classId: challenge.prerequisite.classId,
+        lessonId: challenge.prerequisite.lessonId,
+        requiredLessonId: requiredLessonId,
+        isCompleted: completedLessons.includes(requiredLessonId)
+      };
+      
+      return challengeObj;
+    });
+    
+    res.json(challengesWithStatus);
+  } catch (error) {
+    console.error('Error fetching challenges for user:', error);
+    res.status(500).json({ message: 'Error fetching challenges', error: error.message });
+  }
+});
+
 // Get challenge by ID
 router.get('/:id', async (req, res) => {
   try {

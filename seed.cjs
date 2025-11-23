@@ -24,7 +24,11 @@ const challenges = [
     points: 100,
     status: 'available',
     link: '/advanced-challenge/duoi-hinh',
-    features: ['10 câu hỏi', 'Có gợi ý', 'Giới hạn thời gian', 'Điểm cao']
+    features: ['10 câu hỏi', 'Có gợi ý', 'Giới hạn thời gian', 'Điểm cao'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 1
+    }
   },
 
   // STRUCTURE - Easy
@@ -42,7 +46,11 @@ const challenges = [
     points: 200,
     status: 'available',
     link: '/advanced-challenge/cau-truc-nguyen-tu',
-    features: ['10 thử thách', 'Mô phỏng nguyên tử', 'Vỏ electron', 'Học về đồng vị']
+    features: ['10 thử thách', 'Mô phỏng nguyên tử', 'Vỏ electron', 'Học về đồng vị'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 6
+    }
   },
 
   // STRUCTURE - Medium
@@ -60,7 +68,11 @@ const challenges = [
     points: 200,
     status: 'available',
     link: '/advanced-challenge/ghep-nguyen-tu',
-    features: ['36 nguyên tố', 'Tương tác kéo thả', 'Hình ảnh 3D', '6 thử thách']
+    features: ['36 nguyên tố', 'Tương tác kéo thả', 'Hình ảnh 3D', '6 thử thách'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 6
+    }
   },
 
   // EXPERIMENT - Easy
@@ -78,7 +90,11 @@ const challenges = [
     points: 220,
     status: 'available',
     link: '/advanced-challenge/phong-thi-nghiem',
-    features: ['10 thí nghiệm', 'Mô phỏng phản ứng', 'Bọt khí thực tế', 'Kệ hóa chất']
+    features: ['10 thí nghiệm', 'Mô phỏng phản ứng', 'Bọt khí thực tế', 'Kệ hóa chất'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 5
+    }
   },
 
   // EXPERIMENT - Medium
@@ -96,7 +112,11 @@ const challenges = [
     points: 250,
     status: 'available',
     link: '/advanced-challenge/nhan-biet-dung-dich',
-    features: ['8 thí nghiệm', 'Mô phỏng phòng lab', 'Hiệu ứng thực tế', 'Nhiều vòng kiểm tra']
+    features: ['8 thí nghiệm', 'Mô phỏng phòng lab', 'Hiệu ứng thực tế', 'Nhiều vòng kiểm tra'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 1
+    }
   },
 
   // MOLECULE - Medium
@@ -114,7 +134,11 @@ const challenges = [
     points: 280,
     status: 'available',
     link: '/advanced-challenge/xay-dung-phan-tu',
-    features: ['3 cấp độ', '12 phân tử', 'Tương tác kéo thả', 'Hỗ trợ liên kết đa dạng']
+    features: ['3 cấp độ', '12 phân tử', 'Tương tác kéo thả', 'Hỗ trợ liên kết đa dạng'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 6
+    }
   },
 
   // SOLUTION - Medium
@@ -132,7 +156,11 @@ const challenges = [
     points: 300,
     status: 'available',
     link: '/advanced-challenge/pha-che-dung-dich',
-    features: ['12 thử thách', 'Mô phỏng bình thí nghiệm', '3 cấp độ', 'Công thức chi tiết']
+    features: ['12 thử thách', 'Mô phỏng bình thí nghiệm', '3 cấp độ', 'Công thức chi tiết'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 6
+    }
   },
 
   // REACTION - Medium
@@ -150,7 +178,11 @@ const challenges = [
     points: 250,
     status: 'available',
     link: '/advanced-challenge/can-bang',
-    features: ['8 phản ứng', 'Tính khối lượng mol', 'Kiểm tra tức thì', 'Độ khó tăng dần']
+    features: ['8 phản ứng', 'Tính khối lượng mol', 'Kiểm tra tức thì', 'Độ khó tăng dần'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 3
+    }
   },
 
   // REACTION - Hard
@@ -168,7 +200,11 @@ const challenges = [
     points: 300,
     status: 'available',
     link: '/advanced-challenge/suy-luan',
-    features: ['8 màn chơi', 'Gợi ý chi tiết', 'Kéo thả chất', 'Kiểm tra phản ứng']
+    features: ['8 màn chơi', 'Gợi ý chi tiết', 'Kéo thả chất', 'Kiểm tra phản ứng'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 1
+    }
   },
 
   // ELECTROCHEMISTRY - Medium (NEW)
@@ -186,7 +222,11 @@ const challenges = [
     points: 280,
     status: 'available',
     link: '/advanced-challenge/tinh-oxi-hoa',
-    features: ['8 thử thách', 'Animation số oxi hóa', 'Giải thích chi tiết', 'Độ khó tăng dần']
+    features: ['8 thử thách', 'Animation số oxi hóa', 'Giải thích chi tiết', 'Độ khó tăng dần'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 6
+    }
   }
 ];
 
