@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import Header from './components/Header';
 import Home from './pages/Home';
 import ProgramSelection from './pages/ProgramSelection';
 import Profile from './pages/Profile';
@@ -29,9 +30,11 @@ import TinhOxiHoa from './areas/Hoahoc/challenges/TinhOxiHoa';
 
 const AppContent = () => {
   const location = useLocation();
+  const showHeader = location.pathname === '/home' || location.pathname === '/';
 
   return (
     <div className="min-h-screen">
+      {showHeader && <Header />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

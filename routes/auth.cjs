@@ -227,4 +227,24 @@ router.get('/me/:userId', async (req, res) => {
   }
 });
 
+// Logout - clear cookies set by server (if any)
+router.post('/logout', (req, res) => {
+  try {
+    // Common cookie names used by various auth strategies
+    const cookieNames = ['token', 'refreshToken', 'session', 'connect.sid', 'XSRF-TOKEN'];
+    cookieNames.forEach(name => {
+      try {
+        res.clearCookie(name, { path: '/' });
+      } catch (e) {
+        // ignore
+      }
+    });
+
+    return res.json({ success: true, message: 'Logged out' });
+  } catch (error) {
+    console.error('Logout error:', error);
+    return res.status(500).json({ success: false, message: 'Logout failed' });
+  }
+});
+
 module.exports = router;

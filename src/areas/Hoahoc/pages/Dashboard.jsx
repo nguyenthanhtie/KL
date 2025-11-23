@@ -93,10 +93,12 @@ const Dashboard = () => {
         
         // Calculate stats
         const completedCount = chemProgram.progress.completedLessons?.length || 0;
+        const currentStreak = chemProgram.studyStreak?.currentStreak || 0;
+        
         setUserProgress({
           totalLessons: 51, // Total across all classes
           completedLessons: completedCount,
-          currentStreak: 0, // TODO: implement streak logic
+          currentStreak: currentStreak,
           totalPoints: chemProgram.progress.totalScore || 0
         });
         

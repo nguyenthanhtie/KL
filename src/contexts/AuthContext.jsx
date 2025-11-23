@@ -93,8 +93,27 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    // Try to clear server-side cookies (if any) by calling logout endpoint
+    try {
+      api.post('/auth/logout', {}, { withCredentials: true }).catch(() => {});
+    } catch (e) {
+      // ignore
+    }
+
+    // Remove local storage tokens and user
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+
+    // Attempt to remove common non-HttpOnly cookies accessible from JS
+    try {
+      const cookiesToRemove = ['token', 'refreshToken', 'session', 'connect.sid', 'XSRF-TOKEN'];
+      cookiesToRemove.forEach(name => {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;`;
+      });
+    } catch (e) {
+      // ignore (server-side rendering or no document)
+    }
+
     setUser(null);
   };
 

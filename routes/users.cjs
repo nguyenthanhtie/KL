@@ -242,7 +242,7 @@ router.post('/auth/google', async (req, res) => {
 // Submit lesson completion and update progress
 router.post('/submit-lesson', async (req, res) => {
   try {
-    const { firebaseUid, programId, pathId, lessonId, score, totalQuestions } = req.body;
+    const { firebaseUid, programId, pathId, lessonId, score, totalQuestions, studyDuration } = req.body;
 
     const user = await User.findOne({ firebaseUid });
     if (!user) {
@@ -260,7 +260,8 @@ router.post('/submit-lesson', async (req, res) => {
       score, 
       totalQuestions,
       percentage: percentage.toFixed(2),
-      completed
+      completed,
+      studyDuration
     });
 
     // Update program progress using the model method
@@ -280,6 +281,13 @@ router.post('/submit-lesson', async (req, res) => {
       console.log(`✨ Added ${xpGain} XP to user (${stars} stars)`);
     }
 
+    // Update study time and streak if duration provided
+    let studyStats = null;
+    if (studyDuration && studyDuration > 0) {
+      studyStats = user.updateStudyTime(programId, studyDuration);
+      console.log('⏱️ Study time updated:', studyStats);
+    }
+
     await user.save();
     console.log('✅ Lesson progress updated successfully');
 
@@ -291,7 +299,8 @@ router.post('/submit-lesson', async (req, res) => {
       totalQuestions,
       percentage: percentage.toFixed(2),
       xpGained: completed && stars > 0 ? stars * 20 : 0,
-      program: updatedProgram
+      program: updatedProgram,
+      studyStats
     });
   } catch (error) {
     console.error('❌ Error updating lesson progress:', error);
@@ -524,6 +533,75 @@ router.get('/profile/:userId', async (req, res) => {
       firebaseUid: user.firebaseUid
     });
   } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Get study statistics for a program
+router.get('/study-stats/:firebaseUid/:programId', async (req, res) => {
+  try {
+    const { firebaseUid, programId } = req.params;
+    
+    const user = await User.findOne({ firebaseUid });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const program = user.programs.find(p => p.programId === programId);
+    if (!program) {
+      return res.status(404).json({ message: 'Program not found' });
+    }
+
+    // Check and reset streak if needed
+    const streakStatus = user.checkAndResetStreak(programId);
+    if (streakStatus && streakStatus.reset) {
+      await user.save();
+    }
+
+    res.json({
+      studyTime: program.studyTime || 0,
+      studyStreak: program.studyStreak || {
+        currentStreak: 0,
+        longestStreak: 0,
+        lastStudyDate: null,
+        streakHistory: []
+      },
+      streakStatus: streakStatus
+    });
+  } catch (error) {
+    console.error('❌ Error fetching study stats:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Update study time manually (for tracking time spent on lessons)
+router.post('/update-study-time', async (req, res) => {
+  try {
+    const { firebaseUid, programId, durationMinutes } = req.body;
+
+    if (!firebaseUid || !programId || !durationMinutes) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    const user = await User.findOne({ firebaseUid });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const studyStats = user.updateStudyTime(programId, durationMinutes);
+    
+    if (!studyStats) {
+      return res.status(404).json({ message: 'Program not found' });
+    }
+
+    await user.save();
+
+    res.json({
+      message: 'Study time updated successfully',
+      studyStats
+    });
+  } catch (error) {
+    console.error('❌ Error updating study time:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });

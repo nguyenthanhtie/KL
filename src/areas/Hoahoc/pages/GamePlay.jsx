@@ -29,6 +29,7 @@ const GamePlay = () => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [startTime] = useState(Date.now()); // Track start time
   
   // For matching quiz
   const [matchingAnswers, setMatchingAnswers] = useState({});
@@ -410,13 +411,19 @@ const GamePlay = () => {
         return;
       }
 
+      // Calculate study duration in minutes
+      const endTime = Date.now();
+      const durationMs = endTime - startTime;
+      const durationMinutes = Math.max(1, Math.floor(durationMs / 60000)); // Minimum 1 minute
+
       const submitData = {
         firebaseUid: userUid,
         programId: 'chemistry',
         pathId: parseInt(classId),
         lessonId: parseInt(lessonId),
         score: currentScore,
-        totalQuestions: totalPoints
+        totalQuestions: totalPoints,
+        studyDuration: durationMinutes // Add study duration
       };
 
       console.log('📤 Submitting progress:', submitData);

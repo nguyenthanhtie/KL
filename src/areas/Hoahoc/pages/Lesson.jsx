@@ -18,7 +18,8 @@ const Lesson = () => {
   const [score, setScore] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState('theory');
-  const [progress, setProgress] = useState(null)
+  const [progress, setProgress] = useState(null);
+  const [startTime] = useState(Date.now()); // Track start time
 
   // Fetch lesson data and progress from API
   useEffect(() => {
@@ -165,6 +166,11 @@ const Lesson = () => {
       const userUid = user?.firebaseUid || user?.uid;
       
       if (userUid) {
+        // Calculate study duration in minutes
+        const endTime = Date.now();
+        const durationMs = endTime - startTime;
+        const durationMinutes = Math.max(1, Math.floor(durationMs / 60000)); // Minimum 1 minute
+        
         // Save progress to database
         const progressData = {
           firebaseUid: userUid,
@@ -172,7 +178,8 @@ const Lesson = () => {
           pathId: parseInt(classId),
           lessonId: parseInt(lessonId),
           score: score,
-          totalQuestions: quizzes.length
+          totalQuestions: quizzes.length,
+          studyDuration: durationMinutes // Add study duration
         };
 
         console.log('📤 Saving progress:', progressData);
