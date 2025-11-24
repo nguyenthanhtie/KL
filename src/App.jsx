@@ -16,16 +16,17 @@ import Lesson from './areas/Hoahoc/pages/Lesson';
 import LessonSimple from './areas/Hoahoc/pages/LessonSimple';
 import GamePlay from './areas/Hoahoc/pages/GamePlay';
 import AdvancedChallenge from './areas/Hoahoc/pages/AdvancedChallenge';
-import GhepNguyenTu from './areas/Hoahoc/challenges/GhepNguyenTu';
-import TroChoiCanBang from './areas/Hoahoc/challenges/TroChoiCanBang';
-import SuyLuanPhanUng from './areas/Hoahoc/challenges/SuyLuanPhanUng';
-import DuoiHinhBatChu from './areas/Hoahoc/challenges/DuoiHinhBatChu';
-import NhanBietDungDich from './areas/Hoahoc/challenges/NhanBietDungDich';
-import XayDungPhanTu from './areas/Hoahoc/challenges/XayDungPhanTu';
-import PhaCheDungDich from './areas/Hoahoc/challenges/PhaCheDungDich';
-import CauTrucNguyenTu from './areas/Hoahoc/challenges/CauTrucNguyenTu';
-import PhongThiNghiem from './areas/Hoahoc/challenges/PhongThiNghiem';
-import TinhOxiHoa from './areas/Hoahoc/challenges/TinhOxiHoa';
+import GhepNguyenTu from './areas/Hoahoc/challenges/10_02';
+import TroChoiCanBang from './areas/Hoahoc/challenges/08_01';
+import SuyLuanPhanUng from './areas/Hoahoc/challenges/11_01';
+import DuoiHinhBatChu from './areas/Hoahoc/challenges/08_03';
+import NhanBietDungDich from './areas/Hoahoc/challenges/12_01';
+import XayDungPhanTu from './areas/Hoahoc/challenges/10_03';
+import PhaCheDungDich from './areas/Hoahoc/challenges/10_04';
+import CauTrucNguyenTu from './areas/Hoahoc/challenges/10_01';
+import PhongThiNghiem from './areas/Hoahoc/challenges/09_01';
+import TinhOxiHoa from './areas/Hoahoc/challenges/10_05';
+import MolQuickCalc from './areas/Hoahoc/challenges/08_02';
 
 
 const AppContent = () => {
@@ -52,6 +53,7 @@ const AppContent = () => {
         <Route path="/advanced-challenge/cau-truc-nguyen-tu" element={<CauTrucNguyenTu />} />
         <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
         <Route path="/advanced-challenge/tinh-oxi-hoa" element={<TinhOxiHoa />} />
+        <Route path="/advanced-challenge/mol-quick-calc" element={<MolQuickCalc />} />
         <Route 
           path="/program/chemistry/dashboard" 
           element={

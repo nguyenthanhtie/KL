@@ -36,7 +36,7 @@ const challengeSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['molecule', 'experiment', 'electrochemistry', 'solution', 'reaction', 'structure', 'game'],
+    enum: ['molecule', 'experiment', 'electrochemistry', 'solution', 'reaction', 'structure', 'game', 'calculation'],
     default: 'experiment'
   },
   grade: {

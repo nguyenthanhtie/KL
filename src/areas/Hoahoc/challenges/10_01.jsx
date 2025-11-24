@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trophy, Atom, Zap, Circle } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../components/ResumeDialog';
-import './CauTrucNguyenTu.css';
+import './CSS/10_01.css';
 
 const CauTrucNguyenTu = () => {
   const navigate = useNavigate();

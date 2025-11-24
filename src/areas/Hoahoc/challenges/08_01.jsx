@@ -4,7 +4,7 @@ import { ArrowLeft, Trophy, Target } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../components/ResumeDialog';
 import periodicData from '../../../data/periodic.json';
-import './TroChoiCanBang.css';
+import './CSS/08_01.css';
 
 // Reactions - from simple to complex
 const REACTIONS = [

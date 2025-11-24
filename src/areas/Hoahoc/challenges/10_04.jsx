@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb, Beaker, Droplet, FlaskConical, Plus, Minus, RotateCcw } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../components/ResumeDialog';
-import './PhaCheDungDich.css';
+import './CSS/10_04.css';
 
 // Dữ liệu về các chất tan
 const solutes = {

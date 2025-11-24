@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trophy, Zap, Play, RotateCcw, Lightbulb } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../components/ResumeDialog';
-import './TinhOxiHoa.css';
+import './CSS/10_05.css';
 
 const TinhOxiHoa = () => {
   const navigate = useNavigate();

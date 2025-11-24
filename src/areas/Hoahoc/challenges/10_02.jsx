@@ -4,7 +4,7 @@ import { ArrowLeft, Trophy, Target } from 'lucide-react';
 import periodicData from '../../../data/periodic.json';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../components/ResumeDialog';
-import './GhepNguyenTu.css';
+import './CSS/10_02.css';
 
 // Convert periodic data to elements array (first 36 elements for teaching)
 const ELEMENTS = Object.values(periodicData).slice(0, 36);

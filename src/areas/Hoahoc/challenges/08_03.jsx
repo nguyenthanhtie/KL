@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Timer, Lightbulb, CheckCircle, XCircle, Clock } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../components/ResumeDialog';
-import './DuoiHinhBatChu.css';
+import './CSS/08_03.css';
 
 const DuoiHinhBatChu = () => {
   // Dữ liệu các chất hóa học với hình ảnh

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb, Droplet, TestTube, Beaker, FlaskConical, AlertCircle } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../components/ResumeDialog';
-import './NhanBietDungDich.css';
+import './CSS/12_01.css';
 
 // Dữ liệu về các hợp chất và dấu hiệu nhận biết (dành cho lớp 8-9)
 const ionDatabase = {

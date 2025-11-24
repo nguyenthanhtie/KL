@@ -227,6 +227,28 @@ const challenges = [
       classId: 9,
       lessonId: 6
     }
+  },
+
+  // CALCULATION - Medium (NEW - Lớp 8)
+  {
+    id: 11,
+    name: 'Tính Khối Lượng Mol',
+    description: 'Rèn luyện kỹ năng chuyển đổi giữa khối lượng, mol và số phân tử. Bài tập tính toán nhanh với nhiều mức độ khó khác nhau.',
+    icon: '🧮',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-yellow-500',
+    category: 'calculation',
+    grade: 8,
+    time: '10-15 phút',
+    points: 200,
+    status: 'available',
+    link: '/advanced-challenge/mol-quick-calc',
+    features: ['Câu hỏi ngẫu nhiên', 'Gợi ý từng bước', 'Chế độ luyện tập', 'Time-attack', 'Streak bonus'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 18
+    }
   }
 ];
 
