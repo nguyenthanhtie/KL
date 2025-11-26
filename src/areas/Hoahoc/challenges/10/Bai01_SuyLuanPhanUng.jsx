@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../components/ResumeDialog';
-import './CSS/11_01.css';
+import './CSS/Bai01_SuyLuanPhanUng.css';
 
 // Game data and utilities
 const reactionRules = new Map([

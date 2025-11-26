@@ -16,17 +16,21 @@ import Lesson from './areas/Hoahoc/pages/Lesson';
 import LessonSimple from './areas/Hoahoc/pages/LessonSimple';
 import GamePlay from './areas/Hoahoc/pages/GamePlay';
 import AdvancedChallenge from './areas/Hoahoc/pages/AdvancedChallenge';
-import GhepNguyenTu from './areas/Hoahoc/challenges/10_02';
-import TroChoiCanBang from './areas/Hoahoc/challenges/08_01';
-import SuyLuanPhanUng from './areas/Hoahoc/challenges/11_01';
-import DuoiHinhBatChu from './areas/Hoahoc/challenges/08_03';
-import NhanBietDungDich from './areas/Hoahoc/challenges/12_01';
-import XayDungPhanTu from './areas/Hoahoc/challenges/10_03';
-import PhaCheDungDich from './areas/Hoahoc/challenges/10_04';
-import CauTrucNguyenTu from './areas/Hoahoc/challenges/10_01';
-import PhongThiNghiem from './areas/Hoahoc/challenges/09_01';
-import TinhOxiHoa from './areas/Hoahoc/challenges/10_05';
-import MolQuickCalc from './areas/Hoahoc/challenges/08_02';
+import GhepNguyenTu from './areas/Hoahoc/challenges/10/Bai02_GhepNguyenTu';
+import TroChoiCanBang from './areas/Hoahoc/challenges/08/Bai15_CanBangPhuongTrinh';
+import SuyLuanPhanUng from './areas/Hoahoc/challenges/10/Bai05_SuyLuanPhanUng';
+import DuoiHinhBatChu from './areas/Hoahoc/challenges/08/Bai01_DoanHinhBatChu';
+import NhanBietDungDich from './areas/Hoahoc/challenges/09/Bai03_NhanBietDungDich';
+import XayDungPhanTu from './areas/Hoahoc/challenges/10/Bai03_XayDungPhanTu';
+import PhaCheDungDich from './areas/Hoahoc/challenges/08/Bai06_PhaCheDungDich';
+import CauTrucNguyenTu from './areas/Hoahoc/challenges/10/Bai01_CauTrucNguyenTu';
+import PhongThiNghiem from './areas/Hoahoc/challenges/08/Bai05_PhongThiNghiem';
+import TinhOxiHoa from './areas/Hoahoc/challenges/10/Bai04_TinhOxiHoa';
+import MolQuickCalc from './areas/Hoahoc/challenges/08/Bai18_TinhKhoiLuongMol';
+import QuanSatPhanUng from './areas/Hoahoc/challenges/08/Bai12_QuanSatPhanUng';
+import TongKetLop8 from './areas/Hoahoc/challenges/08/Bai99_TongKetLop8';
+import Bai20_Oxi_KhongKhi from './areas/Hoahoc/challenges/08/Bai20_Oxi_KhongKhi';
+
 
 
 const AppContent = () => {
@@ -53,7 +57,10 @@ const AppContent = () => {
         <Route path="/advanced-challenge/cau-truc-nguyen-tu" element={<CauTrucNguyenTu />} />
         <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
         <Route path="/advanced-challenge/tinh-oxi-hoa" element={<TinhOxiHoa />} />
+        <Route path="/advanced-challenge/oxi-khong-khi" element={<Bai20_Oxi_KhongKhi />} />
         <Route path="/advanced-challenge/mol-quick-calc" element={<MolQuickCalc />} />
+        <Route path="/advanced-challenge/quan-sat-phan-ung" element={<QuanSatPhanUng />} />
+        <Route path="/advanced-challenge/tong-ket-lop-8" element={<TongKetLop8 />} />
         <Route 
           path="/program/chemistry/dashboard" 
           element={

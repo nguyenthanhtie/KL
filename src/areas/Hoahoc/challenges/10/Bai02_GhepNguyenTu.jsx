@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target } from 'lucide-react';
-import periodicData from '../../../data/periodic.json';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
-import './CSS/10_02.css';
+import periodicData from '../../../../data/periodic.json';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
+import './CSS/Bai02_GhepNguyenTu.css';
 
 // Convert periodic data to elements array (first 36 elements for teaching)
 const ELEMENTS = Object.values(periodicData).slice(0, 36);

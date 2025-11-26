@@ -45,7 +45,7 @@ router.post('/register', async (req, res) => {
     const newUser = new User({
       username,
       email,
-      hashedPassword,
+      password: hashedPassword,
       displayName: username,
       xp: 0,
       level: 1,
@@ -130,21 +130,32 @@ router.post('/login', async (req, res) => {
     }
 
     // Check password
-    if (!user.hashedPassword) {
+    if (!user.password) {
       console.log('❌ User has no password (might be OAuth user):', email);
       return res.status(400).json({ 
         message: 'Vui lòng đăng nhập bằng Google' 
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.hashedPassword);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       console.log('❌ Password mismatch for:', email);
       return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
     }
 
-    // Update last active date
-    user.progress.lastActiveDate = new Date();
+    // Update last active date (ensure progress object exists)
+    if (!user.progress) {
+      user.progress = {
+        completedLessons: [],
+        currentStreak: 0,
+        totalPoints: 0,
+        totalStudyTime: 0,
+        lastActiveDate: new Date()
+      };
+    } else {
+      user.progress.lastActiveDate = new Date();
+    }
+
     await user.save();
 
     // Generate token

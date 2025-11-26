@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Trophy, Beaker, Flame, Droplet } from 'lucide-react';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
-import './CSS/09_01.css';
+import { ArrowLeft, Trophy, Beaker, Play, RotateCcw, Flame, Droplet, Wind } from 'lucide-react';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
+import './CSS/Bai05_PhongThiNghiem.css';
 
 const PhongThiNghiem = () => {
   const navigate = useNavigate();

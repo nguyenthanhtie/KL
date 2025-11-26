@@ -114,8 +114,8 @@ const challenges = [
     link: '/advanced-challenge/nhan-biet-dung-dich',
     features: ['8 thí nghiệm', 'Mô phỏng phòng lab', 'Hiệu ứng thực tế', 'Nhiều vòng kiểm tra'],
     prerequisite: {
-      classId: 11,
-      lessonId: 1
+      classId: 8,
+      lessonId: 38,
     }
   },
 
@@ -181,7 +181,7 @@ const challenges = [
     features: ['8 phản ứng', 'Tính khối lượng mol', 'Kiểm tra tức thì', 'Độ khó tăng dần'],
     prerequisite: {
       classId: 8,
-      lessonId: 3
+      lessonId: 15
     }
   },
 
@@ -249,7 +249,75 @@ const challenges = [
       classId: 8,
       lessonId: 18
     }
-  }
+  },
+
+  // OBSERVATION - Medium (NEW - Lớp 8, Chương 2)
+  {
+    id: 12,
+    name: 'Quan Sát Phản Ứng',
+    description: 'Nhận biết các hiện tượng hóa học qua quan sát phản ứng. Rèn luyện kỹ năng quan sát và phân tích các dấu hiệu của phản ứng hóa học.',
+    icon: '👁️',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-blue-500',
+    category: 'observation',
+    grade: 8,
+    time: '12-18 phút',
+    points: 220,
+    status: 'available',
+    link: '/advanced-challenge/quan-sat-phan-ung',
+    features: ['8 phản ứng thực tế', 'Nhận diện hiện tượng', 'Giải thích chi tiết', 'Hệ thống điểm thưởng'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 12
+    }
+  },
+
+  // COMPREHENSIVE - Hard
+  {
+    id: 13,
+    name: 'Tổng Kết Hóa Học Lớp 8',
+    description: 'Thử thách tổng hợp toàn bộ kiến thức Hóa học lớp 8 với 30 câu hỏi đa dạng. Kiểm tra mức độ nắm vững của bạn qua trắc nghiệm, điền từ, tính toán và cân bằng phương trình.',
+    icon: '🎓',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-500',
+    category: 'game',
+    grade: 8,
+    time: '25-35 phút',
+    points: 400,
+    status: 'available',
+    link: '/advanced-challenge/tong-ket-lop-8',
+    features: ['30 câu hỏi tổng hợp', '4 dạng câu hỏi', 'Bao quát 10 chương', 'Điểm thưởng thời gian', 'Phân tích chi tiết'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 42
+    }
+  },
+  // OXI - AIR - Medium (NEW - Lớp 8)
+  {
+    id: 14,
+    name: 'Oxi — Không Khí',
+    description: 'Thử thách tương tác về Oxi và không khí: thành phần không khí, sự oxi hóa, điều kiện cháy và bài toán stoichiometry đơn giản.',
+    icon: '🌬️',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-yellow-500',
+    category: 'observation',
+    grade: 8,
+    time: '10-20 phút',
+    points: 220,
+    status: 'available',
+    link: '/advanced-challenge/oxi-khong-khi',
+    features: ['MCQ', 'Thành phần không khí (nhập %)', 'Kiểm tra điều kiện cháy', 'Bài toán stoichiometry đơn giản'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 12
+    }
+  },
+  
+    
+  
 ];
 
 async function seedDatabase() {

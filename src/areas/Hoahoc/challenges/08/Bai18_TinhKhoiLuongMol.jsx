@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Sparkles, Trophy, Zap, BookOpen, CheckCircle2, XCircle, Lightbulb, Calculator, Atom, Plus, Minus } from 'lucide-react';
-import './CSS/08_02.css';
+import './CSS/Bai18_TinhKhoiLuongMol.css';
 
 // Danh sách các chất hóa học
 const CHEMICALS = [
@@ -27,6 +27,7 @@ const challenges = [
     chemical: 'NaCl',
     given: { mass: 117 },
     answer: 2.0,
+    unit: 'mol',
     tolerance: 0.05,
     points: 100,
     hint: 'Sử dụng công thức: n = m/M'
@@ -39,6 +40,7 @@ const challenges = [
     chemical: 'CaCO₃',
     given: { mol: 2.5 },
     answer: 250,
+    unit: 'g',
     tolerance: 2,
     points: 100,
     hint: 'Sử dụng công thức: m = n × M'
@@ -51,6 +53,7 @@ const challenges = [
     chemical: 'Fe₂O₃',
     given: { mass: 160 },
     answer: 6.022e23,
+    unit: 'molecules',
     tolerance: 0.3e23,
     points: 150,
     hint: 'Bước 1: Tính n = m/M, Bước 2: N = n × Nₐ'
@@ -63,6 +66,7 @@ const challenges = [
     chemical: 'MgO',
     given: { molecules: 3.011e23 },
     answer: 20,
+    unit: 'g',
     tolerance: 1,
     points: 150,
     hint: 'Bước 1: Tính n = N/Nₐ, Bước 2: m = n × M'
@@ -71,10 +75,11 @@ const challenges = [
     id: 5,
     level: 3,
     type: 'complex',
-    question: 'Có 320g CuO. Tính số phân tử và khối lượng mol',
+    question: 'Có 320g CuO. Tính số mol trong 320g CuO',
     chemical: 'CuO',
     given: { mass: 320 },
     answer: 4.0,
+    unit: 'mol',
     tolerance: 0.1,
     points: 200,
     hint: 'Tính số mol: n = m/M = 320/80 = 4 mol'
@@ -87,9 +92,88 @@ const challenges = [
     chemical: 'CuSO₄',
     given: { mol: 0.5 },
     answer: 80,
+    unit: 'g',
     tolerance: 2,
     points: 200,
     hint: 'Sử dụng công thức: m = n × M'
+  },
+  {
+    id: 7,
+    level: 1,
+    type: 'mass-to-mol',
+    question: 'Tính số mol của 58.5g NaCl',
+    chemical: 'NaCl',
+    given: { mass: 58.5 },
+    answer: 1.0,
+    unit: 'mol',
+    tolerance: 0.02,
+    points: 100,
+    hint: 'n = m / M (58.5 / 58.5 = 1 mol)'
+  },
+  {
+    id: 8,
+    level: 1,
+    type: 'mol-to-mass',
+    question: 'Tính khối lượng của 0.2 mol KNO₃',
+    chemical: 'KNO₃',
+    given: { mol: 0.2 },
+    answer: 20.2,
+    unit: 'g',
+    tolerance: 0.5,
+    points: 100,
+    hint: 'm = n × M (0.2 × 101 = 20.2 g)'
+  },
+  {
+    id: 9,
+    level: 2,
+    type: 'mass-to-molecules',
+    question: 'Tính số phân tử trong 80g MgO',
+    chemical: 'MgO',
+    given: { mass: 80 },
+    answer: 1.2044e24,
+    unit: 'molecules',
+    tolerance: 0.1e24,
+    points: 150,
+    hint: 'n = m/M = 80/40 = 2 mol → N = n × Nₐ = 2 × 6.022e23'
+  },
+  {
+    id: 10,
+    level: 2,
+    type: 'molecules-to-mass',
+    question: 'Tính khối lượng của 6.022×10²³ phân tử NaCl',
+    chemical: 'NaCl',
+    given: { molecules: 6.022e23 },
+    answer: 58.5,
+    unit: 'g',
+    tolerance: 1,
+    points: 150,
+    hint: '6.022×10²³ là 1 mol → m = n × M = 1 × 58.5 g'
+  },
+  {
+    id: 11,
+    level: 3,
+    type: 'mass-to-mol',
+    question: 'Tính số mol của 102g Al₂O₃',
+    chemical: 'Al₂O₃',
+    given: { mass: 102 },
+    answer: 1.0,
+    unit: 'mol',
+    tolerance: 0.05,
+    points: 200,
+    hint: 'n = m/M = 102/102 = 1 mol'
+  },
+  {
+    id: 12,
+    level: 3,
+    type: 'mol-to-mass',
+    question: 'Tính khối lượng của 0.25 mol CuSO₄',
+    chemical: 'CuSO₄',
+    given: { mol: 0.25 },
+    answer: 40,
+    unit: 'g',
+    tolerance: 1,
+    points: 200,
+    hint: 'm = n × M = 0.25 × 160 = 40 g'
   },
 ];
 
@@ -102,15 +186,32 @@ const MolQuickCalc = () => {
   const [score, setScore] = useState(0);
   const [completedChallenges, setCompletedChallenges] = useState([]);
   const [streak, setStreak] = useState(0);
+  const [failedChallenges, setFailedChallenges] = useState([]);
+  const [isReviewMode, setIsReviewMode] = useState(false);
+  const [activeIds, setActiveIds] = useState(challenges.map(c => c.id));
   
   // Simulation states
   const [mass, setMass] = useState(0);
   const [moles, setMoles] = useState(0);
   const [showSimulation, setShowSimulation] = useState(true);
 
-  const currentChallenge = challenges[currentIndex];
+  const currentChallenge = challenges.find(c => c.id === activeIds[currentIndex]);
   const currentChemical = CHEMICALS.find(c => c.formula === currentChallenge?.chemical);
-  const progress = ((currentIndex + 1) / challenges.length) * 100;
+  const progress = ((currentIndex + 1) / activeIds.length) * 100;
+  // Display unit for the answer input; prefer explicit unit in challenge data
+  const displayUnit = currentChallenge?.unit ?? (
+    currentChallenge?.type?.includes('mol') && !currentChallenge?.type?.includes('molecules') ? 'mol' :
+    currentChallenge?.type?.includes('mass') ? 'g' :
+    currentChallenge?.type?.includes('molecules') ? 'molecules' :
+    ''
+  );
+  // Calculate number of particles N when moles available
+  const computedN = mass > 0 ? moles * AVOGADRO : 0;
+  const formattedN = computedN > 0 ? (computedN >= 1e6 ? computedN.toExponential(3) : computedN.toLocaleString()) : '0';
+  // Cube size for 3D cube visualization (scales with mass)
+  const cubeSize = Math.max(40, Math.min(120, 40 + (mass / 500) * 80));
+  // faceOffset slightly less than half size to prevent visible gaps when cube is small
+  const faceOffset = Math.max(1, cubeSize / 2 - 1);
 
   // Tính toán mol khi khối lượng thay đổi
   useEffect(() => {
@@ -123,20 +224,46 @@ const MolQuickCalc = () => {
   }, [mass, currentChemical]);
 
   useEffect(() => {
-    if (feedback?.correct) {
+    if (feedback) {
       const timer = setTimeout(() => {
-        if (currentIndex < challenges.length - 1) {
+        // Advance to next in activeIds or switch modes
+        if (currentIndex < activeIds.length - 1) {
           setCurrentIndex(currentIndex + 1);
           setUserAnswer('');
           setFeedback(null);
           setShowHint(false);
         } else {
-          setGameState('completed');
+          // End of this pass
+          if (!isReviewMode) {
+            // First pass finished
+            if (failedChallenges.length > 0) {
+              setIsReviewMode(true);
+              setActiveIds([...failedChallenges]);
+              setCurrentIndex(0);
+              setUserAnswer('');
+              setFeedback(null);
+              setShowHint(false);
+            } else {
+              setGameState('completed');
+            }
+          } else {
+            // Review pass finished
+            if (failedChallenges.length > 0) {
+              // Start another review pass with remaining failed ones
+              setActiveIds([...failedChallenges]);
+              setCurrentIndex(0);
+              setUserAnswer('');
+              setFeedback(null);
+              setShowHint(false);
+            } else {
+              setGameState('completed');
+            }
+          }
         }
-      }, 2000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [feedback, currentIndex]);
+  }, [feedback, currentIndex, activeIds, failedChallenges, isReviewMode]);
 
   // Reset simulation khi chuyển câu hỏi
   useEffect(() => {
@@ -161,35 +288,46 @@ const MolQuickCalc = () => {
     }
 
     const isCorrect = Math.abs(answer - currentChallenge.answer) <= currentChallenge.tolerance;
-    
+
     if (isCorrect) {
-      const bonusPoints = streak >= 3 ? currentChallenge.points * 0.5 : 0;
-      const totalPoints = currentChallenge.points + bonusPoints;
-      setScore(score + totalPoints);
-      setStreak(streak + 1);
-      setCompletedChallenges([...completedChallenges, currentChallenge.id]);
-      setFeedback({ 
-        correct: true, 
-        message: `Chính xác! +${totalPoints} điểm${bonusPoints > 0 ? ' (Streak Bonus!)' : ''}` 
-      });
+      // If in review mode, do not award points for corrections
+      if (!isReviewMode) {
+        const bonusPoints = streak >= 3 ? currentChallenge.points * 0.5 : 0;
+        const totalPoints = currentChallenge.points + bonusPoints;
+        setScore(score + totalPoints);
+        setFeedback({ 
+          correct: true, 
+          message: `Chính xác! +${totalPoints} điểm${bonusPoints > 0 ? ' (Streak Bonus!)' : ''}` 
+        });
+        setStreak(streak + 1);
+        // Add to completed only once
+        setCompletedChallenges(prev => prev.includes(currentChallenge.id) ? prev : [...prev, currentChallenge.id]);
+      } else {
+        // Review mode: correct but no points
+        setFeedback({ correct: true, message: 'Đúng (không tính điểm trong lần làm lại).' });
+        // Remove from failedChallenges
+        setFailedChallenges(prev => prev.filter(id => id !== currentChallenge.id));
+      }
     } else {
       setStreak(0);
-      setFeedback({ 
-        correct: false, 
-        message: 'Chưa đúng! Hãy thử lại nhé.' 
-      });
+      setFeedback({ correct: false, message: 'Chưa đúng! Câu này sẽ được lưu vào bộ làm lại.' });
+      // Record failed id (avoid duplicates)
+      setFailedChallenges(prev => prev.includes(currentChallenge.id) ? prev : [...prev, currentChallenge.id]);
     }
   };
 
   const handleRestart = () => {
     setGameState('playing');
     setCurrentIndex(0);
+    setActiveIds(challenges.map(c => c.id));
+    setIsReviewMode(false);
     setUserAnswer('');
     setFeedback(null);
     setShowHint(false);
     setScore(0);
     setCompletedChallenges([]);
     setStreak(0);
+    setFailedChallenges([]);
   };
 
   // Welcome Screen
@@ -353,6 +491,16 @@ const MolQuickCalc = () => {
   // Playing Screen
   return (
     <div className="h-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col">
+      {/* Inline styles for 360° cube spin animation (only during playing) */}
+      <style>{`
+        .cube-360 { animation: spin360 6s linear infinite; transform-style: preserve-3d; }
+        .cube-360.paused { animation-play-state: paused; }
+        .cube-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        @keyframes spin360 {
+          from { transform: rotateX(20deg) rotateY(-25deg) rotateZ(0deg); }
+          to   { transform: rotateX(20deg) rotateY(-25deg) rotateZ(360deg); }
+        }
+      `}</style>
       {/* Header */}
       <div className="flex-shrink-0 bg-white/80 backdrop-blur-sm shadow-sm">
         <div className="container mx-auto px-4 py-2">
@@ -382,8 +530,13 @@ const MolQuickCalc = () => {
           {/* Progress */}
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-gray-600 whitespace-nowrap">
-              Câu {currentIndex + 1}/{challenges.length}
+              Câu {currentIndex + 1}/{activeIds.length}
             </span>
+            {isReviewMode && (
+              <span className="text-xs font-semibold text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full">
+                Làm lại (không tính điểm)
+              </span>
+            )}
             <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-full transition-all duration-500"
@@ -469,36 +622,127 @@ const MolQuickCalc = () => {
                       {/* Base container */}
                       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-2 bg-gray-300 rounded-full"></div>
                       
-                      {/* Substance pile */}
+                      {/* 3D Cube representation */}
                       {mass > 0 && (
-                        <div 
-                          className="relative transition-all duration-500 ease-out"
-                          style={{
-                            width: `${Math.min(50 + (mass / 500) * 60, 110)}px`,
-                            height: `${Math.min(25 + (mass / 500) * 50, 75)}px`,
-                          }}
-                        >
-                          <div 
-                            className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full transition-all duration-500"
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <div
+                            className="relative"
                             style={{
-                              width: '100%',
-                              height: '100%',
-                              backgroundColor: currentChemical?.color,
-                              opacity: 0.9,
-                              boxShadow: `0 10px 30px ${currentChemical?.color}66`,
-                              filter: 'brightness(1.1)',
+                              width: `${cubeSize}px`,
+                              height: `${cubeSize}px`,
+                              perspective: 800,
                             }}
                           >
-                            {/* Shimmer effect */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-t-full"></div>
-                            {/* Particles */}
-                            {mass > 50 && (
-                              <>
-                                <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/40 rounded-full animate-pulse-slow"></div>
-                                <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-white/30 rounded-full animate-float"></div>
-                                <div className="absolute bottom-1/3 left-1/3 w-2.5 h-2.5 bg-white/20 rounded-full animate-pulse-slow"></div>
-                              </>
-                            )}
+                            <div
+                              className="relative transform-style-preserve-3d cube-360"
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                transformStyle: 'preserve-3d',
+                                transition: 'transform 400ms ease',
+                              }}
+                            >
+                              {/* front (show N inside) */}
+                              <div
+                                className="cube-face"
+                                style={{
+                                  position: 'absolute',
+                                  width: '100%',
+                                  height: '100%',
+                                  backgroundColor: currentChemical?.color,
+                                  opacity: 0.98,
+                                  boxShadow: `0 8px 20px ${currentChemical?.color}66`,
+                                  transform: `translateZ(${faceOffset}px)`,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  borderRadius: '6px',
+                                  color: 'white',
+                                  textAlign: 'center',
+                                  padding: '6px',
+                                }}
+                              >
+                                <div style={{pointerEvents: 'none'}}>
+                                  <div style={{fontSize: `${Math.max(10, Math.round(cubeSize/12))}px`, opacity: 0.9}}>
+                                    N
+                                  </div>
+                                  <div style={{fontSize: `${Math.max(12, Math.round(cubeSize/6))}px`, fontWeight: 700, textShadow: '0 2px 6px rgba(0,0,0,0.4)'}}>
+                                    {formattedN}
+                                  </div>
+                                  
+                                </div>
+                              </div>
+
+                              {/* back */}
+                              <div
+                                className="cube-face"
+                                style={{
+                                  position: 'absolute',
+                                  width: '100%',
+                                  height: '100%',
+                                  backgroundColor: currentChemical?.color,
+                                  opacity: 0.85,
+                                  transform: `rotateY(180deg) translateZ(${faceOffset}px)`,
+                                  borderRadius: '6px',
+                                }}
+                              />
+
+                              {/* right */}
+                              <div
+                                className="cube-face"
+                                style={{
+                                  position: 'absolute',
+                                  width: '100%',
+                                  height: '100%',
+                                  backgroundColor: currentChemical?.color,
+                                  opacity: 0.9,
+                                  transform: `rotateY(90deg) translateZ(${faceOffset}px)`,
+                                  borderRadius: '6px',
+                                }}
+                              />
+
+                              {/* left */}
+                              <div
+                                className="cube-face"
+                                style={{
+                                  position: 'absolute',
+                                  width: '100%',
+                                  height: '100%',
+                                  backgroundColor: currentChemical?.color,
+                                  opacity: 0.8,
+                                  transform: `rotateY(-90deg) translateZ(${faceOffset}px)`,
+                                  borderRadius: '6px',
+                                }}
+                              />
+
+                              {/* top */}
+                              <div
+                                className="cube-face"
+                                style={{
+                                  position: 'absolute',
+                                  width: '100%',
+                                  height: '100%',
+                                  backgroundColor: currentChemical?.color,
+                                  opacity: 0.92,
+                                  transform: `rotateX(90deg) translateZ(${faceOffset}px)`,
+                                  borderRadius: '6px',
+                                }}
+                              />
+
+                              {/* bottom */}
+                              <div
+                                className="cube-face"
+                                style={{
+                                  position: 'absolute',
+                                  width: '100%',
+                                  height: '100%',
+                                  backgroundColor: currentChemical?.color,
+                                  opacity: 0.75,
+                                  transform: `rotateX(-90deg) translateZ(${faceOffset}px)`,
+                                  borderRadius: '6px',
+                                }}
+                              />
+                            </div>
                           </div>
                         </div>
                       )}
@@ -555,9 +799,15 @@ const MolQuickCalc = () => {
                           <span className="text-sm text-gray-600">Số mol (n):</span>
                           <span className="text-sm font-bold text-indigo-600">{moles.toFixed(3)} mol</span>
                         </div>
-                        
+
+                      
+
                         <div className="p-2 bg-gray-50 rounded-lg">
                           <code className="text-xs text-gray-600">n = m/M = {mass}/{currentChemical?.molarMass} = {moles.toFixed(3)} mol</code>
+                        </div>
+
+                        <div className="p-2 bg-gray-50 rounded-lg">
+                          <code className="text-xs text-gray-600">N = n × Nₐ = {moles.toFixed(3)} × {AVOGADRO} = {formattedN}</code>
                         </div>
                       </div>
                     )}
@@ -624,8 +874,7 @@ const MolQuickCalc = () => {
                       className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all text-base font-medium disabled:bg-gray-50 disabled:text-gray-500"
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                      {currentChallenge.type.includes('mol') && !currentChallenge.type.includes('molecules') ? 'mol' :
-                       currentChallenge.type.includes('mass') ? 'g' : '×10²³'}
+                      {displayUnit}
                     </div>
                   </div>
                 </div>

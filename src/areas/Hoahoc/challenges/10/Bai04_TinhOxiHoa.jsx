@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trophy, Zap, Play, RotateCcw, Lightbulb } from 'lucide-react';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
-import './CSS/10_05.css';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
+import './CSS/Bai04_TinhOxiHoa.css';
 
 const TinhOxiHoa = () => {
   const navigate = useNavigate();
@@ -23,12 +23,49 @@ const TinhOxiHoa = () => {
   const [showHint, setShowHint] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [renderError, setRenderError] = useState(null);
 
   useEffect(() => {
     if (hasProgress && !gameStarted && !showResults) {
       setShowResumeDialog(true);
     }
+  }, [hasProgress, gameStarted, showResults]);
+
+  useEffect(() => {
+    const onError = (event) => {
+      const msg = event?.message || event?.reason?.message || String(event);
+      // eslint-disable-next-line no-console
+      console.error('Captured error in TinhOxiHoa:', event);
+      setRenderError(msg);
+    };
+    window.addEventListener('error', onError);
+    window.addEventListener('unhandledrejection', onError);
+    return () => {
+      window.removeEventListener('error', onError);
+      window.removeEventListener('unhandledrejection', onError);
+    };
   }, []);
+
+  if (renderError) {
+    return (
+      <div className="tinh-oxi-hoa-container">
+        <div className="game-header">
+          <Link to="/advanced-challenge" className="back-button">
+            <ArrowLeft size={20} />
+            Quay lại
+          </Link>
+          <h1>Lỗi</h1>
+        </div>
+        <div className="game-content">
+          <p style={{color:'#b91c1c'}}>Đã phát hiện lỗi khi hiển thị thử nghiệm.</p>
+          <pre style={{background:'#f8fafc',padding:12,borderRadius:8,overflowX:'auto'}}>{String(renderError)}</pre>
+          <div style={{marginTop:12}}>
+            <button className="btn-start" onClick={() => window.location.reload()}>Tải lại</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const startGame = (fromBeginning = false) => {
     if (fromBeginning) {
@@ -206,7 +243,7 @@ const TinhOxiHoa = () => {
     }
   ];
 
-  const currentQ = challenges[currentChallenge];
+  const currentQ = challenges[currentChallenge] || challenges[0];
 
   const handleAnswerChange = (questionId, value) => {
     setUserAnswers(prev => ({
@@ -287,6 +324,24 @@ const TinhOxiHoa = () => {
     setReactionProgress(0);
     setIsReacting(false);
   };
+
+  // Safety check
+  if (!currentQ) {
+    return (
+      <div className="tinh-oxi-hoa-container">
+        <div className="game-header">
+          <Link to="/advanced-challenge" className="back-button">
+            <ArrowLeft size={20} />
+            Quay lại
+          </Link>
+          <h1>Lỗi</h1>
+        </div>
+        <div className="game-content">
+          <p>Không tải được thử thách. Vui lòng quay lại và thử lại.</p>
+        </div>
+      </div>
+    );
+  }
 
   // Results Modal
   if (showResults) {

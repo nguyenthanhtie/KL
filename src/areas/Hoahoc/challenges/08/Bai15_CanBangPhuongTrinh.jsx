@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target } from 'lucide-react';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
-import periodicData from '../../../data/periodic.json';
-import './CSS/08_01.css';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
+import periodicData from '../../../../data/periodic.json';
+import './CSS/Bai15_CanBangPhuongTrinh.css';
 
 // Reactions - from simple to complex
 const REACTIONS = [
@@ -34,7 +34,9 @@ function calculateMolarMass(formula) {
   let total = 0;
   for(let {element, count} of parsed) {
     const data = periodicData[element];
-    if(data && data.mass) total += data.mass * count;
+    // periodic.json uses 'atomicMass' as the key for element mass
+    const mass = data && (data.atomicMass || data.mass || data.massNumber || data.atomic_mass);
+    if (mass) total += mass * count;
   }
   return total;
 }
