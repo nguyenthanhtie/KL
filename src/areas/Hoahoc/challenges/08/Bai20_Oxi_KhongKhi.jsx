@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Beaker, Trophy, Play, RotateCcw, Lightbulb } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
@@ -198,6 +198,29 @@ const Bai20_Oxi_KhongKhi = () => {
     setExpRunning(false);
   };
 
+  // Generate randomized sediment positions once reaction completes
+  const sediments = useMemo(() => {
+    if (expProgress < 100) return { crystals: [], powders: [] };
+
+    const rand = (min, max) => Math.random() * (max - min) + min;
+
+    const crystals = Array.from({ length: 4 }).map(() => ({
+      left: `${rand(8, 88).toFixed(1)}%`,
+      bottom: `${rand(0, 6).toFixed(1)}px`,
+      rotate: `${rand(-25, 25).toFixed(1)}deg`,
+      scale: (rand(0.85, 1.15)).toFixed(2),
+    }));
+
+    const powders = Array.from({ length: 3 }).map(() => ({
+      left: `${rand(10, 86).toFixed(1)}%`,
+      bottom: `${rand(0, 4).toFixed(1)}px`,
+      rotate: `${rand(-10, 10).toFixed(1)}deg`,
+      scale: (rand(0.9, 1.05)).toFixed(2),
+    }));
+
+    return { crystals, powders };
+  }, [expProgress, currentChallenge]);
+
   const normalizeAnswer = (answer) => {
     return answer.trim();
   };
@@ -372,19 +395,50 @@ const Bai20_Oxi_KhongKhi = () => {
                 {currentQ.type === 'produce-oxygen' && (
                       <div className="exp-visual-box">
                         <div className="test-tube-simple">
-                          <div className="kmno4-layer" style={{ 
-                            background: expProgress > 50 ? '#8b4513' : '#a0522d',
-                            height: `${100 - expProgress/2}%` 
-                          }}>
-                            KMnO₄
+                          <div className="flask-bulb">
+                            <div className="kmno4-layer" style={{ 
+                              height: `${Math.max(40, 70 - expProgress * 0.3)}%`,
+                              opacity: expProgress > 50 ? 0.85 : 1
+                            }}>
+                              {expProgress > 20 && (
+                                <>
+                                  <div className="liquid-bubble"></div>
+                                  <div className="liquid-bubble"></div>
+                                  <div className="liquid-bubble"></div>
+                                  <div className="liquid-bubble"></div>
+                                  <div className="liquid-bubble"></div>
+                                </>
+                              )}
+                              {expProgress >= 100 && (
+                                <div className="sediment-layer">
+                                  {sediments.crystals.map((c, i) => (
+                                    <div
+                                      key={`cr-${i}`}
+                                      className="sediment-crystal"
+                                      style={{
+                                        left: c.left,
+                                        bottom: c.bottom,
+                                        transform: `translateX(-50%) rotate(${c.rotate}) scale(${c.scale})`
+                                      }}
+                                    />
+                                  ))}
+
+                                  {sediments.powders.map((p, i) => (
+                                    <div
+                                      key={`pw-${i}`}
+                                      className="sediment-powder"
+                                      style={{
+                                        left: p.left,
+                                        bottom: p.bottom,
+                                        transform: `translateX(-50%) rotate(${p.rotate}) scale(${p.scale})`
+                                      }}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                           </div>
                           {expProgress > 0 && <div className="heat-icon">🔥</div>}
-                        </div>
-                        <div className="arrow-right">→</div>
-                        <div className="gas-jar">
-                          <div className="o2-fill" style={{ height: `${expProgress}%`, background: 'rgba(173,216,230,0.4)' }}>
-                            O₂
-                          </div>
                         </div>
                       </div>
                     )}
@@ -393,11 +447,19 @@ const Bai20_Oxi_KhongKhi = () => {
                       <div className="exp-visual-box">
                         <div className="burning-visual">
                           <div className="burn-subject">
-                            <div className="material-icon">🪨</div>
+                            <div className="material-icon log" />
                             {expProgress > 20 && <div className="flame-icon burning">🔥</div>}
                           </div>
-                          {expProgress > 60 && <div className="gas-cloud">CO₂</div>}
-                          <div className="equation-text">C + O₂ → CO₂</div>
+
+                          {expProgress > 60 && (
+                            <div className="co2-cloud" aria-hidden>
+                              <div className="co2-puff" style={{ left: '30%', animationDelay: '0s' }} />
+                              <div className="co2-puff" style={{ left: '50%', animationDelay: '0.3s' }} />
+                              <div className="co2-puff" style={{ left: '70%', animationDelay: '0.6s' }} />
+                              <div className="co2-puff" style={{ left: '40%', animationDelay: '0.9s' }} />
+                              <div className="co2-puff" style={{ left: '60%', animationDelay: '1.2s' }} />
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
