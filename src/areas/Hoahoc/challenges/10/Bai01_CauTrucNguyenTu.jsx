@@ -553,26 +553,11 @@ const CauTrucNguyenTu = () => {
             </span>
             <span className="points-badge">+{currentQ.points} điểm</span>
           </div>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${((currentChallenge + 1) / challenges.length) * 100}%` }}
-            />
-          </div>
+         
         </div>
 
         {/* Challenge Title */}
-        <div className="challenge-title">
-          <h2>{currentQ.title}</h2>
-          <p>{currentQ.question}</p>
-          {currentQ.isIsotope && (
-            <div className="isotope-note">
-              ⚛️ Đây là đồng vị của {currentQ.element.symbol}. 
-              So sánh với {currentQ.compareWith.name} ({currentQ.compareWith.massNumber}{currentQ.element.symbol}): 
-              cùng số proton nhưng khác số neutron ({currentQ.compareWith.neutrons} neutron)
-            </div>
-          )}
-        </div>
+  
 
         {/* Two Column Layout */}
         <div className="two-column-layout">

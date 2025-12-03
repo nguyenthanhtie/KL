@@ -48,8 +48,8 @@ const challenges = [
     link: '/advanced-challenge/cau-truc-nguyen-tu',
     features: ['10 thử thách', 'Mô phỏng nguyên tử', 'Vỏ electron', 'Học về đồng vị'],
     prerequisite: {
-      classId: 9,
-      lessonId: 6
+      classId: 10,
+      lessonId: 1
     }
   },
 
@@ -70,8 +70,8 @@ const challenges = [
     link: '/advanced-challenge/ghep-nguyen-tu',
     features: ['36 nguyên tố', 'Tương tác kéo thả', 'Hình ảnh 3D', '6 thử thách'],
     prerequisite: {
-      classId: 9,
-      lessonId: 6
+      classId: 10,
+      lessonId: 2
     }
   },
 
@@ -85,7 +85,7 @@ const challenges = [
     difficultyLevel: 'easy',
     difficultyColor: 'bg-green-600',
     category: 'experiment',
-    grade: 9,
+    grade: 8,
     time: '15-20 phút',
     points: 220,
     status: 'available',
@@ -107,7 +107,7 @@ const challenges = [
     difficultyLevel: 'medium',
     difficultyColor: 'bg-blue-500',
     category: 'experiment',
-    grade: 12,
+    grade: 8,
     time: '15-20 phút',
     points: 250,
     status: 'available',
@@ -136,8 +136,8 @@ const challenges = [
     link: '/advanced-challenge/xay-dung-phan-tu',
     features: ['3 cấp độ', '12 phân tử', 'Tương tác kéo thả', 'Hỗ trợ liên kết đa dạng'],
     prerequisite: {
-      classId: 9,
-      lessonId: 6
+      classId: 10,
+      lessonId: 3
     }
   },
 
@@ -151,14 +151,14 @@ const challenges = [
     difficultyLevel: 'medium',
     difficultyColor: 'bg-cyan-500',
     category: 'solution',
-    grade: 10,
+    grade: 8,
     time: '20-25 phút',
     points: 300,
     status: 'available',
     link: '/advanced-challenge/pha-che-dung-dich',
     features: ['12 thử thách', 'Mô phỏng bình thí nghiệm', '3 cấp độ', 'Công thức chi tiết'],
     prerequisite: {
-      classId: 9,
+      classId: 8,
       lessonId: 6
     }
   },
@@ -195,7 +195,7 @@ const challenges = [
     difficultyLevel: 'hard',
     difficultyColor: 'bg-red-500',
     category: 'reaction',
-    grade: 11,
+    grade: 10,
     time: '20-30 phút',
     points: 300,
     status: 'available',
@@ -203,7 +203,7 @@ const challenges = [
     features: ['8 màn chơi', 'Gợi ý chi tiết', 'Kéo thả chất', 'Kiểm tra phản ứng'],
     prerequisite: {
       classId: 10,
-      lessonId: 1
+      lessonId: 5
     }
   },
 
@@ -224,8 +224,8 @@ const challenges = [
     link: '/advanced-challenge/tinh-oxi-hoa',
     features: ['8 thử thách', 'Animation số oxi hóa', 'Giải thích chi tiết', 'Độ khó tăng dần'],
     prerequisite: {
-      classId: 9,
-      lessonId: 6
+      classId: 10,
+      lessonId: 4
     }
   },
 
@@ -312,7 +312,28 @@ const challenges = [
     features: ['MCQ', 'Thành phần không khí (nhập %)', 'Kiểm tra điều kiện cháy', 'Bài toán stoichiometry đơn giản'],
     prerequisite: {
       classId: 8,
-      lessonId: 12
+      lessonId: 20
+    }
+  },
+  // INORGANIC COMPOUNDS - Grade 9 (NEW)
+  {
+    id: 15,
+    name: 'Các loại hợp chất vô cơ',
+    description: 'Kiểm tra kiến thức về oxit, axit, bazơ, muối và mối quan hệ giữa chúng (lí thuyết + bài tập vận dụng).',
+    icon: '🧪',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-indigo-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-20 phút',
+    points: 240,
+    status: 'available',
+    link: '/advanced-challenge/hop-chat-vo-co',
+    features: ['20 câu hỏi', 'Nhiều dạng: trắc nghiệm, điền từ, ghép, phân loại, sắp xếp', 'Gợi ý và giải thích'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 7
     }
   },
   

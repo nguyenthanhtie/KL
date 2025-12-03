@@ -1,13 +1,12 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Trophy, Target, Lightbulb, Droplet, TestTube, Beaker, FlaskConical, AlertCircle } from 'lucide-react';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
+import { ArrowLeft, Trophy, Lightbulb, TestTube, FlaskConical, AlertCircle, RotateCcw, Check, X } from 'lucide-react';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai38_NhanBietDungDich.css';
 
-// Dữ liệu về các hợp chất và dấu hiệu nhận biết (dành cho lớp 8-9)
+// Dữ liệu về các hợp chất và dấu hiệu nhận biết
 const ionDatabase = {
-  // Axit
   'HCl': {
     name: 'Axit clohidric',
     formula: 'HCl',
@@ -15,7 +14,7 @@ const ionDatabase = {
     solutionColor: '#e3f2fd',
     reactions: [
       { reagent: 'Quỳ tím', result: 'Quỳ tím hóa đỏ', precipitateColor: '#ff6b9d', isLitmusTest: true, equation: 'HCl → H⁺ + Cl⁻' },
-      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa trắng AgCl', precipitateColor: '#fafafa', equation: 'HCl + AgNO₃ → AgCl↓ + HNO₃' },
+      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa bạc trắng', precipitateColor: '#fafafa', equation: 'HCl + AgNO₃ → AgCl↓ + HNO₃' },
       { reagent: 'Kim loại Zn', result: 'Sủi bọt khí H₂', precipitateColor: 'transparent', hasBubbles: true, equation: 'Zn + 2HCl → ZnCl₂ + H₂↑' }
     ]
   },
@@ -30,8 +29,6 @@ const ionDatabase = {
       { reagent: 'Kim loại Zn', result: 'Sủi bọt khí H₂', precipitateColor: 'transparent', hasBubbles: true, equation: 'Zn + H₂SO₄ → ZnSO₄ + H₂↑' }
     ]
   },
-  
-  // Bazơ
   'NaOH': {
     name: 'Natri hidroxit',
     formula: 'NaOH',
@@ -39,8 +36,8 @@ const ionDatabase = {
     solutionColor: '#e8f5e9',
     reactions: [
       { reagent: 'Quỳ tím', result: 'Quỳ tím hóa xanh', precipitateColor: '#6b9dff', isLitmusTest: true, equation: 'NaOH → Na⁺ + OH⁻' },
-      { reagent: 'Dung dịch CuSO₄', result: 'Kết tủa xanh lam Cu(OH)₂', precipitateColor: '#2196f3', equation: '2NaOH + CuSO₄ → Cu(OH)₂↓ + Na₂SO₄' },
-      { reagent: 'Dung dịch FeCl₃', result: 'Kết tủa nâu đỏ Fe(OH)₃', precipitateColor: '#a0522d', equation: '3NaOH + FeCl₃ → Fe(OH)₃↓ + 3NaCl' }
+      { reagent: 'Dung dịch CuSO₄', result: 'Kết tủa xanh lam', precipitateColor: '#2196f3', equation: '2NaOH + CuSO₄ → Cu(OH)₂↓ + Na₂SO₄' },
+      { reagent: 'Dung dịch FeCl₃', result: 'Kết tủa nâu đỏ', precipitateColor: '#a0522d', equation: '3NaOH + FeCl₃ → Fe(OH)₃↓ + 3NaCl' }
     ]
   },
   'Ca(OH)2': {
@@ -50,12 +47,10 @@ const ionDatabase = {
     solutionColor: '#f0f8ff',
     reactions: [
       { reagent: 'Quỳ tím', result: 'Quỳ tím hóa xanh', precipitateColor: '#6b9dff', isLitmusTest: true, equation: 'Ca(OH)₂ → Ca²⁺ + 2OH⁻' },
-      { reagent: 'Khí CO₂', result: 'Xuất hiện kết tủa trắng CaCO₃', precipitateColor: '#fcfcfc', equation: 'Ca(OH)₂ + CO₂ → CaCO₃↓ + H₂O' },
-      { reagent: 'Dung dịch Na₂CO₃', result: 'Kết tủa trắng CaCO₃', precipitateColor: '#fcfcfc', equation: 'Ca(OH)₂ + Na₂CO₃ → CaCO₃↓ + 2NaOH' }
+      { reagent: 'Khí CO₂', result: 'Xuất hiện kết tủa trắng', precipitateColor: '#fcfcfc', equation: 'Ca(OH)₂ + CO₂ → CaCO₃↓ + H₂O' },
+      { reagent: 'Dung dịch Na₂CO₃', result: 'Kết tủa trắng', precipitateColor: '#fcfcfc', equation: 'Ca(OH)₂ + Na₂CO₃ → CaCO₃↓ + 2NaOH' }
     ]
   },
-  
-  // Muối
   'NaCl': {
     name: 'Natri clorua (muối ăn)',
     formula: 'NaCl',
@@ -63,7 +58,7 @@ const ionDatabase = {
     solutionColor: '#e3f2fd',
     reactions: [
       { reagent: 'Quỳ tím', result: 'Quỳ tím không đổi màu', precipitateColor: 'transparent', isSolutionChange: false, equation: '' },
-      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa trắng AgCl', precipitateColor: '#fafafa', equation: 'NaCl + AgNO₃ → AgCl↓ + NaNO₃' }
+      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa bạc trắng', precipitateColor: '#fafafa', equation: 'NaCl + AgNO₃ → AgCl↓ + NaNO₃' }
     ]
   },
   'CuSO4': {
@@ -72,10 +67,10 @@ const ionDatabase = {
     color: 'xanh lam',
     solutionColor: '#42a5f5',
     reactions: [
-      { reagent: 'Quỳ tím', result: 'Quỳ tím không đổi màu', precipitateColor: 'transparent', isSolutionChange: false, equation: '' },
-      { reagent: 'Dung dịch NaOH', result: 'Kết tủa xanh lam Cu(OH)₂', precipitateColor: '#2196f3', equation: 'CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄' },
-      { reagent: 'Dung dịch BaCl₂', result: 'Kết tủa trắng BaSO₄', precipitateColor: '#fefefe', equation: 'CuSO₄ + BaCl₂ → BaSO₄↓ + CuCl₂' },
-      { reagent: 'Kim loại Fe', result: 'Bề mặt Fe phủ lớp Cu màu đỏ', precipitateColor: '#d84315', isMetalReaction: true, equation: 'Fe + CuSO₄ → FeSO₄ + Cu' }
+      { reagent: 'Quỳ tím', result: 'Quỳ tím không đổi', precipitateColor: 'transparent', isSolutionChange: false, equation: '' },
+      { reagent: 'Dung dịch NaOH', result: 'Kết tủa xanh lam', precipitateColor: '#2196f3', equation: 'CuSO₄ + 2NaOH → Cu(OH)₂↓ + Na₂SO₄' },
+      { reagent: 'Dung dịch BaCl₂', result: 'Kết tủa trắng', precipitateColor: '#fefefe', equation: 'CuSO₄ + BaCl₂ → BaSO₄↓ + CuCl₂' },
+      { reagent: 'Kim loại Fe', result: 'Bề mặt Fe phủ lớp màu đỏ', precipitateColor: '#d84315', isMetalReaction: true, equation: 'Fe + CuSO₄ → FeSO₄ + Cu' }
     ]
   },
   'FeCl3': {
@@ -85,8 +80,8 @@ const ionDatabase = {
     solutionColor: '#ffb74d',
     reactions: [
       { reagent: 'Quỳ tím', result: 'Quỳ tím hóa đỏ nhạt', precipitateColor: '#ff9999', isLitmusTest: true, equation: 'FeCl₃ + H₂O ⇌ Fe(OH)Cl₂ + HCl' },
-      { reagent: 'Dung dịch NaOH', result: 'Kết tủa nâu đỏ Fe(OH)₃', precipitateColor: '#a0522d', equation: 'FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl' },
-      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa trắng AgCl', precipitateColor: '#fafafa', equation: 'FeCl₃ + 3AgNO₃ → 3AgCl↓ + Fe(NO₃)₃' }
+      { reagent: 'Dung dịch NaOH', result: 'Kết tủa nâu đỏ', precipitateColor: '#a0522d', equation: 'FeCl₃ + 3NaOH → Fe(OH)₃↓ + 3NaCl' },
+      { reagent: 'Dung dịch AgNO₃', result: 'Kết tủa bạc trắng', precipitateColor: '#fafafa', equation: 'FeCl₃ + 3AgNO₃ → 3AgCl↓ + Fe(NO₃)₃' }
     ]
   },
   'Na2CO3': {
@@ -97,8 +92,8 @@ const ionDatabase = {
     reactions: [
       { reagent: 'Quỳ tím', result: 'Quỳ tím hóa xanh nhạt', precipitateColor: '#9dc3ff', isLitmusTest: true, equation: 'Na₂CO₃ + H₂O ⇌ NaHCO₃ + NaOH' },
       { reagent: 'Dung dịch HCl', result: 'Sủi bọt khí CO₂', precipitateColor: 'transparent', hasBubbles: true, equation: 'Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂↑' },
-      { reagent: 'Dung dịch CaCl₂', result: 'Kết tủa trắng CaCO₃', precipitateColor: '#fcfcfc', equation: 'Na₂CO₃ + CaCl₂ → CaCO₃↓ + 2NaCl' },
-      { reagent: 'Dung dịch BaCl₂', result: 'Kết tủa trắng BaCO₃', precipitateColor: '#f9f9f9', equation: 'Na₂CO₃ + BaCl₂ → BaCO₃↓ + 2NaCl' }
+      { reagent: 'Dung dịch CaCl₂', result: 'Kết tủa trắng', precipitateColor: '#fcfcfc', equation: 'Na₂CO₃ + CaCl₂ → CaCO₃↓ + 2NaCl' },
+      { reagent: 'Dung dịch BaCl₂', result: 'Kết tủa trắng', precipitateColor: '#f9f9f9', equation: 'Na₂CO₃ + BaCl₂ → BaCO₃↓ + 2NaCl' }
     ]
   },
   'BaCl2': {
@@ -107,10 +102,10 @@ const ionDatabase = {
     color: 'không màu',
     solutionColor: '#e3f2fd',
     reactions: [
-      { reagent: 'Quỳ tím', result: 'Quỳ tím không đổi màu', precipitateColor: 'transparent', isSolutionChange: false, equation: '' },
-      { reagent: 'Dung dịch H₂SO₄', result: 'Kết tủa trắng BaSO₄', precipitateColor: '#fefefe', equation: 'BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl' },
-      { reagent: 'Dung dịch Na₂CO₃', result: 'Kết tủa trắng BaCO₃', precipitateColor: '#f9f9f9', equation: 'BaCl₂ + Na₂CO₃ → BaCO₃↓ + 2NaCl' },
-      { reagent: 'Dung dịch Na₂SO₄', result: 'Kết tủa trắng BaSO₄', precipitateColor: '#fefefe', equation: 'BaCl₂ + Na₂SO₄ → BaSO₄↓ + 2NaCl' }
+      { reagent: 'Quỳ tím', result: 'Quỳ tím không đổi', precipitateColor: 'transparent', isSolutionChange: false, equation: '' },
+      { reagent: 'Dung dịch H₂SO₄', result: 'Kết tủa trắng', precipitateColor: '#fefefe', equation: 'BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl' },
+      { reagent: 'Dung dịch Na₂CO₃', result: 'Kết tủa trắng', precipitateColor: '#f9f9f9', equation: 'BaCl₂ + Na₂CO₃ → BaCO₃↓ + 2NaCl' },
+      { reagent: 'Dung dịch Na₂SO₄', result: 'Kết tủa trắng', precipitateColor: '#fefefe', equation: 'BaCl₂ + Na₂SO₄ → BaSO₄↓ + 2NaCl' }
     ]
   }
 };
@@ -183,130 +178,6 @@ const experimentQuestions = [
   }
 ];
 
-// Câu hỏi trò chơi (giữ lại cho chế độ cũ nếu cần)
-const gameQuestions = [
-  {
-    id: 1,
-    question: "Nhỏ dung dịch NaOH vào dung dịch A, thấy xuất hiện kết tủa xanh lam. Dung dịch A chứa ion gì?",
-    options: ['Fe2+', 'Cu2+', 'Zn2+', 'Al3+'],
-    correctAnswer: 'Cu2+',
-    explanation: "Kết tủa xanh lam Cu(OH)2 là dấu hiệu đặc trưng của ion Cu2+",
-    hint: "Màu xanh lam đặc trưng của ion kim loại nào?"
-  },
-  {
-    id: 2,
-    question: "Cho dung dịch KSCN vào dung dịch B, dung dịch chuyển sang màu đỏ máu. Dung dịch B chứa ion nào?",
-    options: ['Fe2+', 'Fe3+', 'Cu2+', 'Ag+'],
-    correctAnswer: 'Fe3+',
-    explanation: "Phản ứng tạo phức màu đỏ máu [Fe(SCN)]2+ là phản ứng đặc trưng nhận biết Fe3+",
-    hint: "Phản ứng tạo màu đỏ máu đặc trưng với ion sắt"
-  },
-  {
-    id: 3,
-    question: "Thêm dung dịch AgNO3 vào dung dịch C, xuất hiện kết tủa trắng, tan trong dung dịch NH3. Ion nào có trong dung dịch C?",
-    options: ['Br-', 'Cl-', 'I-', 'SO42-'],
-    correctAnswer: 'Cl-',
-    explanation: "Kết tủa trắng AgCl tan trong NH3, trong khi AgBr và AgI không tan",
-    hint: "Kết tủa bạc halogenua nào tan trong amoniac?"
-  },
-  {
-    id: 4,
-    question: "Cho HCl vào dung dịch D, thấy sủi bọt khí làm đục nước vôi trong. Dung dịch D chứa ion gì?",
-    options: ['SO42-', 'CO32-', 'NO3-', 'Cl-'],
-    correctAnswer: 'CO32-',
-    explanation: "CO32- + 2HCl → CO2↑ + H2O + 2Cl-. Khí CO2 làm đục nước vôi trong",
-    hint: "Ion nào phản ứng với axit tạo khí làm đục nước vôi?"
-  },
-  {
-    id: 5,
-    question: "Nhỏ dung dịch NaOH vào dung dịch E, thấy kết tủa trắng xanh, để ngoài không khí chuyển nâu. Ion nào trong dung dịch E?",
-    options: ['Fe2+', 'Fe3+', 'Zn2+', 'Al3+'],
-    correctAnswer: 'Fe2+',
-    explanation: "Fe(OH)2 màu trắng xanh bị oxi hóa thành Fe(OH)3 màu nâu đỏ ngoài không khí",
-    hint: "Kết tủa hydroxit nào bị oxi hóa ngoài không khí?"
-  },
-  {
-    id: 6,
-    question: "Thêm BaCl2 vào dung dịch F, xuất hiện kết tủa trắng không tan trong axit. Dung dịch F chứa ion nào?",
-    options: ['CO32-', 'SO42-', 'Cl-', 'NO3-'],
-    correctAnswer: 'SO42-',
-    explanation: "BaSO4 là kết tủa trắng không tan trong axit, còn BaCO3 tan trong axit",
-    hint: "Muối bari nào không tan trong axit?"
-  },
-  {
-    id: 7,
-    question: "Cho dung dịch NH3 dư vào dung dịch G màu xanh lam, dung dịch chuyển sang màu xanh thẫm. Ion nào có trong G?",
-    options: ['Ni2+', 'Cu2+', 'Co2+', 'Fe2+'],
-    correctAnswer: 'Cu2+',
-    explanation: "Cu2+ tạo phức [Cu(NH3)4]2+ màu xanh thẫm với NH3 dư",
-    hint: "Ion nào tạo phức màu xanh thẫm với amoniac?"
-  },
-  {
-    id: 8,
-    question: "Thêm H2S vào dung dịch H, xuất hiện kết tủa đen. Ion kim loại nào có trong dung dịch H?",
-    options: ['Zn2+', 'Al3+', 'Cu2+', 'Ca2+'],
-    correctAnswer: 'Cu2+',
-    explanation: "CuS là kết tủa màu đen. ZnS màu trắng, Al3+ và Ca2+ không tạo kết tủa với H2S",
-    hint: "Sunfua kim loại nào có màu đen?"
-  },
-  {
-    id: 9,
-    question: "Cho NaOH vào dung dịch I, thấy kết tủa trắng, thêm NaOH dư thì kết tủa tan. Ion nào trong dung dịch I?",
-    options: ['Cu2+', 'Fe3+', 'Al3+', 'Ag+'],
-    correctAnswer: 'Al3+',
-    explanation: "Al(OH)3 có tính lưỡng tính, tan trong NaOH dư tạo [Al(OH)4]-",
-    hint: "Hidroxit kim loại nào có tính lưỡng tính?"
-  },
-  {
-    id: 10,
-    question: "Cho AgNO3 vào dung dịch J, thấy kết tủa vàng. Ion nào có trong dung dịch J?",
-    options: ['Cl-', 'Br-', 'I-', 'SO42-'],
-    correctAnswer: 'I-',
-    explanation: "AgI có màu vàng, AgCl trắng, AgBr vàng nhạt",
-    hint: "Muối bạc halogenua nào có màu vàng đậm nhất?"
-  },
-  {
-    id: 11,
-    question: "Nhỏ dung dịch NaOH vào dung dịch K, thấy kết tủa nâu đỏ. Dung dịch K chứa ion gì?",
-    options: ['Fe2+', 'Fe3+', 'Cu2+', 'Zn2+'],
-    correctAnswer: 'Fe3+',
-    explanation: "Fe(OH)3 có màu nâu đỏ đặc trưng",
-    hint: "Hidroxit sắt nào có màu nâu đỏ?"
-  },
-  {
-    id: 12,
-    question: "Cho HCl vào dung dịch L, có khí thoát ra mùi trứng thối. Ion nào trong dung dịch L?",
-    options: ['SO42-', 'S2-', 'CO32-', 'NO3-'],
-    correctAnswer: 'S2-',
-    explanation: "S2- + 2HCl → H2S↑ + 2Cl-. H2S có mùi trứng thối đặc trưng",
-    hint: "Khí nào có mùi trứng thối?"
-  },
-  {
-    id: 13,
-    question: "Thêm dung dịch Pb(NO3)2 vào dung dịch M, xuất hiện kết tủa đen. Ion nào có trong M?",
-    options: ['Cl-', 'SO42-', 'S2-', 'CO32-'],
-    correctAnswer: 'S2-',
-    explanation: "PbS là kết tủa màu đen đặc trưng",
-    hint: "Muối chì nào có màu đen?"
-  },
-  {
-    id: 14,
-    question: "Cho dung dịch Na2CO3 vào dung dịch N, thấy kết tủa trắng. Sau đó cho dung dịch H2SO4, kết tủa không tan. Ion nào trong N?",
-    options: ['Ca2+', 'Ba2+', 'Mg2+', 'Zn2+'],
-    correctAnswer: 'Ba2+',
-    explanation: "BaCO3 + H2SO4 → BaSO4↓ + CO2 + H2O. BaSO4 không tan trong axit",
-    hint: "Cacbonat kim loại nào chuyển thành sunfat không tan trong axit?"
-  },
-  {
-    id: 15,
-    question: "Cho dung dịch Cl2 vào dung dịch O không màu, dung dịch chuyển sang màu nâu đỏ. Ion nào trong dung dịch O?",
-    options: ['Cl-', 'Br-', 'I-', 'SO42-'],
-    correctAnswer: 'Br-',
-    explanation: "Cl2 + 2Br- → Br2 + 2Cl-. Br2 có màu nâu đỏ",
-    hint: "Halogen đơn chất nào có màu nâu đỏ?"
-  }
-];
-
 const NhanBietDungDich = () => {
   const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('nhan-biet-dung-dich');
   
@@ -370,7 +241,6 @@ const NhanBietDungDich = () => {
     const correctCompound = currentQ.unknownSolution;
     let options = [correctCompound];
     
-    // Thêm 3 đáp án nhiễu ngẫu nhiên
     const otherCompounds = allCompounds.filter(compound => compound !== correctCompound);
     while (options.length < 4) {
       const randomCompound = otherCompounds[Math.floor(Math.random() * otherCompounds.length)];
@@ -379,7 +249,6 @@ const NhanBietDungDich = () => {
       }
     }
     
-    // Trộn ngẫu nhiên
     setIonOptions(options.sort(() => Math.random() - 0.5));
   }, [currentQuestion, currentQ.unknownSolution]);
 
@@ -410,13 +279,11 @@ const NhanBietDungDich = () => {
 
   // Lấy màu quỳ sau khi phản ứng
   const getLitmusColorAfterReaction = (color) => {
-    // color là precipitateColor từ reaction (màu trong isSolutionChange)
-    if (color === '#ff6b9d' || color === '#ff9999') return '#e91e63'; // Đỏ (axit)
-    if (color === '#6b9dff' || color === '#9dc3ff') return '#2196f3'; // Xanh (bazơ)
-    return '#9c27b0'; // Tím (trung tính)
+    if (color === '#ff6b9d' || color === '#ff9999') return '#e91e63';
+    if (color === '#6b9dff' || color === '#9dc3ff') return '#2196f3';
+    return '#9c27b0';
   };
 
-  
   // Xử lý nhỏ thuốc thử
   const handleDropReagent = (reagent) => {
     if (isDropping || showAnswer) return;
@@ -424,7 +291,6 @@ const NhanBietDungDich = () => {
     setSelectedReagent(reagent);
     setIsDropping(true);
     
-    // Tìm phản ứng tương ứng
     const reaction = unknownIon.reactions.find(r => r.reagent === reagent);
     setCurrentReaction(reaction);
     
@@ -445,20 +311,17 @@ const NhanBietDungDich = () => {
       setSelectedReagent(null);
       setCurrentReaction(null);
       
-      // Kiểm tra xem đã đủ số lần test chưa
       if (testResults.length + 1 >= currentQ.minTests) {
         setCanSubmit(true);
       }
     }, 1500);
   };
 
-  // Xử lý chọn đáp án
   const handleSelectAnswer = (ionKey) => {
     if (!canSubmit) return;
     setSelectedAnswer(ionKey);
   };
 
-  // Xử lý submit đáp án
   const handleSubmitAnswer = () => {
     if (!selectedAnswer) return;
     
@@ -472,7 +335,6 @@ const NhanBietDungDich = () => {
     }
   };
 
-  // Chuyển câu tiếp theo
   const handleNextQuestion = () => {
     if (currentQuestion < experimentQuestions.length - 1) {
       const nextIndex = currentQuestion + 1;
@@ -494,7 +356,6 @@ const NhanBietDungDich = () => {
     }
   };
 
-  // Reset thí nghiệm
   const handleReset = () => {
     setTestResults([]);
     setSelectedAnswer(null);
@@ -514,6 +375,7 @@ const NhanBietDungDich = () => {
     setCanSubmit(false);
   };
 
+  // Màn hình hoàn thành
   if (gameCompleted) {
     const percentage = (correctAnswers / experimentQuestions.length * 100).toFixed(0);
     const maxScore = experimentQuestions.reduce((sum, q) => {
@@ -521,27 +383,40 @@ const NhanBietDungDich = () => {
     }, 0);
     
     return (
-      <div className="suy-luan-container">
-        <div className="result-modal show">
-          <div className="result-content">
-            <Trophy className="result-icon" size={80} />
-            <h2>Hoàn thành!</h2>
-            <div className="result-stats">
-              <p className="result-score">Điểm số: {score}/{maxScore}</p>
-              <p className="result-accuracy">Độ chính xác: {percentage}%</p>
-              <p className="result-correct">Đúng: {correctAnswers}/{experimentQuestions.length}</p>
+      <div className="lab-fullscreen">
+        <div className="completion-screen">
+          <div className="completion-card">
+            <div className="trophy-animation">
+              <Trophy size={80} />
             </div>
-            <div className="result-message">
+            <h1>🎉 Hoàn thành xuất sắc!</h1>
+            <div className="stats-grid">
+              <div className="stat-item">
+                <span className="stat-value">{score}</span>
+                <span className="stat-label">Điểm số</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">{percentage}%</span>
+                <span className="stat-label">Độ chính xác</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-value">{correctAnswers}/{experimentQuestions.length}</span>
+                <span className="stat-label">Câu đúng</span>
+              </div>
+            </div>
+            <div className="completion-message">
               {percentage >= 80 && <p>🏆 Xuất sắc! Bạn là chuyên gia nhận biết dung dịch!</p>}
               {percentage >= 60 && percentage < 80 && <p>👍 Tốt lắm! Tiếp tục rèn luyện nhé!</p>}
               {percentage >= 40 && percentage < 60 && <p>💪 Khá đấy! Hãy ôn lại kiến thức!</p>}
               {percentage < 40 && <p>📚 Cần cố gắng hơn! Hãy học lại phần nhận biết ion!</p>}
             </div>
-            <div className="result-actions">
+            <div className="completion-actions">
               <button onClick={handleRestart} className="btn-restart">
+                <RotateCcw size={20} />
                 Chơi lại
               </button>
               <Link to="/advanced-challenge" className="btn-home">
+                <ArrowLeft size={20} />
                 Về trang chủ
               </Link>
             </div>
@@ -552,369 +427,274 @@ const NhanBietDungDich = () => {
   }
 
   return (
-    <div className="suy-luan-container">
-      <div className="suy-luan-header">
-        <Link to="/advanced-challenge" className="back-button">
-          <ArrowLeft size={24} />
+    <div className="lab-fullscreen">
+      {/* Header */}
+      <header className="lab-header">
+        <Link to="/advanced-challenge" className="back-btn">
+          <ArrowLeft size={20} />
           <span>Quay lại</span>
         </Link>
-        <h1 className="game-title">
-          <FlaskConical className="title-icon" />
-          Nhận Biết Dung Dịch - Phòng Thí Nghiệm
+        <h1 className="lab-title">
+          <FlaskConical size={24} />
+          Nhận Biết Dung Dịch
         </h1>
-        <div className="score-display">
-          <Trophy size={24} />
+        <div className="score-badge">
+          <Trophy size={20} />
           <span>{score} điểm</span>
         </div>
-      </div>
+      </header>
 
-      <div className="game-content">
-        <div className="progress-section">
-          <div className="question-counter">
-            Thí nghiệm {currentQuestion + 1}/{experimentQuestions.length}
-            <span className={`difficulty-badge ${currentQ.difficulty}`}>
-              {currentQ.difficulty === 'easy' ? '⭐ Dễ' : currentQ.difficulty === 'medium' ? '⭐⭐ Trung bình' : '⭐⭐⭐ Khó'}
-            </span>
+      {/* Main Content */}
+      <main className="lab-main">
+        {/* Left Panel - Reagents */}
+        <aside className="reagents-panel">
+          <div className="panel-header">
+            <TestTube size={20} />
+            <h2>Thuốc thử</h2>
           </div>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${((currentQuestion + 1) / experimentQuestions.length) * 100}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Phần thí nghiệm */}
-        <div className="lab-container">
-          <div className="lab-instruction">
-            <AlertCircle size={20} />
-            <p>Nhỏ các thuốc thử vào dung dịch X để quan sát hiện tượng, sau đó đoán xem dung dịch X chứa ion gì. 
-               <strong> Cần ít nhất {currentQ.minTests} lần thử nghiệm!</strong>
-            </p>
-          </div>
-
-          {/* Khu vực thuốc thử */}
-          <div className="reagents-section">
-            <h3><TestTube size={20} /> Thuốc thử có sẵn:</h3>
-            <div className="reagents-grid">
-              {currentQ.availableReagents.map((reagent, idx) => {
-                const reagentType = getReagentType(reagent);
-                const reagentColor = getReagentColor(reagent);
-                
-                return (
-                  <button
-                    key={idx}
-                    className={`reagent-btn ${selectedReagent === reagent ? 'dropping' : ''} ${
-                      testResults.some(r => r.reagent === reagent) ? 'used' : ''
-                    }`}
-                    onClick={() => handleDropReagent(reagent)}
-                    disabled={isDropping || showAnswer || testResults.some(r => r.reagent === reagent)}
-                  >
+          <div className="reagents-list">
+            {currentQ.availableReagents.map((reagent, idx) => {
+              const reagentType = getReagentType(reagent);
+              const reagentColor = getReagentColor(reagent);
+              const isUsed = testResults.some(r => r.reagent === reagent);
+              
+              return (
+                <button
+                  key={idx}
+                  className={`reagent-card ${selectedReagent === reagent ? 'active' : ''} ${isUsed ? 'used' : ''}`}
+                  onClick={() => handleDropReagent(reagent)}
+                  disabled={isDropping || showAnswer || isUsed}
+                >
+                  <div className="reagent-icon">
                     {reagentType === 'litmus' ? (
-                      <div className="reagent-litmus">
-                        <div className="litmus-paper" style={{ backgroundColor: reagentColor }}></div>
-                      </div>
+                      <div className="litmus-icon" style={{ backgroundColor: reagentColor }}></div>
                     ) : reagentType === 'metal' ? (
-                      <div className="reagent-metal">
-                        <div className="metal-rod" style={{ backgroundColor: reagentColor }}></div>
-                      </div>
+                      <div className="metal-icon" style={{ backgroundColor: reagentColor }}></div>
                     ) : (
-                      <div className="reagent-tube">
-                        <div className="reagent-liquid" style={{ backgroundColor: reagentColor }}></div>
+                      <div className="tube-icon">
+                        <div className="tube-liquid" style={{ backgroundColor: reagentColor || '#667eea' }}></div>
                       </div>
                     )}
-                    <span className="reagent-name">{reagent}</span>
-                    {testResults.some(r => r.reagent === reagent) && <span className="check-mark">✓</span>}
-                  </button>
-                );
-              })}
+                  </div>
+                  <span className="reagent-name">{reagent}</span>
+                  {isUsed && <Check size={16} className="check-icon" />}
+                </button>
+              );
+            })}
+          </div>
+          
+          {/* Hint Button */}
+          <button 
+            className={`hint-btn ${showHint ? 'active' : ''}`}
+            onClick={() => setShowHint(!showHint)}
+          >
+            <Lightbulb size={18} />
+            {showHint ? 'Ẩn gợi ý' : 'Xem gợi ý'}
+          </button>
+          {showHint && (
+            <div className="hint-content">
+              <p>{currentQ.hint}</p>
+            </div>
+          )}
+        </aside>
+
+        {/* Center - Experiment Area */}
+        <section className="experiment-panel">
+          {/* Progress */}
+          <div className="experiment-progress">
+            <div className="progress-info">
+              <span>Thí nghiệm {currentQuestion + 1}/{experimentQuestions.length}</span>
+              <span className={`difficulty-tag ${currentQ.difficulty}`}>
+                {currentQ.difficulty === 'easy' ? '⭐ Dễ' : currentQ.difficulty === 'medium' ? '⭐⭐ Trung bình' : '⭐⭐⭐ Khó'}
+              </span>
+            </div>
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${((currentQuestion + 1) / experimentQuestions.length) * 100}%` }}></div>
             </div>
           </div>
 
-          {/* Khu vực thí nghiệm - Số bình tự động dựa trên số chất thử */}
-          <div className="experiment-area">
-            <div className="beakers-row">
-              {currentQ.availableReagents.map((_, beakerIndex) => {
-                const testResult = testResults[beakerIndex];
-                const isActive = selectedReagent && beakerIndex === testResults.length;
+          {/* Instruction */}
+          <div className="instruction-box">
+            <AlertCircle size={18} />
+            <p>Nhỏ thuốc thử vào dung dịch X để quan sát hiện tượng. <strong>Cần ít nhất {currentQ.minTests} lần thử!</strong></p>
+          </div>
+
+          {/* Flask Area - Multiple Flasks */}
+          <div className="flask-area">
+            <div className="flasks-row">
+              {currentQ.availableReagents.map((reagent, idx) => {
+                const testResult = testResults.find(r => r.reagent === reagent);
+                const isCurrentlyDropping = isDropping && selectedReagent === reagent;
                 
                 return (
-                  <div key={beakerIndex} className="beaker-container">
-                    <div className="lab-stand">
-                      {/* Animation cho thuốc thử ở bình đang active */}
-                      {isActive && (
-                        <div className="reagent-action-animation">
+                  <div key={idx} className="flask-wrapper">
+                    <div className="flask-container">
+                      {/* Animation khi đang nhỏ */}
+                      {isCurrentlyDropping && (
+                        <div className="dropping-animation">
                           {getReagentType(selectedReagent) === 'litmus' ? (
-                            <div className="litmus-dipping">
-                              <div 
-                                className="litmus-paper-dip"
-                                style={{
-                                  '--litmus-changed-color': currentReaction && currentReaction.isLitmusTest 
-                                    ? getLitmusColorAfterReaction(currentReaction.precipitateColor)
-                                    : '#7d5185ff'
-                                }}
-                              >
-                                <div className="litmus-top" style={{ backgroundColor: getReagentColor(selectedReagent) }}></div>
-                                <div className="litmus-bottom"></div>
-                              </div>
+                            <div className="litmus-dropping" style={{ 
+                              '--litmus-color': currentReaction?.isLitmusTest ? getLitmusColorAfterReaction(currentReaction.precipitateColor) : '#9c27b0' 
+                            }}>
+                              <div className="litmus-paper-anim"></div>
                             </div>
                           ) : getReagentType(selectedReagent) === 'metal' ? (
-                            <div className="metal-dipping">
-                              <div 
-                                className="metal-rod-dip"
-                                style={{
-                                  '--metal-changed-color': currentReaction && currentReaction.isMetalReaction 
-                                    ? currentReaction.precipitateColor
-                                    : getReagentColor(selectedReagent)
-                                }}
-                              >
-                                <div className="metal-rod-top" style={{ backgroundColor: getReagentColor(selectedReagent) }}></div>
-                                <div className="metal-rod-bottom"></div>
-                              </div>
+                            <div className="metal-dropping">
+                              <div className="metal-rod-anim" style={{ backgroundColor: getReagentColor(selectedReagent) }}></div>
                             </div>
                           ) : (
-                            <div className="dropper-animation">
-                              <div className="dropper">
-                                <div className="dropper-bulb"></div>
-                                <div className="dropper-tip"></div>
-                                <div className="drop"></div>
+                            <div className="dropper-dropping">
+                              <div className="dropper-anim">
+                                <div className="drop-anim"></div>
                               </div>
                             </div>
                           )}
                         </div>
                       )}
                       
-                      {/* Bình tam giác chứa dung dịch */}
-                      <div className="erlenmeyer-flask">
+                      {/* Flask */}
+                      <div className={`flask ${testResult ? 'tested' : ''}`}>
                         <div className="flask-neck"></div>
                         <div className="flask-body">
-                          <div 
-                            className="unknown-solution"
-                            style={{ 
-                              backgroundColor: testResult && testResult.isSolutionChange 
-                                ? testResult.color 
-                                : unknownIon.solutionColor,
-                              position: 'relative',
-                              transition: 'background-color 1.5s ease'
-                            }}
-                          >
-                            {/* Hiệu ứng sủi bọt khí */}
-                            {testResult && testResult.hasBubbles && (
-                              <div className="bubbles-container">
-                                {[...Array(15)].map((_, i) => {
-                                  const sizeClasses = ['tiny', 'tiny', 'small', 'small', 'medium', 'medium', 'large', 'xlarge'];
-                                  const randomSize = sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
-                                  return (
-                                    <div 
-                                      key={i}
-                                      className={`bubble ${randomSize}`}
-                                      style={{
-                                        left: `${15 + Math.random() * 70}%`,
-                                        animationDelay: `${Math.random() * 2.5}s`,
-                                        animationDuration: `${2 + Math.random() * 1.5}s`
-                                      }}
-                                    />
-                                  );
-                                })}
+                          <div className="solution" style={{ backgroundColor: unknownIon.solutionColor }}>
+                            {/* Bubbles */}
+                            {testResult?.hasBubbles && (
+                              <div className="bubbles">
+                                {[...Array(8)].map((_, i) => (
+                                  <div key={i} className="bubble" style={{
+                                    left: `${10 + Math.random() * 80}%`,
+                                    animationDelay: `${Math.random() * 2}s`,
+                                    animationDuration: `${1.5 + Math.random() * 1}s`
+                                  }}></div>
+                                ))}
                               </div>
                             )}
                             
-                            {/* Hiệu ứng kết tủa */}
-                            {testResult && 
-                             testResult.color !== 'transparent' && 
-                             !testResult.hasBubbles && 
-                             !testResult.isSolutionChange &&
-                             !testResult.isLitmusTest &&
-                             !testResult.isMetalReaction && (
-                              <>
-                                {/* Lớp kết tủa chính */}
-                                <div 
-                                  className="precipitate"
-                                  style={{ backgroundColor: testResult.color }}
-                                >
-                                  {/* Các hạt kết tủa nhỏ lắng xuống */}
-                                  <div className="precipitate-particles">
-                                    {[...Array(18)].map((_, i) => {
-                                      const sizeClasses = ['small', 'small', 'medium', 'medium', 'medium', 'large'];
-                                      const randomSize = sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
-                                      return (
-                                        <div 
-                                          key={i}
-                                          className={`precipitate-particle ${randomSize}`}
-                                          style={{
-                                            left: `${Math.random() * 85 + 5}%`,
-                                            animationDelay: `${Math.random() * 1.2}s`,
-                                            animationDuration: `${1.5 + Math.random() * 0.8}s`,
-                                            backgroundColor: testResult.color
-                                          }}
-                                        />
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              </>
+                            {/* Precipitate */}
+                            {testResult && testResult.color !== 'transparent' && !testResult.hasBubbles && !testResult.isLitmusTest && !testResult.isMetalReaction && (
+                              <div className="precipitate" style={{ backgroundColor: testResult.color }}></div>
                             )}
                             
-                            {/* Hiển thị tờ quỳ đổi màu trong bình */}
-                            {testResult && testResult.isLitmusTest && (
-                              <div className="litmus-in-solution">
-                                <div 
-                                  className="litmus-paper-in-flask"
-                                  style={{ backgroundColor: getLitmusColorAfterReaction(testResult.color) }}
-                                >
-                                  <div className="litmus-shine"></div>
-                                </div>
-                              </div>
+                            {/* Litmus in solution */}
+                            {testResult?.isLitmusTest && (
+                              <div className="litmus-result-flask" style={{ backgroundColor: getLitmusColorAfterReaction(testResult.color) }}></div>
                             )}
-                          </div>
-                          <div className="flask-label">
-                            {testResult ? testResult.reagent : `Bình ${beakerIndex + 1}`}
+                            
+                            {/* Metal reaction */}
+                            {testResult?.isMetalReaction && (
+                              <div className="metal-result-flask" style={{ backgroundColor: testResult.color }}></div>
+                            )}
                           </div>
                         </div>
                       </div>
                     </div>
+                    <div className={`flask-label ${testResult ? 'has-result' : ''}`}>
+                      {testResult ? reagent : `Bình ${idx + 1}`}
+                    </div>
+                    {/* Kết quả dưới bình */}
+                    {testResult && (
+                      <div className="flask-result">
+                        <p className="result-phenomenon">{testResult.result}</p>
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
           </div>
+        </section>
 
-          {/* Kết quả thí nghiệm - Hiển thị ngay khi có kết quả */}
-          {testResults.length > 0 && (
-            <div className="test-results">
-              <h3>📋 Kết quả quan sát:</h3>
-              <div className="results-list">
-                {testResults.map((test, idx) => (
-                  <div key={idx} className="result-item">
-                    <div className="result-header">
-                      <strong>Thí nghiệm {idx + 1}:</strong> {test.reagent}
-                    </div>
-                    <div className="result-content">
-                      {/* Hiển thị tờ quỳ đã đổi màu nếu là quỳ tím */}
-                      {test.reagent.includes('Quỳ') && test.isLitmusTest && (
-                        <div className="litmus-result">
-                          <div 
-                            className="litmus-paper-result" 
-                            style={{ backgroundColor: getLitmusColorAfterReaction(test.color) }}
-                          >
-                            <div className="litmus-shine"></div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Hiển thị thanh kim loại đã đổi màu nếu là phản ứng kim loại */}
-                      {test.reagent.includes('Kim loại') && test.isMetalReaction && (
-                        <div className="metal-result">
-                          <div className="metal-rod-result">
-                            {/* Phần trên: Màu kim loại gốc */}
-                            <div className="metal-result-top" style={{ backgroundColor: getReagentColor(test.reagent) }}></div>
-                            {/* Phần dưới: Màu đã phủ */}
-                            <div className="metal-result-bottom" style={{ backgroundColor: test.color }}></div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div className="result-phenomenon">
-                        <span className="phenomenon-label">Hiện tượng:</span>
-                        <span className="phenomenon-text">{test.result}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+        {/* Right Panel - Answer Only */}
+        <aside className="results-panel">
+          
 
-          {/* Nút gợi ý */}
-          {!showAnswer && (
-            <div className="hint-section">
-              <button 
-                className="hint-button"
-                onClick={() => setShowHint(!showHint)}
-              >
-                <Lightbulb size={20} />
-                {showHint ? 'Ẩn gợi ý' : 'Xem gợi ý'}
-              </button>
-              {showHint && (
-                <div className="hint-box">
-                  <Lightbulb size={20} />
-                  <p>{currentQ.hint}</p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Phần chọn đáp án */}
+          {/* Answer Section */}
           {canSubmit && !showAnswer && (
-            <div className="answer-section">
-              <h3>🔬 Dung dịch X là chất gì?</h3>
-              <div className="ion-options">
+            <div className="results-panel bg-white">
+              <h3>Dung dịch X là gì?</h3>
+              <div className="options-grid">
                 {ionOptions.map((ionKey) => {
                   const ion = ionDatabase[ionKey];
                   return (
                     <button
                       key={ionKey}
-                      className={`ion-option ${selectedAnswer === ionKey ? 'selected' : ''}`}
+                      className={`option-btn ${selectedAnswer === ionKey ? 'selected' : ''}`}
                       onClick={() => handleSelectAnswer(ionKey)}
                     >
-                      <span className="ion-formula">{ion.formula}</span>
-                      <span className="ion-name">{ion.name}</span>
+                      <span className="formula">{ion.formula}</span>
+                      <span className="name">{ion.name}</span>
                     </button>
                   );
                 })}
               </div>
-              <div className="submit-section">
-                <button 
-                  className="reset-btn"
-                  onClick={handleReset}
-                >
-                  🔄 Làm lại thí nghiệm
+              <div className="action-btns">
+                <button className="reset-btn" onClick={handleReset}>
+                  <RotateCcw size={18} />
+                  Làm lại
                 </button>
                 <button 
-                  className="submit-btn"
+                  className="submit-btn" 
                   onClick={handleSubmitAnswer}
                   disabled={!selectedAnswer}
                 >
-                  ✓ Xác nhận đáp án
+                  <Check size={18} />
+                  Xác nhận
                 </button>
+              </div>
+            </div>
+          )}
+          
+          {/* Waiting for tests */}
+          {!canSubmit && !showAnswer && (
+            <div className="waiting-section">
+              <p>Hãy thực hiện ít nhất <strong>{currentQ.minTests}</strong> thí nghiệm để trả lời</p>
+              <div className="tests-progress">
+                <span>{testResults.length}/{currentQ.minTests}</span>
+                <div className="tests-bar">
+                  <div className="tests-fill" style={{ width: `${(testResults.length / currentQ.minTests) * 100}%` }}></div>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Hiển thị kết quả */}
+          {/* Show Result */}
           {showAnswer && (
-            <div className={`answer-result ${selectedAnswer === currentQ.unknownSolution ? 'correct' : 'incorrect'}`}>
-              <h3>
-                {selectedAnswer === currentQ.unknownSolution ? '✓ Chính xác!' : '✗ Chưa đúng'}
-              </h3>
-              <div className="correct-answer">
-                <p>Đáp án đúng: <strong>{ionDatabase[currentQ.unknownSolution].formula} - {ionDatabase[currentQ.unknownSolution].name}</strong></p>
+            <div className={`answer-feedback ${selectedAnswer === currentQ.unknownSolution ? 'correct' : 'incorrect'}`}>
+              <div className="feedback-header">
+                {selectedAnswer === currentQ.unknownSolution ? (
+                  <>
+                    <Check size={24} />
+                    <span>Chính xác!</span>
+                  </>
+                ) : (
+                  <>
+                    <X size={24} />
+                    <span>Chưa đúng</span>
+                  </>
+                )}
               </div>
-              <div className="explanation-section">
-                <h4>Giải thích:</h4>
-                <div className="all-reactions">
-                  <p><strong>Các phản ứng đặc trưng của {ionDatabase[currentQ.unknownSolution].name}:</strong></p>
-                  <ul>
-                    {ionDatabase[currentQ.unknownSolution].reactions.map((reaction, idx) => (
-                      <li key={idx}>
-                        <strong>{reaction.reagent}:</strong> {reaction.result}
-                        <br />
-                        <code>{reaction.equation}</code>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="correct-info">
+                <p>Đáp án: <strong>{ionDatabase[currentQ.unknownSolution].formula}</strong></p>
+                <p className="compound-name">{ionDatabase[currentQ.unknownSolution].name}</p>
               </div>
-              <button 
-                onClick={handleNextQuestion}
-                className="next-button"
-              >
-                {currentQuestion < experimentQuestions.length - 1 ? 'Thí nghiệm tiếp theo →' : 'Hoàn thành'}
+              <div className="explanation">
+                <h4>Các phản ứng đặc trưng:</h4>
+                <ul>
+                  {ionDatabase[currentQ.unknownSolution].reactions.slice(0, 3).map((r, idx) => (
+                    <li key={idx}>
+                      <strong>{r.reagent}:</strong> {r.result}
+                      {r.equation && <code>{r.equation}</code>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <button className="next-btn" onClick={handleNextQuestion}>
+                {currentQuestion < experimentQuestions.length - 1 ? 'Tiếp theo →' : 'Hoàn thành'}
               </button>
             </div>
           )}
-        </div>
-      </div>
+        </aside>
+      </main>
 
       <ResumeDialog
         show={showResumeDialog && !gameStarted}

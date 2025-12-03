@@ -1,6 +1,8 @@
+/* Cân Bằng Phương Trình - Styles */
+
 .scale-container {
   position: relative;
-  height: 192px; /* Giảm thêm 20% từ 240px */
+  height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,6 +100,11 @@
   padding: 1.2rem; /* Giảm thêm 20% từ 1.5rem */
   border-radius: 0.65rem; /* Giảm từ 0.8rem */
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: block !important;
+  width: 100%;
+  min-height: 120px;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .species-card {
@@ -105,12 +112,14 @@
   padding: 0.64rem; /* Giảm thêm 20% từ 0.8rem */
   border-radius: 0.48rem; /* Giảm từ 0.6rem */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
   gap: 0.32rem; /* Giảm thêm 20% từ 0.4rem */
   min-width: 77px; /* Giảm thêm 20% từ 96px */
   transition: transform 0.2s, box-shadow 0.2s;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .species-card:hover {
@@ -119,9 +128,10 @@
 }
 
 .coeff-control {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 0.32rem; /* Giảm thêm 20% từ 0.4rem */
+  visibility: visible !important;
 }
 
 .coeff-control button {
@@ -178,6 +188,8 @@
   font-weight: bold;
   color: #1f2937;
   font-family: 'Courier New', monospace;
+  display: block !important;
+  visibility: visible !important;
 }
 
 .molar-mass {

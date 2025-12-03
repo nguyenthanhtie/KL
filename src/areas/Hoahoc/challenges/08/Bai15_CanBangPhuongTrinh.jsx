@@ -69,7 +69,7 @@ export default function TroChoiCanBang(){
     reaction.reactants.forEach((r, i) => { initialCoeffs[`r${i}`] = 1; });
     reaction.products.forEach((p, i) => { initialCoeffs[`p${i}`] = 1; });
     setCoeffs(initialCoeffs);
-  }, [currentLevel]);
+  }, [currentLevel, reaction]);
 
   // Check for saved progress on mount
   useEffect(() => {
@@ -236,9 +236,9 @@ export default function TroChoiCanBang(){
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        {!reaction ? (
+        {!reaction || Object.keys(coeffs).length === 0 ? (
           <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6 text-center">
-            <p>Loading...</p>
+            <p>Đang tải phương trình...</p>
           </div>
         ) : (
         <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6">
