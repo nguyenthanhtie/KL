@@ -410,9 +410,9 @@ router.post('/update-grade', async (req, res) => {
 // Enroll user in a program after placement test
 router.post('/enroll-program', async (req, res) => {
   try {
-    const { userId, programId, programName, initialClassId, placementTestScore, placementTestTotal } = req.body;
+    const { userId, programId, programName, initialClassId, placementTestScore, placementTestTotal, curriculumType } = req.body;
 
-    console.log('📝 Enrolling user:', { userId, programId, initialClassId });
+    console.log('📝 Enrolling user:', { userId, programId, initialClassId, curriculumType });
 
     // Tìm user theo email trước (vì PlacementTest gửi email), sau đó firebaseUid
     let user;
@@ -450,12 +450,17 @@ router.post('/enroll-program', async (req, res) => {
       existingProgram.placementTestCompleted = true;
       existingProgram.placementTestScore = placementTestScore || 0;
       existingProgram.isActive = true;
+      // Cập nhật curriculum type nếu có
+      if (curriculumType) {
+        existingProgram.curriculumType = curriculumType;
+      }
     } else {
       // Chưa có, thêm mới
       user.programs.push({
         programId,
         programName,
         currentClass: initialClassId,
+        curriculumType: curriculumType || null, // Thêm curriculum type
         isActive: true,
         placementTestCompleted: true,
         placementTestScore: placementTestScore || 0,
@@ -614,6 +619,88 @@ router.post('/update-study-time', async (req, res) => {
   } catch (error) {
     console.error('❌ Error updating study time:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Select curriculum for a program
+router.post('/select-curriculum', async (req, res) => {
+  try {
+    const { userId, programId, curriculumType, classId } = req.body;
+
+    console.log('📝 Selecting curriculum:', { userId, programId, curriculumType, classId });
+
+    if (!userId || !programId || !curriculumType) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    // Validate curriculum type
+    const validCurriculums = ['ketnoi', 'canhdieu', 'chantroicangtao', 'standard'];
+    if (!validCurriculums.includes(curriculumType)) {
+      return res.status(400).json({ message: 'Invalid curriculum type' });
+    }
+
+    // Find user
+    let user;
+    try {
+      user = await User.findOne({ 
+        $or: [
+          { email: userId },
+          { firebaseUid: userId }
+        ] 
+      });
+      
+      if (!user && userId.match(/^[0-9a-fA-F]{24}$/)) {
+        user = await User.findById(userId);
+      }
+    } catch (error) {
+      console.log('⚠️ Error finding user:', error.message);
+    }
+    
+    if (!user) {
+      console.log('❌ User not found:', userId);
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    console.log('✅ Found user:', user.email);
+
+    // Find the program
+    const program = user.programs.find(p => p.programId === programId);
+    
+    if (!program) {
+      console.log('❌ Program not found:', programId);
+      return res.status(404).json({ message: 'Program not found. Please enroll in the program first.' });
+    }
+
+    // Update curriculum type
+    program.curriculumType = curriculumType;
+    
+    // Update class if provided
+    if (classId) {
+      program.currentClass = parseInt(classId);
+    }
+
+    user.markModified('programs');
+    await user.save();
+    
+    console.log('✅ Curriculum selected successfully:', { programId, curriculumType });
+
+    res.json({
+      success: true,
+      message: 'Curriculum selected successfully',
+      user: {
+        id: user._id,
+        email: user.email,
+        programs: user.programs,
+        profile: user.profile
+      }
+    });
+  } catch (error) {
+    console.error('❌ Select curriculum error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error', 
+      error: error.message 
+    });
   }
 });
 

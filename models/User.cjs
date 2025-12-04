@@ -68,6 +68,11 @@ const userSchema = new mongoose.Schema({
     },
     programName: String,
     currentClass: Number, // Lớp đang học (8, 9, 10, 11, 12)
+    curriculumType: {
+      type: String,
+      enum: ['ketnoi', 'canhdieu', 'chantroicangtao', 'standard'],
+      default: null // null = chưa chọn
+    },
     // currentLesson: Number, // Bài đang học (removed - progress tracked in progress.completedLessons)
     isActive: {
       type: Boolean,

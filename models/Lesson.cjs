@@ -11,6 +11,12 @@ const lessonSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
+  // curriculumType: ketnoi, canhdieu, chantroicangtao
+  curriculumType: {
+    type: String,
+    enum: ['ketnoi', 'canhdieu', 'chantroicangtao'],
+    required: false
+  },
   // lessonId: bài học identifier inside chapter
   lessonId: {
     type: Number,

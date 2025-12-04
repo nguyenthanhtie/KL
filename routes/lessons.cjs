@@ -12,10 +12,18 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get lessons grouped by classId -> chapterId -> lessons
+// Get lessons grouped by classId -> chapterId -> lessons (with optional curriculum filter)
 router.get('/grouped', async (req, res) => {
   try {
-    const lessons = await Lesson.find().sort({ classId: 1, chapterId: 1, order: 1 });
+    const { curriculumType } = req.query;
+    
+    // Build query filter
+    const filter = {};
+    if (curriculumType) {
+      filter.curriculumType = curriculumType;
+    }
+    
+    const lessons = await Lesson.find(filter).sort({ classId: 1, chapterId: 1, order: 1 });
 
     const grouped = {};
     lessons.forEach((l) => {
@@ -80,13 +88,21 @@ router.get('/statistics', async (req, res) => {
   }
 });
 
-// Get lessons by path
+// Get lessons by path (with optional curriculum filter)
 router.get('/class/:classId/chapter/:chapterId', async (req, res) => {
   try {
-    const lessons = await Lesson.find({
+    const { curriculumType } = req.query;
+    
+    const filter = {
       classId: parseInt(req.params.classId),
       chapterId: parseInt(req.params.chapterId)
-    }).sort({ order: 1 });
+    };
+    
+    if (curriculumType) {
+      filter.curriculumType = curriculumType;
+    }
+    
+    const lessons = await Lesson.find(filter).sort({ order: 1 });
 
     res.json(lessons);
   } catch (error) {
@@ -94,14 +110,22 @@ router.get('/class/:classId/chapter/:chapterId', async (req, res) => {
   }
 });
 
-// Get specific lesson by classId, chapterId, lessonId
+// Get specific lesson by classId, chapterId, lessonId (with optional curriculum filter)
 router.get('/class/:classId/chapter/:chapterId/lesson/:lessonId', async (req, res) => {
   try {
-    const lesson = await Lesson.findOne({ 
+    const { curriculumType } = req.query;
+    
+    const filter = {
       classId: parseInt(req.params.classId),
       chapterId: parseInt(req.params.chapterId),
       lessonId: parseInt(req.params.lessonId)
-    });
+    };
+    
+    if (curriculumType) {
+      filter.curriculumType = curriculumType;
+    }
+    
+    const lesson = await Lesson.findOne(filter);
     
     if (!lesson) {
       return res.status(404).json({ message: 'Lesson not found' });

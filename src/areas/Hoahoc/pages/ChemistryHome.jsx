@@ -82,8 +82,8 @@ const ChemistryHome = () => {
 
       const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry' && p.isActive);
       if (!chemistryProgram) {
-        // Chưa đăng ký -> chuyển đến placement test
-        navigate('/placement-test/chemistry');
+        // Chưa đăng ký -> chuyển đến chọn curriculum trước
+        navigate('/curriculum-selection/chemistry');
         return;
       }
 
