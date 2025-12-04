@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 1,
+  chapterName: "Chất – Nguyên tử – Phân tử",
   lessonId: 3,
   title: "Bài 3: Bài thực hành 1 - Quan sát và phân biệt chất",
   description: "Thực hành quan sát và phân biệt các chất khác nhau",

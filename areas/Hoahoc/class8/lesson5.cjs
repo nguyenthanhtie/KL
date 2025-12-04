@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 1,
+  chapterName: "Chất – Nguyên tử – Phân tử",
   lessonId: 5,
   title: "Bài 5: Đơn chất và hợp chất",
   description: "Phân biệt đơn chất và hợp chất, ví dụ và ứng dụng",

@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 6,
+  chapterName: "Dung dịch",
   lessonId: 41,
   title: "Bài 41: Bài luyện tập 8 - Tính toán về dung dịch",
   description: "Ôn tập và luyện tập về dung dịch, độ tan, nồng độ phần trăm và nồng độ mol",

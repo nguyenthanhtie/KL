@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 34,
   title: "Bài 34: Nước",
   description: "Tính chất, vai trò và ứng dụng của nước trong đời sống",

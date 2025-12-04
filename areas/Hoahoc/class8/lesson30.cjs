@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 4,
+  chapterName: "Oxi – Không khí",
   lessonId: 30,
   title: "Bài 30: Phản ứng oxi hóa khử",
   description: "Tìm hiểu khái niệm và nhận biết phản ứng oxi hóa khử",

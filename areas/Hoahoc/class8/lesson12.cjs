@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 2, // Đảm bảo đúng chương 2
+  chapterId: 2,
+  chapterName: "Phản ứng hóa học",
   lessonId: 12,
   title: "Bài 12: Sự biến đổi chất",
   description: "Phân biệt hiện tượng vật lí và hiện tượng hóa học",

@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 1,
+  chapterName: "Chất – Nguyên tử – Phân tử",
   lessonId: 4,
   title: "Bài 4: Nguyên tử",
   description: "Tìm hiểu cấu tạo nguyên tử, hạt nhân và lớp vỏ electron",

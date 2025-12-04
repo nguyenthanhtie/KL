@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 4,
+  chapterName: "Oxi – Không khí",
   lessonId: 28,
   title: "Bài 28: Bài thực hành 4 - Tổng hợp Chương 4",
   description: "Tìm hiểu cấu trúc của Bảng tuần hoàn, quy luật biến đổi tính chất của các nguyên tố và ý nghĩa của nó trong hóa học.",

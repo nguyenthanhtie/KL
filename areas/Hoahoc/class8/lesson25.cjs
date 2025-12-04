@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 4,
+  chapterName: "Oxi – Không khí",
   lessonId: 25,
   title: "Bài 25: Nhôm và Sắt - Hai kim loại quan trọng",
   description: "Tìm hiểu sâu hơn về tính chất, ứng dụng và sản xuất của hai kim loại phổ biến và quan trọng nhất: Nhôm (Al) và Sắt (Fe).",

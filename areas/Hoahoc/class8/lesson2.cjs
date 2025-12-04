@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 1,
+  chapterName: "Chất – Nguyên tử – Phân tử", // Thêm tên chương
   lessonId: 2,
   title: "Bài 2: Chất và tính chất vật lý",
   description: "Tìm hiểu về chất, phân loại chất, tính chất vật lý và thực hành",

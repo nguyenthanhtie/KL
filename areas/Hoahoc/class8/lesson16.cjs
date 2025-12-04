@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 2, // Đổi từ 3 về 2
+  chapterId: 2,
+  chapterName: "Phản ứng hóa học",
   lessonId: 16,
   title: "Bài 16: Phương trình hóa học",
   description: "Cách viết và cân bằng phương trình hóa học",

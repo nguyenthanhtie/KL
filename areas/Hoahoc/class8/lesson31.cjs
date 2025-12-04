@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 31,
   title: "Bài 31: Điều chế khí hidro – Phản ứng thế",
   description: "Các phương pháp điều chế H₂ và phản ứng thế trong hóa học",

@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 36,
   title: "Bài 36: Bài luyện tập 7 - Nước và các chất",
   description: "Ôn tập về nước, axit, bazơ, muối và các phản ứng liên quan",

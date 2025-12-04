@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 37,
   title: "Bài 37: Bài thực hành 6 - Tổng hợp Chương 5",
   description: "Thực hành tổng hợp về hidro, nước, axit, bazơ, muối",

@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 3, // Phải là chương 3
+  chapterId: 3,
+  chapterName: "Mol và tính toán hóa học",
   lessonId: 18,
   title: "Bài 18: Mol",
   description: "Khám phá về nguyên tố Hiđro, tính chất vật lí, tính chất hóa học (tính khử) và các ứng dụng quan trọng của nó.",

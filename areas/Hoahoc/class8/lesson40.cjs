@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 6,
+  chapterName: "Dung dịch",
   lessonId: 40,
   title: "Bài 40: Nồng độ dung dịch",
   description: "Nồng độ phần trăm (C%) và nồng độ mol (CM), cách tính và ứng dụng",

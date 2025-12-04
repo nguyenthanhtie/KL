@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 38,
   title: "Bài 38: Dung dịch",
   description: "Khái niệm dung dịch, chất tan, dung môi và phân loại dung dịch",

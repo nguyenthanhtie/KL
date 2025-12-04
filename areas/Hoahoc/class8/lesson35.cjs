@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 35,
   title: "Bài 35: Axit – Bazơ – Muối",
   description: "Tìm hiểu về axit, bazơ, muối và vai trò trong đời sống",

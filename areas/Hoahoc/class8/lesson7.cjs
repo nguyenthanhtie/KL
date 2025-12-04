@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 1,
+  chapterName: "Chất – Nguyên tử – Phân tử",
   lessonId: 7,
   title: "Bài 7: Công thức hóa học",
   description: "Cách viết và ý nghĩa của công thức hóa học",

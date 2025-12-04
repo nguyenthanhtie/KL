@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 2, // Đổi từ 3 về 2
+  chapterId: 2,
+  chapterName: "Phản ứng hóa học",
   lessonId: 17,
   title: "Bài 17: Bài luyện tập 3 - Tổng hợp Chương 2",
   description: "Ôn tập và luyện tập về phản ứng hóa học, định luật bảo toàn khối lượng và phương trình hóa học",

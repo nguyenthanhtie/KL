@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 4,
+  chapterName: "Oxi – Không khí",
   lessonId: 27,
   title: "Bài 27: Bài luyện tập 5 - Oxi và không khí",
   description: "Khám phá các tính chất vật lý và hóa học đặc trưng của phi kim, tập trung vào Clo và Cacbon.",

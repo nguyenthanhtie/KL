@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 4,
+  chapterName: "Oxi – Không khí",
   lessonId: 24,
   title: "Bài 24: Kim loại - Tính chất vật lý và hóa học chung",
   description: "Tìm hiểu về các tính chất vật lý đặc trưng và các tính chất hóa học chung của kim loại, cùng với dãy hoạt động hóa học.",
