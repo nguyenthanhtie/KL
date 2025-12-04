@@ -24,7 +24,11 @@ const challenges = [
     points: 100,
     status: 'available',
     link: '/advanced-challenge/duoi-hinh',
-    features: ['10 câu hỏi', 'Có gợi ý', 'Giới hạn thời gian', 'Điểm cao']
+    features: ['10 câu hỏi', 'Có gợi ý', 'Giới hạn thời gian', 'Điểm cao'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 1
+    }
   },
 
   // STRUCTURE - Easy
@@ -42,7 +46,11 @@ const challenges = [
     points: 200,
     status: 'available',
     link: '/advanced-challenge/cau-truc-nguyen-tu',
-    features: ['10 thử thách', 'Mô phỏng nguyên tử', 'Vỏ electron', 'Học về đồng vị']
+    features: ['10 thử thách', 'Mô phỏng nguyên tử', 'Vỏ electron', 'Học về đồng vị'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 1
+    }
   },
 
   // STRUCTURE - Medium
@@ -60,7 +68,11 @@ const challenges = [
     points: 200,
     status: 'available',
     link: '/advanced-challenge/ghep-nguyen-tu',
-    features: ['36 nguyên tố', 'Tương tác kéo thả', 'Hình ảnh 3D', '6 thử thách']
+    features: ['36 nguyên tố', 'Tương tác kéo thả', 'Hình ảnh 3D', '6 thử thách'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 2
+    }
   },
 
   // EXPERIMENT - Easy
@@ -73,12 +85,16 @@ const challenges = [
     difficultyLevel: 'easy',
     difficultyColor: 'bg-green-600',
     category: 'experiment',
-    grade: 9,
+    grade: 8,
     time: '15-20 phút',
     points: 220,
     status: 'available',
     link: '/advanced-challenge/phong-thi-nghiem',
-    features: ['10 thí nghiệm', 'Mô phỏng phản ứng', 'Bọt khí thực tế', 'Kệ hóa chất']
+    features: ['10 thí nghiệm', 'Mô phỏng phản ứng', 'Bọt khí thực tế', 'Kệ hóa chất'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 5
+    }
   },
 
   // EXPERIMENT - Medium
@@ -91,12 +107,16 @@ const challenges = [
     difficultyLevel: 'medium',
     difficultyColor: 'bg-blue-500',
     category: 'experiment',
-    grade: 12,
+    grade: 8,
     time: '15-20 phút',
     points: 250,
     status: 'available',
     link: '/advanced-challenge/nhan-biet-dung-dich',
-    features: ['8 thí nghiệm', 'Mô phỏng phòng lab', 'Hiệu ứng thực tế', 'Nhiều vòng kiểm tra']
+    features: ['8 thí nghiệm', 'Mô phỏng phòng lab', 'Hiệu ứng thực tế', 'Nhiều vòng kiểm tra'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 38,
+    }
   },
 
   // MOLECULE - Medium
@@ -114,7 +134,11 @@ const challenges = [
     points: 280,
     status: 'available',
     link: '/advanced-challenge/xay-dung-phan-tu',
-    features: ['3 cấp độ', '12 phân tử', 'Tương tác kéo thả', 'Hỗ trợ liên kết đa dạng']
+    features: ['3 cấp độ', '12 phân tử', 'Tương tác kéo thả', 'Hỗ trợ liên kết đa dạng'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 3
+    }
   },
 
   // SOLUTION - Medium
@@ -127,12 +151,16 @@ const challenges = [
     difficultyLevel: 'medium',
     difficultyColor: 'bg-cyan-500',
     category: 'solution',
-    grade: 10,
+    grade: 8,
     time: '20-25 phút',
     points: 300,
     status: 'available',
     link: '/advanced-challenge/pha-che-dung-dich',
-    features: ['12 thử thách', 'Mô phỏng bình thí nghiệm', '3 cấp độ', 'Công thức chi tiết']
+    features: ['12 thử thách', 'Mô phỏng bình thí nghiệm', '3 cấp độ', 'Công thức chi tiết'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 6
+    }
   },
 
   // REACTION - Medium
@@ -150,7 +178,11 @@ const challenges = [
     points: 250,
     status: 'available',
     link: '/advanced-challenge/can-bang',
-    features: ['8 phản ứng', 'Tính khối lượng mol', 'Kiểm tra tức thì', 'Độ khó tăng dần']
+    features: ['8 phản ứng', 'Tính khối lượng mol', 'Kiểm tra tức thì', 'Độ khó tăng dần'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 15
+    }
   },
 
   // REACTION - Hard
@@ -163,12 +195,16 @@ const challenges = [
     difficultyLevel: 'hard',
     difficultyColor: 'bg-red-500',
     category: 'reaction',
-    grade: 11,
+    grade: 10,
     time: '20-30 phút',
     points: 300,
     status: 'available',
     link: '/advanced-challenge/suy-luan',
-    features: ['8 màn chơi', 'Gợi ý chi tiết', 'Kéo thả chất', 'Kiểm tra phản ứng']
+    features: ['8 màn chơi', 'Gợi ý chi tiết', 'Kéo thả chất', 'Kiểm tra phản ứng'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 5
+    }
   },
 
   // ELECTROCHEMISTRY - Medium (NEW)
@@ -186,8 +222,123 @@ const challenges = [
     points: 280,
     status: 'available',
     link: '/advanced-challenge/tinh-oxi-hoa',
-    features: ['8 thử thách', 'Animation số oxi hóa', 'Giải thích chi tiết', 'Độ khó tăng dần']
-  }
+    features: ['8 thử thách', 'Animation số oxi hóa', 'Giải thích chi tiết', 'Độ khó tăng dần'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 4
+    }
+  },
+
+  // CALCULATION - Medium (NEW - Lớp 8)
+  {
+    id: 11,
+    name: 'Tính Khối Lượng Mol',
+    description: 'Rèn luyện kỹ năng chuyển đổi giữa khối lượng, mol và số phân tử. Bài tập tính toán nhanh với nhiều mức độ khó khác nhau.',
+    icon: '🧮',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-yellow-500',
+    category: 'calculation',
+    grade: 8,
+    time: '10-15 phút',
+    points: 200,
+    status: 'available',
+    link: '/advanced-challenge/mol-quick-calc',
+    features: ['Câu hỏi ngẫu nhiên', 'Gợi ý từng bước', 'Chế độ luyện tập', 'Time-attack', 'Streak bonus'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 18
+    }
+  },
+
+  // OBSERVATION - Medium (NEW - Lớp 8, Chương 2)
+  {
+    id: 12,
+    name: 'Quan Sát Phản Ứng',
+    description: 'Nhận biết các hiện tượng hóa học qua quan sát phản ứng. Rèn luyện kỹ năng quan sát và phân tích các dấu hiệu của phản ứng hóa học.',
+    icon: '👁️',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-blue-500',
+    category: 'observation',
+    grade: 8,
+    time: '12-18 phút',
+    points: 220,
+    status: 'available',
+    link: '/advanced-challenge/quan-sat-phan-ung',
+    features: ['8 phản ứng thực tế', 'Nhận diện hiện tượng', 'Giải thích chi tiết', 'Hệ thống điểm thưởng'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 12
+    }
+  },
+
+  // COMPREHENSIVE - Hard
+  {
+    id: 13,
+    name: 'Tổng Kết Hóa Học Lớp 8',
+    description: 'Thử thách tổng hợp toàn bộ kiến thức Hóa học lớp 8 với 30 câu hỏi đa dạng. Kiểm tra mức độ nắm vững của bạn qua trắc nghiệm, điền từ, tính toán và cân bằng phương trình.',
+    icon: '🎓',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-500',
+    category: 'game',
+    grade: 8,
+    time: '25-35 phút',
+    points: 400,
+    status: 'available',
+    link: '/advanced-challenge/tong-ket-lop-8',
+    features: ['30 câu hỏi tổng hợp', '4 dạng câu hỏi', 'Bao quát 10 chương', 'Điểm thưởng thời gian', 'Phân tích chi tiết'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 42
+    }
+  },
+  // OXI - AIR - Medium (NEW - Lớp 8)
+  {
+    id: 14,
+    name: 'Oxi — Không Khí',
+    description: 'Thử thách tương tác về Oxi và không khí: thành phần không khí, sự oxi hóa, điều kiện cháy và bài toán stoichiometry đơn giản.',
+    icon: '🌬️',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-yellow-500',
+    category: 'observation',
+    grade: 8,
+    time: '10-20 phút',
+    points: 220,
+    status: 'available',
+    link: '/advanced-challenge/oxi-khong-khi',
+    features: ['MCQ', 'Thành phần không khí (nhập %)', 'Kiểm tra điều kiện cháy', 'Bài toán stoichiometry đơn giản'],
+    prerequisite: {
+      classId: 8,
+      lessonId: 20
+    }
+  },
+  // INORGANIC COMPOUNDS - Grade 9 (NEW)
+  {
+    id: 15,
+    name: 'Các loại hợp chất vô cơ',
+    description: 'Kiểm tra kiến thức về oxit, axit, bazơ, muối và mối quan hệ giữa chúng (lí thuyết + bài tập vận dụng).',
+    icon: '🧪',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-indigo-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-20 phút',
+    points: 240,
+    status: 'available',
+    link: '/advanced-challenge/hop-chat-vo-co',
+    features: ['20 câu hỏi', 'Nhiều dạng: trắc nghiệm, điền từ, ghép, phân loại, sắp xếp', 'Gợi ý và giải thích'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 7
+    }
+  },
+  
+    
+  
 ];
 
 async function seedDatabase() {
@@ -208,7 +359,39 @@ async function seedDatabase() {
       ...lessons12
     ];
 
-    await Lesson.insertMany(allLessons);
+    // Transform game structure from array to object with quizzes
+    const transformedLessons = allLessons.map(lesson => {
+      if (Array.isArray(lesson.game)) {
+        // If game is an array, wrap it in quizzes property
+        return {
+          ...lesson,
+          game: {
+            quizzes: lesson.game
+          }
+        };
+      }
+      // If game is already an object (legacy structure with basic/intermediate/advanced)
+      // keep it as is, or transform to quizzes if needed
+      if (lesson.game && typeof lesson.game === 'object' && !lesson.game.quizzes) {
+        const quizzes = [
+          ...(lesson.game.basic || []),
+          ...(lesson.game.intermediate || []),
+          ...(lesson.game.advanced || [])
+        ];
+        return {
+          ...lesson,
+          game: {
+            quizzes: quizzes.length > 0 ? quizzes : undefined,
+            basic: lesson.game.basic,
+            intermediate: lesson.game.intermediate,
+            advanced: lesson.game.advanced
+          }
+        };
+      }
+      return lesson;
+    });
+
+    await Lesson.insertMany(transformedLessons);
     console.log('✓ Đã thêm bài học:');
     console.log('  - Lớp 8:', lessons8.length, 'bài');
     console.log('  - Lớp 9:', lessons9.length, 'bài');

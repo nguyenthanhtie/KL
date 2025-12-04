@@ -3,12 +3,16 @@ import { useAuth } from '../../../contexts/AuthContext';
 import Button from '../../../components/ui/Button';
 import { useEffect, useState } from 'react';
 import { BookOpen, Trophy, Target, Clock, Star, Flame, Zap, Award, TrendingUp, Play, LogOut, ChevronDown } from 'lucide-react';
+import api from '../../../config/api';
 
 const ChemistryHome = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [programData, setProgramData] = useState(null);
   const [showProgramDropdown, setShowProgramDropdown] = useState(false);
+  const [grades, setGrades] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [computedStats, setComputedStats] = useState(null);
 
   const handleLogout = async () => {
     try {
@@ -44,26 +48,147 @@ const ChemistryHome = () => {
     setShowProgramDropdown(false);
   };
 
+  // Topic mapping for each grade
+  const topicMapping = {
+    8: {
+      topics: ['Chất - Nguyên tử - Phân tử', 'Phản ứng hóa học', 'Mol và tính toán', 'Oxi - Không khí', 'Hiđro - Nước', 'Dung dịch'],
+      icon: '⚗️'
+    },
+    9: {
+      topics: ['Phi kim', 'Kim loại', 'Hợp chất hữu cơ', 'Hóa học và cuộc sống'],
+      icon: '🔬'
+    },
+    10: {
+      topics: ['Nguyên tử', 'Bảng tuần hoàn', 'Liên kết hóa học', 'Phản ứng oxi hóa khử'],
+      icon: '⚛️'
+    },
+    11: {
+      topics: ['Sự điện li', 'Nhóm Halogen', 'Nhóm Oxi', 'Tốc độ phản ứng', 'Nitơ - Photpho'],
+      icon: '🧪'
+    },
+    12: {
+      topics: ['Este - Lipit', 'Cacbohiđrat', 'Amin - Amino axit', 'Polime', 'Kim loại', 'Hóa học hữu cơ tổng hợp'],
+      icon: '🧬'
+    }
+  };
+
   useEffect(() => {
-    // Kiểm tra xem user đã đăng ký chương trình Hóa học chưa
-    if (!user) {
-      navigate('/login');
-      return;
-    }
+    const initializeData = async () => {
+      // Kiểm tra xem user đã đăng ký chương trình Hóa học chưa
+      if (!user) {
+        navigate('/login');
+        return;
+      }
 
-    const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry' && p.isActive);
-    if (!chemistryProgram) {
-      // Chưa đăng ký -> chuyển đến placement test
-      navigate('/placement-test/chemistry');
-      return;
-    }
+      const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry' && p.isActive);
+      if (!chemistryProgram) {
+        // Chưa đăng ký -> chuyển đến placement test
+        navigate('/placement-test/chemistry');
+        return;
+      }
 
-    console.log('Chemistry Program Data:', chemistryProgram);
-    console.log('Current Class:', chemistryProgram.currentClass);
-    setProgramData(chemistryProgram);
-  }, [user, navigate]);
+      setProgramData(chemistryProgram);
 
-  if (!programData) {
+      // Fetch user progress from API
+      try {
+        setLoading(true);
+        const userUid = user?.firebaseUid || user?.uid;
+        
+        // Fetch actual user progress
+        const userResponse = await api.get(`/users/firebase/${userUid}`);
+        const userData = userResponse.data;
+        
+        // Find chemistry program progress
+        const chemProgram = userData.programs?.find(p => p.programId === 'chemistry');
+        
+        // Fetch grades statistics
+        const response = await api.get('/lessons/statistics');
+        
+        // Normalize response – support multiple shapes: [] | { data: [] } | { grades: [] }
+        const raw = response.data;
+        const list = Array.isArray(raw) ? raw : (raw.data || raw.grades || []);
+
+        // Calculate user's completed lessons per class from chemistry program
+        const completedLessonsByClass = {};
+        const lessonStarsMap = chemProgram?.progress?.lessonStars || {};
+        
+        if (chemProgram && chemProgram.progress && chemProgram.progress.completedLessons) {
+          chemProgram.progress.completedLessons.forEach(uniqueId => {
+            // uniqueId format: classId * 1000 + lessonId
+            const lessonClassId = Math.floor(uniqueId / 1000);
+            if (!completedLessonsByClass[lessonClassId]) {
+              completedLessonsByClass[lessonClassId] = 0;
+            }
+            completedLessonsByClass[lessonClassId]++;
+          });
+        }
+
+        // Map and normalize each grade object (ensure numeric grade and expected keys)
+        const gradesWithTopics = list.map(g => {
+          const gradeNum = Number(g.grade ?? g.class ?? g.classId);
+          const completedForThisClass = completedLessonsByClass[gradeNum] || 0;
+          
+          return {
+            // keep original fields, but normalize names commonly used in UI
+            grade: Number.isNaN(gradeNum) ? 0 : gradeNum,
+            chapters: g.chapters ?? g.totalChapters ?? 0,
+            lessons: g.lessons ?? g.totalLessons ?? 0,
+            completedLessons: completedForThisClass,
+            completedChapters: g.completedChapters ?? 0,
+            totalStars: g.totalStars ?? g.stars ?? 0,
+            totalPoints: g.totalPoints ?? g.points ?? 0,
+            totalTimeSpent: g.totalTimeSpent ?? g.timeSpent ?? 0,
+            topics: topicMapping[Number(g.grade ?? g.class ?? g.classId)]?.topics || [],
+            icon: topicMapping[Number(g.grade ?? g.class ?? g.classId)]?.icon || '📚',
+            // include other original data if needed
+            ...g
+          };
+        });
+
+        setGrades(gradesWithTopics);
+
+        // Compute actual user stats from chemistry program
+        if (chemProgram && chemProgram.progress) {
+          const completedCount = chemProgram.progress.completedLessons?.length || 0;
+          const totalScore = chemProgram.progress.totalScore || 0;
+          
+          // Calculate total stars from lessonStars map
+          const totalStars = Object.values(lessonStarsMap).reduce((sum, stars) => sum + (stars || 0), 0);
+          
+          const userStats = {
+            totalLessons: gradesWithTopics.reduce((sum, g) => sum + Number(g.lessons || 0), 0),
+            completedLessons: completedCount,
+            totalStars: totalStars,
+            totalPoints: totalScore,
+            averageScore: completedCount > 0 ? Math.round(totalScore / completedCount) : 0,
+            totalTimeSpent: 0 // TODO: implement time tracking
+          };
+          
+          setComputedStats(userStats);
+        } else {
+          // Fallback if no progress data
+          const aggregated = gradesWithTopics.reduce((acc, g) => {
+            acc.totalLessons += Number(g.lessons || 0);
+            return acc;
+          }, { totalLessons: 0, completedLessons: 0, totalStars: 0, totalPoints: 0, averageScore: 0, totalTimeSpent: 0 });
+
+          setComputedStats(aggregated);
+        }
+
+       } catch (error) {
+         console.error('Error fetching grades data:', error);
+         // Fallback to empty array if error
+         setGrades([]);
+         setComputedStats({ totalLessons: 0, completedLessons: 0, totalStars: 0, totalPoints: 0, averageScore: 0, totalTimeSpent: 0 });
+       } finally {
+         setLoading(false);
+       }
+     };
+
+     initializeData();
+   }, [user, navigate]);
+
+  if (!programData || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -74,7 +199,9 @@ const ChemistryHome = () => {
     );
   }
 
-  const stats = programData.programProgress?.statistics || {
+  // Prefer program-provided statistics; fallback to computedStats (from grades) if missing
+  const programStats = programData.programProgress?.statistics || null;
+  const stats = programStats || computedStats || {
     totalLessons: 0,
     completedLessons: 0,
     totalStars: 0,
@@ -84,49 +211,18 @@ const ChemistryHome = () => {
   };
 
   // Get current class from programData.currentClass (set by placement test)
-  const currentClassId = programData.currentClass || 8;
+  const currentClassId = Number(programData.currentClass ?? 8);
   const currentClass = { classId: currentClassId, className: `Lớp ${currentClassId}` };
-  const completionRate = stats.totalLessons > 0 
-    ? Math.round((stats.completedLessons / stats.totalLessons) * 100) 
+  
+  // Get current class data from grades
+  const currentGradeData = grades.find(g => Number(g.grade) === Number(currentClassId));
+  const currentClassTotalLessons = currentGradeData?.lessons || 0;
+  const currentClassCompletedLessons = currentGradeData?.completedLessons || 0;
+  
+  // Calculate completion rate for current class based on actual user progress
+  const completionRate = currentClassTotalLessons > 0 
+    ? Math.round((currentClassCompletedLessons / currentClassTotalLessons) * 100) 
     : 0;
-
-  const grades = [
-    { 
-      grade: 8, 
-      topics: ['Chất - Nguyên tử - Phân tử', 'Phản ứng hóa học', 'Mol và tính toán', 'Oxi - Không khí', 'Hiđro - Nước'], 
-      chapters: 7, 
-      lessons: 28,
-      icon: '⚗️'
-    },
-    { 
-      grade: 9, 
-      topics: ['Phi kim', 'Kim loại', 'Hợp chất hữu cơ', 'Hóa học và cuộc sống'], 
-      chapters: 6, 
-      lessons: 24,
-      icon: '🔬'
-    },
-    { 
-      grade: 10, 
-      topics: ['Nguyên tử', 'Bảng tuần hoàn', 'Liên kết hóa học', 'Phản ứng oxi hóa khử'], 
-      chapters: 8, 
-      lessons: 32,
-      icon: '⚛️'
-    },
-    { 
-      grade: 11, 
-      topics: ['Sự điện li', 'Nhóm Halogen', 'Nhóm Oxi', 'Tốc độ phản ứng', 'Nitơ - Photpho'], 
-      chapters: 7, 
-      lessons: 30,
-      icon: '🧪'
-    },
-    { 
-      grade: 12, 
-      topics: ['Este - Lipit', 'Cacbohiđrat', 'Amin - Amino axi t', 'Polime', 'Kim loại', 'Hóa học hữu cơ tổng hợp'], 
-      chapters: 9, 
-      lessons: 36,
-      icon: '🧬'
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -237,7 +333,7 @@ const ChemistryHome = () => {
                     </div>
                     <div>
                       <h1 className="text-3xl md:text-4xl font-bold mb-1">
-                        Chào mừng trở lại, {user?.displayName || 'Học sinh'}! 👋
+                        Chào mừng trở lại, {user?.displayName || user?.username || 'Học sinh'}! 👋
                       </h1>
                       <p className="text-blue-100 text-lg">
                         Tiếp tục hành trình khám phá Hóa học cùng chúng tôi
@@ -266,7 +362,7 @@ const ChemistryHome = () => {
                   ></div>
                 </div>
                 <div className="flex justify-between mt-3 text-sm text-blue-100">
-                  <span>{stats.completedLessons} / {stats.totalLessons} bài học</span>
+                  <span>{currentClassCompletedLessons} / {currentClassTotalLessons} bài học</span>
                   <span>{stats.totalStars} ⭐</span>
                 </div>
               </div>
@@ -327,7 +423,7 @@ const ChemistryHome = () => {
           {/* Quick Actions */}
           <div className="grid md:grid-cols-3 gap-4 mb-6">
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/program/chemistry/dashboard')}
               className="group bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
             >
               <div className="flex items-center justify-between mb-3">
@@ -389,14 +485,22 @@ const ChemistryHome = () => {
           </div>
 
           <div className="space-y-4">
-            {grades.map(({ grade, topics, chapters, lessons, icon }) => {
+            {grades.map(({ grade, topics, chapters, lessons, icon, completedLessons = 0 }) => {
               const isCurrentGrade = currentClass.classId === grade;
+              const isPastGrade = grade < currentClass.classId;
               const classProgress = programData.programProgress?.classProgress?.find(c => c.classId === grade);
-              const isUnlocked = classProgress?.isUnlocked || grade <= currentClass.classId;
-              const isCompleted = classProgress?.completedAt;
-              const progress = classProgress 
-                ? Math.round((classProgress.chapters?.filter(ch => ch.completedAt).length || 0) / (chapters || 1) * 100)
-                : 0;
+              // Past grades should always be unlocked for review
+              const isUnlocked = classProgress?.isUnlocked || grade <= currentClass.classId || isPastGrade;
+              const isCompleted = classProgress?.completedAt || isPastGrade;
+              let progress = 0;
+              if (classProgress) {
+                progress = Math.round((classProgress.chapters?.filter(ch => ch.completedAt).length || 0) / (chapters || 1) * 100);
+              } else {
+                // Fallback: compute progress from completedLessons (count) vs total lessons
+                progress = lessons > 0 ? Math.round((completedLessons || 0) / lessons * 100) : 0;
+              }
+              // If this is a past grade (lower than current), treat as 100% complete for display
+              const displayProgress = isPastGrade ? 100 : progress;
 
               return (
                 <div 
@@ -471,7 +575,7 @@ const ChemistryHome = () => {
                           onClick={() => navigate(`/class/${grade}`)}
                           className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all hover:scale-105 shadow-lg flex items-center gap-2"
                         >
-                          {isCurrentGrade ? 'Học tiếp' : 'Xem chi tiết'}
+                          {isCurrentGrade ? 'Học tiếp' : (isPastGrade ? 'Xem lại' : 'Xem chi tiết')}
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
@@ -480,12 +584,12 @@ const ChemistryHome = () => {
                     </div>
 
                     {/* Progress Bar */}
-                    {isUnlocked && !isCompleted && (
+                    {isUnlocked && (
                       <div className="mb-4">
                         <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                           <div 
                             className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500"
-                            style={{ width: `${progress}%` }}
+                            style={{ width: `${displayProgress}%` }}
                           ></div>
                         </div>
                       </div>
@@ -563,7 +667,7 @@ const ChemistryHome = () => {
         </div>
       </section>
 
-      <style jsx>{`
+      <style>{`
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }
           33% { transform: translate(30px, -50px) scale(1.1); }

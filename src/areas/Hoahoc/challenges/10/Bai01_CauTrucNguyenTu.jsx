@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Trophy, Atom, Zap, Circle } from 'lucide-react';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
-import './CauTrucNguyenTu.css';
+import { ArrowLeft, Trophy, Atom, Zap, Target, Brain } from 'lucide-react';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
+import './CSS/Bai01_CauTrucNguyenTu.css';
 
 const CauTrucNguyenTu = () => {
   const navigate = useNavigate();
@@ -459,13 +459,19 @@ const CauTrucNguyenTu = () => {
               >
                 {Array(count).fill(0).map((_, i) => {
                   const angle = (360 / count) * i;
+                  const radius = 57.5 + shellIndex * 23;
+                  // duration slightly varies by shell so outer shells rotate slower
+                  const duration = 8 + shellIndex * 3;
                   return (
                     <div
                       key={`e-${shellIndex}-${i}`}
                       className="electron"
                       style={{
-                        transform: `rotate(${angle}deg) translateX(${57.5 + shellIndex * 23}px)`,
-                        animationDelay: `${i * 0.1}s`
+                        // CSS custom properties used by CSS keyframes
+                        '--angle': `${angle}deg`,
+                        '--radius': `${radius}px`,
+                        '--duration': `${duration}s`,
+                        '--delay': `${i * 0.1}s`
                       }}
                       title="Electron (-)"
                     >
@@ -547,26 +553,11 @@ const CauTrucNguyenTu = () => {
             </span>
             <span className="points-badge">+{currentQ.points} điểm</span>
           </div>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${((currentChallenge + 1) / challenges.length) * 100}%` }}
-            />
-          </div>
+         
         </div>
 
         {/* Challenge Title */}
-        <div className="challenge-title">
-          <h2>{currentQ.title}</h2>
-          <p>{currentQ.question}</p>
-          {currentQ.isIsotope && (
-            <div className="isotope-note">
-              ⚛️ Đây là đồng vị của {currentQ.element.symbol}. 
-              So sánh với {currentQ.compareWith.name} ({currentQ.compareWith.massNumber}{currentQ.element.symbol}): 
-              cùng số proton nhưng khác số neutron ({currentQ.compareWith.neutrons} neutron)
-            </div>
-          )}
-        </div>
+  
 
         {/* Two Column Layout */}
         <div className="two-column-layout">
@@ -606,11 +597,14 @@ const CauTrucNguyenTu = () => {
               <h3>Nhập số hạt:</h3>
               <div className="input-grid">
                 <div className="input-group">
-                  <label>
+                  <label htmlFor={`protons-${currentChallenge}`}>
                     <span className="particle-badge proton-badge">p⁺</span>
                     Số Proton:
                   </label>
                   <input
+                    id={`protons-${currentChallenge}`}
+                    aria-label={`Số proton cho thử thách ${currentChallenge + 1}`}
+                    placeholder="Nhập số proton"
                     type="number"
                     min="0"
                     value={userInputs.protons}
@@ -620,11 +614,14 @@ const CauTrucNguyenTu = () => {
                   />
                 </div>
                 <div className="input-group">
-                  <label>
+                  <label htmlFor={`neutrons-${currentChallenge}`}>
                     <span className="particle-badge neutron-badge">n</span>
                     Số Neutron:
                   </label>
                   <input
+                    id={`neutrons-${currentChallenge}`}
+                    aria-label={`Số neutron cho thử thách ${currentChallenge + 1}`}
+                    placeholder="Nhập số neutron"
                     type="number"
                     min="0"
                     value={userInputs.neutrons}
@@ -634,11 +631,14 @@ const CauTrucNguyenTu = () => {
                   />
                 </div>
                 <div className="input-group">
-                  <label>
+                  <label htmlFor={`electrons-${currentChallenge}`}>
                     <span className="particle-badge electron-badge">e⁻</span>
                     Số Electron:
                   </label>
                   <input
+                    id={`electrons-${currentChallenge}`}
+                    aria-label={`Số electron cho thử thách ${currentChallenge + 1}`}
+                    placeholder="Nhập số electron"
                     type="number"
                     min="0"
                     value={userInputs.electrons}

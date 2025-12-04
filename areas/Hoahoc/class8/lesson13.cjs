@@ -144,16 +144,14 @@ module.exports = {
       </div>
     </div>
   `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-        type: "true-false",
-        question: "Phản ứng hóa học là quá trình biến đổi từ chất này sang chất khác.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Đây chính là định nghĩa của phản ứng hóa học.",
-        points: 10
-      },
+  game: [
+    {
+      type: "true-false",
+      question: "Phản ứng hóa học là quá trình biến đổi từ chất này sang chất khác.",
+      correctAnswer: true,
+      explanation: "✅ Đúng! Đây chính là định nghĩa của phản ứng hóa học.",
+      points: 10
+    },
       {
         type: "multiple-choice",
         question: "Chất mới sinh ra trong phản ứng hóa học gọi là gì?",
@@ -194,10 +192,8 @@ module.exports = {
         hint: "💡 Chất này còn gọi là chất tham gia",
         explanation: "✅ Chất ban đầu gọi là chất phản ứng hay chất tham gia.",
         points: 10
-      }
-    ],
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
+      },
+   
       {
         type: "matching",
         question: "🔗 Ghép điều kiện với ví dụ phù hợp",
@@ -252,10 +248,8 @@ module.exports = {
         hint: "💡 Chất tham gia bị biến đổi thành sản phẩm",
         explanation: "✅ Chất tham gia giảm dần, sản phẩm tăng dần.",
         points: 15
-      }
-    ],
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
+      },
+  
       {
         type: "drag-drop",
         question: "🧩 Phân loại các hiện tượng sau",
@@ -313,8 +307,7 @@ module.exports = {
         ],
         correctAnswer: 2,
         explanation: "✅ Men rượu là chất xúc tác, giúp phản ứng lên men xảy ra nhanh hơn.",
-        points: 20
+        points: 10
       }
-    ]
-  }
+  ]
 };

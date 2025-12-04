@@ -65,157 +65,208 @@ module.exports = {
         </tr>
       </table>
     `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Công thức hóa học của nước là gì?",
+    options: [
+      "H₂",
+      "O₂",
+      "H₂O",
+      "HO"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ Nước có công thức H₂O.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Hidro cháy trong oxi tạo ra nước.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! 2H₂ + O₂ → 2H₂O",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Axit làm quỳ tím chuyển sang màu gì?",
+    options: [
+      "Xanh",
+      "Đỏ",
+      "Vàng",
+      "Không đổi"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Axit làm quỳ tím hóa ĐỎ.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Phản ứng: HCl + NaOH → NaCl + ___",
+    correctAnswer: "H₂O",
+    hint: "💡 Chất lỏng được tạo ra",
+    explanation: "✅ HCl + NaOH → NaCl + H₂O",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Nước sôi ở 100°C và đóng băng ở 0°C.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Ở áp suất thường.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép phản ứng với loại",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Công thức hóa học của nước là gì?",
-        options: ["H₂", "O₂", "H₂O", "HO"],
-        correctAnswer: 2,
-        explanation: "✅ Nước có công thức H₂O.",
-        points: 10
+        left: "2H₂ + O₂ → 2H₂O",
+        right: "Hóa hợp"
       },
       {
-        type: "true-false",
-        question: "Hidro cháy trong oxi tạo ra nước.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! 2H₂ + O₂ → 2H₂O",
-        points: 10
+        left: "Zn + H₂SO₄ → ZnSO₄ + H₂",
+        right: "Thế"
       },
       {
-        type: "multiple-choice",
-        question: "Axit làm quỳ tím chuyển sang màu gì?",
-        options: ["Xanh", "Đỏ", "Vàng", "Không đổi"],
-        correctAnswer: 1,
-        explanation: "✅ Axit làm quỳ tím hóa ĐỎ.",
-        points: 10
+        left: "CuO + H₂ → Cu + H₂O",
+        right: "Oxi hóa - khử"
       },
       {
-        type: "fill-in-blank",
-        question: "Phản ứng: HCl + NaOH → NaCl + ___",
-        correctAnswer: "H₂O",
-        hint: "💡 Chất lỏng được tạo ra",
-        explanation: "✅ HCl + NaOH → NaCl + H₂O",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Nước sôi ở 100°C và đóng băng ở 0°C.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Ở áp suất thường.",
-        points: 10
+        left: "HCl + NaOH → NaCl + H₂O",
+        right: "Trung hòa"
       }
     ],
-    intermediate: [
+    explanation: "✅ Tuyệt vời! Bạn phân loại đúng các phản ứng.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Để điều chế H₂ trong PTN: Zn + H₂SO₄ → ___ + H₂",
+    correctAnswer: "ZnSO₄",
+    hint: "💡 Muối kẽm",
+    explanation: "✅ Zn + H₂SO₄ → ZnSO₄ + H₂",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng nào tạo ra bazơ?",
+    options: [
+      "HCl + Zn → ZnCl₂ + H₂",
+      "CaO + H₂O → Ca(OH)₂",
+      "H₂ + O₂ → H₂O",
+      "NaCl → Na + Cl₂"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Oxit bazơ + Nước → Bazơ: CaO + H₂O → Ca(OH)₂",
+    points: 10
+  },
+  {
+    type: "ordering",
+    question: "📋 Sắp xếp các bước điều chế H₂",
+    options: [
+      "Cho Zn vào bình",
+      "Thêm H₂SO₄ loãng",
+      "Thu khí H₂",
+      "Kiểm tra độ tinh khiết"
+    ],
+    correctOrder: [
+      "Cho Zn vào bình",
+      "Thêm H₂SO₄ loãng",
+      "Thu khí H₂",
+      "Kiểm tra độ tinh khiết"
+    ],
+    explanation: "✅ Đúng trình tự thí nghiệm!",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Bazơ làm quỳ tím chuyển sang màu ___.",
+    correctAnswer: "xanh",
+    hint: "💡 Màu của bazơ",
+    explanation: "✅ Bazơ làm quỳ tím hóa XANH.",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Cân bằng: ___ H₂ + O₂ → ___ H₂O",
+    inline: true,
+    slots: [
       {
-        type: "matching",
-        question: "🔗 Ghép phản ứng với loại",
-        pairs: [
-          { left: "2H₂ + O₂ → 2H₂O", right: "Hóa hợp" },
-          { left: "Zn + H₂SO₄ → ZnSO₄ + H₂", right: "Thế" },
-          { left: "CuO + H₂ → Cu + H₂O", right: "Oxi hóa - khử" },
-          { left: "HCl + NaOH → NaCl + H₂O", right: "Trung hòa" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn phân loại đúng các phản ứng.",
-        points: 15
+        id: 1,
+        label: "Hệ số H₂",
+        correct: "2"
       },
       {
-        type: "fill-in-blank",
-        question: "Để điều chế H₂ trong PTN: Zn + H₂SO₄ → ___ + H₂",
-        correctAnswer: "ZnSO₄",
-        hint: "💡 Muối kẽm",
-        explanation: "✅ Zn + H₂SO₄ → ZnSO₄ + H₂",
-        points: 15
-      },
-      {
-        type: "multiple-choice",
-        question: "Phản ứng nào tạo ra bazơ?",
-        options: [
-          "HCl + Zn → ZnCl₂ + H₂",
-          "CaO + H₂O → Ca(OH)₂",
-          "H₂ + O₂ → H₂O",
-          "NaCl → Na + Cl₂"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Oxit bazơ + Nước → Bazơ: CaO + H₂O → Ca(OH)₂",
-        points: 15
-      },
-      {
-        type: "ordering",
-        question: "📋 Sắp xếp các bước điều chế H₂",
-        options: [
-          "Cho Zn vào bình",
-          "Thêm H₂SO₄ loãng",
-          "Thu khí H₂",
-          "Kiểm tra độ tinh khiết"
-        ],
-        correctOrder: [
-          "Cho Zn vào bình",
-          "Thêm H₂SO₄ loãng",
-          "Thu khí H₂",
-          "Kiểm tra độ tinh khiết"
-        ],
-        explanation: "✅ Đúng trình tự thí nghiệm!",
-        points: 15
-      },
-      {
-        type: "fill-in-blank",
-        question: "Bazơ làm quỳ tím chuyển sang màu ___.",
-        correctAnswer: "xanh",
-        hint: "💡 Màu của bazơ",
-        explanation: "✅ Bazơ làm quỳ tím hóa XANH.",
-        points: 15
+        id: 2,
+        label: "Hệ số H₂O",
+        correct: "2"
       }
     ],
-    advanced: [
+    options: [
+      "2",
+      "1",
+      "3",
+      "2"
+    ],
+    explanation: "✅ 2H₂ + O₂ → 2H₂O",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tính khối lượng H₂O tạo thành khi đốt cháy 4g H₂? (H=1, O=16)",
+    options: [
+      "18g",
+      "36g",
+      "9g",
+      "72g"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ n(H₂)=4/2=2 mol → n(H₂O)=2 mol → m=2×18=36g",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Trong phản ứng: 3H₂ + Fe₂O₃ → 2Fe + 3H₂O, H₂ đóng vai trò là chất ___.",
+    correctAnswer: "khử",
+    hint: "💡 H₂ bị oxi hóa hay khử?",
+    explanation: "✅ H₂ là CHẤT KHỬ (bị oxi hóa).",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🧠 Ghép chất với công dụng",
+    pairs: [
       {
-        type: "drag-drop",
-        question: "🧩 Cân bằng: ___ H₂ + O₂ → ___ H₂O",
-        inline: true,
-        slots: [
-          { id: 1, label: "Hệ số H₂", correct: "2" },
-          { id: 2, label: "Hệ số H₂O", correct: "2" }
-        ],
-        options: ["2", "1", "3", "2"],
-        explanation: "✅ 2H₂ + O₂ → 2H₂O",
-        points: 20
+        left: "H₂",
+        right: "Nhiên liệu sạch"
       },
       {
-        type: "multiple-choice",
-        question: "Tính khối lượng H₂O tạo thành khi đốt cháy 4g H₂? (H=1, O=16)",
-        options: ["18g", "36g", "9g", "72g"],
-        correctAnswer: 1,
-        explanation: "✅ n(H₂)=4/2=2 mol → n(H₂O)=2 mol → m=2×18=36g",
-        points: 20
+        left: "H₂O",
+        right: "Dung môi phổ biến"
       },
       {
-        type: "fill-in-blank",
-        question: "Trong phản ứng: 3H₂ + Fe₂O₃ → 2Fe + 3H₂O, H₂ đóng vai trò là chất ___.",
-        correctAnswer: "khử",
-        hint: "💡 H₂ bị oxi hóa hay khử?",
-        explanation: "✅ H₂ là CHẤT KHỬ (bị oxi hóa).",
-        points: 20
+        left: "HCl",
+        right: "Sản xuất hóa chất"
       },
       {
-        type: "matching",
-        question: "🧠 Ghép chất với công dụng",
-        pairs: [
-          { left: "H₂", right: "Nhiên liệu sạch" },
-          { left: "H₂O", right: "Dung môi phổ biến" },
-          { left: "HCl", right: "Sản xuất hóa chất" },
-          { left: "NaOH", right: "Sản xuất xà phòng" }
-        ],
-        explanation: "✅ Hoàn hảo! Bạn hiểu ứng dụng của các chất.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Cho 13g Zn tác dụng với HCl dư, thể tích H₂ (đktc) thu được là? (Zn=65)",
-        options: ["2,24 lít", "4,48 lít", "6,72 lít", "11,2 lít"],
-        correctAnswer: 1,
-        explanation: "✅ n(Zn)=13/65=0,2 mol → n(H₂)=0,2 mol → V=0,2×22,4=4,48 lít",
-        points: 20
+        left: "NaOH",
+        right: "Sản xuất xà phòng"
       }
-    ]
+    ],
+    explanation: "✅ Hoàn hảo! Bạn hiểu ứng dụng của các chất.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Cho 13g Zn tác dụng với HCl dư, thể tích H₂ (đktc) thu được là? (Zn=65)",
+    options: [
+      "2,24 lít",
+      "4,48 lít",
+      "6,72 lít",
+      "11,2 lít"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ n(Zn)=13/65=0,2 mol → n(H₂)=0,2 mol → V=0,2×22,4=4,48 lít",
+    points: 10
   }
+]
 };

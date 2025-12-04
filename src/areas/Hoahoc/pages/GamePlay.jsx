@@ -15,31 +15,31 @@ import DragDrop from '../gamelist/DragDrop';
 import ResultModal from '../gamelist/ResultModal';
 
 const GamePlay = () => {
-  const { classId, chapterId, lessonId, level } = useParams(); // Thêm level param
+  const { classId, chapterId, lessonId } = useParams();
   const navigate = useNavigate();
   
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedLevel, setSelectedLevel] = useState(level || 'basic'); // Cấp độ hiện tại
-  const [allLessons, setAllLessons] = useState([]); // Danh sách tất cả bài học
-  const [nextLesson, setNextLesson] = useState(null); // Bài học tiếp theo
+  const [allLessons, setAllLessons] = useState([]);
+  const [nextLesson, setNextLesson] = useState(null);
   
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [startTime] = useState(Date.now()); // Track start time
   
   // For matching quiz
   const [matchingAnswers, setMatchingAnswers] = useState({});
-  const [matchingPool, setMatchingPool] = useState([]); // available right-side options to drag
+  const [matchingPool, setMatchingPool] = useState([]);
   
   // For ordering quiz
   const [orderedItems, setOrderedItems] = useState([]);
   // For inline drag-drop (Duolingo-style)
-  const [inlineSlots, setInlineSlots] = useState([]); // array of {id, label, correct, value}
-  const [inlineOptions, setInlineOptions] = useState([]); // available draggable options
+  const [inlineSlots, setInlineSlots] = useState([]);
+  const [inlineOptions, setInlineOptions] = useState([])
   
   useEffect(() => {
     fetchLesson();
@@ -54,8 +54,8 @@ const GamePlay = () => {
       );
       setLesson(response.data);
       
-      // Lấy quiz theo cấp độ
-      const quizzes = getQuizzesByLevel(response.data, selectedLevel);
+      // Get quizzes (simplified - no levels)
+      const quizzes = getQuizzes(response.data);
       
       // Initialize first quiz state
       initializeQuiz(quizzes?.[0]);
@@ -71,19 +71,48 @@ const GamePlay = () => {
   const fetchAllLessons = async () => {
     try {
       const response = await axios.get(`${API_URL}/lessons`);
-      setAllLessons(response.data);
+      const allLessons = response.data;
+      setAllLessons(allLessons);
       
-      // Tìm bài học tiếp theo
-      const currentLessonIndex = response.data.findIndex(
-        (l) => l.classId === parseInt(classId) && 
-               l.chapterId === parseInt(chapterId) && 
+      // Lọc chỉ lấy bài học trong CÙNG LỚP hiện tại
+      const currentClassLessons = allLessons.filter(
+        (l) => l.classId === parseInt(classId)
+      );
+      
+      // Sắp xếp theo chapterId và lessonId
+      currentClassLessons.sort((a, b) => {
+        if (a.chapterId !== b.chapterId) {
+          return a.chapterId - b.chapterId;
+        }
+        return a.lessonId - b.lessonId;
+      });
+      
+      // Tìm bài học hiện tại trong danh sách đã lọc
+      const currentIndex = currentClassLessons.findIndex(
+        (l) => l.chapterId === parseInt(chapterId) && 
                l.lessonId === parseInt(lessonId)
       );
       
-      if (currentLessonIndex !== -1 && currentLessonIndex < response.data.length - 1) {
-        const next = response.data[currentLessonIndex + 1];
+      console.log('🔍 Finding next lesson:', {
+        currentClass: classId,
+        currentChapter: chapterId,
+        currentLesson: lessonId,
+        currentIndex,
+        totalInClass: currentClassLessons.length
+      });
+      
+      // Lấy bài học tiếp theo trong cùng lớp
+      if (currentIndex !== -1 && currentIndex < currentClassLessons.length - 1) {
+        const next = currentClassLessons[currentIndex + 1];
+        console.log('✅ Next lesson found:', {
+          classId: next.classId,
+          chapterId: next.chapterId,
+          lessonId: next.lessonId,
+          title: next.title
+        });
         setNextLesson(next);
       } else {
+        console.log('⚠️ No next lesson (this is the last lesson in class)');
         setNextLesson(null);
       }
     } catch (err) {
@@ -104,17 +133,21 @@ const GamePlay = () => {
     }
   };
 
-  // Helper: Lấy quiz theo cấp độ
-  const getQuizzesByLevel = (lessonData, level) => {
+  // Helper: Get quizzes from lesson data
+  const getQuizzes = (lessonData) => {
     if (!lessonData?.game) return [];
     
-    // Ưu tiên quiz theo cấp độ, fallback về quizzes chung
-    if (lessonData.game[level] && lessonData.game[level].length > 0) {
-      return lessonData.game[level];
+    // Try new structure first
+    if (lessonData.game.quizzes && lessonData.game.quizzes.length > 0) {
+      return lessonData.game.quizzes;
     }
     
-    // Fallback: dùng quizzes chung (backward compatibility)
-    return lessonData.game.quizzes || [];
+    // Fallback to legacy structure (basic level)
+    if (lessonData.game.basic && lessonData.game.basic.length > 0) {
+      return lessonData.game.basic;
+    }
+    
+    return [];
   };
 
   const shuffle = (array) => {
@@ -143,11 +176,8 @@ const GamePlay = () => {
     }
   };
 
-  const currentQuiz = lesson?.game?.[selectedLevel]?.[currentQuizIndex] || 
-                     lesson?.game?.quizzes?.[currentQuizIndex]; // Fallback
-
-  // Lấy danh sách quiz theo cấp độ
-  const currentLevelQuizzes = lesson?.game?.[selectedLevel] || lesson?.game?.quizzes || [];
+  const quizzes = getQuizzes(lesson);
+  const currentQuiz = quizzes[currentQuizIndex];
 
   // Determine if the current quiz has sufficient input to allow checking
   const canCheck = (() => {
@@ -302,7 +332,7 @@ const GamePlay = () => {
   };
 
   const nextQuiz = async () => {
-    if (currentQuizIndex < currentLevelQuizzes.length - 1) {
+    if (currentQuizIndex < quizzes.length - 1) {
       const nextIndex = currentQuizIndex + 1;
       setCurrentQuizIndex(nextIndex);
       setUserAnswer(null);
@@ -311,32 +341,106 @@ const GamePlay = () => {
       setMatchingPool([]);
       
       // Initialize next quiz
-      initializeQuiz(currentLevelQuizzes[nextIndex]);
+      initializeQuiz(quizzes[nextIndex]);
     } else {
-      // Tính tổng điểm và gửi kết quả
-      const totalPoints = currentLevelQuizzes.reduce((sum, q) => sum + q.points, 0);
-      await submitProgress(score, totalPoints);
+      // This is the last question - need to ensure score includes the current question
+      // Since setScore is async, we need to calculate the final score manually
+      const totalPoints = quizzes.reduce((sum, q) => sum + q.points, 0);
+      
+      // Calculate if current (last) question was answered correctly
+      let currentQuestionCorrect = false;
+      if (isAnswered && currentQuiz) {
+        switch (currentQuiz.type) {
+          case 'multiple-choice':
+            if (typeof currentQuiz.correctAnswer === 'number') {
+              const correctOption = currentQuiz.options[currentQuiz.correctAnswer];
+              currentQuestionCorrect = userAnswer === correctOption;
+            } else {
+              currentQuestionCorrect = userAnswer === currentQuiz.correctAnswer;
+            }
+            break;
+          case 'true-false':
+            currentQuestionCorrect = userAnswer === currentQuiz.correctAnswer;
+            break;
+          case 'fill-in-blank':
+            const userAnswerStr = userAnswer?.toString().trim().toLowerCase() ?? '';
+            const correctAnswerStr = currentQuiz.correctAnswer?.toString().trim().toLowerCase() ?? '';
+            currentQuestionCorrect = userAnswerStr === correctAnswerStr;
+            break;
+          case 'matching':
+            currentQuestionCorrect = currentQuiz.pairs.every(pair => matchingAnswers[pair.left] === pair.right);
+            break;
+          case 'ordering':
+            currentQuestionCorrect = orderedItems.every((item, idx) => item === currentQuiz.correctOrder[idx]);
+            break;
+          case 'drag-drop':
+            if (currentQuiz.inline) {
+              currentQuestionCorrect = Array.isArray(inlineSlots) && inlineSlots.length > 0 && inlineSlots.every(s => s.value === s.correct);
+            } else {
+              currentQuestionCorrect = Array.isArray(currentQuiz.pairs) && currentQuiz.pairs.every(pair => matchingAnswers[pair.left] === pair.right);
+            }
+            break;
+        }
+      }
+      
+      // Calculate final score: score from state + current question points if correct
+      const finalScore = score + (currentQuestionCorrect ? currentQuiz.points : 0);
+      
+      console.log('📊 Final score calculation:', { 
+        previousScore: score,
+        currentQuestionCorrect,
+        currentQuestionPoints: currentQuiz.points,
+        finalScore,
+        totalPoints 
+      });
+      
+      await submitProgress(finalScore, totalPoints);
       setShowResult(true);
     }
   };
 
-  // Gửi kết quả lên server
+  // Submit progress to server
   const submitProgress = async (currentScore, totalPoints) => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      if (!user?.uid) return;
+      const userUid = user?.firebaseUid || user?.uid;
+      
+      if (!userUid) {
+        console.warn('⚠️ No user UID found, skipping progress submit');
+        console.log('User data:', user);
+        return;
+      }
 
-      await axios.post(`${API_URL}/progress/submit`, {
-        firebaseUid: user.uid,
+      // Calculate study duration in minutes
+      const endTime = Date.now();
+      const durationMs = endTime - startTime;
+      const durationMinutes = Math.max(1, Math.floor(durationMs / 60000)); // Minimum 1 minute
+
+      const submitData = {
+        firebaseUid: userUid,
+        programId: 'chemistry',
         pathId: parseInt(classId),
         lessonId: parseInt(lessonId),
         score: currentScore,
         totalQuestions: totalPoints,
-        correctAnswers: currentScore,
-        level: selectedLevel // Gửi cấp độ hiện tại
-      });
+        studyDuration: durationMinutes // Add study duration
+      };
+
+      console.log('📤 Submitting progress:', submitData);
+      
+      const response = await axios.post(`${API_URL}/users/submit-lesson`, submitData);
+      
+      console.log('✅ Progress submitted successfully:', response.data);
+      
+      // Fetch updated user data from server
+      const updatedUserResponse = await axios.get(`${API_URL}/users/firebase/${userUid}`);
+      if (updatedUserResponse.data) {
+        // Update localStorage with fresh user data
+        localStorage.setItem('user', JSON.stringify(updatedUserResponse.data));
+        console.log('✅ User data refreshed in localStorage');
+      }
     } catch (error) {
-      console.error('Error submitting progress:', error);
+      console.error('❌ Error submitting progress:', error);
     }
   };
 
@@ -385,10 +489,10 @@ const GamePlay = () => {
       {/* Header */}
       <QuizHeader
         onBack={() => navigate(-1)}
-        currentIndex={currentQuizIndex}
-        totalQuizzes={currentLevelQuizzes.length}
-        score={score}
-        totalPoints={currentLevelQuizzes.reduce((sum, q) => sum + q.points, 0)}
+          currentIndex={currentQuizIndex}
+          totalQuizzes={quizzes.length}
+          score={score}
+          totalPoints={quizzes.reduce((sum, q) => sum + q.points, 0)}
       />
 
       {/* Quiz Card */}
@@ -480,7 +584,7 @@ const GamePlay = () => {
             </Button>
           ) : (
             <Button onClick={nextQuiz}>
-              {currentQuizIndex < currentLevelQuizzes.length - 1 ? 'Câu tiếp theo →' : 'Xem kết quả'}
+              {currentQuizIndex < quizzes.length - 1 ? 'Câu tiếp theo →' : 'Xem kết quả'}
             </Button>
           )}
         </div>
@@ -491,15 +595,13 @@ const GamePlay = () => {
         isOpen={showResult}
         onClose={() => setShowResult(false)}
         score={score}
-        totalPoints={currentLevelQuizzes.reduce((sum, q) => sum + q.points, 0)}
-        level={selectedLevel}
+        totalPoints={quizzes.reduce((sum, q) => sum + q.points, 0)}
         onRestart={restartGame}
-        onBack={() => navigate('/dashboard')}
+        onBack={() => navigate('/program/chemistry/dashboard')}
         onNext={goToNextLesson}
         hasNextLesson={!!nextLesson}
       />
     </div>
   );
 };
-
 export default GamePlay;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Timer, Lightbulb, CheckCircle, XCircle, Clock } from 'lucide-react';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
-import './DuoiHinhBatChu.css';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
+import './CSS/Bai01_DoanHinhBatChu.css';
 
 const DuoiHinhBatChu = () => {
   // Dữ liệu các chất hóa học với hình ảnh
@@ -261,9 +261,9 @@ const DuoiHinhBatChu = () => {
   // Start screen
   if (!gameDangChay && !gameCompleted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600">
-        <div className="bg-white shadow-md">
-          <div className="container mx-auto px-4 py-4">
+      <div className="h-screen max-h-screen overflow-hidden flex flex-col bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600">
+        <div className="flex-shrink-0 bg-white shadow-md">
+          <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
                 <ArrowLeft className="w-5 h-5 mr-2" />
@@ -278,50 +278,50 @@ const DuoiHinhBatChu = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
-            <div className="text-center mb-8">
-              <div className="text-6xl mb-4">🧪</div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Cách chơi</h2>
+        <div className="flex-1 overflow-auto px-4 py-6">
+          <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-6">
+            <div className="text-center mb-4">
+              <div className="text-5xl mb-3">🧪</div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">Cách chơi</h2>
             </div>
 
-            <div className="space-y-4 mb-8">
-              <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
-                <div className="text-2xl">🖼️</div>
+            <div className="space-y-3 mb-6">
+              <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                <div className="text-xl">🖼️</div>
                 <div>
-                  <h3 className="font-bold text-gray-800 mb-1">Quan sát</h3>
-                  <p className="text-gray-600">Xem hình ảnh emoji và đọc mô tả tính chất của chất hóa học</p>
+                  <h3 className="font-bold text-gray-800 mb-1 text-sm">Quan sát</h3>
+                  <p className="text-gray-600 text-sm">Xem hình ảnh emoji và đọc mô tả tính chất của chất hóa học</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-green-50 rounded-lg">
-                <div className="text-2xl">✍️</div>
+              <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                <div className="text-xl">✍️</div>
                 <div>
-                  <h3 className="font-bold text-gray-800 mb-1">Trả lời</h3>
-                  <p className="text-gray-600">Nhập tên chất hóa học vào ô và nhấn Enter hoặc nút Gửi</p>
+                  <h3 className="font-bold text-gray-800 mb-1 text-sm">Trả lời</h3>
+                  <p className="text-gray-600 text-sm">Nhập tên chất hóa học vào ô và nhấn Enter hoặc nút Gửi</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg">
-                <div className="text-2xl">⏱️</div>
+              <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg">
+                <div className="text-xl">⏱️</div>
                 <div>
-                  <h3 className="font-bold text-gray-800 mb-1">Thời gian</h3>
-                  <p className="text-gray-600">Mỗi câu có 30 giây - thanh thời gian hiển thị trực quan</p>
+                  <h3 className="font-bold text-gray-800 mb-1 text-sm">Thời gian</h3>
+                  <p className="text-gray-600 text-sm">Mỗi câu có 30 giây - thanh thời gian hiển thị trực quan</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-lg">
-                <div className="text-2xl">🏆</div>
+              <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
+                <div className="text-xl">🏆</div>
                 <div>
-                  <h3 className="font-bold text-gray-800 mb-1">Điểm số</h3>
-                  <p className="text-gray-600">Mỗi câu đúng được 10 điểm. Tổng điểm tối đa: 100 điểm</p>
+                  <h3 className="font-bold text-gray-800 mb-1 text-sm">Điểm số</h3>
+                  <p className="text-gray-600 text-sm">Mỗi câu đúng được 10 điểm. Tổng điểm tối đa: 100 điểm</p>
                 </div>
               </div>
             </div>
 
             <button 
               onClick={() => batDauGame(true)}
-              className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg"
+              className="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg"
             >
               🚀 Bắt đầu chơi
             </button>
@@ -349,16 +349,16 @@ const DuoiHinhBatChu = () => {
     const tyLeDung = Math.round((soCauDung / lichSu.length) * 100);
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600">
-        <div className="bg-white shadow-md">
-          <div className="container mx-auto px-4 py-4">
+      <div className="h-screen max-h-screen overflow-hidden flex flex-col bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600">
+        <div className="flex-shrink-0 bg-white shadow-md">
+          <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
                 <ArrowLeft className="w-5 h-5 mr-2" />
                 Quay lại
               </Link>
-              <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-                <Trophy className="w-6 h-6 mr-2 text-yellow-500" />
+              <h1 className="text-xl font-bold text-gray-800 flex items-center">
+                <Trophy className="w-5 h-5 mr-2 text-yellow-500" />
                 Kết quả
               </h1>
               <div className="w-24"></div>
@@ -366,33 +366,33 @@ const DuoiHinhBatChu = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
-            <div className="text-center mb-8">
-              <div className="text-6xl mb-4">
+        <div className="flex-1 overflow-auto px-4 py-6">
+          <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl p-6">
+            <div className="text-center mb-4">
+              <div className="text-5xl mb-3">
                 {tyLeDung >= 80 ? '🏆' : tyLeDung >= 60 ? '👍' : tyLeDung >= 40 ? '😊' : '💪'}
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
                 {tyLeDung >= 80 ? 'Xuất sắc!' : 
                  tyLeDung >= 60 ? 'Khá tốt!' : 
                  tyLeDung >= 40 ? 'Cần cố gắng!' : 'Hãy học thêm!'}
               </h2>
             </div>
 
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg">
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg">
                 <span className="text-gray-700 font-semibold">Tổng điểm:</span>
-                <span className="text-3xl font-bold text-orange-600">{diem}</span>
+                <span className="text-2xl font-bold text-orange-600">{diem}</span>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
                 <span className="text-gray-700 font-semibold">Số câu đúng:</span>
-                <span className="text-2xl font-bold text-green-600">{soCauDung}/{lichSu.length}</span>
+                <span className="text-xl font-bold text-green-600">{soCauDung}/{lichSu.length}</span>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
                 <span className="text-gray-700 font-semibold">Tỷ lệ đúng:</span>
-                <span className="text-2xl font-bold text-blue-600">{tyLeDung}%</span>
+                <span className="text-xl font-bold text-blue-600">{tyLeDung}%</span>
               </div>
             </div>
 
@@ -417,16 +417,16 @@ const DuoiHinhBatChu = () => {
 
   // Game screen
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600">
+    <div className="h-screen max-h-screen overflow-hidden flex flex-col bg-gradient-to-br from-blue-600 via-cyan-600 to-teal-600">
       {/* Header */}
-      <div className="bg-white shadow-md">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-3">
+      <div className="flex-shrink-0 bg-white shadow-md">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between mb-2">
             <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
               <ArrowLeft className="w-5 h-5 mr-2" />
               Quay lại
             </Link>
-            <h1 className="text-xl font-bold text-gray-800 flex items-center">
+            <h1 className="text-lg font-bold text-gray-800 flex items-center">
               <span className="mr-2">🎯</span>
               Đoán Hình Bắt Chữ Hóa Học
             </h1>
@@ -460,14 +460,14 @@ const DuoiHinhBatChu = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
+      <div className="flex-1 overflow-auto px-4 py-4">
+        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl p-6">
           {/* Question */}
-          <div className="text-center mb-8">
-            <div className="text-8xl mb-6 animate-bounce">
+          <div className="text-center mb-4">
+            <div className="text-6xl mb-4 animate-bounce">
               {chatHienTai.hinhAnh}
             </div>
-            <div className="text-3xl font-bold text-blue-600 mb-4 font-mono">
+            <div className="text-2xl font-bold text-blue-600 mb-3 font-mono">
               {chatHienTai.congThuc}
             </div>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">

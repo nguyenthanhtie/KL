@@ -53,10 +53,8 @@ module.exports = {
       <p>V<sub>H₂</sub> = n × 22.4 = 0.2 × 22.4 = 4.48 lít.</p>
     </div>
   `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
+  game: [
+{
         type: "multiple-choice",
         question: "Trong PTHH: 2H₂ + O₂ → 2H₂O, tỉ lệ số mol của H₂, O₂, H₂O là:",
         options: ["2:1:2", "1:1:1", "2:2:2", "1:2:1"],
@@ -110,10 +108,8 @@ module.exports = {
             "correctAnswer": 1,
             "explanation": "✅ C + O₂ → CO₂",
             "points": 10
-      }
-],
-    intermediate: [
-      {
+      },
+{
             "type": "matching",
             "question": "🔗 Ghép phản ứng với hiện tượng",
             "pairs": [
@@ -131,7 +127,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ Tuyệt vời! Bạn nhận biết đúng hiện tượng.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -139,7 +135,7 @@ module.exports = {
             "correctAnswer": "sinh vật",
             "hint": "💡 Cá, tôm, cua...",
             "explanation": "✅ Oxi hòa tan giúp sinh vật sống dưới nước.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "ordering",
@@ -157,7 +153,7 @@ module.exports = {
                   "Mg"
             ],
             "explanation": "✅ Au < Cu < Fe < Mg (Mg hoạt động mạnh nhất)",
-            "points": 15
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -170,7 +166,7 @@ module.exports = {
             ],
             "correctAnswer": 2,
             "explanation": "✅ Oxi không dùng bảo quản thực phẩm (dùng N₂ hoặc CO₂)",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -178,11 +174,9 @@ module.exports = {
             "correctAnswer": "1.1",
             "hint": "💡 d = M_O₂ / M_kk = 32/29",
             "explanation": "✅ d = 32/29 ≈ 1,1",
-            "points": 15
-      }
-],
-    advanced: [
-      {
+            "points": 10
+      },
+{
             "type": "drag-drop",
             "question": "🧩 Hoàn thành phương trình cháy của Photpho",
             "inline": true,
@@ -210,7 +204,7 @@ module.exports = {
                   "PO₂"
             ],
             "explanation": "✅ 4P + 5O₂ → 2P₂O₅",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -223,7 +217,7 @@ module.exports = {
             ],
             "correctAnswer": 1,
             "explanation": "✅ n_P = 9,3/31 = 0,3 mol → n_P₂O₅ = 0,15 mol → m = 21,3g",
-            "points": 20
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -231,7 +225,7 @@ module.exports = {
             "correctAnswer": "11.2",
             "hint": "💡 S + O₂ → SO₂; n_S = 16/32 = 0,5 mol",
             "explanation": "✅ n_O₂ = 0,5 mol → V = 11,2 lít",
-            "points": 20
+            "points": 10
       },
       {
             "type": "matching",
@@ -251,7 +245,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ Xuất sắc! Bạn nhớ màu sắc các oxit.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -264,8 +258,8 @@ module.exports = {
             ],
             "correctAnswer": 1,
             "explanation": "✅ V_kk = 210/0,21 = 1000ml (O₂ chiếm 21%)",
-            "points": 20
+            "points": 10
       }
-]
-  }
+
+  ]
 };

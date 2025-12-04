@@ -47,22 +47,20 @@ module.exports = {
         </tr>
       </table>
     `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-            "type": "multiple-choice",
-            "question": "Đơn chất là gì?",
-            "options": [
-                  "Chất gồm 1 nguyên tố",
-                  "Chất gồm 2 nguyên tố",
-                  "Chất gồm nhiều nguyên tố",
-                  "Chất gồm nhiều phân tử"
-            ],
-            "correctAnswer": 0,
-            "explanation": "✅ Đơn chất được tạo nên từ 1 nguyên tố hóa học duy nhất.",
-            "points": 10
-      },
+  game: [
+    {
+      "type": "multiple-choice",
+      "question": "Đơn chất là gì?",
+      "options": [
+        "Chất gồm 1 nguyên tố",
+        "Chất gồm 2 nguyên tố",
+        "Chất gồm nhiều nguyên tố",
+        "Chất gồm nhiều phân tử"
+      ],
+      "correctAnswer": 0,
+      "explanation": "✅ Đơn chất được tạo nên từ 1 nguyên tố hóa học duy nhất.",
+      "points": 10
+    },
       {
             "type": "true-false",
             "question": "Nước (H₂O) là đơn chất.",
@@ -102,12 +100,8 @@ module.exports = {
             "correctAnswer": 2,
             "explanation": "✅ Hợp chất gồm 2 nguyên tố trở lên.",
             "points": 10
-      }
-],
-
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
-      {
+      },
+    {
             "type": "matching",
             "question": "🔗 Ghép chất với loại tương ứng",
             "pairs": [
@@ -129,7 +123,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ Tuyệt vời! Bạn phân biệt được đơn chất và hợp chất.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -137,7 +131,7 @@ module.exports = {
             "correctAnswer": "2",
             "hint": "💡 Đếm số loại nguyên tố trong CO₂",
             "explanation": "✅ CO₂ gồm 2 nguyên tố: C (cacbon) và O (oxi).",
-            "points": 15
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -150,7 +144,7 @@ module.exports = {
             ],
             "correctAnswer": 2,
             "explanation": "✅ CO₂ gồm 2 nguyên tố C và O, nên là hợp chất.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -158,7 +152,7 @@ module.exports = {
             "correctAnswer": "kim loại",
             "hint": "💡 Fe có tính chất của kim loại",
             "explanation": "✅ Fe là đơn chất KIM LOẠI.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "ordering",
@@ -174,13 +168,9 @@ module.exports = {
                   "H₂SO₄ (3 nguyên tố)"
             ],
             "explanation": "✅ Fe: 1, H₂O: 2 (H+O), H₂SO₄: 3 (H+S+O).",
-            "points": 15
-      }
-],
-
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
-      {
+            "points": 10
+      },
+    {
             "type": "drag-drop",
             "question": "🧩 Phân loại: Đơn chất gồm ___ nguyên tố, hợp chất gồm ___ nguyên tố trở lên.",
             "inline": true,
@@ -203,7 +193,7 @@ module.exports = {
                   "nhiều"
             ],
             "explanation": "✅ Hoàn hảo! Đơn chất: 1 nguyên tố, Hợp chất: ≥2 nguyên tố.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -216,7 +206,7 @@ module.exports = {
             ],
             "correctAnswer": 2,
             "explanation": "✅ Fe, Cu, O₂ đều là đơn chất (mỗi chất chỉ 1 nguyên tố).",
-            "points": 20
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -224,7 +214,7 @@ module.exports = {
             "correctAnswer": "phi kim",
             "hint": "💡 Oxi là khí, không có tính chất kim loại",
             "explanation": "✅ Xuất sắc! O₂ là đơn chất PHI KIM.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "matching",
@@ -248,7 +238,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ Tuyệt vời! Bạn nhớ tên và công thức các chất.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -261,8 +251,7 @@ module.exports = {
             ],
             "correctAnswer": 1,
             "explanation": "✅ Hợp chất có thể phân tích thành đơn chất hoặc hợp chất đơn giản hơn.",
-            "points": 20
+            "points": 10
       }
-]
-  }
+  ]
 };

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Trophy, Beaker, Flame, Droplet } from 'lucide-react';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
-import './PhongThiNghiem.css';
+import { ArrowLeft, Trophy, Beaker, Play, RotateCcw, Flame, Droplet, Wind } from 'lucide-react';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
+import './CSS/Bai05_PhongThiNghiem.css';
 
 const PhongThiNghiem = () => {
   const navigate = useNavigate();
@@ -458,32 +458,13 @@ const PhongThiNghiem = () => {
         </div>
       </div>
 
-      {/* Progress */}
-      <div className="progress-section">
-        <div className="challenge-info">
-          <span className={`difficulty-badge ${currentQ.difficulty.toLowerCase()}`}>
-            {currentQ.difficulty}
-          </span>
-          <span className="challenge-counter">
-            Thí nghiệm {currentChallenge + 1}/{challenges.length}
-          </span>
-          <span className="points-badge">+{currentQ.points} điểm</span>
-        </div>
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{ width: `${((currentChallenge + 1) / challenges.length) * 100}%` }}
-          ></div>
-        </div>
-      </div>
+      
 
       {/* Challenge Title */}
       <div className="challenge-title">
         <h2>{currentQ.title}</h2>
         <p>{currentQ.instruction}</p>
-        <div className="hint-section">
-          <strong>💡 Gợi ý:</strong> {currentQ.hint}
-        </div>
+        
       </div>
 
       {/* Main Lab Area */}

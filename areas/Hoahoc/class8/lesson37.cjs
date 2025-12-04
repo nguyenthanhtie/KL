@@ -73,173 +73,213 @@ module.exports = {
         <p>💧 Rửa tay sau khi thí nghiệm</p>
       </div>
     `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Quỳ tím hóa đỏ khi gặp chất nào?",
+    options: [
+      "Bazơ",
+      "Axit",
+      "Muối",
+      "Nước"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Quỳ tím hóa ĐỎ khi gặp AXIT.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "CaO tác dụng với nước tạo ra bazơ Ca(OH)₂.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! CaO + H₂O → Ca(OH)₂ (bazơ)",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng HCl + NaOH → NaCl + H₂O là phản ứng gì?",
+    options: [
+      "Phản ứng thế",
+      "Phản ứng trung hòa",
+      "Phản ứng hóa hợp",
+      "Phản ứng phân hủy"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Axit + Bazơ → Muối + Nước là phản ứng TRUNG HÒA.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Để điều chế H₂, ta cho Zn tác dụng với dung dịch ___.",
+    correctAnswer: "H₂SO₄",
+    hint: "💡 Loại axit thường dùng",
+    explanation: "✅ Zn + H₂SO₄ → ZnSO₄ + H₂",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Quỳ tím hóa xanh khi gặp bazơ.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Bazơ làm quỳ tím hóa XANH.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép chất với hiện tượng khi gặp quỳ tím",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Quỳ tím hóa đỏ khi gặp chất nào?",
-        options: ["Bazơ", "Axit", "Muối", "Nước"],
-        correctAnswer: 1,
-        explanation: "✅ Quỳ tím hóa ĐỎ khi gặp AXIT.",
-        points: 10
+        left: "HCl",
+        right: "Hóa đỏ"
       },
       {
-        type: "true-false",
-        question: "CaO tác dụng với nước tạo ra bazơ Ca(OH)₂.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! CaO + H₂O → Ca(OH)₂ (bazơ)",
-        points: 10
+        left: "NaOH",
+        right: "Hóa xanh"
       },
       {
-        type: "multiple-choice",
-        question: "Phản ứng HCl + NaOH → NaCl + H₂O là phản ứng gì?",
-        options: [
-          "Phản ứng thế",
-          "Phản ứng trung hòa",
-          "Phản ứng hóa hợp",
-          "Phản ứng phân hủy"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Axit + Bazơ → Muối + Nước là phản ứng TRUNG HÒA.",
-        points: 10
+        left: "NaCl",
+        right: "Không đổi màu"
       },
       {
-        type: "fill-in-blank",
-        question: "Để điều chế H₂, ta cho Zn tác dụng với dung dịch ___.",
-        correctAnswer: "H₂SO₄",
-        hint: "💡 Loại axit thường dùng",
-        explanation: "✅ Zn + H₂SO₄ → ZnSO₄ + H₂",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Quỳ tím hóa xanh khi gặp bazơ.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Bazơ làm quỳ tím hóa XANH.",
-        points: 10
+        left: "H₂O",
+        right: "Không đổi màu"
       }
     ],
-    intermediate: [
+    explanation: "✅ Tuyệt vời! Axit → đỏ, Bazơ → xanh, Trung tính → không đổi.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Khi CaO tác dụng với nước, quỳ tím chuyển sang màu ___ vì tạo ra ___.",
+    correctAnswer: "xanh, bazơ",
+    hint: "💡 Màu và loại chất tạo ra",
+    explanation: "✅ Quỳ chuyển XANH vì tạo BAZƠ Ca(OH)₂.",
+    points: 10
+  },
+  {
+    type: "ordering",
+    question: "📋 Sắp xếp các bước thí nghiệm trung hòa",
+    options: [
+      "Cho dd NaOH vào ống nghiệm",
+      "Nhỏ quỳ tím (màu xanh)",
+      "Thêm từ từ dd HCl",
+      "Quan sát màu tím (trung hòa)"
+    ],
+    correctOrder: [
+      "Cho dd NaOH vào ống nghiệm",
+      "Nhỏ quỳ tím (màu xanh)",
+      "Thêm từ từ dd HCl",
+      "Quan sát màu tím (trung hòa)"
+    ],
+    explanation: "✅ Đúng trình tự thí nghiệm!",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Để nhận biết 3 lọ không nhãn: HCl, NaOH, H₂O, ta dùng:",
+    options: [
+      "Đun nóng",
+      "Quỳ tím",
+      "Đánh hơi ngửi",
+      "Nếm thử"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Dùng QUỲ TÍM: HCl→đỏ, NaOH→xanh, H₂O→không đổi.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Oxit axit tác dụng với nước tạo ra ___.",
+    correctAnswer: "axit",
+    hint: "💡 Loại chất tạo ra",
+    explanation: "✅ Oxit axit + Nước → AXIT. VD: SO₃ + H₂O → H₂SO₄",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành: Trong phản ứng trung hòa, ___ + ___ → Muối + ___.",
+    inline: true,
+    slots: [
       {
-        type: "matching",
-        question: "🔗 Ghép chất với hiện tượng khi gặp quỳ tím",
-        pairs: [
-          { left: "HCl", right: "Hóa đỏ" },
-          { left: "NaOH", right: "Hóa xanh" },
-          { left: "NaCl", right: "Không đổi màu" },
-          { left: "H₂O", right: "Không đổi màu" }
-        ],
-        explanation: "✅ Tuyệt vời! Axit → đỏ, Bazơ → xanh, Trung tính → không đổi.",
-        points: 15
+        id: 1,
+        label: "Chất 1",
+        correct: "Axit"
       },
       {
-        type: "fill-in-blank",
-        question: "Khi CaO tác dụng với nước, quỳ tím chuyển sang màu ___ vì tạo ra ___.",
-        correctAnswer: "xanh, bazơ",
-        hint: "💡 Màu và loại chất tạo ra",
-        explanation: "✅ Quỳ chuyển XANH vì tạo BAZƠ Ca(OH)₂.",
-        points: 15
+        id: 2,
+        label: "Chất 2",
+        correct: "Bazơ"
       },
       {
-        type: "ordering",
-        question: "📋 Sắp xếp các bước thí nghiệm trung hòa",
-        options: [
-          "Cho dd NaOH vào ống nghiệm",
-          "Nhỏ quỳ tím (màu xanh)",
-          "Thêm từ từ dd HCl",
-          "Quan sát màu tím (trung hòa)"
-        ],
-        correctOrder: [
-          "Cho dd NaOH vào ống nghiệm",
-          "Nhỏ quỳ tím (màu xanh)",
-          "Thêm từ từ dd HCl",
-          "Quan sát màu tím (trung hòa)"
-        ],
-        explanation: "✅ Đúng trình tự thí nghiệm!",
-        points: 15
-      },
-      {
-        type: "multiple-choice",
-        question: "Để nhận biết 3 lọ không nhãn: HCl, NaOH, H₂O, ta dùng:",
-        options: [
-          "Đun nóng",
-          "Quỳ tím",
-          "Đánh hơi ngửi",
-          "Nếm thử"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Dùng QUỲ TÍM: HCl→đỏ, NaOH→xanh, H₂O→không đổi.",
-        points: 15
-      },
-      {
-        type: "fill-in-blank",
-        question: "Oxit axit tác dụng với nước tạo ra ___.",
-        correctAnswer: "axit",
-        hint: "💡 Loại chất tạo ra",
-        explanation: "✅ Oxit axit + Nước → AXIT. VD: SO₃ + H₂O → H₂SO₄",
-        points: 15
+        id: 3,
+        label: "Chất 3",
+        correct: "Nước"
       }
     ],
-    advanced: [
+    options: [
+      "Axit",
+      "Bazơ",
+      "Nước",
+      "Khí"
+    ],
+    explanation: "✅ AXIT + BAZƠ → Muối + NƯỚC",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Hiện tượng nào chứng tỏ phản ứng trung hòa đã hoàn toàn?",
+    options: [
+      "Có khí thoát ra",
+      "Quỳ tím chuyển từ xanh/đỏ về tím",
+      "Có kết tủa",
+      "Có màu sắc đặc biệt"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Quỳ về màu TÍM chứng tỏ dung dịch trung hòa (không còn axit hay bazơ dư).",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Để phân biệt HCl và H₂SO₄, ta có thể dùng dung dịch ___ (tạo kết tủa trắng với H₂SO₄).",
+    correctAnswer: "BaCl₂",
+    hint: "💡 Muối bari",
+    explanation: "✅ BaCl₂ + H₂SO₄ → BaSO₄↓ (trắng) + 2HCl",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🧠 Ghép thí nghiệm với mục đích",
+    pairs: [
       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành: Trong phản ứng trung hòa, ___ + ___ → Muối + ___.",
-        inline: true,
-        slots: [
-          { id: 1, label: "Chất 1", correct: "Axit" },
-          { id: 2, label: "Chất 2", correct: "Bazơ" },
-          { id: 3, label: "Chất 3", correct: "Nước" }
-        ],
-        options: ["Axit", "Bazơ", "Nước", "Khí"],
-        explanation: "✅ AXIT + BAZƠ → Muối + NƯỚC",
-        points: 20
+        left: "Điều chế H₂ từ Zn",
+        right: "Học phản ứng thế"
       },
       {
-        type: "multiple-choice",
-        question: "Hiện tượng nào chứng tỏ phản ứng trung hòa đã hoàn toàn?",
-        options: [
-          "Có khí thoát ra",
-          "Quỳ tím chuyển từ xanh/đỏ về tím",
-          "Có kết tủa",
-          "Có màu sắc đặc biệt"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Quỳ về màu TÍM chứng tỏ dung dịch trung hòa (không còn axit hay bazơ dư).",
-        points: 20
+        left: "CaO + H₂O",
+        right: "Tạo bazơ từ oxit"
       },
       {
-        type: "fill-in-blank",
-        question: "Để phân biệt HCl và H₂SO₄, ta có thể dùng dung dịch ___ (tạo kết tủa trắng với H₂SO₄).",
-        correctAnswer: "BaCl₂",
-        hint: "💡 Muối bari",
-        explanation: "✅ BaCl₂ + H₂SO₄ → BaSO₄↓ (trắng) + 2HCl",
-        points: 20
+        left: "HCl + NaOH",
+        right: "Phản ứng trung hòa"
       },
       {
-        type: "matching",
-        question: "🧠 Ghép thí nghiệm với mục đích",
-        pairs: [
-          { left: "Điều chế H₂ từ Zn", right: "Học phản ứng thế" },
-          { left: "CaO + H₂O", right: "Tạo bazơ từ oxit" },
-          { left: "HCl + NaOH", right: "Phản ứng trung hòa" },
-          { left: "Nhỏ quỳ tím", right: "Nhận biết axit/bazơ" }
-        ],
-        explanation: "✅ Xuất sắc! Bạn hiểu rõ mục đích từng thí nghiệm.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Tại sao phải thêm từ từ HCl vào NaOH trong thí nghiệm trung hòa?",
-        options: [
-          "Để tiết kiệm HCl",
-          "Để quan sát rõ sự thay đổi màu quỳ và xác định điểm trung hòa",
-          "Để phản ứng nhanh hơn",
-          "Không cần thiết"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Thêm từ từ để QUAN SÁT SỰ THAY ĐỔI và xác định chính xác điểm trung hòa.",
-        points: 20
+        left: "Nhỏ quỳ tím",
+        right: "Nhận biết axit/bazơ"
       }
-    ]
+    ],
+    explanation: "✅ Xuất sắc! Bạn hiểu rõ mục đích từng thí nghiệm.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tại sao phải thêm từ từ HCl vào NaOH trong thí nghiệm trung hòa?",
+    options: [
+      "Để tiết kiệm HCl",
+      "Để quan sát rõ sự thay đổi màu quỳ và xác định điểm trung hòa",
+      "Để phản ứng nhanh hơn",
+      "Không cần thiết"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Thêm từ từ để QUAN SÁT SỰ THAY ĐỔI và xác định chính xác điểm trung hòa.",
+    points: 10
   }
+]
 };

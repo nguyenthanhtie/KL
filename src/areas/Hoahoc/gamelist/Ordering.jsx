@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Ordering = ({ 
   quiz, 
   orderedItems, 
@@ -21,9 +23,8 @@ const Ordering = ({
         {orderedItems.map((item, index) => {
           const correctAtPos = isAnswered ? item === quiz.correctOrder[index] : null;
           return (
-            <>
+            <React.Fragment key={`ordering-${index}`}>
               <div
-                key={`item-${index}`}
                 draggable={!isAnswered}
                 onDragStart={() => onDragStart(index)}
                 onDragOver={onDragOver}
@@ -39,9 +40,9 @@ const Ordering = ({
                 {item}
               </div>
               {index < orderedItems.length - 1 && (
-                <div key={`arrow-${index}`} className="self-center text-gray-400">→</div>
+                <div className="self-center text-gray-400">→</div>
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </div>
@@ -50,14 +51,14 @@ const Ordering = ({
           <div className="font-bold mb-2">Thứ tự đúng:</div>
           <div className="grid items-start gap-2" style={{ gridTemplateColumns: correctGridTemplate }}>
             {quiz.correctOrder.map((item, index) => (
-              <>
-                <div key={`ans-${index}`} className="px-3 py-2 rounded-lg border-2 border-green-400 bg-white text-sm leading-snug">
+              <React.Fragment key={`correct-${index}`}>
+                <div className="px-3 py-2 rounded-lg border-2 border-green-400 bg-white text-sm leading-snug">
                   {item}
                 </div>
                 {index < quiz.correctOrder.length - 1 && (
-                  <div key={`ans-arrow-${index}`} className="self-center text-gray-400">→</div>
+                  <div className="self-center text-gray-400">→</div>
                 )}
-              </>
+              </React.Fragment>
             ))}
           </div>
         </div>

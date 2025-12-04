@@ -1,0 +1,852 @@
+/* Pha Chế Dung Dịch - Fullscreen Game */
+.molarity-game {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* ===== HEADER WITH PROGRESS ===== */
+.molarity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 3px solid #3b82f6;
+}
+
+.molarity-header .btn-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.molarity-header .btn-back:hover {
+  background: #2563eb;
+}
+
+/* Header Center - Title + Progress Info */
+.molarity-header .header-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.molarity-header .title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.molarity-header .title svg {
+  color: #3b82f6;
+}
+
+/* Header Info Row (Level, Progress, Points) */
+.molarity-header .header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.molarity-header .header-info .level-tag {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 12px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.molarity-header .header-info .level-tag.lv1 { background: #22c55e; }
+.molarity-header .header-info .level-tag.lv2 { background: #f59e0b; }
+.molarity-header .header-info .level-tag.lv3 { background: #ef4444; }
+
+.molarity-header .header-info .progress-text {
+  font-weight: 600;
+  color: #475569;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.molarity-header .header-info .progress-track {
+  flex: 1;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 80px;
+}
+
+.molarity-header .header-info .progress-track .fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.molarity-header .header-info .points-tag {
+  padding: 4px 12px;
+  background: #8b5cf6;
+  color: white;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.molarity-header .score-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ===== MAIN CONTENT ===== */
+.molarity-main {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ===== LEFT: LAB PANEL ===== */
+.lab-panel {
+  width: 360px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.lab-panel .solute-card {
+  text-align: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 12px;
+  color: white;
+}
+
+.lab-panel .solute-card .name {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.lab-panel .solute-card .formula {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.lab-panel .solute-card .mass {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* Beaker Visual */
+.lab-panel .beaker-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.lab-panel .beaker-visual .beaker {
+  position: relative;
+  width: 120px;
+  height: 150px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(200,200,200,0.2));
+  border: 4px solid #64748b;
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+}
+
+.lab-panel .beaker-visual .beaker .liquid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0 0 12px 12px;
+  transition: height 0.4s, opacity 0.4s;
+}
+
+.lab-panel .beaker-visual .beaker .scale {
+  position: absolute;
+  right: 6px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.lab-panel .beaker-visual .concentration-badge {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #1e293b;
+  border-radius: 10px;
+  color: white;
+}
+
+.lab-panel .beaker-visual .concentration-badge .val {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.lab-panel .beaker-visual .concentration-badge .unit {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Controls */
+.lab-panel .control-row {
+  background: #f1f5f9;
+  padding: 14px;
+  border-radius: 10px;
+}
+
+.lab-panel .control-row .label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #475569;
+  margin-bottom: 10px;
+}
+
+.lab-panel .control-row .adjust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.lab-panel .control-row .adjust button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.lab-panel .control-row .adjust button:hover {
+  background: #2563eb;
+}
+
+.lab-panel .control-row .adjust .value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  font-family: 'Courier New', monospace;
+}
+
+.lab-panel .control-row input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #cbd5e1;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.lab-panel .control-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+}
+
+/* Values Toggle */
+.lab-panel .values-toggle {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.lab-panel .values-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #475569;
+  cursor: pointer;
+}
+
+.lab-panel .values-toggle .values-list {
+  margin-top: 10px;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  border-left: 3px solid #3b82f6;
+}
+
+.lab-panel .values-toggle .values-list p {
+  margin: 4px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* ===== RIGHT: CHALLENGE PANEL ===== */
+.challenge-panel {
+  flex: 1;
+  background: white;
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.challenge-panel .challenge-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.challenge-panel .question-box {
+  display: flex;
+  gap: 12px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 12px;
+  color: white;
+  align-items: flex-start;
+}
+
+.challenge-panel .question-box svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.challenge-panel .question-box p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Formula Reference */
+.challenge-panel .formula-ref {
+  background: #fef3c7;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border-left: 4px solid #f59e0b;
+}
+
+.challenge-panel .formula-ref h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #92400e;
+}
+
+.challenge-panel .formula-ref ul {
+  margin: 0;
+  padding-left: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 16px;
+}
+
+.challenge-panel .formula-ref li {
+  font-size: 12px;
+  color: #78350f;
+}
+
+.challenge-panel .formula-ref code {
+  background: rgba(245, 158, 11, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  color: #b45309;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+}
+
+/* Answer Input */
+.challenge-panel .answer-row {
+}
+
+.challenge-panel .answer-row label {
+  display: block;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.challenge-panel .answer-row .input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.challenge-panel .answer-row input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  transition: border-color 0.2s;
+}
+
+.challenge-panel .answer-row input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.challenge-panel .answer-row input:disabled {
+  background: #f1f5f9;
+}
+
+.challenge-panel .answer-row .unit-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+/* Hint Section */
+.challenge-panel .hint-section {
+}
+
+.challenge-panel .hint-section .btn-hint {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #ec4899, #f43f5e);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+
+.challenge-panel .hint-section .btn-hint:hover {
+  opacity: 0.9;
+}
+
+.challenge-panel .hint-section .hint-content {
+  margin-top: 10px;
+  padding: 12px;
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.challenge-panel .hint-section .hint-content p {
+  margin: 0;
+  font-size: 13px;
+  color: #78350f;
+  line-height: 1.4;
+}
+
+/* Action Buttons */
+.challenge-panel .action-row {
+  display: flex;
+  gap: 12px;
+}
+
+.challenge-panel .action-row button {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.challenge-panel .action-row button:hover {
+  transform: translateY(-2px);
+}
+
+.challenge-panel .action-row .btn-reset {
+  background: #ef4444;
+  color: white;
+}
+
+.challenge-panel .action-row .btn-check {
+  background: #22c55e;
+  color: white;
+}
+
+/* Result Box */
+.challenge-panel .result-box {
+  padding: 16px 20px;
+  border-radius: 12px;
+    text-align: center;
+  margin-top: auto;
+}
+
+.challenge-panel .result-box.correct {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border: 2px solid #22c55e;
+}
+
+.challenge-panel .result-box.incorrect {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+}
+
+.challenge-panel .result-box h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #166534;
+}
+
+.challenge-panel .result-box.incorrect h3 {
+  color: #b45309;
+}
+
+.challenge-panel .result-box .points {
+  font-size: 22px;
+  font-weight: 700;
+  color: #15803d;
+  margin: 8px 0;
+}
+
+.challenge-panel .result-box .correct-answer {
+  background: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin: 10px 0;
+  border-left: 4px solid #22c55e;
+}
+
+.challenge-panel .result-box .correct-answer .label {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.challenge-panel .result-box .correct-answer .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #166534;
+  font-family: 'Courier New', monospace;
+}
+
+.challenge-panel .result-box .result-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.challenge-panel .result-box .result-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s;
+}
+
+.challenge-panel .result-box .result-actions button:hover {
+  transform: translateY(-2px);
+}
+
+.challenge-panel .result-box .result-actions .btn-retry {
+  background: #ef4444;
+  color: white;
+}
+
+.challenge-panel .result-box .result-actions .btn-next {
+  background: #3b82f6;
+  color: white;
+}
+
+/* ===== GAME COMPLETE MODAL ===== */
+.game-complete-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.game-complete-modal {
+  background: white;
+  padding: 48px;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 480px;
+  width: 90%;
+  animation: modalPop 0.4s ease;
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.game-complete-modal .trophy-icon {
+  color: #f59e0b;
+  margin-bottom: 16px;
+}
+
+.game-complete-modal h2 {
+  font-size: 32px;
+  color: #1e293b;
+  margin: 0 0 24px 0;
+}
+
+.game-complete-modal .stats {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  padding: 24px;
+  border-radius: 16px;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.game-complete-modal .stats p {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.game-complete-modal .stats .score {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.game-complete-modal .message {
+  font-size: 18px;
+  color: #64748b;
+  margin-bottom: 28px;
+}
+
+.game-complete-modal .modal-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.game-complete-modal .modal-actions button,
+.game-complete-modal .modal-actions a {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.game-complete-modal .modal-actions button:hover,
+.game-complete-modal .modal-actions a:hover {
+  transform: translateY(-2px);
+}
+
+.game-complete-modal .modal-actions .btn-replay {
+  background: #22c55e;
+  color: white;
+}
+
+.game-complete-modal .modal-actions .btn-home {
+  background: #3b82f6;
+  color: white;
+}
+
+/* ===== LOADING SCREEN ===== */
+.loading-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.loading-screen svg {
+  color: #3b82f6;
+  margin-bottom: 20px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+
+.loading-screen h2 {
+  font-size: 28px;
+  margin: 0 0 8px 0;
+}
+
+.loading-screen p {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+/* ===== SCROLLBAR ===== */
+.lab-panel::-webkit-scrollbar,
+.challenge-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lab-panel::-webkit-scrollbar-track,
+.challenge-panel::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.lab-panel::-webkit-scrollbar-thumb,
+.challenge-panel::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .molarity-main {
+    flex-direction: column;
+  }
+
+  .lab-panel {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .lab-panel .solute-card,
+  .lab-panel .beaker-visual {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .lab-panel .control-row,
+  .lab-panel .values-toggle {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .molarity-header {
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .molarity-header .title {
+    font-size: 18px;
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .molarity-main {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .lab-panel,
+  .challenge-panel {
+    padding: 16px;
+  }
+
+  .challenge-panel .challenge-title {
+    font-size: 18px;
+  }
+
+  .challenge-panel .question-box {
+    padding: 16px;
+  }
+
+  .challenge-panel .question-box p {
+    font-size: 14px;
+  }
+}

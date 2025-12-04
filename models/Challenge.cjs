@@ -36,7 +36,7 @@ const challengeSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['molecule', 'experiment', 'electrochemistry', 'solution', 'reaction', 'structure', 'game'],
+    enum: ['molecule', 'experiment', 'electrochemistry', 'solution', 'reaction', 'structure', 'game', 'calculation', 'observation'],
     default: 'experiment'
   },
   grade: {
@@ -66,7 +66,19 @@ const challengeSchema = new mongoose.Schema({
   features: [{
     type: String,
     required: true
-  }]
+  }],
+  // Prerequisites to unlock this challenge
+  prerequisite: {
+    classId: {
+      type: Number,
+      required: false,
+      enum: [8, 9, 10, 11, 12]
+    },
+    lessonId: {
+      type: Number,
+      required: false
+    }
+  }
 }, {
   timestamps: true
 });

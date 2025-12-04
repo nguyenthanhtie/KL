@@ -9,6 +9,8 @@ const Home = () => {
 
   const handleLogout = async () => {
     try {
+      const confirmed = window.confirm('Bạn có chắc muốn đăng xuất?');
+      if (!confirmed) return;
       await logout();
       navigate('/login');
     } catch (error) {

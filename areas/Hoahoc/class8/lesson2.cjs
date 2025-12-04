@@ -47,22 +47,20 @@ module.exports = {
         </tr>
       </table>
     `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-        type: "multiple-choice",
-        question: "Chất là gì?",
-        options: [
-          "Chỉ là nước",
-          "Những gì cấu tạo nên các vật thể xung quanh chúng ta",
-          "Chỉ là kim loại",
-          "Chỉ là không khí"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Chất là những gì cấu tạo nên các vật thể xung quanh chúng ta như nước, muối, sắt, nhôm...",
-        points: 10
-      },
+  game: [
+    {
+      type: "multiple-choice",
+      question: "Chất là gì?",
+      options: [
+        "Chỉ là nước",
+        "Những gì cấu tạo nên các vật thể xung quanh chúng ta",
+        "Chỉ là kim loại",
+        "Chỉ là không khí"
+      ],
+      correctAnswer: 1,
+      explanation: "✅ Chất là những gì cấu tạo nên các vật thể xung quanh chúng ta như nước, muối, sắt, nhôm...",
+      points: 10
+    },
       {
         type: "true-false",
         question: "Nước cất là một chất tinh khiết.",
@@ -102,48 +100,15 @@ module.exports = {
         correctAnswer: 1,
         explanation: "✅ Chất tinh khiết là chất chỉ gồm một loại chất duy nhất, ví dụ: nước cất, muối ăn nguyên chất.",
         points: 10
-      }
-    ],
-
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
-      {
-        type: "matching",
-        question: "🔗 Ghép loại chất với ví dụ tương ứng",
-        pairs: [
-          { left: "Chất tinh khiết", right: "Nước cất" },
-          { left: "Hỗn hợp", right: "Nước biển" },
-          { left: "Chất tinh khiết", right: "Muối ăn nguyên chất" },
-          { left: "Hỗn hợp", right: "Không khí" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn đã phân biệt được chất tinh khiết và hỗn hợp.",
-        points: 15
       },
+   
       {
         type: "fill-in-blank",
         question: "Chất tinh khiết là chất chỉ gồm ___ loại chất duy nhất.",
         correctAnswer: "một",
         hint: "💡 Gợi ý: Số lượng loại chất trong chất tinh khiết",
         explanation: "✅ Chính xác! Chất tinh khiết chỉ gồm MỘT loại chất duy nhất.",
-        points: 15
-      },
-      {
-        type: "ordering",
-        question: "📋 Sắp xếp các đặc điểm sau theo thứ tự: Vật lý → Hóa học",
-        options: [
-          "Màu sắc của chất",
-          "Khả năng cháy",
-          "Nhiệt độ sôi",
-          "Tính axit"
-        ],
-        correctOrder: [
-          "Màu sắc của chất",
-          "Nhiệt độ sôi",
-          "Khả năng cháy",
-          "Tính axit"
-        ],
-        explanation: "✅ Đúng! Màu sắc và nhiệt độ sôi là tính chất vật lý, khả năng cháy và tính axit là tính chất hóa học.",
-        points: 15
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -156,7 +121,7 @@ module.exports = {
         ],
         correctAnswer: 2,
         explanation: "✅ Khả năng cháy là tính chất hóa học (có phản ứng xảy ra), không phải tính chất vật lý.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -164,24 +129,7 @@ module.exports = {
         correctAnswer: "chất tinh khiết",
         hint: "💡 Loại chất tạo nên hỗn hợp",
         explanation: "✅ Đúng! Hỗn hợp gồm hai hay nhiều CHẤT TINH KHIẾT trộn lẫn.",
-        points: 15
-      }
-    ],
-
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
-      {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành định nghĩa: Chất ___ là chất chỉ gồm ___ loại chất, còn hỗn hợp gồm ___ loại chất.",
-        inline: true,
-        slots: [
-          { id: 1, label: "Loại chất thứ nhất", correct: "tinh khiết" },
-          { id: 2, label: "Số lượng trong chất tinh khiết", correct: "một" },
-          { id: 3, label: "Số lượng trong hỗn hợp", correct: "nhiều" }
-        ],
-        options: ["tinh khiết", "một", "nhiều", "hai"],
-        explanation: "✅ Hoàn hảo! Chất TINH KHIẾT chỉ có MỘT loại chất, hỗn hợp có NHIỀU loại chất.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -194,7 +142,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "❌ SAI! Nhiệt độ nóng chảy và sôi là TÍNH CHẤT VẬT LÝ, không phải hóa học.",
-        points: 20
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -204,18 +152,7 @@ module.exports = {
         explanation: "✅ Xuất sắc! Muối và nước là hai CHẤT TINH KHIẾT tạo thành HỖN HỢP nước biển.",
         points: 20
       },
-      {
-        type: "matching",
-        question: "🧠 Ghép tính chất với loại tính chất tương ứng",
-        pairs: [
-          { left: "Màu đỏ của đồng", right: "Tính chất vật lý" },
-          { left: "Sắt bị gỉ trong không khí ẩm", right: "Tính chất hóa học" },
-          { left: "Nước đóng băng ở 0°C", right: "Tính chất vật lý" },
-          { left: "Gỗ cháy khi có lửa", right: "Tính chất hóa học" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn phân biệt rõ tính chất vật lý (không có phản ứng) và hóa học (có phản ứng).",
-        points: 20
-      },
+     
       {
         type: "multiple-choice",
         question: "Tại sao không khí được coi là hỗn hợp chứ không phải chất tinh khiết?",
@@ -227,8 +164,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Chính xác! Không khí là HỖN HỢP vì chứa nhiều chất khác nhau như nitơ, oxy, CO₂...",
-        points: 20
+        points: 10
       }
-    ]
-  }
+  ]
 };

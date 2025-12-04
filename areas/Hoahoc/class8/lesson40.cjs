@@ -71,169 +71,218 @@ module.exports = {
         <li>🏭 Kiểm soát nồng độ trong sản xuất công nghiệp</li>
       </ul>
     `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Nồng độ phần trăm (C%) cho biết điều gì?",
+    options: [
+      "Số mol chất tan trong 1 lít",
+      "Số gam chất tan trong 100g dung dịch",
+      "Thể tích dung dịch",
+      "Khối lượng dung môi"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ C% = số gam chất tan trong 100g dung dịch.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Công thức tính C% là: C% = (m chất tan / m dung dịch) × 100%",
+    correctAnswer: true,
+    explanation: "✅ Đúng! C% = (m<sub>ct</sub> / m<sub>dd</sub>) × 100%",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Đơn vị của nồng độ mol (C<sub>M</sub>) là gì?",
+    options: [
+      "%",
+      "g/lít",
+      "mol/lít (M)",
+      "g/100g"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ C<sub>M</sub> có đơn vị: mol/lít hoặc M.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Khối lượng dung dịch = khối lượng chất tan + khối lượng ___.",
+    correctAnswer: "dung môi",
+    hint: "💡 Thành phần còn lại của dung dịch",
+    explanation: "✅ m<sub>dd</sub> = m<sub>ct</sub> + m<sub>dung môi</sub>",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Dung dịch muối 10% có nghĩa là trong 100g dung dịch có 10g muối.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! 10% = 10g chất tan trong 100g dung dịch.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép đại lượng với ký hiệu",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Nồng độ phần trăm (C%) cho biết điều gì?",
-        options: [
-          "Số mol chất tan trong 1 lít",
-          "Số gam chất tan trong 100g dung dịch",
-          "Thể tích dung dịch",
-          "Khối lượng dung môi"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ C% = số gam chất tan trong 100g dung dịch.",
-        points: 10
+        left: "Nồng độ phần trăm",
+        right: "C%"
       },
       {
-        type: "true-false",
-        question: "Công thức tính C% là: C% = (m chất tan / m dung dịch) × 100%",
-        correctAnswer: true,
-        explanation: "✅ Đúng! C% = (m<sub>ct</sub> / m<sub>dd</sub>) × 100%",
-        points: 10
+        left: "Nồng độ mol",
+        right: "C<sub>M</sub>"
       },
       {
-        type: "multiple-choice",
-        question: "Đơn vị của nồng độ mol (C<sub>M</sub>) là gì?",
-        options: [
-          "%",
-          "g/lít",
-          "mol/lít (M)",
-          "g/100g"
-        ],
-        correctAnswer: 2,
-        explanation: "✅ C<sub>M</sub> có đơn vị: mol/lít hoặc M.",
-        points: 10
+        left: "Số mol",
+        right: "n"
       },
       {
-        type: "fill-in-blank",
-        question: "Khối lượng dung dịch = khối lượng chất tan + khối lượng ___.",
-        correctAnswer: "dung môi",
-        hint: "💡 Thành phần còn lại của dung dịch",
-        explanation: "✅ m<sub>dd</sub> = m<sub>ct</sub> + m<sub>dung môi</sub>",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Dung dịch muối 10% có nghĩa là trong 100g dung dịch có 10g muối.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! 10% = 10g chất tan trong 100g dung dịch.",
-        points: 10
+        left: "Khối lượng mol",
+        right: "M"
       }
     ],
-    intermediate: [
+    explanation: "✅ Tuyệt vời! Bạn nhớ đúng các ký hiệu.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Hòa tan 20g muối vào 80g nước, nồng độ % của dung dịch là ___%. (Làm tròn 1 chữ số)",
+    correctAnswer: "20",
+    hint: "💡 C% = (20 / (20+80)) × 100%",
+    explanation: "✅ C% = (20/100) × 100% = 20%",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Công thức tính nồng độ mol là:",
+    options: [
+      "C<sub>M</sub> = m/V",
+      "C<sub>M</sub> = n/V",
+      "C<sub>M</sub> = V/n",
+      "C<sub>M</sub> = n×V"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ C<sub>M</sub> = n/V (số mol / thể tích lít)",
+    points: 10
+  },
+  {
+    type: "ordering",
+    question: "📋 Sắp xếp các bước pha chế dung dịch",
+    options: [
+      "Tính khối lượng chất tan cần dùng",
+      "Cân chất tan",
+      "Hòa tan vào dung môi",
+      "Khuấy đều tạo dung dịch"
+    ],
+    correctOrder: [
+      "Tính khối lượng chất tan cần dùng",
+      "Cân chất tan",
+      "Hòa tan vào dung môi",
+      "Khuấy đều tạo dung dịch"
+    ],
+    explanation: "✅ Đúng trình tự pha chế dung dịch!",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Để tính số mol từ khối lượng, ta dùng công thức: n = m / ___.",
+    correctAnswer: "M",
+    hint: "💡 Khối lượng mol",
+    explanation: "✅ n = m/M (M là khối lượng mol)",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành: C% = (___ / ___) × 100%, C<sub>M</sub> = ___ / ___",
+    inline: true,
+    slots: [
       {
-        type: "matching",
-        question: "🔗 Ghép đại lượng với ký hiệu",
-        pairs: [
-          { left: "Nồng độ phần trăm", right: "C%" },
-          { left: "Nồng độ mol", right: "C<sub>M</sub>" },
-          { left: "Số mol", right: "n" },
-          { left: "Khối lượng mol", right: "M" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn nhớ đúng các ký hiệu.",
-        points: 15
+        id: 1,
+        label: "Tử số C%",
+        correct: "m chất tan"
       },
       {
-        type: "fill-in-blank",
-        question: "Hòa tan 20g muối vào 80g nước, nồng độ % của dung dịch là ___%. (Làm tròn 1 chữ số)",
-        correctAnswer: "20",
-        hint: "💡 C% = (20 / (20+80)) × 100%",
-        explanation: "✅ C% = (20/100) × 100% = 20%",
-        points: 15
+        id: 2,
+        label: "Mẫu số C%",
+        correct: "m dung dịch"
       },
       {
-        type: "multiple-choice",
-        question: "Công thức tính nồng độ mol là:",
-        options: [
-          "C<sub>M</sub> = m/V",
-          "C<sub>M</sub> = n/V",
-          "C<sub>M</sub> = V/n",
-          "C<sub>M</sub> = n×V"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ C<sub>M</sub> = n/V (số mol / thể tích lít)",
-        points: 15
+        id: 3,
+        label: "Tử số CM",
+        correct: "n"
       },
       {
-        type: "ordering",
-        question: "📋 Sắp xếp các bước pha chế dung dịch",
-        options: [
-          "Tính khối lượng chất tan cần dùng",
-          "Cân chất tan",
-          "Hòa tan vào dung môi",
-          "Khuấy đều tạo dung dịch"
-        ],
-        correctOrder: [
-          "Tính khối lượng chất tan cần dùng",
-          "Cân chất tan",
-          "Hòa tan vào dung môi",
-          "Khuấy đều tạo dung dịch"
-        ],
-        explanation: "✅ Đúng trình tự pha chế dung dịch!",
-        points: 15
-      },
-      {
-        type: "fill-in-blank",
-        question: "Để tính số mol từ khối lượng, ta dùng công thức: n = m / ___.",
-        correctAnswer: "M",
-        hint: "💡 Khối lượng mol",
-        explanation: "✅ n = m/M (M là khối lượng mol)",
-        points: 15
+        id: 4,
+        label: "Mẫu số CM",
+        correct: "V"
       }
     ],
-    advanced: [
+    options: [
+      "m chất tan",
+      "m dung dịch",
+      "n",
+      "V"
+    ],
+    explanation: "✅ C% = (m<sub>ct</sub>/m<sub>dd</sub>)×100%, C<sub>M</sub> = n/V",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Hòa tan 40g NaCl vào 160g nước. Nồng độ % của dung dịch là:",
+    options: [
+      "20%",
+      "25%",
+      "40%",
+      "50%"
+    ],
+    correctAnswer: 0,
+    explanation: "✅ C% = 40/(40+160) × 100% = 40/200 × 100% = 20%",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Dung dịch NaCl 0,1M có ___ mol NaCl trong 1 lít dung dịch.",
+    correctAnswer: "0,1",
+    hint: "💡 Đọc giá trị C<sub>M</sub>",
+    explanation: "✅ 0,1M nghĩa là 0,1 mol/lít.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🧠 Tính toán nồng độ",
+    pairs: [
       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành: C% = (___ / ___) × 100%, C<sub>M</sub> = ___ / ___",
-        inline: true,
-        slots: [
-          { id: 1, label: "Tử số C%", correct: "m chất tan" },
-          { id: 2, label: "Mẫu số C%", correct: "m dung dịch" },
-          { id: 3, label: "Tử số CM", correct: "n" },
-          { id: 4, label: "Mẫu số CM", correct: "V" }
-        ],
-        options: ["m chất tan", "m dung dịch", "n", "V"],
-        explanation: "✅ C% = (m<sub>ct</sub>/m<sub>dd</sub>)×100%, C<sub>M</sub> = n/V",
-        points: 20
+        left: "10g muối + 90g nước",
+        right: "C% = 10%"
       },
       {
-        type: "multiple-choice",
-        question: "Hòa tan 40g NaCl vào 160g nước. Nồng độ % của dung dịch là:",
-        options: ["20%", "25%", "40%", "50%"],
-        correctAnswer: 0,
-        explanation: "✅ C% = 40/(40+160) × 100% = 40/200 × 100% = 20%",
-        points: 20
+        left: "25g đường + 75g nước",
+        right: "C% = 25%"
       },
       {
-        type: "fill-in-blank",
-        question: "Dung dịch NaCl 0,1M có ___ mol NaCl trong 1 lít dung dịch.",
-        correctAnswer: "0,1",
-        hint: "💡 Đọc giá trị C<sub>M</sub>",
-        explanation: "✅ 0,1M nghĩa là 0,1 mol/lít.",
-        points: 20
+        left: "0,5 mol NaCl trong 2 lít",
+        right: "C<sub>M</sub> = 0,25M"
       },
       {
-        type: "matching",
-        question: "🧠 Tính toán nồng độ",
-        pairs: [
-          { left: "10g muối + 90g nước", right: "C% = 10%" },
-          { left: "25g đường + 75g nước", right: "C% = 25%" },
-          { left: "0,5 mol NaCl trong 2 lít", right: "C<sub>M</sub> = 0,25M" },
-          { left: "1 mol HCl trong 1 lít", right: "C<sub>M</sub> = 1M" }
-        ],
-        explanation: "✅ Xuất sắc! Bạn tính đúng các nồng độ.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Muốn pha 200g dung dịch NaCl 15%, cần bao nhiêu gam NaCl?",
-        options: ["15g", "30g", "45g", "60g"],
-        correctAnswer: 1,
-        explanation: "✅ m<sub>NaCl</sub> = (15 × 200)/100 = 30g",
-        points: 20
+        left: "1 mol HCl trong 1 lít",
+        right: "C<sub>M</sub> = 1M"
       }
-    ]
+    ],
+    explanation: "✅ Xuất sắc! Bạn tính đúng các nồng độ.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Muốn pha 200g dung dịch NaCl 15%, cần bao nhiêu gam NaCl?",
+    options: [
+      "15g",
+      "30g",
+      "45g",
+      "60g"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ m<sub>NaCl</sub> = (15 × 200)/100 = 30g",
+    points: 10
   }
+]
 };

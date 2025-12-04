@@ -52,183 +52,218 @@ module.exports = {
         <li>🔬 Kiểm tra độ tinh khiết trước khi đốt</li>
       </ul>
     `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Trong phòng thí nghiệm, H₂ được điều chế bằng cách nào?",
+    options: [
+      "Đun nóng nước",
+      "Kim loại tác dụng với axit",
+      "Nung đá vôi",
+      "Hòa tan muối vào nước"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Zn + H₂SO₄ → ZnSO₄ + H₂↑",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Phản ứng Zn + H₂SO₄ → ZnSO₄ + H₂ là phản ứng thế.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Zn thay thế H trong H₂SO₄.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng thế có dạng tổng quát là:",
+    options: [
+      "A + B → AB",
+      "AB → A + B",
+      "A + BC → AC + B",
+      "AB + CD → AD + BC"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ Phản ứng thế: A + BC → AC + B",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Có thể thu khí H₂ bằng cách đẩy nước.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! H₂ tan rất ít trong nước nên thu được bằng đẩy nước.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tại sao không để lửa gần khí H₂?",
+    options: [
+      "Vì H₂ không cháy",
+      "Vì H₂ dễ cháy nổ",
+      "Vì H₂ ẩm",
+      "Vì H₂ nặng"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ H₂ rất dễ cháy và gây nổ mạnh.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép phương pháp với quy mô sản xuất",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Trong phòng thí nghiệm, H₂ được điều chế bằng cách nào?",
-        options: [
-          "Đun nóng nước",
-          "Kim loại tác dụng với axit",
-          "Nung đá vôi",
-          "Hòa tan muối vào nước"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Zn + H₂SO₄ → ZnSO₄ + H₂↑",
-        points: 10
+        left: "Zn + H₂SO₄",
+        right: "Phòng thí nghiệm"
       },
       {
-        type: "true-false",
-        question: "Phản ứng Zn + H₂SO₄ → ZnSO₄ + H₂ là phản ứng thế.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Zn thay thế H trong H₂SO₄.",
-        points: 10
+        left: "Điện phân nước",
+        right: "Công nghiệp"
       },
       {
-        type: "multiple-choice",
-        question: "Phản ứng thế có dạng tổng quát là:",
-        options: [
-          "A + B → AB",
-          "AB → A + B",
-          "A + BC → AC + B",
-          "AB + CD → AD + BC"
-        ],
-        correctAnswer: 2,
-        explanation: "✅ Phản ứng thế: A + BC → AC + B",
-        points: 10
+        left: "CH₄ + H₂O",
+        right: "Công nghiệp"
       },
       {
-        type: "true-false",
-        question: "Có thể thu khí H₂ bằng cách đẩy nước.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! H₂ tan rất ít trong nước nên thu được bằng đẩy nước.",
-        points: 10
-      },
-      {
-        type: "multiple-choice",
-        question: "Tại sao không để lửa gần khí H₂?",
-        options: [
-          "Vì H₂ không cháy",
-          "Vì H₂ dễ cháy nổ",
-          "Vì H₂ ẩm",
-          "Vì H₂ nặng"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ H₂ rất dễ cháy và gây nổ mạnh.",
-        points: 10
+        left: "Fe + HCl",
+        right: "Phòng thí nghiệm"
       }
     ],
-    intermediate: [
+    explanation: "✅ Tuyệt vời! Bạn phân biệt được quy mô sản xuất.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Phương trình điện phân nước: 2H₂O → ___ + ___",
+    correctAnswer: "2H₂, O₂",
+    hint: "💡 Hai khí được tạo ra",
+    explanation: "✅ 2H₂O → 2H₂ + O₂",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng nào KHÔNG phải là phản ứng thế?",
+    options: [
+      "Zn + CuSO₄ → ZnSO₄ + Cu",
+      "2H₂ + O₂ → 2H₂O",
+      "Fe + H₂SO₄ → FeSO₄ + H₂",
+      "Mg + 2HCl → MgCl₂ + H₂"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ 2H₂ + O₂ → 2H₂O là phản ứng hóa hợp, không phải phản ứng thế.",
+    points: 10
+  },
+  {
+    type: "ordering",
+    question: "📋 Sắp xếp các bước điều chế H₂ trong PTN",
+    options: [
+      "Cho Zn vào bình phản ứng",
+      "Thêm H₂SO₄ loãng",
+      "Thu khí H₂ bằng đẩy nước",
+      "Kiểm tra độ tinh khiết"
+    ],
+    correctOrder: [
+      "Cho Zn vào bình phản ứng",
+      "Thêm H₂SO₄ loãng",
+      "Thu khí H₂ bằng đẩy nước",
+      "Kiểm tra độ tinh khiết"
+    ],
+    explanation: "✅ Đúng trình tự thí nghiệm.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Trong phản ứng Zn + CuSO₄ → ZnSO₄ + Cu, Zn thay thế ___.",
+    correctAnswer: "Cu",
+    hint: "💡 Kim loại nào bị thay thế?",
+    explanation: "✅ Zn thay thế Cu trong hợp chất CuSO₄.",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành: Trong phản ứng thế, nguyên tử của ___ thay thế nguyên tử của ___ trong ___.",
+    inline: true,
+    slots: [
       {
-        type: "matching",
-        question: "🔗 Ghép phương pháp với quy mô sản xuất",
-        pairs: [
-          { left: "Zn + H₂SO₄", right: "Phòng thí nghiệm" },
-          { left: "Điện phân nước", right: "Công nghiệp" },
-          { left: "CH₄ + H₂O", right: "Công nghiệp" },
-          { left: "Fe + HCl", right: "Phòng thí nghiệm" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn phân biệt được quy mô sản xuất.",
-        points: 15
+        id: 1,
+        label: "Chất 1",
+        correct: "đơn chất"
       },
       {
-        type: "fill-in-blank",
-        question: "Phương trình điện phân nước: 2H₂O → ___ + ___",
-        correctAnswer: "2H₂, O₂",
-        hint: "💡 Hai khí được tạo ra",
-        explanation: "✅ 2H₂O → 2H₂ + O₂",
-        points: 15
+        id: 2,
+        label: "Chất 2",
+        correct: "nguyên tố"
       },
       {
-        type: "multiple-choice",
-        question: "Phản ứng nào KHÔNG phải là phản ứng thế?",
-        options: [
-          "Zn + CuSO₄ → ZnSO₄ + Cu",
-          "2H₂ + O₂ → 2H₂O",
-          "Fe + H₂SO₄ → FeSO₄ + H₂",
-          "Mg + 2HCl → MgCl₂ + H₂"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ 2H₂ + O₂ → 2H₂O là phản ứng hóa hợp, không phải phản ứng thế.",
-        points: 15
-      },
-      {
-        type: "ordering",
-        question: "📋 Sắp xếp các bước điều chế H₂ trong PTN",
-        options: [
-          "Cho Zn vào bình phản ứng",
-          "Thêm H₂SO₄ loãng",
-          "Thu khí H₂ bằng đẩy nước",
-          "Kiểm tra độ tinh khiết"
-        ],
-        correctOrder: [
-          "Cho Zn vào bình phản ứng",
-          "Thêm H₂SO₄ loãng",
-          "Thu khí H₂ bằng đẩy nước",
-          "Kiểm tra độ tinh khiết"
-        ],
-        explanation: "✅ Đúng trình tự thí nghiệm.",
-        points: 15
-      },
-      {
-        type: "fill-in-blank",
-        question: "Trong phản ứng Zn + CuSO₄ → ZnSO₄ + Cu, Zn thay thế ___.",
-        correctAnswer: "Cu",
-        hint: "💡 Kim loại nào bị thay thế?",
-        explanation: "✅ Zn thay thế Cu trong hợp chất CuSO₄.",
-        points: 15
+        id: 3,
+        label: "Chất 3",
+        correct: "hợp chất"
       }
     ],
-    advanced: [
+    options: [
+      "đơn chất",
+      "nguyên tố",
+      "hợp chất",
+      "muối"
+    ],
+    explanation: "✅ ĐƠN CHẤT thay thế NGUYÊN TỐ trong HỢP CHẤT.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tại sao phải kiểm tra độ tinh khiết của H₂ trước khi đốt?",
+    options: [
+      "Để biết H₂ có màu gì",
+      "Để tránh nổ khi H₂ lẫn không khí",
+      "Để đếm số mol H₂",
+      "Để H₂ cháy đẹp hơn"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ H₂ lẫn O₂ hoặc không khí sẽ nổ mạnh khi đốt!",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Trong công nghiệp, H₂ được sản xuất từ khí thiên nhiên: CH₄ + H₂O → ___ + ___",
+    correctAnswer: "CO, 3H₂",
+    hint: "💡 Một khí chứa C và O, một khí là H₂",
+    explanation: "✅ CH₄ + H₂O → CO + 3H₂ (nhiệt độ cao)",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🧠 Phân loại phản ứng",
+    pairs: [
       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành: Trong phản ứng thế, nguyên tử của ___ thay thế nguyên tử của ___ trong ___.",
-        inline: true,
-        slots: [
-          { id: 1, label: "Chất 1", correct: "đơn chất" },
-          { id: 2, label: "Chất 2", correct: "nguyên tố" },
-          { id: 3, label: "Chất 3", correct: "hợp chất" }
-        ],
-        options: ["đơn chất", "nguyên tố", "hợp chất", "muối"],
-        explanation: "✅ ĐƠN CHẤT thay thế NGUYÊN TỐ trong HỢP CHẤT.",
-        points: 20
+        left: "Zn + H₂SO₄ → ZnSO₄ + H₂",
+        right: "Phản ứng thế"
       },
       {
-        type: "multiple-choice",
-        question: "Tại sao phải kiểm tra độ tinh khiết của H₂ trước khi đốt?",
-        options: [
-          "Để biết H₂ có màu gì",
-          "Để tránh nổ khi H₂ lẫn không khí",
-          "Để đếm số mol H₂",
-          "Để H₂ cháy đẹp hơn"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ H₂ lẫn O₂ hoặc không khí sẽ nổ mạnh khi đốt!",
-        points: 20
+        left: "2H₂ + O₂ → 2H₂O",
+        right: "Phản ứng hóa hợp"
       },
       {
-        type: "fill-in-blank",
-        question: "Trong công nghiệp, H₂ được sản xuất từ khí thiên nhiên: CH₄ + H₂O → ___ + ___",
-        correctAnswer: "CO, 3H₂",
-        hint: "💡 Một khí chứa C và O, một khí là H₂",
-        explanation: "✅ CH₄ + H₂O → CO + 3H₂ (nhiệt độ cao)",
-        points: 20
+        left: "CuO + H₂ → Cu + H₂O",
+        right: "Phản ứng oxi hóa - khử"
       },
       {
-        type: "matching",
-        question: "🧠 Phân loại phản ứng",
-        pairs: [
-          { left: "Zn + H₂SO₄ → ZnSO₄ + H₂", right: "Phản ứng thế" },
-          { left: "2H₂ + O₂ → 2H₂O", right: "Phản ứng hóa hợp" },
-          { left: "CuO + H₂ → Cu + H₂O", right: "Phản ứng oxi hóa - khử" },
-          { left: "Fe + CuSO₄ → FeSO₄ + Cu", right: "Phản ứng thế" }
-        ],
-        explanation: "✅ Xuất sắc! Bạn phân loại đúng các phản ứng.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Phương pháp nào tiết kiệm nhất để sản xuất H₂ quy mô lớn?",
-        options: [
-          "Dùng Zn + H₂SO₄",
-          "Điện phân nước bằng năng lượng mặt trời",
-          "Từ khí thiên nhiên CH₄",
-          "Dùng Fe + HCl"
-        ],
-        correctAnswer: 2,
-        explanation: "✅ Từ CH₄ (khí thiên nhiên) là phương pháp phổ biến và kinh tế nhất hiện nay.",
-        points: 20
+        left: "Fe + CuSO₄ → FeSO₄ + Cu",
+        right: "Phản ứng thế"
       }
-    ]
+    ],
+    explanation: "✅ Xuất sắc! Bạn phân loại đúng các phản ứng.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phương pháp nào tiết kiệm nhất để sản xuất H₂ quy mô lớn?",
+    options: [
+      "Dùng Zn + H₂SO₄",
+      "Điện phân nước bằng năng lượng mặt trời",
+      "Từ khí thiên nhiên CH₄",
+      "Dùng Fe + HCl"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ Từ CH₄ (khí thiên nhiên) là phương pháp phổ biến và kinh tế nhất hiện nay.",
+    points: 10
   }
+]
 };

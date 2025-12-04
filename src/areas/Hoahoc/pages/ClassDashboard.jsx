@@ -13,6 +13,7 @@ const ClassDashboard = () => {
   const [chapters, setChapters] = useState([]);
   const [lessonsProgress, setLessonsProgress] = useState({});
   const [loading, setLoading] = useState(true);
+  const [unlockedLessonIds, setUnlockedLessonIds] = useState(new Set());
 
   const gradeInfo = {
     8: { title: 'Hóa học 8', color: 'blue', icon: '🧪' },
@@ -53,16 +54,61 @@ const ClassDashboard = () => {
   // Fetch user progress
   useEffect(() => {
     const fetchProgress = async () => {
-      if (!user?.uid) return;
+      const userUid = user?.firebaseUid || user?.uid;
+      if (!userUid) return;
       
       try {
-        const response = await axios.get(`${API_URL}/progress/user/${user.uid}`);
-        const progressData = response.data;
+        const response = await axios.get(`${API_URL}/users/firebase/${userUid}`);
+        const userData = response.data;
         
+        // Find chemistry program
+        const chemProgram = userData.programs?.find(p => p.programId === 'chemistry');
+        
+        if (!chemProgram) {
+          console.log('No chemistry program found for user');
+          return;
+        }
+        
+        // Parse completedLessons from format [8001, 8002] to lessonId map
         const progressMap = {};
-        progressData.forEach(p => {
-          progressMap[p.lessonId] = p;
+        const currentClassId = parseInt(classId);
+        
+        // Get lessonStars Map (convert from object if needed)
+        const lessonStarsMap = chemProgram.progress.lessonStars || {};
+        
+        console.log('🔍 Debug lessonStars structure:', {
+          raw: chemProgram.progress.lessonStars,
+          type: typeof chemProgram.progress.lessonStars,
+          keys: Object.keys(lessonStarsMap),
+          values: Object.values(lessonStarsMap)
         });
+        
+        chemProgram.progress.completedLessons?.forEach(uniqueId => {
+          // uniqueId format: classId * 1000 + lessonId
+          // Example: 8001 = class 8, lesson 1
+          const lessonClassId = Math.floor(uniqueId / 1000);
+          const lessonId = uniqueId % 1000;
+          
+          // Only include lessons for current class
+          if (lessonClassId === currentClassId) {
+            const stars = lessonStarsMap[uniqueId.toString()] || 0;
+            console.log(`⭐ Lesson ${lessonId} (${uniqueId}): stars = ${stars}`);
+            progressMap[lessonId] = {
+              lessonId: lessonId,
+              completed: true,
+              score: chemProgram.progress.totalScore,
+              stars: stars
+            };
+          }
+        });
+        
+        console.log('📊 Progress loaded:', {
+          currentClass: currentClassId,
+          completedLessons: chemProgram.progress.completedLessons,
+          lessonStarsMap: lessonStarsMap,
+          parsedProgress: progressMap
+        });
+        
         setLessonsProgress(progressMap);
       } catch (error) {
         console.error('Error fetching progress:', error);
@@ -70,9 +116,43 @@ const ClassDashboard = () => {
     };
 
     fetchProgress();
-  }, [user]);
+  }, [user, classId]);
 
-  const handleStartLesson = (chapterId, lessonId) => {
+  // Recompute unlocked lessons whenever chapters or progress change
+  useEffect(() => {
+    if (!chapters || chapters.length === 0) {
+      setUnlockedLessonIds(new Set());
+      return;
+    }
+
+    // Flatten all lessons preserving order by lessonId (assumed global incremental within class)
+    const allLessons = chapters
+      .flatMap(ch => (ch.lessons || []).map(ls => ({ ...ls, chapterRef: ch.chapterId })))
+      .sort((a, b) => a.lessonId - b.lessonId);
+
+    const unlocked = new Set();
+    let lockAfterFirstIncomplete = false;
+    for (const lesson of allLessons) {
+      if (!lockAfterFirstIncomplete) {
+        unlocked.add(lesson.lessonId); // Current lesson always accessible until an earlier incomplete found
+        const prog = lessonsProgress[lesson.lessonId];
+        if (!prog?.completed) {
+          // First incomplete encountered; subsequent lessons locked
+          lockAfterFirstIncomplete = true;
+        }
+      } else {
+        // After first incomplete, only already completed lessons remain unlocked
+        const prog = lessonsProgress[lesson.lessonId];
+        if (prog?.completed) {
+          unlocked.add(lesson.lessonId);
+        }
+      }
+    }
+    setUnlockedLessonIds(unlocked);
+  }, [chapters, lessonsProgress]);
+
+  const handleStartLesson = (chapterId, lessonId, isLocked) => {
+    if (isLocked) return; // Guard: do nothing for locked lessons
     navigate(`/lesson/${classId}/${chapterId}/${lessonId}`);
   };
 
@@ -132,7 +212,7 @@ const ClassDashboard = () => {
         {/* Header */}
         <div className="mb-8">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/program/chemistry/dashboard')}
             className="text-gray-600 hover:text-gray-800 mb-4 flex items-center"
           >
             ← Quay lại chọn lớp
@@ -210,15 +290,18 @@ const ClassDashboard = () => {
                     const progress = lessonsProgress[lesson.lessonId];
                     const isCompleted = progress?.completed;
                     const score = progress?.score || 0;
+                    const isLocked = !unlockedLessonIds.has(lesson.lessonId);
 
                     return (
                       <div
                         key={lesson.lessonId}
-                        onClick={() => handleStartLesson(chapter.chapterId, lesson.lessonId)}
-                        className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                        onClick={() => handleStartLesson(chapter.chapterId, lesson.lessonId, isLocked)}
+                        className={`relative border-2 rounded-lg p-4 cursor-pointer transition-all duration-300 hover:shadow-lg ${
                           isCompleted
                             ? 'border-green-400 bg-green-50'
-                            : 'border-gray-200 bg-white hover:border-blue-400'
+                            : isLocked
+                              ? 'border-gray-200 bg-gray-100 opacity-60 cursor-not-allowed'
+                              : 'border-gray-200 bg-white hover:border-blue-400'
                         }`}
                       >
                         <div className="flex items-start justify-between mb-3">
@@ -227,6 +310,9 @@ const ClassDashboard = () => {
                             <div className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                               ✓
                             </div>
+                          )}
+                          {!isCompleted && isLocked && (
+                            <div className="bg-gray-400 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm" title="Hoàn thành bài trước để mở khóa">🔒</div>
                           )}
                         </div>
 
@@ -242,15 +328,26 @@ const ClassDashboard = () => {
 
                         {isCompleted && (
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-green-600 font-semibold">
-                              Điểm: {score}
-                            </span>
+                            <div className="flex items-center gap-1">
+                              {progress?.stars > 0 && (
+                                <div className="flex items-center">
+                                  {[...Array(3)].map((_, i) => (
+                                    <span key={i} className={i < progress.stars ? 'text-yellow-400' : 'text-gray-300'}>
+                                      ⭐
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         )}
 
-                        <div className="mt-3 text-blue-600 font-semibold text-sm">
-                          {isCompleted ? 'Ôn tập lại →' : 'Bắt đầu học →'}
+                        <div className={`mt-3 font-semibold text-sm ${isLocked ? 'text-gray-500' : 'text-blue-600'}`}>
+                          {isCompleted ? 'Ôn tập lại →' : isLocked ? 'Đã khóa' : 'Bắt đầu học →'}
                         </div>
+                        {isLocked && (
+                          <div className="absolute inset-0 rounded-lg bg-white/40 backdrop-blur-[1px]"></div>
+                        )}
                       </div>
                     );
                   })}

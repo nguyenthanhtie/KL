@@ -42,9 +42,9 @@ module.exports = {
       <li>Tính lượng chất có trong 18 g nước.</li>
     </ol>
   `,
-  game: {
+  game: [
     // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
+
       {
         type: "multiple-choice",
         question: "Đơn vị nào sau đây không phải là đơn vị đo khối lượng?",
@@ -81,10 +81,8 @@ module.exports = {
         correctAnswer: true,
         explanation: "✅ Đúng, đó là thể tích của 1 mol khí lý tưởng ở điều kiện tiêu chuẩn.",
         points: 10
-      }
-    ],
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
+      },
+  
       {
         type: "multiple-choice",
         question: "Tính chất nào sau đây không phải là tính chất của chất oxi hóa?",
@@ -137,9 +135,7 @@ module.exports = {
         explanation: "✅ Theo định nghĩa mở rộng, H₂ cho electron (số oxi hóa tăng từ 0 lên +1) là chất khử. Cl₂ nhận electron (số oxi hóa giảm từ 0 xuống -1) là chất oxi hóa.",
         points: 15
       }
-    ],
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
+    ,
       {
         type: "multiple-choice",
         question: "Trong phản ứng: MnO₂ + 4HCl → MnCl₂ + Cl₂ + 2H₂O, vai trò của HCl là gì?",
@@ -185,4 +181,4 @@ module.exports = {
       }
     ]
   }
-};
+    

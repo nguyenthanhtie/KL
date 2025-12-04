@@ -35,22 +35,20 @@ module.exports = {
         <li>Dự đoán phản ứng hóa học</li>
       </ul>
     `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-            "type": "multiple-choice",
-            "question": "Phân tử là gì?",
-            "options": [
-                  "Hạt nhỏ nhất của chất",
-                  "Hạt đại diện cho chất",
-                  "Hạt trong hạt nhân",
-                  "Hạt mang điện"
-            ],
-            "correctAnswer": 1,
-            "explanation": "✅ Phân tử là hạt đại diện cho chất, gồm các nguyên tử liên kết.",
-            "points": 10
-      },
+  game: [
+    {
+      "type": "multiple-choice",
+      "question": "Phân tử là gì?",
+      "options": [
+        "Hạt nhỏ nhất của chất",
+        "Hạt đại diện cho chất",
+        "Hạt trong hạt nhân",
+        "Hạt mang điện"
+      ],
+      "correctAnswer": 1,
+      "explanation": "✅ Phân tử là hạt đại diện cho chất, gồm các nguyên tử liên kết.",
+      "points": 10
+    },
       {
             "type": "true-false",
             "question": "O₂ là phân tử đơn chất.",
@@ -90,12 +88,8 @@ module.exports = {
             "correctAnswer": 0,
             "explanation": "✅ Phân tử đơn chất chỉ gồm 1 nguyên tố.",
             "points": 10
-      }
-],
-
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
-      {
+      },
+    {
             "type": "matching",
             "question": "🔗 Ghép phân tử với loại",
             "pairs": [
@@ -117,7 +111,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ O₂, N₂ là đơn chất (1 nguyên tố), H₂O, CO₂ là hợp chất (≥2 nguyên tố).",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -125,7 +119,7 @@ module.exports = {
             "correctAnswer": "2, 1",
             "hint": "💡 Nhìn vào công thức H₂O",
             "explanation": "✅ H₂O có 2 nguyên tử H và 1 nguyên tử O.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -138,7 +132,7 @@ module.exports = {
             ],
             "correctAnswer": 1,
             "explanation": "✅ CO₂ gồm 2 nguyên tố: C (cacbon) và O (oxi).",
-            "points": 15
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -146,7 +140,7 @@ module.exports = {
             "correctAnswer": "đơn chất",
             "hint": "💡 N₂ chỉ có nguyên tố N",
             "explanation": "✅ N₂ chỉ gồm nguyên tố Nitơ nên là ĐƠN CHẤT.",
-            "points": 15
+            "points": 10
       },
       {
             "type": "ordering",
@@ -162,13 +156,9 @@ module.exports = {
                   "H₂SO₄ (7 nguyên tử)"
             ],
             "explanation": "✅ H₂: 2, H₂O: 3 (2H+1O), H₂SO₄: 7 (2H+1S+4O).",
-            "points": 15
-      }
-],
-
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
-      {
+            "points": 10
+      },
+    {
             "type": "drag-drop",
             "question": "🧩 Phân tử đơn chất gồm nguyên tử của ___ nguyên tố, phân tử hợp chất gồm ___ nguyên tố trở lên.",
             "inline": true,
@@ -191,7 +181,7 @@ module.exports = {
                   "nhiều"
             ],
             "explanation": "✅ Đơn chất: 1 nguyên tố, Hợp chất: ≥2 nguyên tố.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -204,7 +194,7 @@ module.exports = {
             ],
             "correctAnswer": 3,
             "explanation": "✅ H₂SO₄ có 7 nguyên tử (2H + 1S + 4O).",
-            "points": 20
+            "points": 10
       },
       {
             "type": "fill-in-blank",
@@ -212,7 +202,7 @@ module.exports = {
             "correctAnswer": "3",
             "hint": "💡 Đếm: 1C + 2O",
             "explanation": "✅ CO₂ = 1 nguyên tử C + 2 nguyên tử O = 3 nguyên tử.",
-            "points": 20
+            "points": 10
       },
       {
             "type": "matching",
@@ -232,7 +222,7 @@ module.exports = {
                   }
             ],
             "explanation": "✅ O₂: 1 (O), H₂O: 2 (H,O), H₂SO₄: 3 (H,S,O).",
-            "points": 20
+            "points": 10
       },
       {
             "type": "multiple-choice",
@@ -245,8 +235,7 @@ module.exports = {
             ],
             "correctAnswer": 1,
             "explanation": "✅ O₂ là PHÂN TỬ vì gồm 2 nguyên tử O liên kết với nhau.",
-            "points": 20
+            "points": 10
       }
-]
-  }
+  ]
 };

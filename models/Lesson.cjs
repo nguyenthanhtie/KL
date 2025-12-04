@@ -38,7 +38,39 @@ const lessonSchema = new mongoose.Schema({
 
   // Game object containing quizzes / interactive content
   game: {
-    // Quiz cho cấp độ cơ bản
+    // Quiz array - single level (new structure)
+    quizzes: [{
+      type: {
+        type: String,
+        enum: ['multiple-choice', 'true-false', 'fill-in-blank', 'matching', 'ordering', 'drag-drop', 'molecule-assembly'],
+        required: true
+      },
+      question: {
+        type: String,
+        required: true
+      },
+      options: [String],
+      pairs: [{
+        left: String,
+        right: String
+      }],
+      correctOrder: [String],
+      correctAnswer: mongoose.Schema.Types.Mixed,
+      inline: Boolean,
+      slots: [{
+        id: Number,
+        label: String,
+        correct: String,
+        value: String
+      }],
+      explanation: String,
+      points: {
+        type: Number,
+        default: 10
+      },
+      hint: String
+    }],
+    // Legacy structure - kept for backward compatibility
     basic: [{
       type: {
         type: String,
@@ -70,7 +102,6 @@ const lessonSchema = new mongoose.Schema({
       },
       hint: String
     }],
-    // Quiz cho cấp độ trung bình
     intermediate: [{
       type: {
         type: String,
@@ -102,7 +133,6 @@ const lessonSchema = new mongoose.Schema({
       },
       hint: String
     }],
-    // Quiz cho cấp độ nâng cao
     advanced: [{
       type: {
         type: String,
@@ -131,38 +161,6 @@ const lessonSchema = new mongoose.Schema({
       points: {
         type: Number,
         default: 20
-      },
-      hint: String
-    }],
-    // Legacy: giữ lại để backward compatibility
-    quizzes: [{
-      type: {
-        type: String,
-        enum: ['multiple-choice', 'true-false', 'fill-in-blank', 'matching', 'ordering', 'drag-drop', 'molecule-assembly'],
-        required: true
-      },
-      question: {
-        type: String,
-        required: true
-      },
-      options: [String],
-      pairs: [{
-        left: String,
-        right: String
-      }],
-      correctOrder: [String],
-      correctAnswer: mongoose.Schema.Types.Mixed,
-      inline: Boolean,
-      slots: [{
-        id: Number,
-        label: String,
-        correct: String,
-        value: String
-      }],
-      explanation: String,
-      points: {
-        type: Number,
-        default: 10
       },
       hint: String
     }]

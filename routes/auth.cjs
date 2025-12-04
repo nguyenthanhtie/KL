@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User.cjs');
 
 // Đăng ký với email/password
@@ -43,15 +44,28 @@ router.post('/register', async (req, res) => {
     await newUser.save();
     console.log('✅ User registered successfully:', newUser.email);
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: newUser._id, 
+        email: newUser.email,
+        firebaseUid: newUser.firebaseUid 
+      },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
     res.json({
       success: true,
       message: 'Đăng ký thành công',
+      token: token,
       user: {
         id: newUser._id,
         username: newUser.username,
         email: newUser.email,
         displayName: newUser.displayName,
         firebaseUid: newUser.firebaseUid,
+        uid: newUser.firebaseUid, // Add uid alias for compatibility
         xp: newUser.xp,
         level: newUser.level,
         programs: newUser.programs,
@@ -104,15 +118,28 @@ router.post('/google-login', async (req, res) => {
       console.log('✅ Existing user logged in:', user.email);
     }
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: user._id, 
+        email: user.email,
+        firebaseUid: user.firebaseUid 
+      },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
     res.json({
       success: true,
       message: 'Đăng nhập thành công',
+      token: token,
       user: {
         id: user._id,
         username: user.username,
         email: user.email,
         displayName: user.displayName,
         firebaseUid: user.firebaseUid,
+        uid: user.firebaseUid, // Add uid alias for compatibility
         xp: user.xp,
         level: user.level,
         programs: user.programs,
@@ -155,7 +182,6 @@ router.post('/email-login', async (req, res) => {
         level: user.level,
         programs: user.programs,
         profile: user.profile,
-        currentLesson: user.currentLesson
       }
     });
   } catch (error) {
@@ -190,7 +216,6 @@ router.get('/me/:userId', async (req, res) => {
         level: user.level,
         programs: user.programs,
         profile: user.profile,
-        currentLesson: user.currentLesson
       }
     });
   } catch (error) {
@@ -199,6 +224,26 @@ router.get('/me/:userId', async (req, res) => {
       success: false,
       message: 'Lỗi server: ' + error.message
     });
+  }
+});
+
+// Logout - clear cookies set by server (if any)
+router.post('/logout', (req, res) => {
+  try {
+    // Common cookie names used by various auth strategies
+    const cookieNames = ['token', 'refreshToken', 'session', 'connect.sid', 'XSRF-TOKEN'];
+    cookieNames.forEach(name => {
+      try {
+        res.clearCookie(name, { path: '/' });
+      } catch (e) {
+        // ignore
+      }
+    });
+
+    return res.json({ success: true, message: 'Logged out' });
+  } catch (error) {
+    console.error('Logout error:', error);
+    return res.status(500).json({ success: false, message: 'Logout failed' });
   }
 });
 

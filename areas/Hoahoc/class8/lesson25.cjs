@@ -75,133 +75,180 @@ module.exports = {
       <p><strong>Sản xuất gang, thép:</strong> Dựa trên nguyên tắc dùng cacbon khử oxit sắt ở nhiệt độ cao trong lò luyện kim.</p>
     </div>
   `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Kim loại nào sau đây nhẹ hơn?",
+    options: [
+      "Sắt",
+      "Nhôm",
+      "Đồng",
+      "Bạc"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Nhôm là một kim loại nhẹ, được ứng dụng nhiều trong ngành hàng không.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Ở điều kiện thường, nhôm không tác dụng với nước do có lớp màng oxit bảo vệ.",
+    correctAnswer: true,
+    explanation: "✅ Lớp Al₂O₃ rất mỏng, bền và trơ về mặt hóa học, ngăn không cho nhôm tiếp xúc với nước và không khí.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Sản phẩm của phản ứng giữa Fe và dung dịch HCl là:",
+    options: [
+      "FeCl₃ và H₂",
+      "FeCl₂ và H₂",
+      "FeCl₃ và H₂O",
+      "FeCl₂ và Cl₂"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Sắt tác dụng với các axit loại 1 (HCl, H₂SO₄ loãng) chỉ tạo muối sắt(II).",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Hợp kim của sắt với cacbon (hàm lượng C < 2%) được gọi là ___.",
+    correctAnswer: "thép",
+    explanation: "✅ Thép là hợp kim quan trọng và phổ biến nhất của sắt.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Sắt có thể tác dụng với dung dịch kiềm như NaOH.",
+    correctAnswer: false,
+    explanation: "❌ Sai, sắt không có tính lưỡng tính nên không tác dụng với dung dịch kiềm. Nhôm thì có.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Kim loại nào sau đây có tính lưỡng tính (vừa tác dụng với axit, vừa tác dụng với kiềm)?",
+    options: [
+      "Fe",
+      "Cu",
+      "Mg",
+      "Al"
+    ],
+    correctAnswer: 3,
+    explanation: "✅ Nhôm và các hợp chất của nó như Al₂O₃, Al(OH)₃ đều có tính lưỡng tính.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép hiện tượng với phản ứng hóa học.",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Kim loại nào sau đây nhẹ hơn?",
-        options: ["Sắt", "Nhôm", "Đồng", "Bạc"],
-        correctAnswer: 1,
-        explanation: "✅ Nhôm là một kim loại nhẹ, được ứng dụng nhiều trong ngành hàng không.",
-        points: 10
+        left: "Cho Fe vào H₂SO₄ đặc, nguội",
+        right: "Bị thụ động hóa"
       },
       {
-        type: "true-false",
-        question: "Ở điều kiện thường, nhôm không tác dụng với nước do có lớp màng oxit bảo vệ.",
-        correctAnswer: true,
-        explanation: "✅ Lớp Al₂O₃ rất mỏng, bền và trơ về mặt hóa học, ngăn không cho nhôm tiếp xúc với nước và không khí.",
-        points: 10
+        left: "Cho Al vào dung dịch NaOH",
+        right: "Kim loại tan, có khí thoát ra"
       },
       {
-        type: "multiple-choice",
-        question: "Sản phẩm của phản ứng giữa Fe và dung dịch HCl là:",
-        options: ["FeCl₃ và H₂", "FeCl₂ và H₂", "FeCl₃ và H₂O", "FeCl₂ và Cl₂"],
-        correctAnswer: 1,
-        explanation: "✅ Sắt tác dụng với các axit loại 1 (HCl, H₂SO₄ loãng) chỉ tạo muối sắt(II).",
-        points: 10
-      },
-      {
-        type: "fill-in-blank",
-        question: "Hợp kim của sắt với cacbon (hàm lượng C < 2%) được gọi là ___.",
-        correctAnswer: "thép",
-        explanation: "✅ Thép là hợp kim quan trọng và phổ biến nhất của sắt.",
-        points: 10
-      },
-      {
-        type: "true-false",
-        question: "Sắt có thể tác dụng với dung dịch kiềm như NaOH.",
-        correctAnswer: false,
-        explanation: "❌ Sai, sắt không có tính lưỡng tính nên không tác dụng với dung dịch kiềm. Nhôm thì có.",
-        points: 10
+        left: "Đốt Fe trong khí Cl₂",
+        right: "Tạo khói màu nâu đỏ (FeCl₃)"
       }
     ],
-    intermediate: [
+    explanation: "✅ Đây là những phản ứng đặc trưng thể hiện tính chất hóa học riêng của Nhôm và Sắt.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Để phân biệt bột Al và Fe, ta có thể dùng hóa chất nào sau đây?",
+    options: [
+      "Nước",
+      "Dung dịch HCl",
+      "Dung dịch NaOH",
+      "Dung dịch NaCl"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ Dùng dung dịch NaOH. Nhôm sẽ tan ra và có khí thoát ra, còn Sắt không có hiện tượng gì.",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành phương trình: 2Al + 2NaOH + 2H₂O → ? + 3H₂↑",
+    inline: true,
+    slots: [
       {
-        type: "multiple-choice",
-        question: "Kim loại nào sau đây có tính lưỡng tính (vừa tác dụng với axit, vừa tác dụng với kiềm)?",
-        options: ["Fe", "Cu", "Mg", "Al"],
-        correctAnswer: 3,
-        explanation: "✅ Nhôm và các hợp chất của nó như Al₂O₃, Al(OH)₃ đều có tính lưỡng tính.",
-        points: 15
-      },
-      {
-        type: "matching",
-        question: "🔗 Ghép hiện tượng với phản ứng hóa học.",
-        pairs: [
-          { left: "Cho Fe vào H₂SO₄ đặc, nguội", right: "Bị thụ động hóa" },
-          { left: "Cho Al vào dung dịch NaOH", right: "Kim loại tan, có khí thoát ra" },
-          { left: "Đốt Fe trong khí Cl₂", right: "Tạo khói màu nâu đỏ (FeCl₃)" }
-        ],
-        explanation: "✅ Đây là những phản ứng đặc trưng thể hiện tính chất hóa học riêng của Nhôm và Sắt.",
-        points: 15
-      },
-      {
-        type: "multiple-choice",
-        question: "Để phân biệt bột Al và Fe, ta có thể dùng hóa chất nào sau đây?",
-        options: ["Nước", "Dung dịch HCl", "Dung dịch NaOH", "Dung dịch NaCl"],
-        correctAnswer: 2,
-        explanation: "✅ Dùng dung dịch NaOH. Nhôm sẽ tan ra và có khí thoát ra, còn Sắt không có hiện tượng gì.",
-        points: 15
-      },
-       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành phương trình: 2Al + 2NaOH + 2H₂O → ? + 3H₂↑",
-        inline: true,
-        slots: [
-          { id: 1, label: "Sản phẩm", correct: "2NaAlO₂" }
-        ],
-        options: ["2NaAlO₂", "Na₂Al₂O₄", "Al(OH)₃", "Na₂O"],
-        explanation: "✅ Nhôm tác dụng với dung dịch kiềm tạo ra muối aluminat và giải phóng khí hiđro.",
-        points: 15
-      },
-      {
-        type: "true-false",
-        question: "Gang cứng hơn thép.",
-        correctAnswer: false,
-        explanation: "❌ Sai. Gang cứng nhưng giòn. Thép vừa cứng vừa có độ dẻo và đàn hồi tốt hơn, nên có nhiều ứng dụng hơn trong xây dựng và cơ khí.",
-        points: 15
+        id: 1,
+        label: "Sản phẩm",
+        correct: "2NaAlO₂"
       }
     ],
-    advanced: [
-      {
-        type: "multiple-choice",
-        question: "Tại sao người ta có thể dùng thùng bằng thép để chuyên chở H₂SO₄ đặc, nguội?",
-        options: ["Vì thép không phản ứng với axit", "Vì thép rất bền", "Vì sắt bị thụ động hóa trong H₂SO₄ đặc, nguội", "Vì H₂SO₄ đặc, nguội không phải là axit"],
-        correctAnswer: 2,
-        explanation: "✅ Sắt (thành phần chính của thép) không phản ứng với H₂SO₄ đặc, nguội do hiện tượng thụ động hóa, tạo ra một lớp màng oxit bảo vệ.",
-        points: 20
-      },
-      {
-        type: "true-false",
-        question: "Phản ứng của nhôm với dung dịch NaOH là một phản ứng oxi hóa - khử.",
-        correctAnswer: true,
-        explanation: "✅ Đúng. Số oxi hóa của Al thay đổi từ 0 lên +3 (trong NaAlO₂), và số oxi hóa của H thay đổi từ +1 (trong H₂O) xuống 0 (trong H₂).",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Cho 5.4g Al tác dụng hoàn toàn với dung dịch HCl dư. Thể tích khí H₂ (đktc) thu được là:",
-        options: ["2.24 lít", "3.36 lít", "4.48 lít", "6.72 lít"],
-        correctAnswer: 3,
-        explanation: "✅ nAl = 5.4/27 = 0.2 mol. 2Al + 6HCl → 2AlCl₃ + 3H₂. nH₂ = (3/2) * nAl = 0.3 mol. VH₂ = 0.3 * 22.4 = 6.72 lít.",
-        points: 20
-      },
-      {
-        type: "fill-in-blank",
-        question: "Nguyên tắc sản xuất thép là giảm hàm lượng của các tạp chất C, S, Si... có trong ___.",
-        correctAnswer: "gang",
-        hint: "💡 Thép là phiên bản 'tinh khiết' hơn của gang.",
-        explanation: "✅ Quá trình luyện thép thực chất là oxi hóa các tạp chất trong gang để thu được thép có thành phần mong muốn.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Một loại quặng sắt sau khi loại bỏ tạp chất thu được Fe₂O₃. Tên của quặng này là:",
-        options: ["Pirit", "Hematit", "Manhetit", "Xiderit"],
-        correctAnswer: 1,
-        explanation: "✅ Quặng hematit có thành phần chính là Fe₂O₃. Manhetit là Fe₃O₄, Pirit là FeS₂, Xiderit là FeCO₃.",
-        points: 20
-      }
-    ]
+    options: [
+      "2NaAlO₂",
+      "Na₂Al₂O₄",
+      "Al(OH)₃",
+      "Na₂O"
+    ],
+    explanation: "✅ Nhôm tác dụng với dung dịch kiềm tạo ra muối aluminat và giải phóng khí hiđro.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Gang cứng hơn thép.",
+    correctAnswer: false,
+    explanation: "❌ Sai. Gang cứng nhưng giòn. Thép vừa cứng vừa có độ dẻo và đàn hồi tốt hơn, nên có nhiều ứng dụng hơn trong xây dựng và cơ khí.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tại sao người ta có thể dùng thùng bằng thép để chuyên chở H₂SO₄ đặc, nguội?",
+    options: [
+      "Vì thép không phản ứng với axit",
+      "Vì thép rất bền",
+      "Vì sắt bị thụ động hóa trong H₂SO₄ đặc, nguội",
+      "Vì H₂SO₄ đặc, nguội không phải là axit"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ Sắt (thành phần chính của thép) không phản ứng với H₂SO₄ đặc, nguội do hiện tượng thụ động hóa, tạo ra một lớp màng oxit bảo vệ.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Phản ứng của nhôm với dung dịch NaOH là một phản ứng oxi hóa - khử.",
+    correctAnswer: true,
+    explanation: "✅ Đúng. Số oxi hóa của Al thay đổi từ 0 lên +3 (trong NaAlO₂), và số oxi hóa của H thay đổi từ +1 (trong H₂O) xuống 0 (trong H₂).",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Cho 5.4g Al tác dụng hoàn toàn với dung dịch HCl dư. Thể tích khí H₂ (đktc) thu được là:",
+    options: [
+      "2.24 lít",
+      "3.36 lít",
+      "4.48 lít",
+      "6.72 lít"
+    ],
+    correctAnswer: 3,
+    explanation: "✅ nAl = 5.4/27 = 0.2 mol. 2Al + 6HCl → 2AlCl₃ + 3H₂. nH₂ = (3/2) * nAl = 0.3 mol. VH₂ = 0.3 * 22.4 = 6.72 lít.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Nguyên tắc sản xuất thép là giảm hàm lượng của các tạp chất C, S, Si... có trong ___.",
+    correctAnswer: "gang",
+    hint: "💡 Thép là phiên bản 'tinh khiết' hơn của gang.",
+    explanation: "✅ Quá trình luyện thép thực chất là oxi hóa các tạp chất trong gang để thu được thép có thành phần mong muốn.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Một loại quặng sắt sau khi loại bỏ tạp chất thu được Fe₂O₃. Tên của quặng này là:",
+    options: [
+      "Pirit",
+      "Hematit",
+      "Manhetit",
+      "Xiderit"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Quặng hematit có thành phần chính là Fe₂O₃. Manhetit là Fe₃O₄, Pirit là FeS₂, Xiderit là FeCO₃.",
+    points: 10
   }
+]
 };

@@ -65,140 +65,190 @@ module.exports = {
       </ul>
     </div>
   `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Chất nào sau đây là một axit?",
+    options: [
+      "NaOH",
+      "HCl",
+      "NaCl",
+      "H₂O"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ HCl (axit clohiđric) là một axit mạnh.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Dung dịch bazơ làm quỳ tím hóa đỏ.",
+    correctAnswer: false,
+    explanation: "❌ Sai, dung dịch bazơ (kiềm) làm quỳ tím hóa xanh. Dung dịch axit làm quỳ tím hóa đỏ.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tên gọi của NaOH là gì?",
+    options: [
+      "Natri oxit",
+      "Natri hiđroxit",
+      "Natri clorua",
+      "Natri sunfat"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ NaOH là một bazơ, có tên là Natri hiđroxit.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Công thức hóa học của Canxi cacbonat là ___.",
+    correctAnswer: "CaCO₃",
+    explanation: "✅ Canxi (Ca) hóa trị II, gốc cacbonat (CO₃) hóa trị II, nên công thức là CaCO₃.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Chất nào sau đây là muối?",
+    options: [
+      "H₂SO₄",
+      "Cu(OH)₂",
+      "Fe₂(SO₄)₃",
+      "SO₃"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ Fe₂(SO₄)₃ (Sắt(III) sunfat) là một muối.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Dãy chất nào sau đây chỉ gồm các bazơ tan (kiềm)?",
+    options: [
+      "NaOH, Ca(OH)₂, Cu(OH)₂",
+      "KOH, Ba(OH)₂, NaOH",
+      "Fe(OH)₃, Mg(OH)₂, KOH",
+      "Al(OH)₃, Zn(OH)₂, Ba(OH)₂"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ KOH, Ba(OH)₂, NaOH đều là các bazơ mạnh và tan tốt trong nước.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép công thức hóa học với tên gọi tương ứng.",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Chất nào sau đây là một axit?",
-        options: ["NaOH", "HCl", "NaCl", "H₂O"],
-        correctAnswer: 1,
-        explanation: "✅ HCl (axit clohiđric) là một axit mạnh.",
-        points: 10
+        left: "H₂SO₃",
+        right: "Axit sunfurơ"
       },
       {
-        type: "true-false",
-        question: "Dung dịch bazơ làm quỳ tím hóa đỏ.",
-        correctAnswer: false,
-        explanation: "❌ Sai, dung dịch bazơ (kiềm) làm quỳ tím hóa xanh. Dung dịch axit làm quỳ tím hóa đỏ.",
-        points: 10
+        left: "Fe(OH)₂",
+        right: "Sắt(II) hiđroxit"
       },
       {
-        type: "multiple-choice",
-        question: "Tên gọi của NaOH là gì?",
-        options: ["Natri oxit", "Natri hiđroxit", "Natri clorua", "Natri sunfat"],
-        correctAnswer: 1,
-        explanation: "✅ NaOH là một bazơ, có tên là Natri hiđroxit.",
-        points: 10
+        left: "Na₂CO₃",
+        right: "Natri cacbonat"
       },
       {
-        type: "fill-in-blank",
-        question: "Công thức hóa học của Canxi cacbonat là ___.",
-        correctAnswer: "CaCO₃",
-        explanation: "✅ Canxi (Ca) hóa trị II, gốc cacbonat (CO₃) hóa trị II, nên công thức là CaCO₃.",
-        points: 10
-      },
-      {
-        type: "multiple-choice",
-        question: "Chất nào sau đây là muối?",
-        options: ["H₂SO₄", "Cu(OH)₂", "Fe₂(SO₄)₃", "SO₃"],
-        correctAnswer: 2,
-        explanation: "✅ Fe₂(SO₄)₃ (Sắt(III) sunfat) là một muối.",
-        points: 10
+        left: "H₂SO₄",
+        right: "Axit sunfuric"
       }
     ],
-    intermediate: [
+    explanation: "✅ Việc gọi tên đúng phụ thuộc vào việc xác định loại hợp chất, hóa trị của nguyên tố và quy tắc tên gọi.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Muối NaHCO₃ có tên gọi là gì?",
+    options: [
+      "Natri cacbonat",
+      "Natri hiđrocacbonat",
+      "Natri hiđroxit",
+      "Natri cacbua"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Đây là muối axit, gốc axit là -HCO₃ (hiđrocacbonat). Tên đầy đủ là Natri hiđrocacbonat.",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành: Công thức của axit sunfuric là __",
+    inline: true,
+    slots: [
       {
-        type: "multiple-choice",
-        question: "Dãy chất nào sau đây chỉ gồm các bazơ tan (kiềm)?",
-        options: ["NaOH, Ca(OH)₂, Cu(OH)₂", "KOH, Ba(OH)₂, NaOH", "Fe(OH)₃, Mg(OH)₂, KOH", "Al(OH)₃, Zn(OH)₂, Ba(OH)₂"],
-        correctAnswer: 1,
-        explanation: "✅ KOH, Ba(OH)₂, NaOH đều là các bazơ mạnh và tan tốt trong nước.",
-        points: 15
-      },
-      {
-        type: "matching",
-        question: "🔗 Ghép công thức hóa học với tên gọi tương ứng.",
-        pairs: [
-          { left: "H₂SO₃", right: "Axit sunfurơ" },
-          { left: "Fe(OH)₂", right: "Sắt(II) hiđroxit" },
-          { left: "Na₂CO₃", right: "Natri cacbonat" },
-          { left: "H₂SO₄", right: "Axit sunfuric" }
-        ],
-        explanation: "✅ Việc gọi tên đúng phụ thuộc vào việc xác định loại hợp chất, hóa trị của nguyên tố và quy tắc tên gọi.",
-        points: 15
-      },
-      {
-        type: "multiple-choice",
-        question: "Muối NaHCO₃ có tên gọi là gì?",
-        options: ["Natri cacbonat", "Natri hiđrocacbonat", "Natri hiđroxit", "Natri cacbua"],
-        correctAnswer: 1,
-        explanation: "✅ Đây là muối axit, gốc axit là -HCO₃ (hiđrocacbonat). Tên đầy đủ là Natri hiđrocacbonat.",
-        points: 15
-      },
-      {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành: Công thức của axit sunfuric là __",
-        inline: true,
-        slots: [
-          { id: 1, label: "Công thức", correct: "H₂SO₄" }
-        ],
-        options: ["H₂SO₄", "H₂SO₃", "H₂S", "SO₄"],
-        explanation: "✅ Axit sunfuric có công thức H₂SO₄, là một trong những axit mạnh và quan trọng nhất.",
-        points: 15
-      },
-      {
-        type: "true-false",
-        question: "Tất cả các bazơ đều làm đổi màu quỳ tím.",
-        correctAnswer: false,
-        explanation: "❌ Sai, chỉ có các bazơ tan (kiềm) mới làm quỳ tím hóa xanh. Bazơ không tan không làm đổi màu quỳ tím.",
-        points: 15
+        id: 1,
+        label: "Công thức",
+        correct: "H₂SO₄"
       }
     ],
-    advanced: [
-      {
-        type: "multiple-choice",
-        question: "Oxit axit tương ứng của axit H₃PO₄ là:",
-        options: ["P₂O₃", "PO₂", "P₂O₅", "PO"],
-        correctAnswer: 2,
-        explanation: "✅ P₂O₅ + 3H₂O → 2H₃PO₄. P₂O₅ là anhiđrit photphoric.",
-        points: 20
-      },
-      {
-        type: "true-false",
-        question: "Muối axit là muối có khả năng phản ứng với cả axit và bazơ.",
-        correctAnswer: true,
-        explanation: "✅ Đúng, muối axit có tính lưỡng tính. Ví dụ: NaHCO₃ + HCl → NaCl + H₂O + CO₂ và NaHCO₃ + NaOH → Na₂CO₃ + H₂O.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Dung dịch X có pH = 1. Dung dịch X có môi trường gì và làm quỳ tím hóa màu gì?",
-        options: [
-            "Axit, đỏ", 
-            "Bazơ, xanh", 
-            "Trung tính, không đổi màu", 
-            "Axit, xanh"
-        ],
-        correctAnswer: 0,
-        explanation: "✅ pH < 7 là môi trường axit, làm quỳ tím hóa đỏ.",
-        points: 20
-      },
-      {
-        type: "fill-in-blank",
-        question: "Để phân biệt dung dịch HCl và dung dịch H₂SO₄, ta có thể dùng dung dịch chứa ion ___.",
-        correctAnswer: "Ba²⁺",
-        hint: "💡 Nghĩ đến phản ứng tạo kết tủa đặc trưng.",
-        explanation: "✅ Dùng dung dịch BaCl₂ hoặc Ba(OH)₂. H₂SO₄ sẽ tạo kết tủa trắng BaSO₄, còn HCl thì không.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Cho kim loại Sắt (Fe) lần lượt tác dụng với dung dịch HCl và dung dịch H₂SO₄ đặc, nóng. Muối sắt tạo thành có hóa trị lần lượt là:",
-        options: ["II và II", "III và III", "II và III", "III và II"],
-        correctAnswer: 2,
-        explanation: "✅ Fe + 2HCl → FeCl₂ + H₂ (sắt II). 2Fe + 6H₂SO₄(đặc) → Fe₂(SO₄)₃ + 3SO₂ + 6H₂O (sắt III).",
-        points: 20
-      }
-    ]
+    options: [
+      "H₂SO₄",
+      "H₂SO₃",
+      "H₂S",
+      "SO₄"
+    ],
+    explanation: "✅ Axit sunfuric có công thức H₂SO₄, là một trong những axit mạnh và quan trọng nhất.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Tất cả các bazơ đều làm đổi màu quỳ tím.",
+    correctAnswer: false,
+    explanation: "❌ Sai, chỉ có các bazơ tan (kiềm) mới làm quỳ tím hóa xanh. Bazơ không tan không làm đổi màu quỳ tím.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Oxit axit tương ứng của axit H₃PO₄ là:",
+    options: [
+      "P₂O₃",
+      "PO₂",
+      "P₂O₅",
+      "PO"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ P₂O₅ + 3H₂O → 2H₃PO₄. P₂O₅ là anhiđrit photphoric.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Muối axit là muối có khả năng phản ứng với cả axit và bazơ.",
+    correctAnswer: true,
+    explanation: "✅ Đúng, muối axit có tính lưỡng tính. Ví dụ: NaHCO₃ + HCl → NaCl + H₂O + CO₂ và NaHCO₃ + NaOH → Na₂CO₃ + H₂O.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Dung dịch X có pH = 1. Dung dịch X có môi trường gì và làm quỳ tím hóa màu gì?",
+    options: [
+      "Axit, đỏ",
+      "Bazơ, xanh",
+      "Trung tính, không đổi màu",
+      "Axit, xanh"
+    ],
+    correctAnswer: 0,
+    explanation: "✅ pH < 7 là môi trường axit, làm quỳ tím hóa đỏ.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Để phân biệt dung dịch HCl và dung dịch H₂SO₄, ta có thể dùng dung dịch chứa ion ___.",
+    correctAnswer: "Ba²⁺",
+    hint: "💡 Nghĩ đến phản ứng tạo kết tủa đặc trưng.",
+    explanation: "✅ Dùng dung dịch BaCl₂ hoặc Ba(OH)₂. H₂SO₄ sẽ tạo kết tủa trắng BaSO₄, còn HCl thì không.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Cho kim loại Sắt (Fe) lần lượt tác dụng với dung dịch HCl và dung dịch H₂SO₄ đặc, nóng. Muối sắt tạo thành có hóa trị lần lượt là:",
+    options: [
+      "II và II",
+      "III và III",
+      "II và III",
+      "III và II"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ Fe + 2HCl → FeCl₂ + H₂ (sắt II). 2Fe + 6H₂SO₄(đặc) → Fe₂(SO₄)₃ + 3SO₂ + 6H₂O (sắt III).",
+    points: 10
   }
+]
 };

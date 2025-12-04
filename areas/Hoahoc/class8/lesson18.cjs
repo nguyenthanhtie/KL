@@ -63,9 +63,7 @@ module.exports = {
       <li><strong>Bơm vào khinh khí cầu, bóng bay:</strong> Do tính chất nhẹ.</li>
     </ul>
   `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
+  game:[
       {
         type: "multiple-choice",
         question: "Khí nào sau đây nhẹ nhất trong các loại khí?",
@@ -103,10 +101,7 @@ module.exports = {
         correctAnswer: true,
         explanation: "✅ Đúng, hỗn hợp này sẽ cháy mạnh khi có tia lửa điện hoặc nhiệt độ cao.",
         points: 10
-      }
-    ],
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
+      },
       {
         type: "multiple-choice",
         question: "Trong phản ứng: H₂ + CuO → Cu + H₂O, chất nào là chất khử?",
@@ -161,10 +156,7 @@ module.exports = {
         correctAnswer: "2:1",
         explanation: "✅ Tỉ lệ 2:1 đúng bằng tỉ lệ các chất tham gia trong phương trình phản ứng 2H₂ + O₂ → 2H₂O.",
         points: 15
-      }
-    ],
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
+      },
       {
         type: "multiple-choice",
         question: "Để khử hoàn toàn 16g CuO cần dùng bao nhiêu lít khí H₂ (ở đktc)? (Cu=64, O=16)",
@@ -235,4 +227,4 @@ module.exports = {
         }
     ]
 }
-};
+

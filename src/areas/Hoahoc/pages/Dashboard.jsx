@@ -43,26 +43,70 @@ const Dashboard = () => {
   // Fetch user progress from API
   useEffect(() => {
     const fetchProgress = async () => {
-      if (!user?.uid) return;
+      const userUid = user?.firebaseUid || user?.uid;
+      if (!userUid) return;
       
       try {
-        const response = await axios.get(`${API_URL}/progress/user/${user.uid}`);
-        const progressData = response.data;
+        const response = await axios.get(`${API_URL}/users/firebase/${userUid}`);
+        const userData = response.data;
         
-        // Convert array to object keyed by lessonId
+        // Find chemistry program
+        const chemProgram = userData.programs?.find(p => p.programId === 'chemistry');
+        
+        if (!chemProgram) {
+          console.log('No chemistry program found for user');
+          return;
+        }
+        
+        // Parse completedLessons from format [8001, 8002] to lessonId map
         const progressMap = {};
-        progressData.forEach(p => {
-          progressMap[p.lessonId] = p;
+        
+        // Get lessonStars Map
+        const lessonStarsMap = chemProgram.progress.lessonStars || {};
+        
+        console.log('🔍 Dashboard - Debug lessonStars:', {
+          raw: chemProgram.progress.lessonStars,
+          type: typeof chemProgram.progress.lessonStars,
+          keys: Object.keys(lessonStarsMap),
+          values: Object.values(lessonStarsMap)
         });
+        
+        chemProgram.progress.completedLessons?.forEach(uniqueId => {
+          // uniqueId format: classId * 1000 + lessonId
+          // Example: 8001 = class 8, lesson 1
+          const lessonClassId = Math.floor(uniqueId / 1000);
+          const lessonId = uniqueId % 1000;
+          
+          const stars = lessonStarsMap[uniqueId.toString()] || 0;
+          // Use uniqueId as key to avoid overwriting lessons with same lessonId
+          progressMap[uniqueId] = {
+            uniqueId: uniqueId,
+            lessonId: lessonId,
+            classId: lessonClassId,
+            completed: true,
+            score: chemProgram.progress.totalScore,
+            stars: stars
+          };
+        });
+        
         setLessonsProgress(progressMap);
         
         // Calculate stats
-        const completed = progressData.filter(p => p.completed).length;
+        const completedCount = chemProgram.progress.completedLessons?.length || 0;
+        const currentStreak = chemProgram.studyStreak?.currentStreak || 0;
+        
         setUserProgress({
-          totalLessons: 28,
-          completedLessons: completed,
-          currentStreak: 0, // TODO: implement streak logic
-          totalPoints: progressData.reduce((sum, p) => sum + (p.score || 0), 0)
+          totalLessons: 51, // Total across all classes
+          completedLessons: completedCount,
+          currentStreak: currentStreak,
+          totalPoints: chemProgram.progress.totalScore || 0
+        });
+        
+        console.log('📊 Dashboard progress loaded:', {
+          completedLessons: chemProgram.progress.completedLessons,
+          totalScore: chemProgram.progress.totalScore,
+          lessonStarsMap: lessonStarsMap,
+          parsedProgress: progressMap
         });
       } catch (error) {
         console.error('Error fetching progress:', error);
@@ -101,7 +145,8 @@ const Dashboard = () => {
     fetchLessons();
   }, []);
 
-  const handleStartLesson = (classId, chapterId, lessonId) => {
+  const handleStartLesson = (classId, chapterId, lessonId, isLocked) => {
+    if (isLocked) return;
     navigate(`/lesson/${classId}/${chapterId}/${lessonId}`);
   };
 
@@ -151,6 +196,33 @@ const Dashboard = () => {
     return chapterTitles[chapterId] || `Chương ${chapterId}`;
   };
 
+  // Compute current-class specific statistics (used by UI cards)
+  const currentClassData = classes.find(c => c.classId === selectedClass) || null;
+  const totalLessonsInSelectedClass = currentClassData
+    ? currentClassData.chapters.reduce((sum, ch) => sum + (ch.lessons?.length || 0), 0)
+    : 0;
+
+  const completedLessonsInSelectedClass = currentClassData
+    ? currentClassData.chapters.reduce((sum, ch) => {
+        return sum + ch.lessons.filter(lesson => {
+          const uniqueId = currentClassData.classId * 1000 + lesson.lessonId;
+          return lessonsProgress[uniqueId]?.completed;
+        }).length;
+      }, 0)
+    : 0;
+
+  // Sum stars for the selected class from lessonsProgress
+  const totalStarsInSelectedClass = currentClassData
+    ? Object.keys(lessonsProgress).reduce((acc, key) => {
+        const p = lessonsProgress[key];
+        const classId = Math.floor(Number(key) / 1000);
+        if (classId === currentClassData.classId) {
+          return acc + (p.stars || 0);
+        }
+        return acc;
+      }, 0)
+    : 0;
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="container mx-auto max-w-7xl">
@@ -166,9 +238,9 @@ const Dashboard = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Card className="text-center">
             <div className="text-3xl font-bold text-primary-600 mb-1">
-              {userProgress.completedLessons}
+              {completedLessonsInSelectedClass}
             </div>
-            <div className="text-gray-600 text-sm">Bài học hoàn thành</div>
+            <div className="text-gray-600 text-sm">Bài đã hoàn thành</div>
           </Card>
           
           <Card className="text-center">
@@ -180,84 +252,62 @@ const Dashboard = () => {
           
           <Card className="text-center">
             <div className="text-3xl font-bold text-warning mb-1">
-              {userProgress.totalPoints}
+              {totalStarsInSelectedClass}
             </div>
-            <div className="text-gray-600 text-sm">Điểm tích lũy</div>
+            <div className="text-gray-600 text-sm">Sao tích lũy</div>
           </Card>
           
           <Card className="text-center">
             <div className="text-3xl font-bold text-purple-600 mb-1">
-              {classes.reduce((acc, cls) => acc + cls.chapters.reduce((a, ch) => a + ch.lessons.length, 0), 0)}
+              {totalLessonsInSelectedClass}
             </div>
             <div className="text-gray-600 text-sm">Tổng bài học</div>
           </Card>
         </div>
-
-        {/* Quick Access to Classes */}
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Chọn lớp học</h2>
-        
-        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-          {[8, 9, 10, 11, 12].map((gradeId) => {
-            const isCurrent = gradeId === userGrade;
-            const isAccessible = gradeId <= userGrade;
-            const isSelected = gradeId === selectedClass;
-
-            const gradeColors = {
-              8: 'from-blue-400 to-blue-600',
-              9: 'from-green-400 to-green-600',
-              10: 'from-purple-400 to-purple-600',
-              11: 'from-orange-400 to-orange-600',
-              12: 'from-pink-400 to-pink-600'
-            };
-            const gradeIcons = {
-              8: '🧪',
-              9: '⚗️',
-              10: '🔬',
-              11: '⚛️',
-              12: '🎓'
-            };
-            
-            const handleClick = () => {
-              if (isAccessible) {
-                setSelectedClass(gradeId);
-              } else {
-                alert(`Bạn phải hoàn thành chương trình lớp ${userGrade} trước khi truy cập lớp ${gradeId}.`);
-              }
-            };
-
-            return (
-              <div
-                key={gradeId}
-                onClick={handleClick}
-                className={`relative bg-gradient-to-br ${gradeColors[gradeId]} text-white rounded-xl p-6 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg ${!isAccessible ? 'opacity-50 cursor-not-allowed' : ''} ${isSelected ? 'ring-4 ring-yellow-400' : ''}`}
-              >
-                {!isAccessible && (
-                  <div className="absolute inset-0 bg-black/60 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                    <svg className="w-10 h-10 text-white/90" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                )}
-                {isCurrent && <div className="absolute top-2 right-2 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full">Hiện tại</div>}
-                <div className="text-4xl mb-2 text-center">{gradeIcons[gradeId]}</div>
-                <h3 className="text-xl font-bold text-center">Lớp {gradeId}</h3>
-              </div>
-            );
-          })}
-        </div>
-
         {/* Learning Paths */}
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Lộ trình học tập của bạn</h2>
         
         <div className="space-y-6">
-          {classes.filter(c => c.classId === selectedClass).map((classData) => (
+          {classes.filter(c => c.classId === selectedClass).map((classData) => {
+            // Build unlocked lesson set (same rule: after first incomplete, lock subsequent unless already completed)
+            const allLessonsOrdered = classData.chapters
+              .flatMap(ch => ch.lessons.map(ls => ({ ...ls, chapterRef: ch.chapterId })))
+              .sort((a, b) => a.lessonId - b.lessonId);
+            const unlocked = new Set();
+            let lockAfterFirstIncomplete = false;
+            for (const l of allLessonsOrdered) {
+              // Calculate uniqueId for progress lookup
+              const uniqueId = classData.classId * 1000 + l.lessonId;
+              if (!lockAfterFirstIncomplete) {
+                unlocked.add(l.lessonId);
+                const prog = lessonsProgress[uniqueId];
+                if (!prog?.completed) lockAfterFirstIncomplete = true;
+              } else {
+                const prog = lessonsProgress[uniqueId];
+                if (prog?.completed) unlocked.add(l.lessonId);
+              }
+            }
+            
+            // Calculate completion for THIS class only
+            const totalLessonsInClass = classData.chapters.reduce((sum, ch) => sum + ch.lessons.length, 0);
+            const completedLessonsInClass = classData.chapters.reduce((sum, ch) => {
+              return sum + ch.lessons.filter(lesson => {
+                const uniqueId = classData.classId * 1000 + lesson.lessonId;
+                return lessonsProgress[uniqueId]?.completed;
+              }).length;
+            }, 0);
+            const classCompletionRate = totalLessonsInClass > 0 
+              ? Math.round((completedLessonsInClass / totalLessonsInClass) * 100) 
+              : 0;
+            
+            return (
             <Card key={classData.classId} className="overflow-hidden">
               {/* Header */}
               <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 -m-6 mb-6">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold mb-1">Lớp {classData.classId} - Hóa học</h3>
-                    <span className="text-sm opacity-90">{classData.chapters.length} chương • {classData.chapters.reduce((sum, ch) => sum + ch.lessons.length, 0)} bài học</span>
+                    <span className="text-sm opacity-90">{classData.chapters.length} chương • {totalLessonsInClass} bài học</span>
                   </div>
                   <button
                     onClick={() => navigate(`/class/${classData.classId}`)}
@@ -266,15 +316,18 @@ const Dashboard = () => {
                     Xem tất cả →
                   </button>
                   <div className="text-right">
-                    <div className="text-2xl font-bold">{Math.round((userProgress.completedLessons / userProgress.totalLessons) * 100) || 0}%</div>
+                    <div className="text-2xl font-bold">{classCompletionRate}%</div>
                     <div className="text-sm opacity-90">Hoàn thành</div>
                   </div>
                 </div>
                 <ProgressBar 
-                  progress={Math.round((userProgress.completedLessons / userProgress.totalLessons) * 100) || 0} 
+                  progress={classCompletionRate} 
                   className="bg-white/20"
                   color="white"
                 />
+                <div className="mt-2 text-sm opacity-90">
+                  {completedLessonsInClass} / {totalLessonsInClass} bài học đã hoàn thành
+                </div>
               </div>
 
               {/* Chapters */}
@@ -283,13 +336,30 @@ const Dashboard = () => {
                   <div key={chapter.chapterId} className="p-4 bg-gray-50 rounded-lg">
                     <h4 className="font-semibold text-gray-800 mb-3">{getChapterTitle(chapter.chapterId)}</h4>
                     <div className="space-y-3">
-                      {chapter.lessons.map((lesson, index) => {
-                        // Lấy progress data cho bài học này
-                        const progress = lessonsProgress[lesson.lessonId] || {
-                          stars: { basic: false, intermediate: false, advanced: false },
-                          totalStars: 0,
-                          completed: false
+                      {chapter.lessons.map((lesson) => {
+                        // Calculate uniqueId for this lesson
+                        const uniqueId = classData.classId * 1000 + lesson.lessonId;
+                        
+                        // Get progress data for this lesson using uniqueId
+                        const progress = lessonsProgress[uniqueId] || {
+                          star: false,
+                          highestScore: 0,
+                          completed: false,
+                          stars: 0
                         };
+                        
+                        // Debug log for lesson 2
+                        if (lesson.lessonId === 2) {
+                          console.log('🐛 Lesson 2 Debug:', {
+                            lessonId: lesson.lessonId,
+                            classId: classData.classId,
+                            uniqueId: uniqueId,
+                            progress: progress,
+                            allProgress: lessonsProgress
+                          });
+                        }
+                        
+                        const isLocked = !unlocked.has(lesson.lessonId);
                         // Xác định màu sắc và badge theo loại bài
                         const getLessonType = (lesson) => {
                           if (lesson.title.includes('Thực hành') || lesson.title.includes('Điều chế') || lesson.title.includes('Pha chế')) return 'lab';
@@ -308,7 +378,8 @@ const Dashboard = () => {
                         return (
                           <div 
                             key={lesson.lessonId}
-                            className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                            className={`relative flex items-center justify-between p-3 rounded-lg shadow-sm transition-shadow ${isLocked ? 'bg-gray-100 opacity-60 cursor-not-allowed' : 'bg-white hover:shadow-md cursor-pointer'}`}
+                            onClick={() => handleStartLesson(classData.classId, chapter.chapterId, lesson.lessonId, isLocked)}
                           >
                             <div className="flex items-center space-x-4">
                               <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl ${
@@ -327,34 +398,32 @@ const Dashboard = () => {
                                 </div>
                                 <p className="text-sm text-gray-500">{lesson.description}</p>
                                 <div className="flex items-center gap-3 mt-2">
-                                  {/* Hiển thị sao theo cấp độ */}
-                                  <div className="flex items-center gap-1">
-                                    <span className={`text-lg ${progress.stars?.basic ? 'text-yellow-400' : 'text-gray-300'}`}>⭐</span>
-                                    <span className="text-xs text-gray-500">Cơ bản</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <span className={`text-lg ${progress.stars?.intermediate ? 'text-yellow-400' : 'text-gray-300'}`}>⭐</span>
-                                    <span className="text-xs text-gray-500">Trung bình</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <span className={`text-lg ${progress.stars?.advanced ? 'text-yellow-400' : 'text-gray-300'}`}>⭐</span>
-                                    <span className="text-xs text-gray-500">Nâng cao</span>
-                                  </div>
-                                  <span className="text-xs font-medium text-gray-600 ml-2">
-                                    ({progress.totalStars || 0}/3 ⭐)
-                                  </span>
+                                  {/* Display stars earned - only show actual stars earned */}
+                                  {progress.completed && progress.stars > 0 && (
+                                    <div className="flex items-center gap-1">
+                                      {[...Array(progress.stars)].map((_, i) => (
+                                        <span key={i} className="text-lg text-yellow-400">
+                                          ⭐
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
                               <Button
-                                onClick={() => handleStartLesson(classData.classId, chapter.chapterId, lesson.lessonId)}
-                                variant={progress.completed ? 'secondary' : 'primary'}
+                                onClick={() => handleStartLesson(classData.classId, chapter.chapterId, lesson.lessonId, isLocked)}
+                                variant={isLocked ? 'secondary' : (progress.completed ? 'secondary' : 'primary')}
+                                disabled={isLocked}
                                 className="text-sm"
                               >
-                                {progress.completed ? '🔄 Ôn tập' : '▶️ Bắt đầu'}
+                                {isLocked ? '🔒 Khóa' : (progress.completed ? '🔄 Ôn tập' : '▶️ Bắt đầu')}
                               </Button>
                             </div>
+                            {isLocked && (
+                              <div className="absolute inset-0 rounded-lg bg-white/40 backdrop-blur-[1px]" />
+                            )}
                           </div>
                         );
                       })}
@@ -363,7 +432,8 @@ const Dashboard = () => {
                 ))}
               </div>
             </Card>
-          ))}
+          );
+          })}
         </div>
       </div>
     </div>

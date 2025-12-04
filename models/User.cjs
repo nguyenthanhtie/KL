@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema({
     },
     programName: String,
     currentClass: Number, // Lớp đang học (8, 9, 10, 11, 12)
-    currentLesson: Number, // Bài đang học
+    // currentLesson: Number, // Bài đang học (removed - progress tracked in progress.completedLessons)
     isActive: {
       type: Boolean,
       default: true
@@ -82,8 +82,36 @@ const userSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     },
+    // Thời gian học và chuỗi ngày học
+    studyTime: {
+      type: Number,
+      default: 0, // Tổng thời gian học (tính bằng phút)
+      min: 0
+    },
+    studyStreak: {
+      currentStreak: {
+        type: Number,
+        default: 0, // Số ngày học liên tiếp hiện tại
+        min: 0
+      },
+      longestStreak: {
+        type: Number,
+        default: 0, // Chuỗi ngày học dài nhất
+        min: 0
+      },
+      lastStudyDate: Date, // Ngày học gần nhất
+      streakHistory: [{
+        date: Date,
+        duration: Number // Thời gian học trong ngày đó (phút)
+      }]
+    },
     progress: {
       completedLessons: [Number], // Danh sách ID các bài đã hoàn thành
+      lessonStars: {
+        type: Map,
+        of: Number,
+        default: new Map() // Key: uniqueLessonId, Value: số sao (1-3)
+      },
       totalScore: {
         type: Number,
         default: 0
@@ -133,12 +161,18 @@ userSchema.methods.enrollProgram = function(programId, programName, currentClass
   const existing = this.programs.find(p => p.programId === programId);
   if (existing) return existing;
 
-  const newProgram = {
+    const newProgram = {
     programId,
     programName,
     currentClass: currentClass, // Lớp được chọn khi đăng ký
-    currentLesson: null, // Để trống khi đăng nhập lần đầu
     enrolledAt: new Date(),
+    studyTime: 0,
+    studyStreak: {
+      currentStreak: 0,
+      longestStreak: 0,
+      lastStudyDate: null,
+      streakHistory: []
+    },
     progress: {
       completedLessons: [],
       totalScore: 0,
@@ -151,30 +185,237 @@ userSchema.methods.enrollProgram = function(programId, programName, currentClass
 };
 
 userSchema.methods.updateProgramProgress = function(programId, classId, lessonId, score) {
-  const program = this.programs.find(p => p.programId === programId);
-  if (!program) return null;
+  let program = this.programs.find(p => p.programId === programId);
+  
+  // Nếu chưa có program, tự động tạo mới
+  if (!program) {
+    const programNames = {
+      chemistry: 'Hóa học',
+      physics: 'Vật lý',
+      biology: 'Sinh học',
+      math: 'Toán học'
+    };
+    
+    const newProgram = {
+      programId: programId,
+      programName: programNames[programId] || programId,
+      currentClass: parseInt(classId),
+      isActive: true,
+      placementTestCompleted: false,
+      enrolledAt: new Date(),
+      progress: {
+        completedLessons: [],
+        totalScore: 0,
+        lastStudyDate: null
+      }
+    };
+    
+    this.programs.push(newProgram);
+    // Lấy lại reference từ array sau khi push
+    program = this.programs[this.programs.length - 1];
+    console.log('✅ Auto-created program:', programId, 'with lesson:', lessonId);
+  }
 
   // Cập nhật lớp và bài hiện tại
-  program.currentClass = classId;
-  program.currentLesson = lessonId;
+  program.currentClass = parseInt(classId);
   
-  // Thêm bài đã hoàn thành
-  if (lessonId && !program.progress.completedLessons.includes(lessonId)) {
-    program.progress.completedLessons.push(lessonId);
+  console.log('📝 Updating program:', {
+    programId,
+    currentClass: program.currentClass
+  });
+  
+  // Tạo unique ID cho bài học: classId * 1000 + lessonId
+  // Ví dụ: Lớp 8, Bài 1 -> 8001, Lớp 9, Bài 1 -> 9001
+  const uniqueLessonId = parseInt(classId) * 1000 + parseInt(lessonId);
+  
+  // Thêm bài đã hoàn thành (kiểm tra trùng)
+  if (!program.progress.completedLessons) {
+    program.progress.completedLessons = [];
+  }
+  
+  if (lessonId && !program.progress.completedLessons.includes(uniqueLessonId)) {
+    program.progress.completedLessons.push(uniqueLessonId);
+    console.log('✅ Added completed lesson:', uniqueLessonId);
   }
   
   // Cập nhật điểm
   if (score) {
-    program.progress.totalScore += score;
+    program.progress.totalScore = (program.progress.totalScore || 0) + score;
   }
   
   program.progress.lastStudyDate = new Date();
   
+  // Đánh dấu programs array đã thay đổi để Mongoose lưu đúng
+  this.markModified('programs');
+  
   return program;
+};
+
+// Update lesson stars based on score percentage
+userSchema.methods.updateLessonStars = function(programId, classId, lessonId, percentage) {
+  const program = this.programs.find(p => p.programId === programId);
+  if (!program) return null;
+
+  const uniqueLessonId = parseInt(classId) * 1000 + parseInt(lessonId);
+  
+  // Initialize lessonStars Map if not exists
+  if (!program.progress.lessonStars) {
+    program.progress.lessonStars = new Map();
+  }
+
+  // Calculate stars: >=50%: 1 star, >=80%: 2 stars, 100%: 3 stars
+  let stars = 0;
+  if (percentage >= 100) {
+    stars = 3;
+  } else if (percentage >= 80) {
+    stars = 2;
+  } else if (percentage >= 50) {
+    stars = 1;
+  }
+
+  // Only update if new stars are better than existing
+  const currentStars = program.progress.lessonStars.get(uniqueLessonId.toString()) || 0;
+  if (stars > currentStars) {
+    program.progress.lessonStars.set(uniqueLessonId.toString(), stars);
+    console.log(`⭐ Updated lesson ${uniqueLessonId} stars: ${currentStars} → ${stars}`);
+  }
+
+  this.markModified('programs');
+  return stars;
 };
 
 userSchema.methods.getProgram = function(programId) {
   return this.programs.find(p => p.programId === programId);
+};
+
+// Methods - Study Time & Streak
+userSchema.methods.updateStudyTime = function(programId, durationMinutes) {
+  const program = this.programs.find(p => p.programId === programId);
+  if (!program) return null;
+
+  // Cập nhật tổng thời gian học
+  if (!program.studyTime) {
+    program.studyTime = 0;
+  }
+  program.studyTime += durationMinutes;
+
+  // Cập nhật streak history
+  if (!program.studyStreak) {
+    program.studyStreak = {
+      currentStreak: 0,
+      longestStreak: 0,
+      lastStudyDate: null,
+      streakHistory: []
+    };
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const lastStudyDate = program.studyStreak.lastStudyDate 
+    ? new Date(program.studyStreak.lastStudyDate) 
+    : null;
+  
+  if (lastStudyDate) {
+    lastStudyDate.setHours(0, 0, 0, 0);
+  }
+
+  // Kiểm tra xem đã học hôm nay chưa
+  const todayEntry = program.studyStreak.streakHistory.find(entry => {
+    const entryDate = new Date(entry.date);
+    entryDate.setHours(0, 0, 0, 0);
+    return entryDate.getTime() === today.getTime();
+  });
+
+  if (todayEntry) {
+    // Đã học hôm nay, chỉ cộng thêm thời gian
+    todayEntry.duration += durationMinutes;
+  } else {
+    // Chưa học hôm nay, thêm entry mới
+    program.studyStreak.streakHistory.push({
+      date: today,
+      duration: durationMinutes
+    });
+
+    // Cập nhật streak - đếm ngược từ hôm nay
+    // Sort history by date descending
+    const sortedHistory = program.studyStreak.streakHistory
+      .map(h => new Date(h.date))
+      .sort((a, b) => b - a);
+    
+    let streak = 0;
+    let checkDate = new Date(today);
+    checkDate.setHours(0, 0, 0, 0);
+    
+    // Đếm ngược từ hôm nay để tìm chuỗi liên tiếp
+    for (const historyDate of sortedHistory) {
+      const hDate = new Date(historyDate);
+      hDate.setHours(0, 0, 0, 0);
+      
+      if (hDate.getTime() === checkDate.getTime()) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1); // Lùi về 1 ngày trước
+      } else {
+        break; // Gặp ngày không liên tiếp, dừng
+      }
+    }
+    
+    program.studyStreak.currentStreak = streak;
+
+    // Cập nhật longest streak
+    if (program.studyStreak.currentStreak > program.studyStreak.longestStreak) {
+      program.studyStreak.longestStreak = program.studyStreak.currentStreak;
+    }
+
+    program.studyStreak.lastStudyDate = today;
+  }
+
+  // Giữ lại 365 ngày gần nhất trong history
+  if (program.studyStreak.streakHistory.length > 365) {
+    program.studyStreak.streakHistory.sort((a, b) => b.date - a.date);
+    program.studyStreak.streakHistory = program.studyStreak.streakHistory.slice(0, 365);
+  }
+
+  this.markModified('programs');
+  
+  return {
+    studyTime: program.studyTime,
+    currentStreak: program.studyStreak.currentStreak,
+    longestStreak: program.studyStreak.longestStreak
+  };
+};
+
+// Kiểm tra và reset streak nếu bỏ lỡ ngày học
+userSchema.methods.checkAndResetStreak = function(programId) {
+  const program = this.programs.find(p => p.programId === programId);
+  if (!program || !program.studyStreak || !program.studyStreak.lastStudyDate) {
+    return null;
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const lastStudyDate = new Date(program.studyStreak.lastStudyDate);
+  lastStudyDate.setHours(0, 0, 0, 0);
+
+  const daysDiff = Math.floor((today - lastStudyDate) / (1000 * 60 * 60 * 24));
+
+  // Nếu bỏ lỡ hơn 1 ngày, reset streak
+  if (daysDiff > 1) {
+    program.studyStreak.currentStreak = 0;
+    this.markModified('programs');
+    return {
+      reset: true,
+      currentStreak: 0,
+      longestStreak: program.studyStreak.longestStreak
+    };
+  }
+
+  return {
+    reset: false,
+    currentStreak: program.studyStreak.currentStreak,
+    longestStreak: program.studyStreak.longestStreak
+  };
 };
 
 module.exports = mongoose.model('User', userSchema);

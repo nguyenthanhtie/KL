@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target } from 'lucide-react';
-import useChallengeProgress from '../../../hooks/useChallengeProgress';
-import ResumeDialog from '../../../components/ResumeDialog';
-import periodicData from '../../../data/periodic.json';
-import './TroChoiCanBang.css';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
+import periodicData from '../../../../data/periodic.json';
+import './CSS/Bai15_CanBangPhuongTrinh.css';
 
 // Reactions - from simple to complex
 const REACTIONS = [
@@ -34,7 +34,9 @@ function calculateMolarMass(formula) {
   let total = 0;
   for(let {element, count} of parsed) {
     const data = periodicData[element];
-    if(data && data.mass) total += data.mass * count;
+    // periodic.json uses 'atomicMass' as the key for element mass
+    const mass = data && (data.atomicMass || data.mass || data.massNumber || data.atomic_mass);
+    if (mass) total += mass * count;
   }
   return total;
 }
@@ -67,7 +69,7 @@ export default function TroChoiCanBang(){
     reaction.reactants.forEach((r, i) => { initialCoeffs[`r${i}`] = 1; });
     reaction.products.forEach((p, i) => { initialCoeffs[`p${i}`] = 1; });
     setCoeffs(initialCoeffs);
-  }, [currentLevel]);
+  }, [currentLevel, reaction]);
 
   // Check for saved progress on mount
   useEffect(() => {
@@ -234,9 +236,9 @@ export default function TroChoiCanBang(){
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        {!reaction ? (
+        {!reaction || Object.keys(coeffs).length === 0 ? (
           <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6 text-center">
-            <p>Loading...</p>
+            <p>Đang tải phương trình...</p>
           </div>
         ) : (
         <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6">

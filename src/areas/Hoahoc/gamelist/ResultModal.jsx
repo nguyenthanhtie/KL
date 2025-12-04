@@ -8,42 +8,38 @@ const ResultModal = ({
   totalPoints, 
   onRestart, 
   onBack,
-  onNext, // Thêm callback cho bài học tiếp theo
-  hasNextLesson = false, // Kiểm tra có bài học tiếp theo không
-  level = 'basic' // Thêm prop level
+  onNext,
+  hasNextLesson = false
 }) => {
   const percentage = (score / totalPoints) * 100;
-  const isPassed = percentage >= 80; // 80% để đạt sao
-  const canProgress = percentage >= 60; // 60% để qua cấp độ tiếp theo
-
-  // Thông tin cấp độ
-  const levelInfo = {
-    basic: { name: 'Cơ bản', icon: '🌱', color: 'text-green-600' },
-    intermediate: { name: 'Trung bình', icon: '🔥', color: 'text-orange-600' },
-    advanced: { name: 'Nâng cao', icon: '⚡', color: 'text-purple-600' }
-  };
-
-  const currentLevelInfo = levelInfo[level] || levelInfo.basic;
+  
+  // Calculate stars: >=50%: 1 star, >=80%: 2 stars, 100%: 3 stars
+  let stars = 0;
+  if (percentage >= 100) {
+    stars = 3;
+  } else if (percentage >= 80) {
+    stars = 2;
+  } else if (percentage >= 50) {
+    stars = 1;
+  }
+  
+  const canProgress = percentage >= 50; // Need at least 50% (1 star) to continue
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="text-center">
-        {/* Hiển thị sao nếu đạt */}
-        {isPassed && (
-          <div className="text-6xl mb-4 animate-bounce">
-            ⭐
+        {/* Hiển thị số sao đạt được */}
+        {stars > 0 && (
+          <div className="text-6xl mb-4 animate-bounce flex justify-center gap-1">
+            {[...Array(stars)].map((_, i) => (
+              <span key={i}>⭐</span>
+            ))}
           </div>
         )}
         
         <h2 className="text-3xl font-bold mb-2">
-          {isPassed ? '🎉 Xuất sắc!' : '💪 Cố gắng lên!'}
+          {stars === 3 ? '🎉 Hoàn hảo!' : stars === 2 ? '👏 Xuất sắc!' : stars === 1 ? '💪 Tốt lắm!' : '😢 Chưa đạt'}
         </h2>
-        
-        {/* Hiển thị cấp độ */}
-        <div className={`flex items-center justify-center gap-2 mb-4 ${currentLevelInfo.color}`}>
-          <span className="text-2xl">{currentLevelInfo.icon}</span>
-          <span className="text-lg font-semibold">Cấp độ: {currentLevelInfo.name}</span>
-        </div>
 
         <div className="text-6xl font-bold text-blue-600 mb-4">
           {score} / {totalPoints}
@@ -55,36 +51,34 @@ const ResultModal = ({
           </div>
           <div className="w-full bg-gray-200 rounded-full h-4">
             <div 
-              className={`h-4 rounded-full transition-all ${isPassed ? 'bg-success' : 'bg-orange-500'}`}
+              className={`h-4 rounded-full transition-all ${stars >= 2 ? 'bg-success' : stars === 1 ? 'bg-orange-500' : 'bg-red-500'}`}
               style={{ width: `${percentage}%` }}
             />
           </div>
         </div>
 
         <p className="text-lg mb-6">
-          {isPassed
-            ? `🎊 Chúc mừng! Bạn đã đạt sao ở cấp độ ${currentLevelInfo.name}!`
+          {stars === 3
+            ? '🎊 Hoàn hảo! Bạn đạt 3 sao! 🌟🌟🌟'
+            : stars === 2
+            ? '⭐ Tuyệt vời! Bạn đạt 2 sao! ⭐⭐'
+            : stars === 1
+            ? '⭐ Tốt! Bạn đạt 1 sao! ⭐'
             : canProgress
             ? `✅ Bạn đã đạt ${percentage.toFixed(0)}%! Có thể tiếp tục bài học tiếp theo.`
-            : `📚 Đạt ≥60% để tiếp tục. Hãy thử lại!`}
+            : '📚 Đạt ≥60% để tiếp tục. Hãy thử lại!'}
         </p>
         
         <div className="flex gap-3 justify-center">
           {canProgress ? (
             // Nếu đạt ≥60%, cho phép tiếp tục hoặc về dashboard
-            <>
-              <Button onClick={onRestart} variant="outline">
-                🔄 Chơi lại
-              </Button>
-              {hasNextLesson ? (
+            <>              
                 <Button onClick={onNext}>
                   ➡️ Bài học tiếp theo
                 </Button>
-              ) : (
                 <Button onClick={onBack}>
                   🏠 Trở về Dashboard
                 </Button>
-              )}
             </>
           ) : (
             // Nếu <60%, chỉ cho chơi lại hoặc về dashboard

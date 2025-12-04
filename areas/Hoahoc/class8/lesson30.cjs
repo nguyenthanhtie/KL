@@ -55,179 +55,223 @@ module.exports = {
         </tr>
       </table>
     `,
-  game: {
-    basic: [
+  game: [
+  {
+    type: "multiple-choice",
+    question: "Sự oxi hóa là gì?",
+    options: [
+      "Là sự mất oxi",
+      "Là sự nhận oxi hoặc mất hidro",
+      "Là sự nhận hidro",
+      "Là sự không thay đổi"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Sự oxi hóa là sự nhận oxi hoặc mất hidro.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Sự khử là sự mất oxi hoặc nhận hidro.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Sự khử ngược lại với sự oxi hóa.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Trong phản ứng: 2Cu + O₂ → 2CuO, đồng (Cu) bị:",
+    options: [
+      "Oxi hóa",
+      "Khử",
+      "Không đổi",
+      "Phân hủy"
+    ],
+    correctAnswer: 0,
+    explanation: "✅ Cu nhận O nên bị OXI HÓA.",
+    points: 10
+  },
+  {
+    type: "true-false",
+    question: "Trong phản ứng oxi hóa - khử, luôn có cả sự oxi hóa và sự khử xảy ra đồng thời.",
+    correctAnswer: true,
+    explanation: "✅ Đúng! Oxi hóa và khử luôn đi đôi với nhau.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Chất oxi hóa là chất:",
+    options: [
+      "Bị oxi hóa",
+      "Bị khử",
+      "Không đổi",
+      "Bị phân hủy"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Chất oxi hóa BỊ KHỬ trong phản ứng.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🔗 Ghép chất với vai trò trong phản ứng",
+    pairs: [
       {
-        type: "multiple-choice",
-        question: "Sự oxi hóa là gì?",
-        options: [
-          "Là sự mất oxi",
-          "Là sự nhận oxi hoặc mất hidro",
-          "Là sự nhận hidro",
-          "Là sự không thay đổi"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Sự oxi hóa là sự nhận oxi hoặc mất hidro.",
-        points: 10
+        left: "O₂",
+        right: "Chất oxi hóa"
       },
       {
-        type: "true-false",
-        question: "Sự khử là sự mất oxi hoặc nhận hidro.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Sự khử ngược lại với sự oxi hóa.",
-        points: 10
+        left: "H₂",
+        right: "Chất khử"
       },
       {
-        type: "multiple-choice",
-        question: "Trong phản ứng: 2Cu + O₂ → 2CuO, đồng (Cu) bị:",
-        options: ["Oxi hóa", "Khử", "Không đổi", "Phân hủy"],
-        correctAnswer: 0,
-        explanation: "✅ Cu nhận O nên bị OXI HÓA.",
-        points: 10
+        left: "CuO",
+        right: "Chất oxi hóa"
       },
       {
-        type: "true-false",
-        question: "Trong phản ứng oxi hóa - khử, luôn có cả sự oxi hóa và sự khử xảy ra đồng thời.",
-        correctAnswer: true,
-        explanation: "✅ Đúng! Oxi hóa và khử luôn đi đôi với nhau.",
-        points: 10
-      },
-      {
-        type: "multiple-choice",
-        question: "Chất oxi hóa là chất:",
-        options: [
-          "Bị oxi hóa",
-          "Bị khử",
-          "Không đổi",
-          "Bị phân hủy"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Chất oxi hóa BỊ KHỬ trong phản ứng.",
-        points: 10
+        left: "C",
+        right: "Chất khử"
       }
     ],
-    intermediate: [
+    explanation: "✅ Tuyệt vời! Bạn nhận biết đúng chất oxi hóa và chất khử.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Trong CuO + H₂ → Cu + H₂O, CuO bị ___ và H₂ bị ___.",
+    correctAnswer: "khử, oxi hóa",
+    hint: "💡 CuO mất O, H₂ nhận O",
+    explanation: "✅ CuO bị KHỬ (mất O), H₂ bị OXI HÓA (nhận O).",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Phản ứng nào KHÔNG phải là phản ứng oxi hóa - khử?",
+    options: [
+      "2H₂ + O₂ → 2H₂O",
+      "CuO + H₂ → Cu + H₂O",
+      "NaCl → Na⁺ + Cl⁻ (trong nước)",
+      "C + O₂ → CO₂"
+    ],
+    correctAnswer: 2,
+    explanation: "✅ NaCl tan trong nước là quá trình vật lý, không có oxi hóa - khử.",
+    points: 10
+  },
+  {
+    type: "ordering",
+    question: "📋 Sắp xếp các bước nhận biết phản ứng oxi hóa - khử",
+    options: [
+      "Xác định chất nhận/mất oxi (hoặc hidro)",
+      "Viết phương trình phản ứng",
+      "Kết luận có phản ứng oxi hóa - khử",
+      "Xác định chất oxi hóa và chất khử"
+    ],
+    correctOrder: [
+      "Viết phương trình phản ứng",
+      "Xác định chất nhận/mất oxi (hoặc hidro)",
+      "Xác định chất oxi hóa và chất khử",
+      "Kết luận có phản ứng oxi hóa - khử"
+    ],
+    explanation: "✅ Đúng trình tự phân tích phản ứng.",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Chất khử là chất bị ___ trong phản ứng.",
+    correctAnswer: "oxi hóa",
+    hint: "💡 Chất khử cho electron",
+    explanation: "✅ Chất khử bị OXI HÓA (cho electron).",
+    points: 10
+  },
+  {
+    type: "drag-drop",
+    question: "🧩 Hoàn thành: Trong phản ứng oxi hóa - khử, chất ___ bị ___, chất ___ bị ___.",
+    inline: true,
+    slots: [
       {
-        type: "matching",
-        question: "🔗 Ghép chất với vai trò trong phản ứng",
-        pairs: [
-          { left: "O₂", right: "Chất oxi hóa" },
-          { left: "H₂", right: "Chất khử" },
-          { left: "CuO", right: "Chất oxi hóa" },
-          { left: "C", right: "Chất khử" }
-        ],
-        explanation: "✅ Tuyệt vời! Bạn nhận biết đúng chất oxi hóa và chất khử.",
-        points: 15
+        id: 1,
+        label: "Chất 1",
+        correct: "oxi hóa"
       },
       {
-        type: "fill-in-blank",
-        question: "Trong CuO + H₂ → Cu + H₂O, CuO bị ___ và H₂ bị ___.",
-        correctAnswer: "khử, oxi hóa",
-        hint: "💡 CuO mất O, H₂ nhận O",
-        explanation: "✅ CuO bị KHỬ (mất O), H₂ bị OXI HÓA (nhận O).",
-        points: 15
+        id: 2,
+        label: "Trạng thái 1",
+        correct: "khử"
       },
       {
-        type: "multiple-choice",
-        question: "Phản ứng nào KHÔNG phải là phản ứng oxi hóa - khử?",
-        options: [
-          "2H₂ + O₂ → 2H₂O",
-          "CuO + H₂ → Cu + H₂O",
-          "NaCl → Na⁺ + Cl⁻ (trong nước)",
-          "C + O₂ → CO₂"
-        ],
-        correctAnswer: 2,
-        explanation: "✅ NaCl tan trong nước là quá trình vật lý, không có oxi hóa - khử.",
-        points: 15
+        id: 3,
+        label: "Chất 2",
+        correct: "khử"
       },
       {
-        type: "ordering",
-        question: "📋 Sắp xếp các bước nhận biết phản ứng oxi hóa - khử",
-        options: [
-          "Xác định chất nhận/mất oxi (hoặc hidro)",
-          "Viết phương trình phản ứng",
-          "Kết luận có phản ứng oxi hóa - khử",
-          "Xác định chất oxi hóa và chất khử"
-        ],
-        correctOrder: [
-          "Viết phương trình phản ứng",
-          "Xác định chất nhận/mất oxi (hoặc hidro)",
-          "Xác định chất oxi hóa và chất khử",
-          "Kết luận có phản ứng oxi hóa - khử"
-        ],
-        explanation: "✅ Đúng trình tự phân tích phản ứng.",
-        points: 15
-      },
-      {
-        type: "fill-in-blank",
-        question: "Chất khử là chất bị ___ trong phản ứng.",
-        correctAnswer: "oxi hóa",
-        hint: "💡 Chất khử cho electron",
-        explanation: "✅ Chất khử bị OXI HÓA (cho electron).",
-        points: 15
+        id: 4,
+        label: "Trạng thái 2",
+        correct: "oxi hóa"
       }
     ],
-    advanced: [
+    options: [
+      "oxi hóa",
+      "khử",
+      "oxi hóa",
+      "khử"
+    ],
+    explanation: "✅ Chất OXI HÓA bị KHỬ, chất KHỬ bị OXI HÓA.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Trong phản ứng: Fe₂O₃ + 3CO → 2Fe + 3CO₂, vai trò của CO là:",
+    options: [
+      "Chất oxi hóa",
+      "Chất khử",
+      "Không tham gia oxi hóa - khử",
+      "Vừa oxi hóa vừa khử"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ CO nhận O từ Fe₂O₃, nên CO là CHẤT KHỬ (bị oxi hóa).",
+    points: 10
+  },
+  {
+    type: "fill-in-blank",
+    question: "Trong 2Mg + O₂ → 2MgO, Mg là chất ___ và O₂ là chất ___.",
+    correctAnswer: "khử, oxi hóa",
+    hint: "💡 Mg nhận O hay cho O?",
+    explanation: "✅ Mg nhận O (bị oxi hóa) nên là CHẤT KHỬ, O₂ là CHẤT OXI HÓA.",
+    points: 10
+  },
+  {
+    type: "matching",
+    question: "🧠 Phân tích phản ứng: C + 2CuO → CO₂ + 2Cu",
+    pairs: [
       {
-        type: "drag-drop",
-        question: "🧩 Hoàn thành: Trong phản ứng oxi hóa - khử, chất ___ bị ___, chất ___ bị ___.",
-        inline: true,
-        slots: [
-          { id: 1, label: "Chất 1", correct: "oxi hóa" },
-          { id: 2, label: "Trạng thái 1", correct: "khử" },
-          { id: 3, label: "Chất 2", correct: "khử" },
-          { id: 4, label: "Trạng thái 2", correct: "oxi hóa" }
-        ],
-        options: ["oxi hóa", "khử", "oxi hóa", "khử"],
-        explanation: "✅ Chất OXI HÓA bị KHỬ, chất KHỬ bị OXI HÓA.",
-        points: 20
+        left: "C",
+        right: "Chất khử (bị oxi hóa)"
       },
       {
-        type: "multiple-choice",
-        question: "Trong phản ứng: Fe₂O₃ + 3CO → 2Fe + 3CO₂, vai trò của CO là:",
-        options: [
-          "Chất oxi hóa",
-          "Chất khử",
-          "Không tham gia oxi hóa - khử",
-          "Vừa oxi hóa vừa khử"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ CO nhận O từ Fe₂O₃, nên CO là CHẤT KHỬ (bị oxi hóa).",
-        points: 20
+        left: "CuO",
+        right: "Chất oxi hóa (bị khử)"
       },
       {
-        type: "fill-in-blank",
-        question: "Trong 2Mg + O₂ → 2MgO, Mg là chất ___ và O₂ là chất ___.",
-        correctAnswer: "khử, oxi hóa",
-        hint: "💡 Mg nhận O hay cho O?",
-        explanation: "✅ Mg nhận O (bị oxi hóa) nên là CHẤT KHỬ, O₂ là CHẤT OXI HÓA.",
-        points: 20
+        left: "CO₂",
+        right: "Sản phẩm oxi hóa"
       },
       {
-        type: "matching",
-        question: "🧠 Phân tích phản ứng: C + 2CuO → CO₂ + 2Cu",
-        pairs: [
-          { left: "C", right: "Chất khử (bị oxi hóa)" },
-          { left: "CuO", right: "Chất oxi hóa (bị khử)" },
-          { left: "CO₂", right: "Sản phẩm oxi hóa" },
-          { left: "Cu", right: "Sản phẩm khử" }
-        ],
-        explanation: "✅ Hoàn hảo! Bạn phân tích đúng vai trò từng chất.",
-        points: 20
-      },
-      {
-        type: "multiple-choice",
-        question: "Tại sao phản ứng oxi hóa - khử rất quan trọng trong luyện kim?",
-        options: [
-          "Vì tạo ra nhiệt",
-          "Vì khử oxit kim loại thành kim loại tự do",
-          "Vì tạo ra khí",
-          "Vì phản ứng nhanh"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Luyện kim sử dụng phản ứng khử oxit thành kim loại: Fe₂O₃ + 3CO → 2Fe + 3CO₂",
-        points: 20
+        left: "Cu",
+        right: "Sản phẩm khử"
       }
-    ]
+    ],
+    explanation: "✅ Hoàn hảo! Bạn phân tích đúng vai trò từng chất.",
+    points: 10
+  },
+  {
+    type: "multiple-choice",
+    question: "Tại sao phản ứng oxi hóa - khử rất quan trọng trong luyện kim?",
+    options: [
+      "Vì tạo ra nhiệt",
+      "Vì khử oxit kim loại thành kim loại tự do",
+      "Vì tạo ra khí",
+      "Vì phản ứng nhanh"
+    ],
+    correctAnswer: 1,
+    explanation: "✅ Luyện kim sử dụng phản ứng khử oxit thành kim loại: Fe₂O₃ + 3CO → 2Fe + 3CO₂",
+    points: 10
   }
+]
 };

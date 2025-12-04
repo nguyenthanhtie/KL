@@ -46,9 +46,8 @@ module.exports = {
         <li>Nếu có khí từ ngoài vào → Khối lượng hệ thống <strong>tăng</strong></li>
       </ul>
     `,
-  game: {
-    basic: [
-      {
+  game: [
+{
         type: "multiple-choice",
         question: "Định luật bảo toàn khối lượng phát biểu như thế nào?",
         options: [
@@ -95,10 +94,8 @@ module.exports = {
         correctAnswer: true,
         explanation: "✅ Đúng! Vì sắt kết hợp với oxi trong không khí tạo oxit sắt nặng hơn.",
         points: 10
-      }
-    ],
-    intermediate: [
-      {
+      },
+{
         type: "matching",
         question: "🔗 Ghép trường hợp với kết quả",
         pairs: [
@@ -108,7 +105,7 @@ module.exports = {
           { left: "Đốt Mg trong O₂ dư", right: "Khối lượng tăng" }
         ],
         explanation: "✅ Tuyệt vời! Bạn hiểu rõ các trường hợp áp dụng định luật.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -116,7 +113,7 @@ module.exports = {
         correctAnswer: "32",
         hint: "💡 m<sub>O₂</sub> = m<sub>CO₂</sub> - m<sub>C</sub>",
         explanation: "✅ m<sub>O₂</sub> = 44 - 12 = 32g",
-        points: 15
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -129,7 +126,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Khí CO₂ và hơi nước thoát ra ngoài nên khối lượng hệ thống giảm.",
-        points: 15
+        points: 10
       },
       {
         type: "ordering",
@@ -149,7 +146,7 @@ module.exports = {
           "So sánh hai tổng khối lượng"
         ],
         explanation: "✅ Đúng trình tự áp dụng định luật!",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -157,11 +154,9 @@ module.exports = {
         correctAnswer: "3",
         hint: "💡 Dùng định luật bảo toàn khối lượng",
         explanation: "✅ m<sub>O₂</sub> = 10 - 7 = 3g",
-        points: 15
-      }
-    ],
-    advanced: [
-      {
+        points: 10
+      },
+{
         type: "drag-drop",
         question: "🧩 Hoàn thành: Định luật bảo toàn khối lượng: Tổng ___ của các chất ___ bằng tổng ___ của các chất ___.",
         inline: true,
@@ -173,7 +168,7 @@ module.exports = {
         ],
         options: ["khối lượng", "tham gia", "khối lượng", "sản phẩm"],
         explanation: "✅ Tổng KHỐI LƯỢNG các chất THAM GIA = Tổng KHỐI LƯỢNG các chất SẢN PHẨM.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -181,7 +176,7 @@ module.exports = {
         options: ["6,4g", "7,2g", "8,0g", "Không tính được"],
         correctAnswer: 2,
         explanation: "✅ m = 5,6 + 2,4 = 8,0g (bảo toàn khối lượng trong bình kín)",
-        points: 20
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -189,7 +184,7 @@ module.exports = {
         correctAnswer: "9,6",
         hint: "💡 m<sub>O₂</sub> = m<sub>KClO₃</sub> - m<sub>KCl</sub>",
         explanation: "✅ m<sub>O₂</sub> = 24,5 - 14,9 = 9,6g",
-        points: 20
+        points: 10
       },
       {
         type: "matching",
@@ -201,7 +196,7 @@ module.exports = {
           { left: "Nung CaCO₃ trong bình kín", right: "Khối lượng không đổi" }
         ],
         explanation: "✅ Xuất sắc! Bạn phân biệt được hệ kín và hệ hở.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -214,8 +209,8 @@ module.exports = {
         ],
         correctAnswer: 3,
         explanation: "❌ SAI! Định luật đúng ở MỌI nhiệt độ, chỉ cần là hệ kín.",
-        points: 20
+        points: 10
       }
-    ]
-  }
+
+  ]
 };

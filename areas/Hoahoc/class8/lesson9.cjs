@@ -44,22 +44,20 @@ module.exports = {
         <li>Tạo ra 2 phân tử H₂O</li>
       </ul>
     `,
-  game: {
-    // 🌱 CẤP ĐỘ CƠ BẢN
-    basic: [
-      {
-        type: "multiple-choice",
-        question: "Phương trình hóa học dùng để biểu diễn điều gì?",
-        options: [
-          "Công thức hóa học",
-          "Phản ứng hóa học",
-          "Nguyên tố hóa học",
-          "Hóa trị"
-        ],
-        correctAnswer: 1,
-        explanation: "✅ Phương trình hóa học biểu diễn phản ứng hóa học bằng công thức hóa học.",
-        points: 10
-      },
+  game: [
+    {
+      type: "multiple-choice",
+      question: "Phương trình hóa học dùng để biểu diễn điều gì?",
+      options: [
+        "Công thức hóa học",
+        "Phản ứng hóa học",
+        "Nguyên tố hóa học",
+        "Hóa trị"
+      ],
+      correctAnswer: 1,
+      explanation: "✅ Phương trình hóa học biểu diễn phản ứng hóa học bằng công thức hóa học.",
+      points: 10
+    },
       {
         type: "true-false",
         question: "Trong phản ứng hóa học, tổng khối lượng chất tham gia bằng tổng khối lượng sản phẩm.",
@@ -99,12 +97,8 @@ module.exports = {
         correctAnswer: 1,
         explanation: "✅ 2H₂ + O₂ → 2H₂O đã cân bằng: 4H, 2O ở cả 2 vế.",
         points: 10
-      }
-    ],
-
-    // 🔥 CẤP ĐỘ TRUNG BÌNH
-    intermediate: [
-      {
+      },
+    {
         type: "matching",
         question: "🔗 Ghép phần tử phương trình với ý nghĩa",
         pairs: [
@@ -114,7 +108,7 @@ module.exports = {
           { left: "Mũi tên →", right: "Hướng phản ứng xảy ra" }
         ],
         explanation: "✅ Tuyệt vời! Bạn hiểu các thành phần của phương trình hóa học.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -122,7 +116,7 @@ module.exports = {
         correctAnswer: "bảo toàn",
         hint: "💡 Gợi ý: Không tăng, không giảm",
         explanation: "✅ Chính xác! Số nguyên tử được BẢO TOÀN theo định luật bảo toàn khối lượng.",
-        points: 15
+        points: 10
       },
       {
         type: "ordering",
@@ -140,7 +134,7 @@ module.exports = {
           "Kiểm tra lại"
         ],
         explanation: "✅ Đúng rồi! Đây là quy trình lập phương trình chuẩn.",
-        points: 15
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -153,7 +147,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Đã cân bằng! Trái: 1C, 2O | Phải: 1C, 2O.",
-        points: 15
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -161,13 +155,9 @@ module.exports = {
         correctAnswer: "4",
         hint: "💡 4Fe + 3O₂ → 2Fe₂O₃",
         explanation: "✅ Đúng! Phương trình: 4Fe + 3O₂ → 2Fe₂O₃",
-        points: 15
-      }
-    ],
-
-    // ⚡ CẤP ĐỘ NÂNG CAO
-    advanced: [
-      {
+        points: 10
+      },
+    {
         type: "drag-drop",
         question: "🧩 Hoàn thành phương trình: ___ + 3O₂ → 2Fe₂O₃",
         inline: true,
@@ -180,7 +170,7 @@ module.exports = {
         ],
         options: ["2Fe", "3Fe", "4Fe", "Fe"],
         explanation: "✅ Hoàn hảo! 4Fe + 3O₂ → 2Fe₂O₃ (4Fe = 8Fe, 3O₂ = 6O cân bằng với 2Fe₂O₃)",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -193,7 +183,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "❌ SAI! KHÔNG được thay đổi chỉ số vì sẽ thay đổi bản chất chất. Chỉ thay đổi hệ số!",
-        points: 20
+        points: 10
       },
       {
         type: "fill-in-blank",
@@ -201,7 +191,7 @@ module.exports = {
         correctAnswer: "9",
         hint: "💡 4Al + 3O₂ → 2Al₂O₃ → Tổng = 4+3+2",
         explanation: "✅ Xuất sắc! 4Al + 3O₂ → 2Al₂O₃. Tổng hệ số: 4+3+2 = 9",
-        points: 20
+        points: 10
       },
       {
         type: "matching",
@@ -213,7 +203,7 @@ module.exports = {
           { left: "CaO + H₂O → Ca(OH)₂", right: "Phản ứng hóa hợp" }
         ],
         explanation: "✅ Tuyệt vời! Bạn phân loại được các loại phản ứng.",
-        points: 20
+        points: 10
       },
       {
         type: "multiple-choice",
@@ -226,8 +216,7 @@ module.exports = {
         ],
         correctAnswer: 1,
         explanation: "✅ Chính xác! 3Fe + 2O₂ → Fe₃O₄. Tỉ lệ 3:2:1",
-        points: 20
+        points: 10
       }
-    ]
-  }
+  ]
 };

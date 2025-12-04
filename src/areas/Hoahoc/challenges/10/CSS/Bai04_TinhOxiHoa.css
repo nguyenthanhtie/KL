@@ -5,48 +5,55 @@
 /* Container */
 .tinh-oxi-hoa-container {
   min-height: 100vh;
+  max-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  padding: 12px;
+  padding: 8px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Header */
 .game-header {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   background: rgba(255, 255, 255, 0.95);
-  padding: 12px 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .back-button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 4px;
+  padding: 6px 12px;
   background: #f0f0f0;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
-  color: #333;
+  color: #666;
   font-weight: 500;
+  font-size: 13px;
   transition: all 0.3s ease;
 }
 
 .back-button:hover {
   background: #e0e0e0;
-  transform: translateX(-5px);
+  transform: translateX(-3px);
 }
 
 .game-title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 22px;
+  gap: 6px;
+  font-size: 16px;
   font-weight: 700;
   color: #333;
   margin: 0;
@@ -54,6 +61,8 @@
 
 .title-icon {
   color: #2a5298;
+  width: 18px;
+  height: 18px;
   animation: spin 4s linear infinite;
 }
 
@@ -65,45 +74,52 @@
 .score-display {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
+  gap: 4px;
+  padding: 6px 12px;
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   border-radius: 50px;
   color: white;
   font-weight: 700;
-  font-size: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .game-content {
-  max-width: 1400px;
-  margin: 0 auto;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
 }
 
 /* Progress Section */
 .progress-section {
-  background: white;
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  background: #f8f9fa;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #e9ecef;
 }
 
 .challenge-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .difficulty-badge {
-  padding: 4px 12px;
+  padding: 2px 10px;
   color: white;
-  border-radius: 16px;
+  border-radius: 12px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .difficulty-badge.easy {
@@ -121,16 +137,16 @@
 .challenge-counter {
   font-weight: 600;
   color: #666;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .points-badge {
-  padding: 4px 12px;
+  padding: 2px 10px;
   background: #4caf50;
   color: white;
-  border-radius: 16px;
+  border-radius: 12px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .progress-bar {

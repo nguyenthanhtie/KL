@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import Header from './components/Header';
 import Home from './pages/Home';
 import ProgramSelection from './pages/ProgramSelection';
 import Profile from './pages/Profile';
@@ -15,23 +16,31 @@ import Lesson from './areas/Hoahoc/pages/Lesson';
 import LessonSimple from './areas/Hoahoc/pages/LessonSimple';
 import GamePlay from './areas/Hoahoc/pages/GamePlay';
 import AdvancedChallenge from './areas/Hoahoc/pages/AdvancedChallenge';
-import GhepNguyenTu from './areas/Hoahoc/challenges/GhepNguyenTu';
-import TroChoiCanBang from './areas/Hoahoc/challenges/TroChoiCanBang';
-import SuyLuanPhanUng from './areas/Hoahoc/challenges/SuyLuanPhanUng';
-import DuoiHinhBatChu from './areas/Hoahoc/challenges/DuoiHinhBatChu';
-import NhanBietDungDich from './areas/Hoahoc/challenges/NhanBietDungDich';
-import XayDungPhanTu from './areas/Hoahoc/challenges/XayDungPhanTu';
-import PhaCheDungDich from './areas/Hoahoc/challenges/PhaCheDungDich';
-import CauTrucNguyenTu from './areas/Hoahoc/challenges/CauTrucNguyenTu';
-import PhongThiNghiem from './areas/Hoahoc/challenges/PhongThiNghiem';
-import TinhOxiHoa from './areas/Hoahoc/challenges/TinhOxiHoa';
+import GhepNguyenTu from './areas/Hoahoc/challenges/10/Bai02_GhepNguyenTu';
+import TroChoiCanBang from './areas/Hoahoc/challenges/08/Bai15_CanBangPhuongTrinh';
+import SuyLuanPhanUng from './areas/Hoahoc/challenges/10/Bai05_SuyLuanPhanUng';
+import DuoiHinhBatChu from './areas/Hoahoc/challenges/08/Bai01_DoanHinhBatChu';
+import NhanBietDungDich from './areas/Hoahoc/challenges/08/Bai38_NhanBietDungDich';
+import XayDungPhanTu from './areas/Hoahoc/challenges/10/Bai03_XayDungPhanTu';
+import PhaCheDungDich from './areas/Hoahoc/challenges/08/Bai06_PhaCheDungDich';
+import CauTrucNguyenTu from './areas/Hoahoc/challenges/10/Bai01_CauTrucNguyenTu';
+import PhongThiNghiem from './areas/Hoahoc/challenges/08/Bai05_PhongThiNghiem';
+import TinhOxiHoa from './areas/Hoahoc/challenges/10/Bai04_TinhOxiHoa';
+import MolQuickCalc from './areas/Hoahoc/challenges/08/Bai18_TinhKhoiLuongMol';
+import QuanSatPhanUng from './areas/Hoahoc/challenges/08/Bai12_QuanSatPhanUng';
+import TongKetLop8 from './areas/Hoahoc/challenges/08/Bai99_TongKetLop8';
+import Bai20_Oxi_KhongKhi from './areas/Hoahoc/challenges/08/Bai20_Oxi_KhongKhi';
+import HopChatVoCo from './areas/Hoahoc/challenges/09/Bai07_HopChatVoCo';
+
 
 
 const AppContent = () => {
   const location = useLocation();
+  const showHeader = location.pathname === '/home' || location.pathname === '/';
 
   return (
     <div className="min-h-screen">
+      {showHeader && <Header />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -49,8 +58,13 @@ const AppContent = () => {
         <Route path="/advanced-challenge/cau-truc-nguyen-tu" element={<CauTrucNguyenTu />} />
         <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
         <Route path="/advanced-challenge/tinh-oxi-hoa" element={<TinhOxiHoa />} />
+        <Route path="/advanced-challenge/oxi-khong-khi" element={<Bai20_Oxi_KhongKhi />} />
+        <Route path="/advanced-challenge/hop-chat-vo-co" element={<HopChatVoCo />} />
+        <Route path="/advanced-challenge/mol-quick-calc" element={<MolQuickCalc />} />
+        <Route path="/advanced-challenge/quan-sat-phan-ung" element={<QuanSatPhanUng />} />
+        <Route path="/advanced-challenge/tong-ket-lop-8" element={<TongKetLop8 />} />
         <Route 
-          path="/dashboard" 
+          path="/program/chemistry/dashboard" 
           element={
               <Dashboard />
           } 
