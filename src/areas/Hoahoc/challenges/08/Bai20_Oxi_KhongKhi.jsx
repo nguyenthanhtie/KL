@@ -19,14 +19,15 @@ const CHALLENGES = [
     icon: FlaskConical,
     color: '#8b5cf6',
     gradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
-    question: 'Phương trình phản ứng đúng là?',
+    question: 'Khi dùng KMnO₄ để điều chế khí O₂ trong phòng thí nghiệm, hiện tượng nào được quan sát?',
     options: [
-      'KMnO₄ → K + Mn + O₂',
-      '2KMnO₄ → K₂MnO₄ + MnO₂ + O₂',
-      '2KMnO₄ + H₂O → O₂ + 2KOH',
-      'KMnO₄ → KO + MnO + O'
+      'KMnO₄ tan dần tạo dung dịch màu xanh và không có khí thoát ra',
+      'Chất rắn KMnO₄ nóng chảy thành chất lỏng màu tím đậm và bay hơi',
+      'KMnO₄ chuyển từ màu tím sang màu nâu đen và có khí thoát ra liên tục',
+      'KMnO₄ bị phân hủy tạo chất rắn màu trắng và dung dịch vàng'
     ],
-    correctAnswer: '2KMnO₄ → K₂MnO₄ + MnO₂ + O₂',
+    correctAnswer: 'KMnO₄ chuyển từ màu tím sang màu nâu đen và có khí thoát ra liên tục',
+
     hint: 'Nung KMnO₄ tạo K₂MnO₄ (màu xanh), MnO₂ (màu đen) và khí O₂',
     phenomenon: 'Thuốc tím chuyển từ màu tím sang màu xanh lục, đồng thời xuất hiện bột đen MnO₂ và có bọt khí O₂ thoát ra.'
   },
@@ -877,7 +878,7 @@ const ExperimentVisual = ({ type, progress, sediments }) => {
             </div>
           )}
           {progress >= 100 && (
-            <div className="equation">2KMnO₄ → K₂MnO₄ + MnO₂ + O₂↑</div>
+            <div className="equation">Khi đun nóng KMnO₄, chất này bị phân hủy tạo ra muối màu xanh (K₂MnO₄), chất rắn nâu đen (MnO₂) và giải phóng khí oxi.</div>
           )}
         </div>
       );
