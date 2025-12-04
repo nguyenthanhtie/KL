@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 33,
   title: "Bài 33: Bài thực hành 5 - Điều chế và nhận biết hidro",
   description: "Thực hành điều chế H₂ và kiểm tra độ tinh khiết",

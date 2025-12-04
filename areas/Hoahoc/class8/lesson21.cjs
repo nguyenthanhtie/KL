@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 3, // Phải là chương 3
+  chapterId: 3,
+  chapterName: "Mol và tính toán hóa học",
   lessonId: 21,
   title: "Bài 21: Tính theo phương trình hóa học",
   description: "Khám phá thành phần hóa học, các tính chất vật lý và hóa học quan trọng của nước, cũng như vai trò không thể thiếu của nó.",

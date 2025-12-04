@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 32,
   title: "Bài 32: Bài luyện tập 6 - Hidro",
   description: "Ôn tập và luyện tập về tính chất, điều chế và ứng dụng của hidro",

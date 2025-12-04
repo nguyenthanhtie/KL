@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 4,
+  chapterName: "Oxi – Không khí",
   lessonId: 23,
   title: "Bài 23: Luyện tập về Axit - Bazơ - Muối và Phản ứng trao đổi",
   description: "Ôn tập các tính chất hóa học của axit, bazơ, muối và tìm hiểu về điều kiện xảy ra phản ứng trao đổi trong dung dịch.",

@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 5,
+  chapterName: "Hidro – Nước",
   lessonId: 39,
   title: "Bài 39: Độ tan của một chất trong nước",
   description: "Tìm hiểu độ tan, các yếu tố ảnh hưởng và đường cong độ tan",

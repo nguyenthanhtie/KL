@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 2, // Đổi từ 3 về 2
+  chapterId: 2,
+  chapterName: "Phản ứng hóa học",
   lessonId: 15,
   title: "Bài 15: Định luật bảo toàn khối lượng",
   description: "Tìm hiểu định luật bảo toàn khối lượng trong phản ứng hóa học",

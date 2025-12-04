@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 3, // Phải là chương 3
+  chapterId: 3,
+  chapterName: "Mol và tính toán hóa học",
   lessonId: 19,
   title: "Bài 19: Chuyển đổi giữa khối lượng, thể tích và lượng chất",
   description: "Khám phá mối quan hệ giữa khối lượng, thể tích và lượng chất qua các bài toán thực tiễn.",

@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 1, // Phải là chương 1
+  chapterId: 1,
+  chapterName: "Chất – Nguyên tử – Phân tử",
   lessonId: 11,
   title: "Bài 11: Bài luyện tập 2 - Tổng hợp Chương 1",
   description: "Chuyển đổi giữa các đại lượng",

@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 4,
+  chapterName: "Oxi – Không khí",
   lessonId: 26,
   title: "Bài 26: Sự ăn mòn kim loại và bảo vệ kim loại",
   description: "Tìm hiểu về hiện tượng ăn mòn kim loại, các yếu tố ảnh hưởng và các phương pháp hiệu quả để bảo vệ kim loại không bị ăn mòn.",

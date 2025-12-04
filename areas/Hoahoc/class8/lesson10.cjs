@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
-  chapterId: 1, // Phải là chương 1
+  chapterId: 1,
+  chapterName: "Chất – Nguyên tử – Phân tử",
   lessonId: 10,
   title: "Bài 10: Hóa trị (Nâng cao)",
   description: "Đơn vị mol, số Avogadro, khối lượng mol",

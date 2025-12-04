@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 1,
+  chapterName: "Chất – Nguyên tử – Phân tử",
   lessonId: 8,
   title: "Bài 8: Hóa trị",
   description: "Khái niệm hóa trị, quy tắc hóa trị, lập công thức",

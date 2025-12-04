@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 6,
+  chapterName: "Dung dịch",
   lessonId: 42,
   title: "Bài 42: Bài thực hành 7 - Pha chế và tính toán dung dịch",
   description: "Thực hành pha chế dung dịch với nồng độ xác định và tính toán liên quan",

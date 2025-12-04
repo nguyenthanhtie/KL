@@ -1,6 +1,7 @@
 module.exports = {
   classId: 8,
   chapterId: 4,
+  chapterName: "Oxi – Không khí",
   lessonId: 29,
   title: "Bài 29: Tính chất – Ứng dụng của hidro",
   description: "Tìm hiểu tính chất vật lý, hóa học và ứng dụng của khí hidro",
