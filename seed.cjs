@@ -336,6 +336,27 @@ const challenges = [
       lessonId: 7
     }
   },
+  // KIM LOAI - Grade 9 (NEW)
+  {
+    id: 16,
+    name: 'Kim Loại',
+    description: 'Các tính chất vật lí và hoá học của kim loại, dãy hoạt động, phản ứng với dung dịch muối, hợp kim và phương pháp điều chế.',
+    icon: '🔩',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-amber-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-25 phút',
+    points: 260,
+    status: 'available',
+    link: '/advanced-challenge/kim-loai',
+    features: ['6 phần: tính chất vật lí, tính chất hoá học, dãy hoạt động, phản ứng với muối, hợp kim, điều chế'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 15
+    }
+  },
   
     
   
