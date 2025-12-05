@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import { useAuth } from '../contexts/AuthContext';
@@ -197,9 +197,23 @@ const questions = [
 const PlacementTest = () => {
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(false);
+  const [selectedCurriculum, setSelectedCurriculum] = useState(null);
   const navigate = useNavigate();
   const { programId } = useParams();
   const { user, setUser } = useAuth();
+
+  // Lấy curriculum đã chọn khi component mount
+  useEffect(() => {
+    const selectedCurriculumData = localStorage.getItem('selectedCurriculum');
+    if (selectedCurriculumData) {
+      try {
+        const curriculumInfo = JSON.parse(selectedCurriculumData);
+        setSelectedCurriculum(curriculumInfo);
+      } catch (e) {
+        console.error('Error parsing curriculum data:', e);
+      }
+    }
+  }, []);
 
   const handleOptionChange = (questionIndex, option) => {
     setAnswers(prev => ({
@@ -262,13 +276,30 @@ const PlacementTest = () => {
 
       const selectedProgramName = programNames[programId] || 'Chương trình học';
 
+      // Lấy curriculum đã chọn từ localStorage
+      const selectedCurriculumData = localStorage.getItem('selectedCurriculum');
+      let curriculumType = null;
+      let curriculumName = null;
+      
+      if (selectedCurriculumData) {
+        try {
+          const curriculumInfo = JSON.parse(selectedCurriculumData);
+          curriculumType = curriculumInfo.curriculumType;
+          curriculumName = curriculumInfo.curriculumName;
+          console.log('Found selected curriculum:', curriculumInfo);
+        } catch (e) {
+          console.error('Error parsing curriculum data:', e);
+        }
+      }
+
       console.log('Calling API with:', {
         userId: user.email,
         programId,
         programName: selectedProgramName,
         initialClassId: assignedGrade,
         placementTestScore: totalScore,
-        placementTestTotal: totalQuestions
+        placementTestTotal: totalQuestions,
+        curriculumType
       });
 
       // Gọi API để lưu kết quả và đăng ký chương trình
@@ -283,7 +314,8 @@ const PlacementTest = () => {
           programName: selectedProgramName,
           initialClassId: assignedGrade,
           placementTestScore: totalScore,
-          placementTestTotal: totalQuestions
+          placementTestTotal: totalQuestions,
+          curriculumType: curriculumType // Thêm curriculum type
         }),
       });
 
@@ -305,11 +337,15 @@ const PlacementTest = () => {
         console.log('✅ User data updated from server');
       }
 
-      // Hiển thị kết quả
+      // Xóa curriculum tạm thời khỏi localStorage sau khi đã lưu thành công
+      localStorage.removeItem('selectedCurriculum');
+
+      // Hiển thị kết quả với thông tin curriculum
+      const curriculumDisplay = curriculumName ? `\n📖 Sách giáo khoa: ${curriculumName}` : '';
       alert(`🎉 Chúc mừng bạn đã hoàn thành bài kiểm tra!\n\n` +
             `📊 Điểm số: ${totalScore}/${totalQuestions}\n` +
             `🎓 Lớp phù hợp: Lớp ${assignedGrade}\n` +
-            `📚 Chương trình: ${selectedProgramName}\n\n` +
+            `📚 Chương trình: ${selectedProgramName}${curriculumDisplay}\n\n` +
             `Bạn sẽ được chuyển đến trang học tập ngay bây giờ!`);
       
       // Chuyển đến dashboard của chương trình
@@ -327,7 +363,15 @@ const PlacementTest = () => {
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-8">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">Bài kiểm tra đánh giá năng lực</h1>
-        <p className="text-center text-gray-600 mb-8">Hoàn thành 30 câu hỏi để chúng tôi có thể đề xuất lộ trình học phù hợp nhất cho bạn.</p>
+        <p className="text-center text-gray-600 mb-4">Hoàn thành 30 câu hỏi để chúng tôi có thể đề xuất lộ trình học phù hợp nhất cho bạn.</p>
+        
+        {selectedCurriculum && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+            <p className="text-center text-blue-800">
+              <span className="font-semibold">📖 Chương trình sách giáo khoa:</span> {selectedCurriculum.curriculumName}
+            </p>
+          </div>
+        )}
         
         <form onSubmit={handleSubmit}>
           <div className="space-y-8">

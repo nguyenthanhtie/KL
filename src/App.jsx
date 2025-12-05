@@ -10,6 +10,7 @@ import Register from './pages/Register';
 
 // Hóa học area
 import ChemistryHome from './areas/Hoahoc/pages/ChemistryHome';
+import CurriculumSelection from './areas/Hoahoc/pages/CurriculumSelection';
 import Dashboard from './areas/Hoahoc/pages/Dashboard';
 import ClassDashboard from './areas/Hoahoc/pages/ClassDashboard';
 import Lesson from './areas/Hoahoc/pages/Lesson';
@@ -48,6 +49,7 @@ const AppContent = () => {
         <Route path="/" element={<ProgramSelection />} />
         <Route path="/home" element={<Home />} />
         <Route path="/program/chemistry" element={<ChemistryHome />} />
+        <Route path="/curriculum-selection/:programId" element={<CurriculumSelection />} />
         <Route path="/advanced-challenge" element={<AdvancedChallenge />} />
         <Route path="/advanced-challenge/ghep-nguyen-tu" element={<GhepNguyenTu />} />
         <Route path="/advanced-challenge/can-bang" element={<TroChoiCanBang />} />

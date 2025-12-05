@@ -65,7 +65,7 @@ const ProgramSelection = () => {
 
     if (!user) {
       // Chưa đăng nhập -> chuyển đến trang login
-      navigate('/login', { state: { from: `/placement-test/${program.id}` } });
+      navigate('/login', { state: { from: `/curriculum-selection/${program.id}` } });
       return;
     }
 
@@ -76,8 +76,8 @@ const ProgramSelection = () => {
       // Đã làm placement test và đăng ký -> chuyển đến trang học
       navigate(`/program/${program.id}`);
     } else {
-      // Chưa làm placement test -> chuyển đến placement test
-      navigate(`/placement-test/${program.id}`);
+      // Chưa làm placement test -> chuyển đến chọn chương trình SGK trước
+      navigate(`/curriculum-selection/${program.id}`);
     }
   };
 

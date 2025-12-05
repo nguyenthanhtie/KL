@@ -372,8 +372,15 @@ async function seedDatabase() {
     console.log('✓ Đã xóa dữ liệu bài học cũ');
 
     // Combine all lessons from all classes (CHỈ INSERT 1 LẦN)
+    // Class 8 lessons now organized by curriculum
+    const class8Lessons = [
+      ...(lessons8.ketnoi || []),
+      ...(lessons8.canhdieu || []),
+      ...(lessons8.chantroicangtao || [])
+    ];
+    
     const allLessons = [
-      ...lessons8,
+      ...class8Lessons,
       ...lessons9,
       ...lessons10,
       ...lessons11,
@@ -414,7 +421,10 @@ async function seedDatabase() {
 
     await Lesson.insertMany(transformedLessons);
     console.log('✓ Đã thêm bài học:');
-    console.log('  - Lớp 8:', lessons8.length, 'bài');
+    console.log('  - Lớp 8:', class8Lessons.length, 'bài (', 
+      (lessons8.ketnoi || []).length, 'Kết nối,',
+      (lessons8.canhdieu || []).length, 'Cánh diều,',
+      (lessons8.chantroicangtao || []).length, 'Chân trời)');
     console.log('  - Lớp 9:', lessons9.length, 'bài');
     console.log('  - Lớp 10:', lessons10.length, 'bài');
     console.log('  - Lớp 11:', lessons11.length, 'bài');
