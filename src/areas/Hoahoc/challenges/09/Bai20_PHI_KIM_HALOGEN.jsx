@@ -1,157 +1,161 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft, Trophy, Play, RotateCcw, ChevronRight, ChevronLeft,
+  ArrowLeft, Trophy, Play, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, HelpCircle, Zap, Award,
-  FlaskConical, Beaker, Flame, Sparkles, Layers, Wrench
+  FlaskConical, Beaker, Flame, Sparkles, Droplet, Wind
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../../components/ResumeDialog';
-import './CSS/Bai15_KIM_LOAI.css';
+import './CSS/Bai20_PHI_KIM_HALOGEN.css';
 
 // ================== DATA ==================
 const CHALLENGES = [
   {
     id: 1,
-    type: 'chemical-oxygen',
-    title: 'Kim loại tác dụng với Oxi',
-    description: 'Đốt dây sắt trong bình chứa oxi và quan sát phản ứng.',
-    question: 'Khi đốt dây sắt trong oxi, sản phẩm tạo thành là gì?',
-    options: ['Fe₂O₃ (oxit sắt III)', 'FeO (oxit sắt II)', 'Fe₃O₄ (oxit sắt từ)', 'Không phản ứng'],
-    correctAnswer: 'Fe₃O₄ (oxit sắt từ)',
-    equation: '3Fe + 2O₂ →(t°)→ Fe₃O₄',
-    phenomenon: 'Dây sắt cháy sáng chói, tóe hoa lửa, tạo Fe₃O₄ màu đen.',
-    hint: 'Sắt cháy trong oxi tạo oxit sắt từ.',
-    difficulty: 'medium',
+    type: 'chlorine-properties',
+    title: 'Tính chất của Clo (Cl₂)',
+    description: 'Quan sát khí clo và tính chất hóa học cơ bản.',
+    question: 'Khí Clo có màu gì và mùi như thế nào?',
+    options: ['Không màu, không mùi', 'Vàng lục, mùi hắc', 'Nâu đỏ, mùi thơm', 'Tím, không mùi'],
+    correctAnswer: 'Vàng lục, mùi hắc',
+    equation: 'Cl₂ - Chất khí màu vàng lục',
+    phenomenon: 'Clo là chất khí màu vàng lục, mùi hắc, độc, nặng hơn không khí 2,5 lần.',
+    hint: 'Khí clo có màu đặc trưng, dễ nhận biết qua màu sắc.',
+    difficulty: 'easy',
     points: 15,
-    color: '#ef4444',
-    gradient: 'linear-gradient(135deg, #ef4444, #f87171)',
-    icon: Flame,
+    color: '#84cc16',
+    gradient: 'linear-gradient(135deg, #84cc16, #a3e635)',
+    icon: Wind,
     experiment: {
-      type: 'burn-metal',
-      metal: { name: 'Fe', fullName: 'Dây sắt', color: '#71717a' },
-      oxygen: { name: 'O₂', color: '#93c5fd' },
-      product: { name: 'Fe₃O₄', fullName: 'Oxit sắt từ', color: '#1f2937' }
+      type: 'chlorine-gas',
+      gas: { name: 'Cl₂', color: '#bef264' }
     }
   },
   {
     id: 2,
-    type: 'chemical-acid',
-    title: 'Kim loại tác dụng với Axit',
-    description: 'Cho kẽm vào dung dịch HCl loãng và quan sát.',
-    question: 'Hiện tượng gì xảy ra khi cho Zn vào dung dịch HCl?',
-    options: ['Không hiện tượng', 'Có khí H₂ thoát ra, Zn tan dần', 'Có kết tủa trắng', 'Dung dịch chuyển màu xanh'],
-    correctAnswer: 'Có khí H₂ thoát ra, Zn tan dần',
-    equation: 'Zn + 2HCl → ZnCl₂ + H₂↑',
-    phenomenon: 'Kẽm tan dần, có bọt khí H₂ sủi lên mạnh.',
-    hint: 'Kim loại đứng trước H trong dãy hoạt động sẽ đẩy H₂ ra khỏi axit.',
-    difficulty: 'easy',
-    points: 15,
-    color: '#10b981',
-    gradient: 'linear-gradient(135deg, #10b981, #34d399)',
-    icon: Beaker,
+    type: 'chlorine-hydrogen',
+    title: 'Clo tác dụng với Hiđro',
+    description: 'Đốt hỗn hợp khí H₂ và Cl₂ trong ánh sáng.',
+    question: 'Khi đốt hỗn hợp H₂ và Cl₂, sản phẩm tạo thành là gì?',
+    options: ['H₂O', 'HCl', 'H₂O₂', 'Cl₂O'],
+    correctAnswer: 'HCl',
+    equation: 'H₂ + Cl₂ →(ánh sáng)→ 2HCl',
+    phenomenon: 'Phản ứng nổ mạnh trong ánh sáng mặt trời, tạo khói trắng HCl.',
+    hint: 'Hiđro + Halogen → Axit halogenhiđric.',
+    difficulty: 'medium',
+    points: 20,
+    color: '#06b6d4',
+    gradient: 'linear-gradient(135deg, #06b6d4, #22d3ee)',
+    icon: Flame,
     experiment: {
-      type: 'metal-acid',
-      metal: { name: 'Zn', color: '#a1a1aa' },
-      acid: { name: 'HCl', color: '#fecaca' }
+      type: 'h2-cl2-reaction',
+      reactants: [
+        { name: 'H₂', color: '#93c5fd' },
+        { name: 'Cl₂', color: '#bef264' }
+      ],
+      product: { name: 'HCl', color: '#e5e5e5' }
     }
   },
   {
     id: 3,
-    type: 'activity-series',
-    title: 'Dãy hoạt động hóa học',
-    description: 'So sánh mức độ hoạt động của các kim loại qua thí nghiệm.',
-    question: 'Trong dãy hoạt động, kim loại nào hoạt động mạnh nhất?',
-    options: ['Cu', 'Fe', 'Na', 'Ag'],
-    correctAnswer: 'Na',
-    phenomenon: 'Na phản ứng mãnh liệt với nước, Fe phản ứng chậm với axit, Cu và Ag không phản ứng với HCl.',
-    hint: 'K, Na, Ca, Mg, Al, Zn, Fe, Ni, Sn, Pb, H, Cu, Hg, Ag, Pt, Au',
+    type: 'chlorine-metal',
+    title: 'Clo tác dụng với Kim loại',
+    description: 'Đốt bột sắt trong khí clo.',
+    question: 'Khi đốt nóng bột sắt trong khí clo, sản phẩm tạo thành là gì?',
+    options: ['FeCl₂', 'FeCl₃', 'Fe₂O₃', 'FeO'],
+    correctAnswer: 'FeCl₃',
+    equation: '2Fe + 3Cl₂ →(t°)→ 2FeCl₃',
+    phenomenon: 'Sắt cháy sáng trong khí clo, tạo khói nâu đỏ FeCl₃.',
+    hint: 'Clo có tính oxi hóa mạnh, đưa Fe lên hóa trị cao nhất.',
     difficulty: 'medium',
-    points: 15,
-    color: '#8b5cf6',
-    gradient: 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
-    icon: Zap,
+    points: 20,
+    color: '#ef4444',
+    gradient: 'linear-gradient(135deg, #ef4444, #f87171)',
+    icon: Sparkles,
     experiment: {
-      type: 'compare-activity',
-      metals: [
-        { name: 'Na', color: '#e5e5e5', activity: 'very-high' },
-        { name: 'Fe', color: '#71717a', activity: 'medium' },
-        { name: 'Cu', color: '#b87333', activity: 'low' },
-        { name: 'Ag', color: '#c0c0c0', activity: 'very-low' }
-      ]
+      type: 'fe-cl2-reaction',
+      metal: { name: 'Fe', color: '#71717a' },
+      gas: { name: 'Cl₂', color: '#bef264' },
+      product: { name: 'FeCl₃', color: '#b45309' }
     }
   },
   {
     id: 4,
-    type: 'displacement',
-    title: 'Kim loại + Dung dịch muối',
-    description: 'Cho đinh sắt vào dung dịch CuSO₄ màu xanh.',
-    question: 'Hiện tượng gì xảy ra khi cho Fe vào CuSO₄?',
-    options: ['Không phản ứng', 'Có khí thoát ra', 'Đinh sắt phủ lớp đồng đỏ, dung dịch nhạt màu', 'Có kết tủa xanh'],
-    correctAnswer: 'Đinh sắt phủ lớp đồng đỏ, dung dịch nhạt màu',
-    equation: 'Fe + CuSO₄ → FeSO₄ + Cu↓',
-    phenomenon: 'Fe đẩy Cu ra khỏi muối vì Fe hoạt động mạnh hơn Cu.',
-    hint: 'Kim loại mạnh hơn đẩy kim loại yếu hơn ra khỏi dung dịch muối.',
-    difficulty: 'medium',
-    points: 20,
-    color: '#3b82f6',
-    gradient: 'linear-gradient(135deg, #3b82f6, #60a5fa)',
-    icon: FlaskConical,
+    type: 'hcl-properties',
+    title: 'Axit Clohiđric (HCl)',
+    description: 'Tìm hiểu về tính chất của axit HCl.',
+    question: 'Axit HCl tác dụng với kim loại nào sau đây?',
+    options: ['Cu', 'Ag', 'Zn', 'Au'],
+    correctAnswer: 'Zn',
+    equation: 'Zn + 2HCl → ZnCl₂ + H₂↑',
+    phenomenon: 'Zn tan dần, có bọt khí H₂ sủi lên. Cu, Ag, Au không phản ứng vì đứng sau H.',
+    hint: 'Chỉ kim loại đứng trước H trong dãy hoạt động mới đẩy được H₂.',
+    difficulty: 'easy',
+    points: 15,
+    color: '#f97316',
+    gradient: 'linear-gradient(135deg, #f97316, #fb923c)',
+    icon: Beaker,
     experiment: {
-      type: 'displacement-reaction',
-      metal: { name: 'Fe (đinh sắt)', color: '#71717a' },
-      solution: { name: 'CuSO₄', color: '#3b82f6' },
-      product: { name: 'Cu', color: '#b87333' }
+      type: 'hcl-metal',
+      metals: [
+        { name: 'Zn', color: '#a1a1aa', reacts: true },
+        { name: 'Cu', color: '#b87333', reacts: false },
+        { name: 'Ag', color: '#c0c0c0', reacts: false }
+      ],
+      acid: { name: 'HCl', color: '#fecaca' }
     }
   },
   {
     id: 5,
-    type: 'alloy',
-    title: 'Hợp kim',
-    description: 'Tìm hiểu về thành phần và tính chất của hợp kim.',
-    question: 'Thép là hợp kim của sắt với nguyên tố nào?',
-    options: ['Đồng (Cu)', 'Cacbon (C)', 'Nhôm (Al)', 'Kẽm (Zn)'],
-    correctAnswer: 'Cacbon (C)',
-    phenomenon: 'Thép = Fe + C (0.01-2%). Gang = Fe + C (2-5%). Đồng thau = Cu + Zn.',
-    hint: 'Hợp kim thường cứng và bền hơn kim loại nguyên chất.',
-    difficulty: 'easy',
-    points: 15,
-    color: '#64748b',
-    gradient: 'linear-gradient(135deg, #64748b, #94a3b8)',
-    icon: Layers,
+    type: 'nacl-electrolysis',
+    title: 'Muối NaCl và điện phân',
+    description: 'Điện phân dung dịch NaCl để điều chế Cl₂.',
+    question: 'Khi điện phân dung dịch NaCl có màng ngăn, sản phẩm thu được là?',
+    options: ['Na và Cl₂', 'NaOH, Cl₂ và H₂', 'HCl và NaOH', 'Chỉ có Cl₂'],
+    correctAnswer: 'NaOH, Cl₂ và H₂',
+    equation: '2NaCl + 2H₂O →(đp có màng ngăn)→ 2NaOH + Cl₂↑ + H₂↑',
+    phenomenon: 'Ở catot: thoát khí H₂. Ở anot: thoát khí Cl₂ màu vàng lục.',
+    hint: 'Điện phân dung dịch NaCl tạo 3 sản phẩm, không phải kim loại Na.',
+    difficulty: 'hard',
+    points: 25,
+    color: '#8b5cf6',
+    gradient: 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+    icon: Zap,
     experiment: {
-      type: 'alloy-compare',
-      alloys: [
-        { name: 'Thép', components: 'Fe + C', color: '#52525b' },
-        { name: 'Gang', components: 'Fe + C (nhiều)', color: '#3f3f46' },
-        { name: 'Đồng thau', components: 'Cu + Zn', color: '#ca8a04' }
+      type: 'electrolysis',
+      reactant: { name: 'NaCl (dd)', color: '#e0e7ff' },
+      products: [
+        { name: 'NaOH', location: 'catot', color: '#dbeafe' },
+        { name: 'H₂', location: 'catot', color: '#93c5fd' },
+        { name: 'Cl₂', location: 'anot', color: '#bef264' }
       ]
     }
   },
   {
     id: 6,
-    type: 'summary',
-    title: 'Tổng hợp kiến thức',
-    description: 'Câu hỏi tổng hợp về kim loại.',
-    question: 'Kim loại nào KHÔNG tác dụng với dung dịch H₂SO₄ loãng?',
-    options: ['Mg', 'Zn', 'Fe', 'Cu'],
-    correctAnswer: 'Cu',
-    phenomenon: 'Cu đứng sau H trong dãy hoạt động nên không đẩy được H₂ ra khỏi axit loãng.',
-    hint: 'Xem lại vị trí các kim loại trong dãy hoạt động.',
+    type: 'halogen-compare',
+    title: 'So sánh các Halogen',
+    description: 'So sánh tính chất của F, Cl, Br, I.',
+    question: 'Trong nhóm Halogen, nguyên tố nào có tính oxi hóa mạnh nhất?',
+    options: ['Flo (F₂)', 'Clo (Cl₂)', 'Brom (Br₂)', 'Iot (I₂)'],
+    correctAnswer: 'Flo (F₂)',
+    equation: 'Tính oxi hóa: F₂ > Cl₂ > Br₂ > I₂',
+    phenomenon: 'F₂ là phi kim mạnh nhất, oxi hóa được cả H₂O. Tính oxi hóa giảm dần từ F đến I.',
+    hint: 'Halogen càng nhỏ (số hiệu nguyên tử nhỏ) càng hoạt động mạnh.',
     difficulty: 'medium',
     points: 20,
     color: '#ec4899',
     gradient: 'linear-gradient(135deg, #ec4899, #f472b6)',
     icon: Award,
     experiment: {
-      type: 'acid-test',
-      metals: [
-        { name: 'Mg', reacts: true, color: '#d4d4d8' },
-        { name: 'Zn', reacts: true, color: '#a1a1aa' },
-        { name: 'Fe', reacts: true, color: '#71717a' },
-        { name: 'Cu', reacts: false, color: '#b87333' }
-      ],
-      acid: { name: 'H₂SO₄ loãng', color: '#fecaca' }
+      type: 'halogen-series',
+      halogens: [
+        { name: 'F₂', color: '#fef3c7', state: 'Khí vàng nhạt', activity: 'Rất mạnh' },
+        { name: 'Cl₂', color: '#bef264', state: 'Khí vàng lục', activity: 'Mạnh' },
+        { name: 'Br₂', color: '#dc2626', state: 'Lỏng nâu đỏ', activity: 'TB' },
+        { name: 'I₂', color: '#7c3aed', state: 'Rắn tím', activity: 'Yếu' }
+      ]
     }
   }
 ];
@@ -160,196 +164,207 @@ const TOTAL_POINTS = CHALLENGES.reduce((sum, c) => sum + c.points, 0);
 
 // ================== EXPERIMENT COMPONENTS ==================
 
-// Thí nghiệm đốt kim loại trong oxi - Đơn giản: khối sắt đổi màu
-const BurnMetalExperiment = ({ experiment, progress, isComplete }) => {
-  const stage = progress < 30 ? 'ready' : progress < 70 ? 'burning' : 'complete';
+// Thí nghiệm quan sát khí Clo
+const ChlorineGasExperiment = ({ experiment, progress, isComplete }) => {
+  const stage = progress < 30 ? 'ready' : progress < 70 ? 'filling' : 'complete';
   
   return (
-    <div className="experiment-container burn-exp-simple">
-      {/* Khu vực đốt - Layout dọc */}
-      <div className="burn-area-vertical">
-        {/* Các phân tử O₂ bay xung quanh */}
-        <div className="oxygen-molecules">
-          {[...Array(8)].map((_, i) => (
+    <div className="experiment-container chlorine-exp">
+      <div className="gas-jar-area">
+        {/* Bình chứa khí Clo */}
+        <div className={`gas-jar ${stage}`}>
+          <div className="jar-glass">
+            {/* Khí Clo màu vàng lục */}
             <div 
-              key={i} 
-              className={`o2-molecule ${stage !== 'ready' ? 'active' : ''}`}
-              style={{ '--i': i }}
+              className="chlorine-gas-fill"
+              style={{ 
+                '--fill-height': stage === 'ready' ? '0%' : stage === 'filling' ? `${progress}%` : '100%',
+                '--gas-color': experiment.gas.color
+              }}
             >
-              O₂
+              {stage !== 'ready' && (
+                <div className="gas-particles">
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} className="cl2-particle" style={{ '--i': i }}>Cl₂</div>
+                  ))}
+                </div>
+              )}
             </div>
-          ))}
+          </div>
+          <div className="jar-cap"></div>
+         
         </div>
 
-        {/* Khối sắt ở giữa */}
-        <div className={`iron-block ${stage}`}>
-          <div className="iron-surface">
-            <span className="iron-symbol">{stage === 'complete' ? 'Fe₃O₄' : 'Fe'}</span>
+        
+      </div>
+
+      {isComplete && (
+        <div className="warning-box">
+          ⚠️ Clo là chất khí độc - không ngửi trực tiếp!
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Thí nghiệm H₂ + Cl₂
+const H2Cl2ReactionExperiment = ({ experiment, progress, isComplete }) => {
+  const stage = progress < 25 ? 'ready' : progress < 60 ? 'mixing' : progress < 85 ? 'reacting' : 'complete';
+  
+  return (
+    <div className="experiment-container h2cl2-exp">
+      <div className="reaction-chamber">
+        {/* 2 bình khí */}
+        <div className="gas-tubes">
+          <div className={`gas-tube h2-tube ${stage !== 'ready' ? 'releasing' : ''}`}>
+            <div className="tube-gas h2-gas">
+              {stage === 'ready' && <span className="gas-label">H₂</span>}
+            </div>
+            {stage !== 'ready' && (
+              <div className="gas-flow h2-flow">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="h2-molecule" style={{ '--delay': `${i * 0.2}s` }}>H₂</div>
+                ))}
+              </div>
+            )}
           </div>
           
-          {/* Hiệu ứng lửa khi đang đốt */}
-          {stage === 'burning' && (
-            <div className="burning-sparks">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="spark-particle" style={{ '--i': i }}></div>
+          <div className={`gas-tube cl2-tube ${stage !== 'ready' ? 'releasing' : ''}`}>
+            <div className="tube-gas cl2-gas">
+              {stage === 'ready' && <span className="gas-label">Cl₂</span>}
+            </div>
+            {stage !== 'ready' && (
+              <div className="gas-flow cl2-flow">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="cl2-molecule" style={{ '--delay': `${i * 0.2}s` }}>Cl₂</div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Vùng phản ứng */}
+        <div className={`reaction-zone ${stage === 'reacting' || stage === 'complete' ? 'active' : ''}`}>
+          {(stage === 'reacting' || stage === 'complete') && (
+            <>
+              <div className="light-flash">☀️</div>
+              <div className="explosion-effect">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="spark" style={{ '--i': i }}></div>
+                ))}
+              </div>
+            </>
+          )}
+          
+          {stage === 'complete' && (
+            <div className="hcl-smoke">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="hcl-particle" style={{ '--i': i }}>HCl</div>
               ))}
             </div>
           )}
-          
-          {/* Nhãn */}
-          <div className="iron-label">
-            {stage === 'ready' && 'Dây sắt'}
-            {stage === 'burning' && 'Đang cháy...'}
-            {stage === 'complete' && 'Oxit sắt từ'}
-          </div>
-        </div>
-
-        {/* Đèn cồn ở dưới */}
-        <div className="alcohol-lamp-bottom">
-          {stage !== 'ready' && (
-            <div className="lamp-flame-bottom">
-              <div className="flame-core"></div>
-              <div className="flame-outer-bottom"></div>
-              <div className="flame-glow"></div>
-            </div>
-          )}
-          <div className="lamp-wick-bottom"></div>
-          <div className="lamp-body-bottom"></div>
-          <div className="lamp-base"></div>
-          <div className="lamp-label-bottom">Đèn cồn</div>
-        </div>
-      </div>
-
-      {/* Thông tin màu sắc */}
-      <div className="color-info">
-        <div className={`color-box before ${stage === 'ready' ? 'active' : ''}`}>
-          <div className="color-sample iron-color"></div>
-          <span>Trước: Xám bạc</span>
-        </div>
-        <div className="color-arrow">→</div>
-        <div className={`color-box after ${stage === 'complete' ? 'active' : ''}`}>
-          <div className="color-sample oxide-color"></div>
-          <span>Sau: Đen</span>
         </div>
       </div>
 
       {/* Hiện tượng */}
-      {stage !== 'ready' && (
-        <div className="phenomenon-box">
-          <div className={`phenom-item ${progress > 30 ? 'show' : ''}`}>
-            💡 Sắt cháy sáng chói
-          </div>
-          <div className={`phenom-item ${progress > 50 ? 'show' : ''}`}>
-            ✨ Tóe nhiều tia lửa
-          </div>
-          <div className={`phenom-item ${stage === 'complete' ? 'show' : ''}`}>
-            ⚫ Chuyển thành màu đen
-          </div>
+      <div className="reaction-observations">
+        <div className={`obs-item ${progress > 25 ? 'show' : ''}`}>
+          🔄 Hai khí trộn lẫn
         </div>
-      )}
+        <div className={`obs-item ${progress > 60 ? 'show' : ''}`}>
+          ☀️ Đốt/chiếu sáng → Nổ mạnh
+        </div>
+        <div className={`obs-item ${isComplete ? 'show' : ''}`}>
+          💨 Khói trắng HCl bay lên
+        </div>
+      </div>
     </div>
   );
 };
 
-// Thí nghiệm kim loại + axit - Thiết kế mới đơn giản
-const MetalAcidExperiment = ({ experiment, progress, isComplete }) => {
-  const stage = progress < 20 ? 'ready' : progress < 80 ? 'reacting' : 'complete';
+// Thí nghiệm Fe + Cl₂
+const FeCl2ReactionExperiment = ({ experiment, progress, isComplete }) => {
+  const stage = progress < 30 ? 'ready' : progress < 70 ? 'burning' : 'complete';
   
   return (
-    <div className="experiment-container acid-exp-simple">
-      {/* Cốc thủy tinh chứa axit */}
-      <div className="acid-beaker-container">
-        <div className="beaker-glass">
-          {/* Dung dịch axit */}
-          <div className="acid-solution" style={{ '--acid-color': experiment.acid.color }}>
-            <span className="acid-name">{experiment.acid.name}</span>
+    <div className="experiment-container fecl-exp">
+      <div className="fecl-setup">
+        {/* Bình chứa khí Clo */}
+        <div className="cl2-flask">
+          <div className="flask-glass">
+            <div className="cl2-gas-inside" style={{ '--gas-color': experiment.gas.color }}>
+              <span>Cl₂</span>
+            </div>
           </div>
-          
-          {/* Miếng kim loại Zn */}
+          <div className="flask-label">Bình khí Clo</div>
+        </div>
+
+        {/* Bột sắt được đưa vào */}
+        <div className={`iron-powder-container ${stage}`}>
           <div 
-            className={`zinc-piece ${stage}`}
+            className="iron-powder"
             style={{ '--metal-color': experiment.metal.color }}
           >
-            <span>{experiment.metal.name}</span>
+            <span>{stage === 'complete' ? 'FeCl₃' : 'Fe'}</span>
           </div>
           
-          {/* Bọt khí H₂ bay lên */}
-          {stage !== 'ready' && (
-            <div className="hydrogen-bubbles">
-              {[...Array(12)].map((_, i) => (
-                <div 
-                  key={i} 
-                  className="h2-bubble-new"
-                  style={{ 
-                    '--delay': `${i * 0.15}s`,
-                    '--left': `${25 + (i % 4) * 15}%`,
-                    '--size': `${6 + (i % 3) * 3}px`
-                  }}
-                >
-                  <span>H₂</span>
-                </div>
+          {stage === 'burning' && (
+            <div className="burning-glow">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="glow-particle" style={{ '--i': i }}></div>
+              ))}
+            </div>
+          )}
+          
+          {stage === 'complete' && (
+            <div className="fecl3-smoke" style={{ '--product-color': experiment.product.color }}>
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="smoke-particle" style={{ '--i': i }}>FeCl₃</div>
               ))}
             </div>
           )}
         </div>
-        
-        {/* Nhãn trạng thái */}
-        <div className="beaker-label">
-          {stage === 'ready' && 'Cốc axit HCl'}
-          {stage === 'reacting' && 'Đang phản ứng...'}
-          {stage === 'complete' && 'Phản ứng xong'}
-        </div>
+
+        {/* Đèn đốt */}
+        {stage !== 'ready' && (
+          <div className="burner">
+            <div className="burner-flame">
+              <div className="flame-core"></div>
+              <div className="flame-outer"></div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Hiện tượng quan sát */}
-      {stage !== 'ready' && (
-        <div className="acid-observation">
-          <div className={`obs-item ${progress > 20 ? 'show' : ''}`}>
-            💨 Có bọt khí H₂ sủi lên
-          </div>
-          <div className={`obs-item ${progress > 50 ? 'show' : ''}`}>
-            🔩 Kẽm tan dần trong axit
-          </div>
-          <div className={`obs-item ${stage === 'complete' ? 'show' : ''}`}>
-            💧 Tạo dung dịch ZnCl₂
-          </div>
+      <div className="fecl-observations">
+        <div className={`obs-item ${progress > 30 ? 'show' : ''}`}>
+          🔥 Sắt cháy sáng trong khí Clo
         </div>
-      )}
-
-      {/* Phương trình khi hoàn thành */}
-      {isComplete && (
-        <div className="acid-equation">
-          Zn + 2HCl → ZnCl₂ + H₂↑
+        <div className={`obs-item ${progress > 50 ? 'show' : ''}`}>
+          ✨ Tỏa nhiệt, phát sáng mạnh
         </div>
-      )}
+        <div className={`obs-item ${isComplete ? 'show' : ''}`}>
+          🟤 Khói nâu đỏ FeCl₃
+        </div>
+      </div>
     </div>
   );
 };
 
-// Thí nghiệm so sánh dãy hoạt động - 4 ống nghiệm với HCl
-const ActivitySeriesExperiment = ({ experiment, progress, isComplete }) => {
-  const testTubes = [
-    { name: 'Na', color: '#e5e5e5', activity: 'very-high', label: 'Rất mạnh', bubbleCount: 12 },
-    { name: 'Fe', color: '#71717a', activity: 'medium', label: 'Trung bình', bubbleCount: 5 },
-    { name: 'Cu', color: '#b87333', activity: 'low', label: 'Không PƯ', bubbleCount: 0 },
-    { name: 'Ag', color: '#c0c0c0', activity: 'very-low', label: 'Không PƯ', bubbleCount: 0 }
-  ];
-
+// Thí nghiệm HCl + Kim loại
+const HClMetalExperiment = ({ experiment, progress, isComplete }) => {
   return (
-    <div className="experiment-container activity-exp-simple">
-      {/* Tiêu đề */}
-      <div className="activity-title">Cho kim loại vào dung dịch HCl loãng</div>
+    <div className="experiment-container hcl-metal-exp">
+      <div className="hcl-title">Cho kim loại vào dung dịch HCl</div>
       
-      {/* 4 ống nghiệm */}
       <div className="test-tubes-row">
-        {testTubes.map((metal, idx) => {
-          const isActive = progress > (idx + 1) * 20;
+        {experiment.metals.map((metal, idx) => {
+          const isActive = progress > (idx + 1) * 30;
           return (
             <div key={metal.name} className="test-tube-item">
-              {/* Ống nghiệm */}
               <div className={`test-tube ${isActive ? 'active' : ''}`}>
                 {/* Dung dịch HCl */}
-                <div className="hcl-solution">
+                <div className="hcl-solution" style={{ '--acid-color': experiment.acid.color }}>
                   {/* Kim loại */}
                   <div 
                     className={`metal-piece-tube ${isActive ? 'dropped' : ''}`}
@@ -358,17 +373,17 @@ const ActivitySeriesExperiment = ({ experiment, progress, isComplete }) => {
                     {metal.name}
                   </div>
                   
-                  {/* Bọt khí H₂ */}
-                  {isActive && metal.bubbleCount > 0 && (
+                  {/* Bọt khí H₂ nếu phản ứng */}
+                  {isActive && metal.reacts && (
                     <div className="bubbles-container">
-                      {[...Array(metal.bubbleCount)].map((_, i) => (
+                      {[...Array(8)].map((_, i) => (
                         <div 
                           key={i} 
                           className="h2-bubble"
                           style={{ 
                             '--delay': `${i * 0.15}s`,
-                            '--left': `${15 + (i % 4) * 20}%`,
-                            '--size': `${4 + (i % 3) * 2}px`
+                            '--left': `${20 + (i % 4) * 18}%`,
+                            '--size': `${5 + (i % 3) * 2}px`
                           }}
                         />
                       ))}
@@ -377,168 +392,141 @@ const ActivitySeriesExperiment = ({ experiment, progress, isComplete }) => {
                 </div>
               </div>
               
-              {/* Nhãn */}
               <div className="tube-label">{metal.name}</div>
-              <div className={`activity-badge ${metal.activity}`}>
-                {metal.label}
+              <div className={`reaction-badge ${metal.reacts ? 'reacts' : 'no-react'}`}>
+                {isActive && (metal.reacts ? '✓ Có H₂' : '✗ Không PƯ')}
               </div>
             </div>
           );
         })}
       </div>
       
-      {/* Dãy hoạt động */}
       {isComplete && (
-        <div className="series-result">
-          <div className="series-line">
-            <span className="strong-side">Mạnh</span>
-            <div className="series-metals">
-              <span className="active-metal">K</span>
-              <span className="active-metal">Na</span>
-              <span className="active-metal">Ca</span>
-              <span className="active-metal">Mg</span>
-              <span className="active-metal">Al</span>
-              <span className="active-metal">Zn</span>
-              <span className="active-metal">Fe</span>
-              <span className="h-divider">H</span>
-              <span className="inactive-metal">Cu</span>
-              <span className="inactive-metal">Ag</span>
-              <span className="inactive-metal">Au</span>
-            </div>
-            <span className="weak-side">Yếu</span>
-          </div>
-          <div className="series-note">Kim loại đứng trước H đẩy được H₂ ra khỏi axit</div>
+        <div className="hcl-conclusion">
+          💡 Chỉ kim loại đứng trước H trong dãy hoạt động mới đẩy được H₂
         </div>
       )}
     </div>
   );
 };
 
-// Thí nghiệm phản ứng thế - Fe + CuSO4
-const DisplacementExperiment = ({ experiment, progress, isComplete }) => {
+// Thí nghiệm điện phân NaCl
+const ElectrolysisExperiment = ({ experiment, progress, isComplete }) => {
+  const stage = progress < 20 ? 'ready' : progress < 80 ? 'running' : 'complete';
+  
   return (
-    <div className="experiment-container displacement-exp">
-      <div className="displacement-setup">
-        <div 
-          className="solution-beaker"
-          style={{ 
-            '--solution-color': experiment.solution.color,
-            '--solution-opacity': isComplete ? 0.3 : 1
-          }}
-        >
-          <div className="solution-liquid">
-            <span>{experiment.solution.name}</span>
+    <div className="experiment-container electrolysis-exp">
+      <div className="electrolysis-cell">
+        {/* Nguồn điện */}
+        <div className="power-source">
+          <div className="battery">
+            <span className="plus">+</span>
+            <span className="minus">−</span>
           </div>
-          
-          <div 
-            className={`iron-nail ${progress > 20 ? 'reacting' : ''}`}
-            style={{ '--metal-color': experiment.metal.color }}
-          >
-            {progress > 50 && (
-              <div 
-                className="copper-coating"
-                style={{ 
-                  '--cu-color': experiment.product.color,
-                  '--coating': `${Math.min((progress - 50) * 2, 100)}%`
-                }}
-              ></div>
-            )}
+          <div className="wires">
+            <div className="wire left"></div>
+            <div className="wire right"></div>
           </div>
         </div>
-        
-        {isComplete && (
-          <div className="reaction-result">
-            <div className="result-item">
-              <div className="cu-deposited" style={{ background: experiment.product.color }}></div>
-              <span>Cu bám vào đinh</span>
-            </div>
-            <div className="result-item">
-              <div className="feso4-solution"></div>
-              <span>FeSO₄ (nhạt màu)</span>
-            </div>
-          </div>
-        )}
-      </div>
-      
-      {isComplete && (
-        <div className="equation-display">
-          Fe + CuSO₄ → FeSO₄ + Cu↓
-        </div>
-      )}
-    </div>
-  );
-};
 
-// Thí nghiệm hợp kim
-const AlloyExperiment = ({ experiment, progress, isComplete }) => {
-  return (
-    <div className="experiment-container alloy-exp">
-      <div className="alloys-showcase">
-        {experiment.alloys.map((alloy, idx) => (
-          <div 
-            key={alloy.name}
-            className={`alloy-card ${progress > (idx + 1) * 33 ? 'revealed' : ''}`}
-            style={{ '--alloy-color': alloy.color, '--delay': `${idx * 0.3}s` }}
-          >
-            <div className="alloy-sample"></div>
-            <div className="alloy-info">
-              <strong>{alloy.name}</strong>
-              <span>{alloy.components}</span>
+        {/* Bể điện phân */}
+        <div className="electrolysis-tank">
+          <div className="nacl-solution" style={{ '--solution-color': experiment.reactant.color }}>
+            <span className="solution-label">NaCl (dd)</span>
+            
+            {/* Màng ngăn */}
+            <div className="membrane">
+              <span>Màng ngăn</span>
             </div>
-          </div>
-        ))}
-      </div>
-      
-      {isComplete && (
-        <div className="alloy-note">
-          💡 Hợp kim thường cứng và bền hơn kim loại nguyên chất!
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Thí nghiệm tổng hợp - test với axit
-const AcidTestExperiment = ({ experiment, progress, isComplete }) => {
-  return (
-    <div className="experiment-container acid-test-exp">
-      <div className="test-tubes-row">
-        {experiment.metals.map((metal, idx) => (
-          <div 
-            key={metal.name}
-            className={`test-tube-setup ${progress > (idx + 1) * 25 ? 'tested' : ''}`}
-            style={{ '--delay': `${idx * 0.2}s` }}
-          >
-            <div className="test-tube" style={{ '--acid-color': experiment.acid.color }}>
-              <div className="acid-in-tube">{experiment.acid.name}</div>
-              <div 
-                className="metal-sample"
-                style={{ '--metal-color': metal.color }}
-              >
-                {metal.name}
-              </div>
-              
-              {progress > (idx + 1) * 25 && metal.reacts && (
-                <div className="reaction-bubbles">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="tiny-bubble" style={{ '--delay': `${i * 0.15}s` }}></div>
+            
+            {/* Catot (−) */}
+            <div className="electrode catot">
+              <div className="electrode-rod"></div>
+              <span className="electrode-label">Catot (−)</span>
+              {stage !== 'ready' && (
+                <div className="electrode-bubbles h2-bubbles">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="e-bubble" style={{ '--i': i }}>H₂</div>
                   ))}
                 </div>
               )}
             </div>
             
-            <div className={`result-label ${metal.reacts ? 'reacts' : 'no-react'}`}>
-              {progress > (idx + 1) * 25 && (
-                metal.reacts ? '✓ Có khí H₂' : '✗ Không phản ứng'
+            {/* Anot (+) */}
+            <div className="electrode anot">
+              <div className="electrode-rod"></div>
+              <span className="electrode-label">Anot (+)</span>
+              {stage !== 'ready' && (
+                <div className="electrode-bubbles cl2-bubbles">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="e-bubble cl2" style={{ '--i': i }}>Cl₂</div>
+                  ))}
+                </div>
               )}
             </div>
           </div>
-        ))}
+        </div>
+      </div>
+
+      <div className="electrolysis-products">
+        <div className={`product-item ${progress > 30 ? 'show' : ''}`}>
+          <div className="product-icon h2">H₂</div>
+          <span>Catot: Khí H₂</span>
+        </div>
+        <div className={`product-item ${progress > 50 ? 'show' : ''}`}>
+          <div className="product-icon cl2">Cl₂</div>
+          <span>Anot: Khí Cl₂</span>
+        </div>
+        <div className={`product-item ${isComplete ? 'show' : ''}`}>
+          <div className="product-icon naoh">NaOH</div>
+          <span>Catot: NaOH</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Thí nghiệm so sánh các Halogen
+const HalogenSeriesExperiment = ({ experiment, progress, isComplete }) => {
+  return (
+    <div className="experiment-container halogen-series-exp">
+      <div className="halogen-title">Các nguyên tố Halogen</div>
+      
+      <div className="halogen-cards">
+        {experiment.halogens.map((halogen, idx) => {
+          const isRevealed = progress > (idx + 1) * 20;
+          return (
+            <div 
+              key={halogen.name} 
+              className={`halogen-card ${isRevealed ? 'revealed' : ''}`}
+              style={{ '--halogen-color': halogen.color, '--delay': `${idx * 0.15}s` }}
+            >
+              <div className="halogen-sample">
+                <span>{halogen.name}</span>
+              </div>
+              <div className="halogen-info">
+                <div className="halogen-state">{halogen.state}</div>
+                <div className={`halogen-activity ${halogen.activity.toLowerCase().replace(' ', '-')}`}>
+                  {halogen.activity}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
       
       {isComplete && (
-        <div className="conclusion">
-          Cu đứng sau H trong dãy hoạt động → không đẩy được H₂ ra khỏi axit loãng
+        <div className="halogen-order">
+          <div className="order-label">Tính oxi hóa giảm dần:</div>
+          <div className="order-sequence">
+            <span className="h-strong">F₂</span>
+            <span className="arrow">→</span>
+            <span className="h-medium">Cl₂</span>
+            <span className="arrow">→</span>
+            <span className="h-weak">Br₂</span>
+            <span className="arrow">→</span>
+            <span className="h-very-weak">I₂</span>
+          </div>
         </div>
       )}
     </div>
@@ -550,27 +538,27 @@ const ExperimentRenderer = ({ challenge, progress, isComplete }) => {
   const { experiment, type } = challenge;
   
   switch (type) {
-    case 'chemical-oxygen':
-      return <BurnMetalExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
-    case 'chemical-acid':
-      return <MetalAcidExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
-    case 'activity-series':
-      return <ActivitySeriesExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
-    case 'displacement':
-      return <DisplacementExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
-    case 'alloy':
-      return <AlloyExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
-    case 'summary':
-      return <AcidTestExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
+    case 'chlorine-properties':
+      return <ChlorineGasExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
+    case 'chlorine-hydrogen':
+      return <H2Cl2ReactionExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
+    case 'chlorine-metal':
+      return <FeCl2ReactionExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
+    case 'hcl-properties':
+      return <HClMetalExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
+    case 'nacl-electrolysis':
+      return <ElectrolysisExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
+    case 'halogen-compare':
+      return <HalogenSeriesExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
     default:
       return null;
   }
 };
 
 // ================== MAIN COMPONENT ==================
-const Bai15_KIM_LOAI = () => {
+const Bai20_PHI_KIM_HALOGEN = () => {
   const navigate = useNavigate();
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('kim-loai-9-bai15');
+  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('phi-kim-halogen-9-bai20');
 
   const [gameStarted, setGameStarted] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -609,13 +597,11 @@ const Bai15_KIM_LOAI = () => {
         score,
         completedChallenges,
         answeredCorrectly,
-        // Lưu thêm trạng thái thí nghiệm và câu trả lời
         experimentProgress,
         isExperimentComplete,
         selectedAnswer,
         isAnswerSubmitted,
         showHint,
-        // Lưu trạng thái retry
         retryQueue,
         isRetryMode,
         retryIndex
@@ -641,14 +627,12 @@ const Bai15_KIM_LOAI = () => {
         setScore(saved.score || 0);
         setCompletedChallenges(saved.completedChallenges || []);
         setAnsweredCorrectly(saved.answeredCorrectly || []);
-        // Khôi phục trạng thái thí nghiệm và câu trả lời
         setExperimentProgress(saved.experimentProgress || 0);
         setIsExperimentComplete(saved.isExperimentComplete || false);
         setIsExperimentRunning(false);
         setSelectedAnswer(saved.selectedAnswer || null);
         setIsAnswerSubmitted(saved.isAnswerSubmitted || false);
         setShowHint(saved.showHint || false);
-        // Khôi phục trạng thái retry
         setRetryQueue(saved.retryQueue || []);
         setIsRetryMode(saved.isRetryMode || false);
         setRetryIndex(saved.retryIndex || 0);
@@ -701,19 +685,14 @@ const Bai15_KIM_LOAI = () => {
     const isCorrect = selectedAnswer === challenge.correctAnswer;
     
     if (isRetryMode) {
-      // Trong chế độ làm lại - không tính điểm
       if (isCorrect) {
-        // Đúng rồi - xóa khỏi hàng đợi
         setRetryQueue(prev => prev.filter((_, idx) => idx !== retryIndex));
       }
-      // Sai vẫn giữ trong hàng đợi, sẽ làm lại
     } else {
-      // Chế độ bình thường
       if (isCorrect) {
         setScore(prev => prev + challenge.points);
         setAnsweredCorrectly(prev => [...prev, currentChallenge]);
       } else {
-        // Sai - thêm vào hàng đợi làm lại
         setRetryQueue(prev => [...prev, currentChallenge]);
       }
     }
@@ -724,34 +703,27 @@ const Bai15_KIM_LOAI = () => {
 
   const nextChallenge = () => {
     if (isRetryMode) {
-      // Đang trong chế độ làm lại
       if (retryQueue.length === 0) {
-        // Đã làm lại hết - hiện kết quả
         setShowResults(true);
         setGameStarted(false);
         clearProgress();
       } else {
-        // Chuyển sang câu tiếp theo trong hàng đợi
         const nextRetryIdx = retryIndex >= retryQueue.length ? 0 : retryIndex;
         setRetryIndex(nextRetryIdx);
         setCurrentChallenge(retryQueue[nextRetryIdx]);
         resetQuestion();
       }
     } else {
-      // Chế độ bình thường
       if (currentChallenge < CHALLENGES.length - 1) {
         setCurrentChallenge(prev => prev + 1);
         resetQuestion();
       } else {
-        // Đã hoàn thành tất cả câu hỏi
         if (retryQueue.length > 0) {
-          // Có câu sai - vào chế độ làm lại
           setIsRetryMode(true);
           setRetryIndex(0);
           setCurrentChallenge(retryQueue[0]);
           resetQuestion();
         } else {
-          // Không có câu sai - hiện kết quả
           setShowResults(true);
           setGameStarted(false);
           clearProgress();
@@ -788,7 +760,7 @@ const Bai15_KIM_LOAI = () => {
     const result = getResult();
 
     return (
-      <div className="kimloai-game">
+      <div className="halogen-game">
         <div className="results-container">
           <div className="results-card" style={{ '--accent': result.color }}>
             <div className="trophy-section">
@@ -823,7 +795,7 @@ const Bai15_KIM_LOAI = () => {
   // ================== START SCREEN ==================
   if (!gameStarted) {
     return (
-      <div className="kimloai-game">
+      <div className="halogen-game">
         <div className="start-container">
           <Link to="/advanced-challenge" className="back-link">
             <ArrowLeft size={20} /> Quay lại
@@ -831,9 +803,9 @@ const Bai15_KIM_LOAI = () => {
           
           <div className="start-card">
             <div className="start-header">
-              <div className="start-icon">🔩</div>
-              <h1>Kim Loại</h1>
-              <p>Thử thách tương tác về tính chất và phản ứng của kim loại</p>
+              <div className="start-icon">🧪</div>
+              <h1>Phi Kim - Halogen</h1>
+              <p>Khám phá tính chất của phi kim và nhóm Halogen qua thí nghiệm mô phỏng</p>
             </div>
             
             <div className="challenge-info">
@@ -847,19 +819,18 @@ const Bai15_KIM_LOAI = () => {
               </div>
               <div className="info-item">
                 <Zap size={20} />
-                <span>Lớp 9 - Chương Kim loại</span>
+                <span>Lớp 9 - Chương Phi kim</span>
               </div>
             </div>
             
             <div className="topics-list">
               <h3>Các chủ đề:</h3>
               <ul>
-                <li>✓ Tính chất vật lí của kim loại</li>
-                <li>✓ Tính chất hóa học của kim loại</li>
-                <li>✓ Dãy hoạt động hóa học</li>
-                <li>✓ Phản ứng với dung dịch muối</li>
-                <li>✓ Hợp kim</li>
-                <li>✓ Điều chế kim loại</li>
+                <li>✓ Tính chất của Clo (Cl₂)</li>
+                <li>✓ Clo tác dụng với H₂ và kim loại</li>
+                <li>✓ Axit Clohiđric (HCl)</li>
+                <li>✓ Muối NaCl và điện phân</li>
+                <li>✓ So sánh các Halogen (F, Cl, Br, I)</li>
               </ul>
             </div>
             
@@ -887,7 +858,7 @@ const Bai15_KIM_LOAI = () => {
 
   // ================== GAME SCREEN ==================
   return (
-    <div className="kimloai-game fullscreen">
+    <div className="halogen-game fullscreen">
       {/* Top Bar */}
       <div className="top-bar">
         <Link to="/advanced-challenge" className="back-link">
@@ -1092,4 +1063,4 @@ const Bai15_KIM_LOAI = () => {
   );
 };
 
-export default Bai15_KIM_LOAI;
+export default Bai20_PHI_KIM_HALOGEN;

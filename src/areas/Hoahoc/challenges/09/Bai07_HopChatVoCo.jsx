@@ -229,6 +229,11 @@ const HopChatVoCo = () => {
   const [showHint, setShowHint] = useState(false);
   const [completedChallenges, setCompletedChallenges] = useState([]);
   const [answeredCorrectly, setAnsweredCorrectly] = useState([]);
+  
+  // Hàng đợi làm lại các câu sai
+  const [retryQueue, setRetryQueue] = useState([]);
+  const [isRetryMode, setIsRetryMode] = useState(false);
+  const [retryIndex, setRetryIndex] = useState(0);
 
   // Experiment states
   const [experimentProgress, setExperimentProgress] = useState(0);
@@ -252,10 +257,20 @@ const HopChatVoCo = () => {
         currentChallenge,
         score,
         completedChallenges,
-        answeredCorrectly
+        answeredCorrectly,
+        // Lưu thêm trạng thái thí nghiệm và câu trả lời
+        experimentProgress,
+        isExperimentComplete,
+        selectedAnswer,
+        isAnswerSubmitted,
+        showHint,
+        // Lưu trạng thái retry
+        retryQueue,
+        isRetryMode,
+        retryIndex
       });
     }
-  }, [currentChallenge, score, completedChallenges, answeredCorrectly, gameStarted, showResults]);
+  }, [currentChallenge, score, completedChallenges, answeredCorrectly, gameStarted, showResults, experimentProgress, isExperimentComplete, selectedAnswer, isAnswerSubmitted, showHint, retryQueue, isRetryMode, retryIndex]);
 
   const startGame = useCallback((fromBeginning = false) => {
     if (fromBeginning) {
@@ -264,6 +279,10 @@ const HopChatVoCo = () => {
       setScore(0);
       setCompletedChallenges([]);
       setAnsweredCorrectly([]);
+      setRetryQueue([]);
+      setIsRetryMode(false);
+      setRetryIndex(0);
+      resetQuestion();
     } else {
       const saved = getProgress();
       if (saved) {
@@ -271,12 +290,24 @@ const HopChatVoCo = () => {
         setScore(saved.score || 0);
         setCompletedChallenges(saved.completedChallenges || []);
         setAnsweredCorrectly(saved.answeredCorrectly || []);
+        // Khôi phục trạng thái thí nghiệm và câu trả lời
+        setExperimentProgress(saved.experimentProgress || 0);
+        setIsExperimentComplete(saved.isExperimentComplete || false);
+        setIsExperimentRunning(false);
+        setSelectedAnswer(saved.selectedAnswer || null);
+        setIsAnswerSubmitted(saved.isAnswerSubmitted || false);
+        setShowHint(saved.showHint || false);
+        // Khôi phục trạng thái retry
+        setRetryQueue(saved.retryQueue || []);
+        setIsRetryMode(saved.isRetryMode || false);
+        setRetryIndex(saved.retryIndex || 0);
+      } else {
+        resetQuestion();
       }
     }
     setGameStarted(true);
     setShowResults(false);
     setShowResumeDialog(false);
-    resetQuestion();
   }, [clearProgress, getProgress]);
 
   const resetQuestion = () => {
@@ -317,28 +348,64 @@ const HopChatVoCo = () => {
     setIsAnswerSubmitted(true);
 
     const isCorrect = selectedAnswer === challenge.correctAnswer;
-    if (isCorrect) {
-      setScore(prev => prev + challenge.points);
-      setAnsweredCorrectly(prev => [...prev, currentChallenge]);
+    
+    if (isRetryMode) {
+      // Trong chế độ làm lại - không tính điểm
+      if (isCorrect) {
+        // Đúng rồi - xóa khỏi hàng đợi
+        setRetryQueue(prev => prev.filter((_, idx) => idx !== retryIndex));
+      }
+      // Sai vẫn giữ trong hàng đợi, sẽ làm lại
+    } else {
+      // Chế độ bình thường
+      if (isCorrect) {
+        setScore(prev => prev + challenge.points);
+        setAnsweredCorrectly(prev => [...prev, currentChallenge]);
+      } else {
+        // Sai - thêm vào hàng đợi làm lại
+        setRetryQueue(prev => [...prev, currentChallenge]);
+      }
     }
-    setCompletedChallenges(prev => [...prev, currentChallenge]);
+    setCompletedChallenges(prev => 
+      prev.includes(currentChallenge) ? prev : [...prev, currentChallenge]
+    );
   };
 
   const nextChallenge = () => {
-    if (currentChallenge < CHALLENGES.length - 1) {
-      setCurrentChallenge(prev => prev + 1);
-      resetQuestion();
+    if (isRetryMode) {
+      // Đang trong chế độ làm lại
+      if (retryQueue.length === 0) {
+        // Đã làm lại hết - hiện kết quả
+        setShowResults(true);
+        setGameStarted(false);
+        clearProgress();
+      } else {
+        // Chuyển sang câu tiếp theo trong hàng đợi
+        const nextRetryIdx = retryIndex >= retryQueue.length ? 0 : retryIndex;
+        setRetryIndex(nextRetryIdx);
+        setCurrentChallenge(retryQueue[nextRetryIdx]);
+        resetQuestion();
+      }
     } else {
-      setShowResults(true);
-      setGameStarted(false);
-      clearProgress();
-    }
-  };
-
-  const prevChallenge = () => {
-    if (currentChallenge > 0) {
-      setCurrentChallenge(prev => prev - 1);
-      resetQuestion();
+      // Chế độ bình thường
+      if (currentChallenge < CHALLENGES.length - 1) {
+        setCurrentChallenge(prev => prev + 1);
+        resetQuestion();
+      } else {
+        // Đã hoàn thành tất cả câu hỏi
+        if (retryQueue.length > 0) {
+          // Có câu sai - vào chế độ làm lại
+          setIsRetryMode(true);
+          setRetryIndex(0);
+          setCurrentChallenge(retryQueue[0]);
+          resetQuestion();
+        } else {
+          // Không có câu sai - hiện kết quả
+          setShowResults(true);
+          setGameStarted(false);
+          clearProgress();
+        }
+      }
     }
   };
 
@@ -350,6 +417,9 @@ const HopChatVoCo = () => {
     setScore(0);
     setCompletedChallenges([]);
     setAnsweredCorrectly([]);
+    setRetryQueue([]);
+    setIsRetryMode(false);
+    setRetryIndex(0);
     resetQuestion();
   };
 
@@ -782,13 +852,24 @@ const HopChatVoCo = () => {
                   </>
                 ) : (
                   <>
-                    <button className="btn-nav prev" onClick={prevChallenge} disabled={currentChallenge === 0}>
-                      <ChevronLeft size={18} />
-                      Trước
-                    </button>
+                    {isRetryMode && (
+                      <div className="retry-badge-inline">
+                        🔄 Làm lại ({retryQueue.length} câu)
+                      </div>
+                    )}
                     <button className="btn-nav next" onClick={nextChallenge}>
-                      {currentChallenge === CHALLENGES.length - 1 ? (
-                        <>Hoàn thành<Award size={18} /></>
+                      {isRetryMode ? (
+                        retryQueue.length > 1 ? (
+                          <>Câu tiếp<ChevronRight size={18} /></>
+                        ) : (
+                          <>Xem kết quả<Award size={18} /></>
+                        )
+                      ) : currentChallenge === CHALLENGES.length - 1 ? (
+                        retryQueue.length > 0 ? (
+                          <>Làm lại câu sai<RotateCcw size={18} /></>
+                        ) : (
+                          <>Hoàn thành<Award size={18} /></>
+                        )
                       ) : (
                         <>Tiếp theo<ChevronRight size={18} /></>
                       )}

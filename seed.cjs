@@ -357,6 +357,48 @@ const challenges = [
       lessonId: 15
     }
   },
+  // PHI KIM - HALOGEN - Grade 9 (NEW)
+  {
+    id: 17,
+    name: 'Phi kim - Halogen',
+    description: 'Tổng hợp kiến thức về phi kim: tính chất chung, Clo và hợp chất, Brom, Iot, Flo và bài tập luyện tập.',
+    icon: '🧪',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-indigo-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-25 phút',
+    points: 240,
+    status: 'available',
+    link: '/advanced-challenge/phi-kim-halogen',
+    features: ['Tính chất của phi kim', 'Clo và hợp chất (HCl, NaCl, Ca(ClO)₂)', 'Tổng quan Br/ I/ F', 'Bài tập luyện tập'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 20
+    }
+  },
+  // HIDROCACBON - Grade 9 (NEW)
+  {
+    id: 18,
+    name: 'Hidrocacbon',
+    description: 'Tìm hiểu về các hợp chất hidrocacbon: Metan, Etilen, Axetilen, Benzen, nhiên liệu (than, dầu mỏ, khí thiên nhiên) và luyện tập tổng hợp.',
+    icon: '⛽',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-orange-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-25 phút',
+    points: 100,
+    status: 'available',
+    link: '/advanced-challenge/hidrocacbon',
+    features: ['Metan (CH₄)', 'Etilen (C₂H₄)', 'Axetilen (C₂H₂)', 'Benzen (C₆H₆)', 'Nhiên liệu hóa thạch', 'Bài tập luyện tập'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 26
+    }
+  },
   
     
   
@@ -419,7 +461,16 @@ async function seedDatabase() {
       return lesson;
     });
 
-    await Lesson.insertMany(transformedLessons);
+    // Deduplicate lessons by (classId, lessonId) to avoid bulk insert duplicate key errors
+    const dedupMap = new Map();
+    for (const ls of transformedLessons) {
+      const key = `${ls.classId ?? 'x'}-${ls.lessonId ?? 'x'}`;
+      if (!dedupMap.has(key)) dedupMap.set(key, ls);
+    }
+    const dedupedLessons = Array.from(dedupMap.values());
+    console.log('• Lessons before dedupe:', transformedLessons.length, 'after dedupe:', dedupedLessons.length);
+    // Use ordered:false so insertion continues when there are remaining non-duplicate issues
+    await Lesson.insertMany(dedupedLessons, { ordered: false });
     console.log('✓ Đã thêm bài học:');
     console.log('  - Lớp 8:', class8Lessons.length, 'bài (', 
       (lessons8.ketnoi || []).length, 'Kết nối,',

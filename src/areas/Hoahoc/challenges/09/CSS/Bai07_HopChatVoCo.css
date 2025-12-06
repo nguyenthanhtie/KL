@@ -897,6 +897,26 @@
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
 }
 
+/* Retry Badge */
+.retry-badge-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 1px solid #f59e0b;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #92400e;
+  animation: pulse-retry 2s ease-in-out infinite;
+}
+
+@keyframes pulse-retry {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
 /* ================== RESULTS SCREEN ================== */
 .voco-results {
   flex: 1;

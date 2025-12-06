@@ -33,6 +33,8 @@ import TongKetLop8 from './areas/Hoahoc/challenges/08/Bai99_TongKetLop8';
 import Bai20_Oxi_KhongKhi from './areas/Hoahoc/challenges/08/Bai20_Oxi_KhongKhi';
 import HopChatVoCo from './areas/Hoahoc/challenges/09/Bai07_HopChatVoCo';
 import Bai15_KIM_LOAI from './areas/Hoahoc/challenges/09/Bai15_KIM_LOAI';
+import Bai20_PHI_KIM_HALOGEN from './areas/Hoahoc/challenges/09/Bai20_PHI_KIM_HALOGEN';
+import Bai26_HIDROCACBON from './areas/Hoahoc/challenges/09/Bai26_HIDROCACBON';
 
 
 
@@ -64,6 +66,8 @@ const AppContent = () => {
         <Route path="/advanced-challenge/oxi-khong-khi" element={<Bai20_Oxi_KhongKhi />} />
         <Route path="/advanced-challenge/hop-chat-vo-co" element={<HopChatVoCo />} />
         <Route path="/advanced-challenge/kim-loai" element={<Bai15_KIM_LOAI />} />
+        <Route path="/advanced-challenge/phi-kim-halogen" element={<Bai20_PHI_KIM_HALOGEN />} />
+        <Route path="/advanced-challenge/hidrocacbon" element={<Bai26_HIDROCACBON />} />
         <Route path="/advanced-challenge/mol-quick-calc" element={<MolQuickCalc />} />
         <Route path="/advanced-challenge/quan-sat-phan-ung" element={<QuanSatPhanUng />} />
         <Route path="/advanced-challenge/tong-ket-lop-8" element={<TongKetLop8 />} />
