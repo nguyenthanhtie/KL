@@ -34,27 +34,27 @@ const CHALLENGES = [
   },
   {
     id: 2,
-    type: 'chlorine-hydrogen',
-    title: 'Clo tác dụng với Hiđro',
-    description: 'Đốt hỗn hợp khí H₂ và Cl₂ trong ánh sáng.',
-    question: 'Khi đốt hỗn hợp H₂ và Cl₂, sản phẩm tạo thành là gì?',
-    options: ['H₂O', 'HCl', 'H₂O₂', 'Cl₂O'],
-    correctAnswer: 'HCl',
-    equation: 'H₂ + Cl₂ →(ánh sáng)→ 2HCl',
-    phenomenon: 'Phản ứng nổ mạnh trong ánh sáng mặt trời, tạo khói trắng HCl.',
-    hint: 'Hiđro + Halogen → Axit halogenhiđric.',
+    type: 'chlorine-bromide',
+    title: 'Clo đẩy Brom ra khỏi muối',
+    description: 'Sục khí Clo vào dung dịch NaBr - phản ứng thế halogen.',
+    question: 'Khi sục khí Cl₂ vào dung dịch NaBr, hiện tượng quan sát được là gì?',
+    options: ['Dung dịch chuyển sang màu xanh', 'Dung dịch chuyển sang màu nâu đỏ', 'Dung dịch mất màu', 'Không có hiện tượng'],
+    correctAnswer: 'Dung dịch chuyển sang màu nâu đỏ',
+    equation: 'Cl₂ + 2NaBr → 2NaCl + Br₂',
+    phenomenon: 'Dung dịch NaBr (không màu) chuyển dần sang màu nâu đỏ do Br₂ được giải phóng. Clo mạnh hơn đẩy brom ra khỏi muối.',
+    hint: 'Halogen mạnh hơn đẩy halogen yếu hơn ra khỏi dung dịch muối: Cl₂ > Br₂ > I₂.',
     difficulty: 'medium',
     points: 20,
     color: '#06b6d4',
     gradient: 'linear-gradient(135deg, #06b6d4, #22d3ee)',
-    icon: Flame,
+    icon: Beaker,
     experiment: {
-      type: 'h2-cl2-reaction',
+      type: 'cl2-nabr-reaction',
       reactants: [
-        { name: 'H₂', color: '#93c5fd' },
-        { name: 'Cl₂', color: '#bef264' }
+        { name: 'Cl₂', color: '#bef264' },
+        { name: 'NaBr (dd)', color: 'transparent' }
       ],
-      product: { name: 'HCl', color: '#e5e5e5' }
+      product: { name: 'Br₂', color: '#dc2626' }
     }
   },
   {
@@ -207,141 +207,176 @@ const ChlorineGasExperiment = ({ experiment, progress, isComplete }) => {
   );
 };
 
-// Thí nghiệm H₂ + Cl₂
-const H2Cl2ReactionExperiment = ({ experiment, progress, isComplete }) => {
-  const stage = progress < 25 ? 'ready' : progress < 60 ? 'mixing' : progress < 85 ? 'reacting' : 'complete';
+// Thí nghiệm Cl₂ + NaBr (phản ứng thế halogen)
+const Cl2NaBrReactionExperiment = ({ experiment, progress, isComplete }) => {
+  const stage = progress < 25 ? 'ready' : progress < 60 ? 'bubbling' : progress < 85 ? 'reacting' : 'complete';
+  const colorIntensity = Math.min(progress, 100);
   
   return (
-    <div className="experiment-container h2cl2-exp">
-      <div className="reaction-chamber">
-        {/* 2 bình khí */}
-        <div className="gas-tubes">
-          <div className={`gas-tube h2-tube ${stage !== 'ready' ? 'releasing' : ''}`}>
-            <div className="tube-gas h2-gas">
-              {stage === 'ready' && <span className="gas-label">H₂</span>}
-            </div>
-            {stage !== 'ready' && (
-              <div className="gas-flow h2-flow">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="h2-molecule" style={{ '--delay': `${i * 0.2}s` }}>H₂</div>
-                ))}
-              </div>
-            )}
+    <div className="experiment-container cl2nabr-exp">
+      <div className="displacement-setup">
+        {/* Ống sục khí từ trên xuống vào dung dịch */}
+        <div className={`gas-tube-vertical ${stage !== 'ready' ? 'active' : ''}`}>
+          <div className="tube-top">
+            <span className="gas-source">Cl₂</span>
           </div>
-          
-          <div className={`gas-tube cl2-tube ${stage !== 'ready' ? 'releasing' : ''}`}>
-            <div className="tube-gas cl2-gas">
-              {stage === 'ready' && <span className="gas-label">Cl₂</span>}
-            </div>
+          <div className="tube-pipe"></div>
+          <div className="tube-end">
             {stage !== 'ready' && (
-              <div className="gas-flow cl2-flow">
+              <div className="bubbles-from-tube">
                 {[...Array(5)].map((_, i) => (
-                  <div key={i} className="cl2-molecule" style={{ '--delay': `${i * 0.2}s` }}>Cl₂</div>
+                  <div key={i} className="bubble-out" style={{ animationDelay: `${i * 0.2}s` }}></div>
                 ))}
               </div>
             )}
           </div>
         </div>
-
-        {/* Vùng phản ứng */}
-        <div className={`reaction-zone ${stage === 'reacting' || stage === 'complete' ? 'active' : ''}`}>
-          {(stage === 'reacting' || stage === 'complete') && (
-            <>
-              <div className="light-flash">☀️</div>
-              <div className="explosion-effect">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="spark" style={{ '--i': i }}></div>
-                ))}
-              </div>
-            </>
-          )}
-          
-          {stage === 'complete' && (
-            <div className="hcl-smoke">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="hcl-particle" style={{ '--i': i }}>HCl</div>
-              ))}
+        
+        {/* Cốc chứa dung dịch NaBr */}
+        <div className="water-container-below">
+          <div className="beaker-body-mix large">
+            <div 
+              className="liquid-mix" 
+              style={{ 
+                background: stage === 'ready' ? 'transparent' : 
+                           stage === 'bubbling' ? 'rgba(252, 165, 165, 0.3)' :
+                           stage === 'reacting' ? 'rgba(220, 38, 38, 0.6)' :
+                           experiment.product.color,
+                height: '70%',
+                transition: 'background 0.8s ease'
+              }}
+            >
+              {stage === 'ready' && (
+                <span className="solution-label-center">NaBr (dd)</span>
+              )}
+              
+              {(stage === 'bubbling' || stage === 'reacting') && (
+                <div className="bubbles-container">
+                  {[...Array(8)].map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="bubble-rise small" 
+                      style={{ 
+                        left: `${40 + (i % 3) * 6}%`,
+                        animationDelay: `${i * 0.15}s` 
+                      }}
+                    >
+                      {i % 3 === 0 && <span className="bubble-label">Cl₂</span>}
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {(stage === 'reacting' || stage === 'complete') && (
+                <div className="br2-diffusion">
+                  {[...Array(10)].map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="br2-particle-float"
+                      style={{ 
+                        left: `${15 + (i % 4) * 20}%`,
+                        top: `${25 + Math.floor(i / 4) * 25}%`,
+                        animationDelay: `${i * 0.18}s`
+                      }}
+                    >
+                      Br₂
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          <span className="beaker-name">Dung dịch NaBr</span>
         </div>
       </div>
 
-      {/* Hiện tượng */}
+      {/* Hiện tượng quan sát */}
       <div className="reaction-observations">
         <div className={`obs-item ${progress > 25 ? 'show' : ''}`}>
-          🔄 Hai khí trộn lẫn
+          🧪 Khí Cl₂ sục từ trên xuống
         </div>
-        <div className={`obs-item ${progress > 60 ? 'show' : ''}`}>
-          ☀️ Đốt/chiếu sáng → Nổ mạnh
+        <div className={`obs-item ${progress > 50 ? 'show' : ''}`}>
+          🟤 Dung dịch chuyển dần sang màu nâu đỏ
         </div>
         <div className={`obs-item ${isComplete ? 'show' : ''}`}>
-          💨 Khói trắng HCl bay lên
+          ✅ Br₂ được giải phóng (Cl₂  Br₂)
         </div>
       </div>
     </div>
+
+
+
   );
 };
 
-// Thí nghiệm Fe + Cl₂
+// Thí nghiệm Fe + Cl₂ (đốt bột sắt trong bình khí Clo)
 const FeCl2ReactionExperiment = ({ experiment, progress, isComplete }) => {
-  const stage = progress < 30 ? 'ready' : progress < 70 ? 'burning' : 'complete';
+  const stage = progress < 25 ? 'ready' : progress < 50 ? 'falling' : progress < 75 ? 'burning' : 'complete';
   
   return (
     <div className="experiment-container fecl-exp">
-      <div className="fecl-setup">
-        {/* Bình chứa khí Clo */}
-        <div className="cl2-flask">
-          <div className="flask-glass">
-            <div className="cl2-gas-inside" style={{ '--gas-color': experiment.gas.color }}>
-              <span>Cl₂</span>
-            </div>
+      <div className="fecl-setup-vertical">
+        {/* Bột sắt rơi từ trên xuống */}
+        <div className={`falling-iron ${stage !== 'ready' ? 'falling' : ''} ${stage === 'complete' ? 'dissolved' : ''}`}>
+          <div className="iron-piece-falling" style={{ '--metal-color': experiment.metal.color }}>
+            <span className="iron-name">Fe</span>
           </div>
-          <div className="flask-label">Bình khí Clo</div>
         </div>
-
-        {/* Bột sắt được đưa vào */}
-        <div className={`iron-powder-container ${stage}`}>
-          <div 
-            className="iron-powder"
-            style={{ '--metal-color': experiment.metal.color }}
-          >
-            <span>{stage === 'complete' ? 'FeCl₃' : 'Fe'}</span>
+        
+        {/* Bình khí Clo bên dưới */}
+        <div className="cl2-flask-below">
+          <div className="flask-body-mix large">
+            <div 
+              className="cl2-gas-mix" 
+              style={{ 
+                background: stage === 'ready' ? 'linear-gradient(180deg, #d9f99d, #a3e635)' :
+                           stage === 'falling' ? 'linear-gradient(180deg, #d9f99d, #a3e635)' :
+                           stage === 'burning' ? 'linear-gradient(180deg, #facc15, #f97316)' :
+                           `linear-gradient(180deg, ${experiment.product.color}, #4a2f0c)`,
+                height: '75%',
+                transition: 'background 0.8s ease'
+              }}
+            >
+              {stage !== 'complete' && (
+                <span className="gas-label-inside" style={{ color: '#14532d' }}>Cl₂</span>
+              )}
+              
+              {/* Hiệu ứng cháy sáng */}
+              {stage === 'burning' && (
+                <div className="burning-effect-center">
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} className="spark-particle" style={{ 
+                      '--angle': `${i * 45}deg`,
+                      animationDelay: `${i * 0.1}s` 
+                    }}></div>
+                  ))}
+                  <div className="fire-glow">🔥</div>
+                </div>
+              )}
+              
+              {/* Khói FeCl₃ */}
+              {(stage === 'burning' || stage === 'complete') && (
+                <div className="fecl3-smoke-rise">
+                  {[...Array(15)].map((_, i) => (
+                    <div key={i} className="smoke-particle-rise" style={{ 
+                      left: `${10 + (i * 13) % 80}%`,
+                      animationDelay: `${i * 0.15}s` 
+                    }}></div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-          
-          {stage === 'burning' && (
-            <div className="burning-glow">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="glow-particle" style={{ '--i': i }}></div>
-              ))}
-            </div>
-          )}
-          
-          {stage === 'complete' && (
-            <div className="fecl3-smoke" style={{ '--product-color': experiment.product.color }}>
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="smoke-particle" style={{ '--i': i }}>FeCl₃</div>
-              ))}
-            </div>
-          )}
+          <span className="flask-name">Bình khí Clo</span>
         </div>
-
-        {/* Đèn đốt */}
-        {stage !== 'ready' && (
-          <div className="burner">
-            <div className="burner-flame">
-              <div className="flame-core"></div>
-              <div className="flame-outer"></div>
-            </div>
-          </div>
-        )}
       </div>
 
       <div className="fecl-observations">
-        <div className={`obs-item ${progress > 30 ? 'show' : ''}`}>
-          🔥 Sắt cháy sáng trong khí Clo
+        <div className={`obs-item ${progress > 25 ? 'show' : ''}`}>
+          ⬇️ Đốt bột Fe rơi vào bình Cl₂
         </div>
         <div className={`obs-item ${progress > 50 ? 'show' : ''}`}>
-          ✨ Tỏa nhiệt, phát sáng mạnh
+          🔥 Sắt cháy sáng mạnh, tỏa nhiệt
         </div>
         <div className={`obs-item ${isComplete ? 'show' : ''}`}>
           🟤 Khói nâu đỏ FeCl₃
@@ -540,8 +575,8 @@ const ExperimentRenderer = ({ challenge, progress, isComplete }) => {
   switch (type) {
     case 'chlorine-properties':
       return <ChlorineGasExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
-    case 'chlorine-hydrogen':
-      return <H2Cl2ReactionExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
+    case 'chlorine-bromide':
+      return <Cl2NaBrReactionExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
     case 'chlorine-metal':
       return <FeCl2ReactionExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
     case 'hcl-properties':
