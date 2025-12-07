@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, Play, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, HelpCircle, Zap, Award,
-  FlaskConical, Beaker, Flame, Sparkles, Droplet, Wind
+  FlaskConical, Beaker, Sparkles, Droplet, Wind
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../../components/ResumeDialog';
@@ -57,31 +57,9 @@ const CHALLENGES = [
       product: { name: 'Br₂', color: '#dc2626' }
     }
   },
+
   {
     id: 3,
-    type: 'chlorine-metal',
-    title: 'Clo tác dụng với Kim loại',
-    description: 'Đốt bột sắt trong khí clo.',
-    question: 'Khi đốt nóng bột sắt trong khí clo, sản phẩm tạo thành là gì?',
-    options: ['FeCl₂', 'FeCl₃', 'Fe₂O₃', 'FeO'],
-    correctAnswer: 'FeCl₃',
-    equation: '2Fe + 3Cl₂ →(t°)→ 2FeCl₃',
-    phenomenon: 'Sắt cháy sáng trong khí clo, tạo khói nâu đỏ FeCl₃.',
-    hint: 'Clo có tính oxi hóa mạnh, đưa Fe lên hóa trị cao nhất.',
-    difficulty: 'medium',
-    points: 20,
-    color: '#ef4444',
-    gradient: 'linear-gradient(135deg, #ef4444, #f87171)',
-    icon: Sparkles,
-    experiment: {
-      type: 'fe-cl2-reaction',
-      metal: { name: 'Fe', color: '#71717a' },
-      gas: { name: 'Cl₂', color: '#bef264' },
-      product: { name: 'FeCl₃', color: '#b45309' }
-    }
-  },
-  {
-    id: 4,
     type: 'hcl-properties',
     title: 'Axit Clohiđric (HCl)',
     description: 'Tìm hiểu về tính chất của axit HCl.',
@@ -107,7 +85,7 @@ const CHALLENGES = [
     }
   },
   {
-    id: 5,
+    id: 4,
     type: 'nacl-electrolysis',
     title: 'Muối NaCl và điện phân',
     description: 'Điện phân dung dịch NaCl để điều chế Cl₂.',
@@ -133,7 +111,7 @@ const CHALLENGES = [
     }
   },
   {
-    id: 6,
+    id: 5,
     type: 'halogen-compare',
     title: 'So sánh các Halogen',
     description: 'So sánh tính chất của F, Cl, Br, I.',
@@ -210,7 +188,6 @@ const ChlorineGasExperiment = ({ experiment, progress, isComplete }) => {
 // Thí nghiệm Cl₂ + NaBr (phản ứng thế halogen)
 const Cl2NaBrReactionExperiment = ({ experiment, progress, isComplete }) => {
   const stage = progress < 25 ? 'ready' : progress < 60 ? 'bubbling' : progress < 85 ? 'reacting' : 'complete';
-  const colorIntensity = Math.min(progress, 100);
   
   return (
     <div className="experiment-container cl2nabr-exp">
@@ -309,77 +286,70 @@ const Cl2NaBrReactionExperiment = ({ experiment, progress, isComplete }) => {
   );
 };
 
-// Thí nghiệm Fe + Cl₂ (đốt bột sắt trong bình khí Clo)
-const FeCl2ReactionExperiment = ({ experiment, progress, isComplete }) => {
-  const stage = progress < 25 ? 'ready' : progress < 50 ? 'falling' : progress < 75 ? 'burning' : 'complete';
-  
+// Thí nghiệm Cl₂ + KI (đẩy Iod)
+const Cl2KIReactionExperiment = ({ experiment, progress, isComplete }) => {
+  const stage = progress < 25 ? 'ready' : progress < 60 ? 'bubbling' : progress < 85 ? 'reacting' : 'complete';
+  const showBubbles = stage !== 'ready';
+  const showIodine = stage === 'reacting' || stage === 'complete';
+  const showVapor = stage === 'complete';
+
   return (
-    <div className="experiment-container fecl-exp">
-      <div className="fecl-setup-vertical">
-        {/* Bột sắt rơi từ trên xuống */}
-        <div className={`falling-iron ${stage !== 'ready' ? 'falling' : ''} ${stage === 'complete' ? 'dissolved' : ''}`}>
-          <div className="iron-piece-falling" style={{ '--metal-color': experiment.metal.color }}>
-            <span className="iron-name">Fe</span>
-          </div>
+    <div className="experiment-container cl2ki-exp">
+      <div className="cl2ki-setup">
+        <div className={`cl2-inlet ${showBubbles ? 'active' : ''}`}>
+          <div className="cl2-label">Cl₂</div>
+          <div className="cl2-stream" />
         </div>
-        
-        {/* Bình khí Clo bên dưới */}
-        <div className="cl2-flask-below">
-          <div className="flask-body-mix large">
-            <div 
-              className="cl2-gas-mix" 
-              style={{ 
-                background: stage === 'ready' ? 'linear-gradient(180deg, #d9f99d, #a3e635)' :
-                           stage === 'falling' ? 'linear-gradient(180deg, #d9f99d, #a3e635)' :
-                           stage === 'burning' ? 'linear-gradient(180deg, #facc15, #f97316)' :
-                           `linear-gradient(180deg, ${experiment.product.color}, #4a2f0c)`,
-                height: '75%',
-                transition: 'background 0.8s ease'
+
+        <div className="ki-beaker">
+          <div className="beaker-glass">
+            <div
+              className="ki-solution"
+              style={{
+                background:
+                  stage === 'ready'
+                    ? 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))'
+                    : stage === 'bubbling'
+                    ? 'linear-gradient(180deg, rgba(226, 232, 240, 0.35), rgba(226, 232, 240, 0.15))'
+                    : 'linear-gradient(180deg, rgba(124, 58, 237, 0.35), rgba(88, 28, 135, 0.5))'
               }}
             >
-              {stage !== 'complete' && (
-                <span className="gas-label-inside" style={{ color: '#14532d' }}>Cl₂</span>
-              )}
-              
-              {/* Hiệu ứng cháy sáng */}
-              {stage === 'burning' && (
-                <div className="burning-effect-center">
+              {showBubbles && (
+                <div className="ki-bubbles">
                   {[...Array(8)].map((_, i) => (
-                    <div key={i} className="spark-particle" style={{ 
-                      '--angle': `${i * 45}deg`,
-                      animationDelay: `${i * 0.1}s` 
-                    }}></div>
-                  ))}
-                  <div className="fire-glow">🔥</div>
-                </div>
-              )}
-              
-              {/* Khói FeCl₃ */}
-              {(stage === 'burning' || stage === 'complete') && (
-                <div className="fecl3-smoke-rise">
-                  {[...Array(15)].map((_, i) => (
-                    <div key={i} className="smoke-particle-rise" style={{ 
-                      left: `${10 + (i * 13) % 80}%`,
-                      animationDelay: `${i * 0.15}s` 
-                    }}></div>
+                    <div key={i} className="bubble-rise small" style={{ '--delay': `${i * 0.15}s`, '--left': `${35 + (i % 4) * 10}%` }}>
+                      {i % 3 === 0 && <span className="bubble-label">Cl₂</span>}
+                    </div>
                   ))}
                 </div>
               )}
+
+              {showIodine && (
+                <div className="iodine-particles">
+                  {[...Array(12)].map((_, i) => (
+                    <div key={i} className="i2-particle" style={{ '--i': i }}>
+                      I₂
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {showVapor && <div className="iodine-vapor" />}
             </div>
           </div>
-          <span className="flask-name">Bình khí Clo</span>
+          <span className="beaker-name">Dung dịch KI</span>
         </div>
       </div>
 
-      <div className="fecl-observations">
-        <div className={`obs-item ${progress > 25 ? 'show' : ''}`}>
-          ⬇️ Đốt bột Fe rơi vào bình Cl₂
+      <div className="cl2ki-observations">
+        <div className={`obs-item ${progress > 20 ? 'show' : ''}`}>
+          🧪 Khí Cl₂ sục vào dung dịch KI
         </div>
         <div className={`obs-item ${progress > 50 ? 'show' : ''}`}>
-          🔥 Sắt cháy sáng mạnh, tỏa nhiệt
+          🟣 Dung dịch chuyển dần nâu tím do I₂
         </div>
         <div className={`obs-item ${isComplete ? 'show' : ''}`}>
-          🟤 Khói nâu đỏ FeCl₃
+          ☁️ Hơi I₂ tím nhẹ xuất hiện
         </div>
       </div>
     </div>
@@ -577,8 +547,8 @@ const ExperimentRenderer = ({ challenge, progress, isComplete }) => {
       return <ChlorineGasExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
     case 'chlorine-bromide':
       return <Cl2NaBrReactionExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
-    case 'chlorine-metal':
-      return <FeCl2ReactionExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
+    case 'chlorine-iodide':
+      return <Cl2KIReactionExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
     case 'hcl-properties':
       return <HClMetalExperiment experiment={experiment} progress={progress} isComplete={isComplete} />;
     case 'nacl-electrolysis':
@@ -714,7 +684,7 @@ const Bai20_PHI_KIM_HALOGEN = () => {
   };
 
   const checkAnswer = () => {
-    if (!selectedAnswer) return;
+    if (!selectedAnswer || !isExperimentComplete) return;
     setIsAnswerSubmitted(true);
 
     const isCorrect = selectedAnswer === challenge.correctAnswer;
@@ -862,7 +832,7 @@ const Bai20_PHI_KIM_HALOGEN = () => {
               <h3>Các chủ đề:</h3>
               <ul>
                 <li>✓ Tính chất của Clo (Cl₂)</li>
-                <li>✓ Clo tác dụng với H₂ và kim loại</li>
+                <li>✓ Clo đẩy Iod ra khỏi KI</li>
                 <li>✓ Axit Clohiđric (HCl)</li>
                 <li>✓ Muối NaCl và điện phân</li>
                 <li>✓ So sánh các Halogen (F, Cl, Br, I)</li>
@@ -976,69 +946,62 @@ const Bai20_PHI_KIM_HALOGEN = () => {
           </div>
           
           <div className="question-area">
-            {!isExperimentComplete ? (
-              <div className="waiting-message">
-                <Play size={40} />
-                <p>Chạy thí nghiệm để xem câu hỏi</p>
+            {isExperimentComplete && (
+              <div className="phenomenon-box">
+                <Lightbulb size={16} />
+                <span>{challenge.phenomenon}</span>
               </div>
-            ) : (
-              <>
-                <div className="phenomenon-box">
-                  <Lightbulb size={16} />
-                  <span>{challenge.phenomenon}</span>
-                </div>
+            )}
+            
+            <p className="question-text">{challenge.question}</p>
+            
+            <div className={`options-grid ${!isExperimentComplete ? 'pre-experiment' : ''}`}>
+              {challenge.options.map((option, idx) => {
+                let optionClass = 'option-btn';
+                if (isAnswerSubmitted) {
+                  if (option === challenge.correctAnswer) {
+                    optionClass += ' correct';
+                  } else if (option === selectedAnswer && option !== challenge.correctAnswer) {
+                    optionClass += ' incorrect';
+                  }
+                } else if (selectedAnswer === option) {
+                  optionClass += ' selected';
+                }
                 
-                <p className="question-text">{challenge.question}</p>
-                
-                <div className="options-grid">
-                  {challenge.options.map((option, idx) => {
-                    let optionClass = 'option-btn';
-                    if (isAnswerSubmitted) {
-                      if (option === challenge.correctAnswer) {
-                        optionClass += ' correct';
-                      } else if (option === selectedAnswer && option !== challenge.correctAnswer) {
-                        optionClass += ' incorrect';
-                      }
-                    } else if (selectedAnswer === option) {
-                      optionClass += ' selected';
-                    }
-                    
-                    return (
-                      <button
-                        key={idx}
-                        className={optionClass}
-                        onClick={() => !isAnswerSubmitted && setSelectedAnswer(option)}
-                        disabled={isAnswerSubmitted}
-                      >
-                        <span className="option-letter">{String.fromCharCode(65 + idx)}</span>
-                        <span className="option-text">{option}</span>
-                        {isAnswerSubmitted && option === challenge.correctAnswer && (
-                          <CheckCircle2 size={18} className="icon-correct" />
-                        )}
-                        {isAnswerSubmitted && option === selectedAnswer && option !== challenge.correctAnswer && (
-                          <XCircle size={18} className="icon-incorrect" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-                
-                {!isAnswerSubmitted && (
-                  <button className="btn-hint-inline" onClick={() => setShowHint(!showHint)}>
-                    <HelpCircle size={14} />
-                    {showHint ? 'Ẩn gợi ý' : 'Gợi ý'}
+                return (
+                  <button
+                    key={idx}
+                    className={optionClass}
+                    onClick={() => !isAnswerSubmitted && setSelectedAnswer(option)}
+                    disabled={isAnswerSubmitted}
+                  >
+                    <span className="option-letter">{String.fromCharCode(65 + idx)}</span>
+                    <span className="option-text">{option}</span>
+                    {isAnswerSubmitted && option === challenge.correctAnswer && (
+                      <CheckCircle2 size={18} className="icon-correct" />
+                    )}
+                    {isAnswerSubmitted && option === selectedAnswer && option !== challenge.correctAnswer && (
+                      <XCircle size={18} className="icon-incorrect" />
+                    )}
                   </button>
-                )}
-                {showHint && !isAnswerSubmitted && (
-                  <p className="hint-text">{challenge.hint}</p>
-                )}
-                
-                {isAnswerSubmitted && challenge.equation && (
-                  <div className="equation-box">
-                    <strong>PT:</strong> {challenge.equation}
-                  </div>
-                )}
-              </>
+                );
+              })}
+            </div>
+            
+            {!isAnswerSubmitted && (
+              <button className="btn-hint-inline" onClick={() => setShowHint(!showHint)}>
+                <HelpCircle size={14} />
+                {showHint ? 'Ẩn gợi ý' : 'Gợi ý'}
+              </button>
+            )}
+            {showHint && !isAnswerSubmitted && (
+              <p className="hint-text">{challenge.hint}</p>
+            )}
+            
+            {isAnswerSubmitted && challenge.equation && (
+              <div className="equation-box">
+                <strong>PT:</strong> {challenge.equation}
+              </div>
             )}
           </div>
         </div>
@@ -1055,15 +1018,15 @@ const Bai20_PHI_KIM_HALOGEN = () => {
         </div>
         
         <div className="action-buttons">
-          {!isAnswerSubmitted && isExperimentComplete ? (
+          {!isAnswerSubmitted ? (
             <button 
               className="btn-submit"
               onClick={checkAnswer}
-              disabled={!selectedAnswer}
+              disabled={!selectedAnswer || !isExperimentComplete}
             >
               <CheckCircle2 size={18} /> Kiểm tra
             </button>
-          ) : isAnswerSubmitted ? (
+          ) : (
             <button className="btn-next" onClick={nextChallenge}>
               {isRetryMode ? (
                 retryQueue.length > 1 ? (
@@ -1079,10 +1042,6 @@ const Bai20_PHI_KIM_HALOGEN = () => {
                 <>Xem kết quả <Trophy size={18} /></>
               )}
             </button>
-          ) : (
-            <div className="status-hint">
-              <Play size={16} /> Chạy thí nghiệm để tiếp tục
-            </div>
           )}
         </div>
         

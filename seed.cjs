@@ -399,6 +399,27 @@ const challenges = [
       lessonId: 26
     }
   },
+  // HIDROCACBON - POLIME - Grade 9 (NEW)
+  {
+    id: 19,
+    name: 'Hidrocacbon - Dẫn xuất & Polime',
+    description: 'Mở rộng: ancol, axit axetic, este, glucozơ, saccarozơ, tinh bột, xenlulozơ và polime. Ôn tập dẫn xuất và ứng dụng vật liệu.',
+    icon: '🧬',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-pink-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-30 phút',
+    points: 120,
+    status: 'available',
+    link: '/advanced-challenge/hidrocacbon-polime',
+    features: ['Ancol (Ethanol)', 'Axit axetic', 'Este', 'Glucozơ, Saccarozơ', 'Tinh bột & Xenlulozơ', 'Polime', 'Bài tập tổng hợp'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 26
+    }
+  },
   
     
   

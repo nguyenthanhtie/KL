@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Play, RotateCcw, CheckCircle2, XCircle, 
-  Trophy, HelpCircle, Lightbulb, ChevronRight, Flame,
+  Trophy, HelpCircle, ChevronRight, Flame,
   FlaskConical, Droplets, Fuel, Zap, Award
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
@@ -17,7 +17,7 @@ const CHALLENGES = [
     title: 'Metan (CH₄)',
     description: 'Đốt cháy khí metan trong không khí và quan sát sản phẩm.',
     question: 'Khi đốt cháy hoàn toàn metan, sản phẩm tạo thành là gì?',
-    options: ['CO₂ và H₂O', 'CO và H₂O', 'C và H₂O', 'CO₂ và H₂'],
+    options: [ 'CO₂ và H₂','CO₂ và H₂O', 'CO và H₂O', 'C và H₂O'],
     correctAnswer: 'CO₂ và H₂O',
     equation: 'CH₄ + 2O₂ →(t°)→ CO₂ + 2H₂O',
     phenomenon: 'Metan cháy với ngọn lửa màu xanh nhạt, tỏa nhiều nhiệt.',
@@ -34,8 +34,8 @@ const CHALLENGES = [
     title: 'Etilen (C₂H₄)',
     description: 'Dẫn khí etilen qua dung dịch brom và quan sát hiện tượng.',
     question: 'Hiện tượng gì xảy ra khi dẫn etilen qua dung dịch brom?',
-    options: ['Dung dịch brom mất màu', 'Có kết tủa trắng', 'Có khí bay lên', 'Không hiện tượng'],
-    correctAnswer: 'Dung dịch brom mất màu',
+    options: ['Có kết tủa trắng','Dung dịch brom mất màu',  'Có khí bay lên', 'Không hiện tượng'],
+    correctAnswers: ['Dung dịch brom mất màu', 'Có khí bay lên'],
     equation: 'C₂H₄ + Br₂ → C₂H₄Br₂',
     phenomenon: 'Etilen có liên kết đôi C=C nên phản ứng cộng với brom, làm mất màu da cam.',
     hint: 'Liên kết đôi C=C dễ tham gia phản ứng cộng.',
@@ -47,28 +47,11 @@ const CHALLENGES = [
   },
   {
     id: 3,
-    type: 'acetylene',
-    title: 'Axetilen (C₂H₂)',
-    description: 'Đốt cháy khí axetilen trong hàn xì và quan sát ngọn lửa.',
-    question: 'Ngọn lửa axetilen có đặc điểm gì và dùng để làm gì?',
-    options: ['Nhiệt độ rất cao (~3000°C), dùng hàn cắt kim loại', 'Nhiệt độ thấp, dùng đun nấu', 'Không cháy được', 'Cháy không tỏa nhiệt'],
-    correctAnswer: 'Nhiệt độ rất cao (~3000°C), dùng hàn cắt kim loại',
-    equation: '2C₂H₂ + 5O₂ →(t°)→ 4CO₂ + 2H₂O',
-    phenomenon: 'Axetilen cháy với ngọn lửa sáng chói, nhiệt độ cực cao dùng trong hàn xì.',
-    hint: 'Axetilen có liên kết ba C≡C, chứa nhiều năng lượng.',
-    difficulty: 'medium',
-    points: 20,
-    color: '#f59e0b',
-    gradient: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
-    icon: Flame
-  },
-  {
-    id: 4,
     type: 'benzene',
     title: 'Benzen (C₆H₆)',
     description: 'Tìm hiểu cấu trúc và tính chất của benzen.',
     question: 'Benzen có cấu trúc đặc biệt gì và phản ứng chủ yếu là gì?',
-    options: ['Vòng 6 cạnh, phản ứng thế', 'Mạch thẳng, phản ứng cộng', 'Vòng 5 cạnh, phản ứng cháy', 'Mạch nhánh, phản ứng trùng hợp'],
+    options: [ 'Mạch thẳng, phản ứng cộng', 'Vòng 6 cạnh, phản ứng thế','Vòng 5 cạnh, phản ứng cháy', 'Mạch nhánh, phản ứng trùng hợp'],
     correctAnswer: 'Vòng 6 cạnh, phản ứng thế',
     equation: 'C₆H₆ + Br₂ →(Fe, t°)→ C₆H₅Br + HBr',
     phenomenon: 'Benzen có vòng thơm bền vững, ưu tiên phản ứng thế hơn phản ứng cộng.',
@@ -80,12 +63,12 @@ const CHALLENGES = [
     icon: Droplets
   },
   {
-    id: 5,
+    id: 4,
     type: 'fuel',
     title: 'Nhiên liệu',
     description: 'Tìm hiểu về các loại nhiên liệu: than, dầu mỏ, khí thiên nhiên.',
     question: 'Thành phần chính của khí thiên nhiên là gì?',
-    options: ['Metan (CH₄)', 'Etilen (C₂H₄)', 'Benzen (C₆H₆)', 'Axetilen (C₂H₂)'],
+    options: [ 'Etilen (C₂H₄)', 'Benzen (C₆H₆)','Metan (CH₄)', 'Axetilen (C₂H₂)'],
     correctAnswer: 'Metan (CH₄)',
     phenomenon: 'Khí thiên nhiên chứa 95% metan, là nhiên liệu sạch và hiệu quả.',
     hint: 'Metan là hidrocacbon đơn giản nhất.',
@@ -96,7 +79,7 @@ const CHALLENGES = [
     icon: Fuel
   },
   {
-    id: 6,
+    id: 5,
     type: 'practice',
     title: 'Luyện tập Hidrocacbon',
     description: 'Câu hỏi tổng hợp về các hidrocacbon đã học.',
@@ -123,190 +106,107 @@ const MethaneExperiment = ({ progress, isComplete }) => {
   
   return (
     <div className="experiment-container methane-exp">
-      <div className="methane-setup">
-        {/* Ống dẫn khí metan */}
-        <div className="gas-pipe">
-          <div className="pipe-body">
-            <div className="gas-flow">
-              {stage !== 'ready' && [...Array(5)].map((_, i) => (
-                <div key={i} className="ch4-bubble" style={{ '--delay': `${i * 0.2}s` }}>CH₄</div>
-              ))}
-            </div>
-          </div>
-          <div className="pipe-nozzle"></div>
-          <span className="pipe-label">Khí CH₄</span>
-        </div>
-
-        {/* Ngọn lửa */}
-        <div className={`methane-flame ${stage}`}>
-          {stage !== 'ready' && (
-            <>
-              <div className="flame-blue">
-                <div className="flame-inner"></div>
+      <div className="methane-setup-v3">
+        {/* Ống dẫn khí Metan */}
+        <div className="gas-pipe-system">
+          <div className="gas-label">Khí metan (CH₄) →</div>
+          <div className="pipe-horizontal"></div>
+          <div className="pipe-curve"></div>
+          <div className="pipe-vertical">
+             <div className="pipe-tip"></div>
+             {/* Ngọn lửa */}
+             {stage !== 'ready' && (
+              <div className="methane-flame-v3">
+                <div className="flame-core"></div>
+                <div className="flame-middle"></div>
                 <div className="flame-outer"></div>
               </div>
-              <div className="heat-waves">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="heat-wave" style={{ '--i': i }}></div>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Sản phẩm */}
-        {stage === 'complete' && (
-          <div className="products">
-            <div className="product-item co2">
-              <span>CO₂</span>
-              <div className="product-arrow">↑</div>
-            </div>
-            <div className="product-item h2o">
-              <span>H₂O</span>
-              <div className="water-drops">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="drop" style={{ '--i': i }}></div>
-                ))}
-              </div>
-            </div>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* Thông tin */}
-      <div className="exp-info-list">
-        <div className={`info-row ${stage !== 'ready' ? 'show' : ''}`}>
-          🔥 Ngọn lửa màu xanh nhạt
-        </div>
-        <div className={`info-row ${progress > 50 ? 'show' : ''}`}>
-          🌡️ Tỏa nhiều nhiệt
-        </div>
-        <div className={`info-row ${stage === 'complete' ? 'show' : ''}`}>
-          💨 Tạo CO₂ và H₂O
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Thí nghiệm Etilen + Brom
-const EthyleneExperiment = ({ progress, isComplete }) => {
-  const stage = progress < 30 ? 'ready' : progress < 70 ? 'reacting' : 'complete';
-  const bromColor = stage === 'complete' ? 'rgba(251, 191, 36, 0.1)' : 
-                    stage === 'reacting' ? 'rgba(251, 191, 36, 0.5)' : 
-                    'rgba(251, 191, 36, 0.9)';
-  
-  return (
-    <div className="experiment-container ethylene-exp">
-      <div className="ethylene-setup">
-        {/* Ống dẫn khí etilen */}
-        <div className="gas-inlet">
-          <div className="inlet-pipe">
-            {stage !== 'ready' && [...Array(4)].map((_, i) => (
-              <div key={i} className="c2h4-bubble" style={{ '--delay': `${i * 0.25}s` }}>C₂H₄</div>
-            ))}
-          </div>
-          <span className="inlet-label">Khí C₂H₄</span>
         </div>
 
-        {/* Bình chứa dung dịch brom */}
-        <div className="brom-flask">
-          <div className="flask-body">
-            <div className="brom-solution" style={{ background: bromColor }}>
-              {stage === 'ready' && <span className="solution-label">Br₂ (dd)</span>}
-              {stage === 'reacting' && (
-                <div className="reaction-bubbles">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="reaction-bubble" style={{ '--i': i }}></div>
+        {/* Ống nghiệm úp ngược mới */}
+        <div className="new-test-tube-container">
+          <div className="test-tube-glass">
+            <div className="tube-rim"></div>
+            <div className="tube-reflection"></div>
+            <div className="tube-reflection-right"></div>
+            
+            {/* Giọt nước ngưng tụ */}
+            {(stage === 'burning' || stage === 'complete') && (
+              <>
+                <div className="condensation-droplets-v3">
+                  {[...Array(12)].map((_, i) => (
+                    <div key={i} className="water-drop-v3" style={{ '--i': i }}></div>
                   ))}
                 </div>
-              )}
-              {stage === 'complete' && <span className="solution-label">C₂H₄Br₂</span>}
-            </div>
+                
+                {/* Khí CO2 thoát ra */}
+                <div className="co2-gas-system">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="co2-particle" style={{ '--i': i }}>CO₂</div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
-          <span className="flask-label">
-            {stage === 'ready' && 'Dung dịch Br₂ (da cam)'}
-            {stage === 'reacting' && 'Đang phản ứng...'}
-            {stage === 'complete' && 'Mất màu!'}
-          </span>
         </div>
       </div>
-
-      {/* Hiện tượng */}
-      <div className="exp-info-list">
-        <div className={`info-row ${stage !== 'ready' ? 'show' : ''}`}>
-          💨 Etilen sục vào dung dịch
-        </div>
-        <div className={`info-row ${stage === 'reacting' || stage === 'complete' ? 'show' : ''}`}>
-          🧪 Phản ứng cộng xảy ra
-        </div>
-        <div className={`info-row ${stage === 'complete' ? 'show' : ''}`}>
-          ✨ Dung dịch brom mất màu da cam
-        </div>
-      </div>
+      
+      
     </div>
   );
 };
 
-// Thí nghiệm Axetilen - Hàn xì
-const AcetyleneExperiment = ({ progress, isComplete }) => {
-  const stage = progress < 30 ? 'ready' : progress < 70 ? 'welding' : 'complete';
-  
+// Thí nghiệm Etilen + Brom (ống sục dạng chữ U)
+const EthyleneExperiment = ({ progress, isComplete }) => {
+  const stage = progress < 30 ? 'ready' : progress < 70 ? 'reacting' : 'complete';
+  const bromColor = stage === 'complete' ? 'rgba(251, 191, 36, 0.1)' :
+                    stage === 'reacting' ? 'rgba(251, 191, 36, 0.45)' :
+                    'rgba(251, 191, 36, 0.9)';
+
   return (
-    <div className="experiment-container acetylene-exp">
-      <div className="welding-setup">
-        {/* Bình khí */}
-        <div className="gas-tanks">
-          <div className="tank c2h2-tank">
-            <div className="tank-body"></div>
-            <span>C₂H₂</span>
-          </div>
-          <div className="tank o2-tank">
-            <div className="tank-body"></div>
-            <span>O₂</span>
+    <div className="experiment-container ethylene-exp">
+      <div className="ethylene-apparatus">
+        <div className="inlet-assembly">
+          <div className="inlet-label-inline">Etilen →</div>
+          <div className="inlet-curve"></div>
+          <div className="inlet-vertical">
+            {stage !== 'ready' && [...Array(6)].map((_, i) => (
+              <div key={i} className="inlet-bubble" style={{ '--i': i }}></div>
+            ))}
           </div>
         </div>
 
-        {/* Đèn hàn */}
-        <div className="welding-torch">
-          <div className="torch-body"></div>
-          <div className="torch-tip"></div>
-          
-          {/* Ngọn lửa hàn */}
-          {stage !== 'ready' && (
-            <div className={`welding-flame ${stage}`}>
-              <div className="flame-core-hot"></div>
-              <div className="flame-middle"></div>
-              <div className="flame-outer-hot"></div>
-              {stage === 'welding' && (
-                <div className="temp-indicator">~3000°C</div>
-              )}
-            </div>
-          )}
-        </div>
+        <div className="ethylene-tube">
+          <div className="tube-glass-body">
+            <div className="tube-liquid" style={{ background: bromColor }}></div>
 
-        {/* Kim loại được hàn */}
-        <div className={`metal-pieces ${stage}`}>
-          <div className="metal-piece left"></div>
-          <div className="metal-piece right"></div>
-          {stage === 'complete' && (
-            <div className="weld-seam"></div>
-          )}
+            {stage === 'reacting' && (
+              <div className="tube-reaction-bubbles">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="tube-bubble" style={{ '--i': i }}></div>
+                ))}
+              </div>
+            )}
+
+            {(stage === 'reacting' || stage === 'complete') && (
+              <div className="tube-rising-gas">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="gas-bubble" style={{ '--i': i }}></div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="tube-caption">
+            {stage === 'ready' && 'Br₂ (dd) da cam'}
+            {stage === 'reacting' && 'Đang phản ứng...'}
+            {stage === 'complete' && 'Mất màu (C₂H₄Br₂)'}
+          </div>
         </div>
       </div>
 
-      {/* Thông tin */}
-      <div className="exp-info-list">
-        <div className={`info-row ${stage !== 'ready' ? 'show' : ''}`}>
-          🔥 Ngọn lửa cực nóng (3000°C)
-        </div>
-        <div className={`info-row ${stage === 'welding' || stage === 'complete' ? 'show' : ''}`}>
-          ⚡ Năng lượng từ liên kết C≡C
-        </div>
-        <div className={`info-row ${stage === 'complete' ? 'show' : ''}`}>
-          🔧 Hàn cắt kim loại
-        </div>
-      </div>
+      
     </div>
   );
 };
@@ -483,8 +383,6 @@ const ExperimentRenderer = ({ challenge, progress, isComplete }) => {
       return <MethaneExperiment progress={progress} isComplete={isComplete} />;
     case 'ethylene':
       return <EthyleneExperiment progress={progress} isComplete={isComplete} />;
-    case 'acetylene':
-      return <AcetyleneExperiment progress={progress} isComplete={isComplete} />;
     case 'benzene':
       return <BenzeneExperiment progress={progress} isComplete={isComplete} />;
     case 'fuel':
@@ -506,7 +404,9 @@ const Bai26_HIDROCACBON = () => {
   const [showResumeDialog, setShowResumeDialog] = useState(false);
   const [currentChallenge, setCurrentChallenge] = useState(0);
   const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState(
+    Array.isArray(CHALLENGES[0]?.correctAnswers) ? [] : null
+  );
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [completedChallenges, setCompletedChallenges] = useState([]);
@@ -519,9 +419,30 @@ const Bai26_HIDROCACBON = () => {
   const [experimentProgress, setExperimentProgress] = useState(0);
   const [isExperimentRunning, setIsExperimentRunning] = useState(false);
   const [isExperimentComplete, setIsExperimentComplete] = useState(false);
+  const [prefersReducedMotion] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false
+  );
+  const experimentIntervalRef = useRef(null);
+
+  const clearExperimentInterval = () => {
+    if (experimentIntervalRef.current) {
+      clearInterval(experimentIntervalRef.current);
+      experimentIntervalRef.current = null;
+    }
+  };
 
   const challenge = CHALLENGES[currentChallenge];
   const ChallengeIcon = challenge?.icon || FlaskConical;
+  const isMultiSelect = Array.isArray(challenge.correctAnswers);
+  const correctOptions = isMultiSelect ? challenge.correctAnswers : [challenge.correctAnswer];
+  const selectedList = Array.isArray(selectedAnswer)
+    ? selectedAnswer
+    : selectedAnswer
+      ? [selectedAnswer]
+      : [];
+  const requiredSelections = correctOptions.length;
 
   useEffect(() => {
     if (hasProgress && !gameStarted && !showResults) {
@@ -548,8 +469,12 @@ const Bai26_HIDROCACBON = () => {
     }
   }, [currentChallenge, score, completedChallenges, answeredCorrectly, gameStarted, showResults, experimentProgress, isExperimentComplete, selectedAnswer, isAnswerSubmitted, showHint, retryQueue, isRetryMode, retryIndex]);
 
-  const resetQuestion = () => {
-    setSelectedAnswer(null);
+  useEffect(() => () => clearExperimentInterval(), []);
+
+  const resetQuestion = (targetIndex = currentChallenge) => {
+    clearExperimentInterval();
+    const targetChallenge = CHALLENGES[targetIndex] || challenge;
+    setSelectedAnswer(Array.isArray(targetChallenge.correctAnswers) ? [] : null);
     setIsAnswerSubmitted(false);
     setShowHint(false);
     setExperimentProgress(0);
@@ -567,7 +492,7 @@ const Bai26_HIDROCACBON = () => {
       setRetryQueue([]);
       setIsRetryMode(false);
       setRetryIndex(0);
-      resetQuestion();
+      resetQuestion(0);
     } else {
       const saved = getProgress();
       if (saved) {
@@ -577,7 +502,14 @@ const Bai26_HIDROCACBON = () => {
         setAnsweredCorrectly(saved.answeredCorrectly || []);
         setExperimentProgress(saved.experimentProgress || 0);
         setIsExperimentComplete(saved.isExperimentComplete || false);
-        setSelectedAnswer(saved.selectedAnswer || null);
+        const targetChallenge = CHALLENGES[saved.currentChallenge || 0];
+        const defaultAnswer = Array.isArray(targetChallenge?.correctAnswers) ? [] : null;
+        const normalizedSavedAnswer = Array.isArray(saved.selectedAnswer)
+          ? saved.selectedAnswer
+          : targetChallenge?.correctAnswers && saved.selectedAnswer
+            ? [saved.selectedAnswer]
+            : saved.selectedAnswer;
+        setSelectedAnswer(normalizedSavedAnswer ?? defaultAnswer);
         setIsAnswerSubmitted(saved.isAnswerSubmitted || false);
         setShowHint(saved.showHint || false);
         setRetryQueue(saved.retryQueue || []);
@@ -592,13 +524,19 @@ const Bai26_HIDROCACBON = () => {
 
   const runExperiment = () => {
     if (isExperimentRunning || isExperimentComplete) return;
+    if (prefersReducedMotion) {
+      setExperimentProgress(100);
+      setIsExperimentComplete(true);
+      return;
+    }
+    clearExperimentInterval();
     setIsExperimentRunning(true);
     setExperimentProgress(0);
 
-    const interval = setInterval(() => {
+    experimentIntervalRef.current = setInterval(() => {
       setExperimentProgress(prev => {
         if (prev >= 100) {
-          clearInterval(interval);
+          clearExperimentInterval();
           setIsExperimentRunning(false);
           setIsExperimentComplete(true);
           return 100;
@@ -609,16 +547,39 @@ const Bai26_HIDROCACBON = () => {
   };
 
   const resetExperiment = () => {
+    clearExperimentInterval();
     setExperimentProgress(0);
     setIsExperimentRunning(false);
     setIsExperimentComplete(false);
   };
 
+  const handleOptionSelect = (option) => {
+    if (isAnswerSubmitted) return;
+
+    if (isMultiSelect) {
+      setSelectedAnswer(prev => {
+        const current = Array.isArray(prev) ? prev : [];
+        if (current.includes(option)) {
+          return current.filter(item => item !== option);
+        }
+        if (current.length >= requiredSelections) {
+          return current;
+        }
+        return [...current, option];
+      });
+    } else {
+      setSelectedAnswer(option);
+    }
+  };
+
   const checkAnswer = () => {
-    if (!selectedAnswer) return;
+    if (selectedList.length === 0) return;
     setIsAnswerSubmitted(true);
 
-    const isCorrect = selectedAnswer === challenge.correctAnswer;
+    const isCorrect = isMultiSelect
+      ? selectedList.length === correctOptions.length &&
+        correctOptions.every(option => selectedList.includes(option))
+      : selectedList[0] === challenge.correctAnswer;
     
     if (isRetryMode) {
       if (isCorrect) {
@@ -644,7 +605,7 @@ const Bai26_HIDROCACBON = () => {
       if (nextRetryIdx < retryQueue.length) {
         setRetryIndex(nextRetryIdx);
         setCurrentChallenge(retryQueue[nextRetryIdx]);
-        resetQuestion();
+        resetQuestion(retryQueue[nextRetryIdx]);
       } else {
         setShowResults(true);
         clearProgress();
@@ -652,12 +613,12 @@ const Bai26_HIDROCACBON = () => {
     } else {
       if (currentChallenge < CHALLENGES.length - 1) {
         setCurrentChallenge(prev => prev + 1);
-        resetQuestion();
+        resetQuestion(currentChallenge + 1);
       } else if (retryQueue.length > 0) {
         setIsRetryMode(true);
         setRetryIndex(0);
         setCurrentChallenge(retryQueue[0]);
-        resetQuestion();
+        resetQuestion(retryQueue[0]);
       } else {
         setShowResults(true);
         clearProgress();
@@ -676,7 +637,7 @@ const Bai26_HIDROCACBON = () => {
     setRetryQueue([]);
     setIsRetryMode(false);
     setRetryIndex(0);
-    resetQuestion();
+    resetQuestion(0);
   };
 
   // ================== RESULTS SCREEN ==================
@@ -761,7 +722,6 @@ const Bai26_HIDROCACBON = () => {
               <ul>
                 <li>🔥 Metan - khí đầm lầy</li>
                 <li>🧪 Etilen - phản ứng cộng</li>
-                <li>⚡ Axetilen - hàn xì</li>
                 <li>🔷 Benzen - vòng thơm</li>
                 <li>⛽ Nhiên liệu hóa thạch</li>
                 <li>📝 Luyện tập tổng hợp</li>
@@ -842,6 +802,12 @@ const Bai26_HIDROCACBON = () => {
               progress={experimentProgress}
               isComplete={isExperimentComplete}
             />
+            {isExperimentComplete && (
+              <div className="exp-hint-badge">
+                <div className="exp-hint-label">Gợi ý</div>
+                <div className="exp-hint-text">{challenge.phenomenon}</div>
+              </div>
+            )}
           </div>
           
           <div className="experiment-controls">
@@ -881,23 +847,26 @@ const Bai26_HIDROCACBON = () => {
               </div>
             ) : (
               <>
-                <div className="phenomenon-box">
-                  <Lightbulb size={16} />
-                  <span>{challenge.phenomenon}</span>
-                </div>
-                
                 <p className="question-text">{challenge.question}</p>
+                {isMultiSelect && (
+                  <p className="multi-select-note">Chọn {requiredSelections} đáp án đúng</p>
+                )}
                 
                 <div className="options-grid">
                   {challenge.options.map((option, idx) => {
+                    const isSelected = isMultiSelect
+                      ? selectedList.includes(option)
+                      : selectedAnswer === option;
+                    const isCorrectOption = correctOptions.includes(option);
+
                     let optionClass = 'option-btn';
                     if (isAnswerSubmitted) {
-                      if (option === challenge.correctAnswer) {
+                      if (isCorrectOption) {
                         optionClass += ' correct';
-                      } else if (option === selectedAnswer && option !== challenge.correctAnswer) {
+                      } else if (isSelected) {
                         optionClass += ' incorrect';
                       }
-                    } else if (selectedAnswer === option) {
+                    } else if (isSelected) {
                       optionClass += ' selected';
                     }
                     
@@ -905,15 +874,15 @@ const Bai26_HIDROCACBON = () => {
                       <button
                         key={idx}
                         className={optionClass}
-                        onClick={() => !isAnswerSubmitted && setSelectedAnswer(option)}
+                        onClick={() => handleOptionSelect(option)}
                         disabled={isAnswerSubmitted}
                       >
                         <span className="option-letter">{String.fromCharCode(65 + idx)}</span>
                         <span className="option-text">{option}</span>
-                        {isAnswerSubmitted && option === challenge.correctAnswer && (
+                        {isAnswerSubmitted && isCorrectOption && (
                           <CheckCircle2 size={18} className="icon-correct" />
                         )}
-                        {isAnswerSubmitted && option === selectedAnswer && option !== challenge.correctAnswer && (
+                        {isAnswerSubmitted && isSelected && !isCorrectOption && (
                           <XCircle size={18} className="icon-incorrect" />
                         )}
                       </button>
@@ -957,7 +926,7 @@ const Bai26_HIDROCACBON = () => {
             <button 
               className="btn-submit"
               onClick={checkAnswer}
-              disabled={!selectedAnswer}
+              disabled={selectedList.length === 0}
             >
               <CheckCircle2 size={18} /> Kiểm tra
             </button>

@@ -695,7 +695,7 @@ const Bai15_KIM_LOAI = () => {
   };
 
   const checkAnswer = () => {
-    if (!selectedAnswer) return;
+    if (!selectedAnswer || !isExperimentComplete) return;
     setIsAnswerSubmitted(true);
 
     const isCorrect = selectedAnswer === challenge.correctAnswer;
@@ -970,69 +970,63 @@ const Bai15_KIM_LOAI = () => {
           </div>
           
           <div className="question-area">
-            {!isExperimentComplete ? (
-              <div className="waiting-message">
-                <Play size={40} />
-                <p>Chạy thí nghiệm để xem câu hỏi</p>
+           
+            {isExperimentComplete && (
+              <div className="phenomenon-box">
+                <Lightbulb size={16} />
+                <span>{challenge.phenomenon}</span>
               </div>
-            ) : (
-              <>
-                <div className="phenomenon-box">
-                  <Lightbulb size={16} />
-                  <span>{challenge.phenomenon}</span>
-                </div>
+            )}
+            
+            <p className="question-text">{challenge.question}</p>
+            
+            <div className={`options-grid ${!isExperimentComplete ? 'pre-experiment' : ''}`}>
+              {challenge.options.map((option, idx) => {
+                let optionClass = 'option-btn';
+                if (isAnswerSubmitted) {
+                  if (option === challenge.correctAnswer) {
+                    optionClass += ' correct';
+                  } else if (option === selectedAnswer && option !== challenge.correctAnswer) {
+                    optionClass += ' incorrect';
+                  }
+                } else if (selectedAnswer === option) {
+                  optionClass += ' selected';
+                }
                 
-                <p className="question-text">{challenge.question}</p>
-                
-                <div className="options-grid">
-                  {challenge.options.map((option, idx) => {
-                    let optionClass = 'option-btn';
-                    if (isAnswerSubmitted) {
-                      if (option === challenge.correctAnswer) {
-                        optionClass += ' correct';
-                      } else if (option === selectedAnswer && option !== challenge.correctAnswer) {
-                        optionClass += ' incorrect';
-                      }
-                    } else if (selectedAnswer === option) {
-                      optionClass += ' selected';
-                    }
-                    
-                    return (
-                      <button
-                        key={idx}
-                        className={optionClass}
-                        onClick={() => !isAnswerSubmitted && setSelectedAnswer(option)}
-                        disabled={isAnswerSubmitted}
-                      >
-                        <span className="option-letter">{String.fromCharCode(65 + idx)}</span>
-                        <span className="option-text">{option}</span>
-                        {isAnswerSubmitted && option === challenge.correctAnswer && (
-                          <CheckCircle2 size={18} className="icon-correct" />
-                        )}
-                        {isAnswerSubmitted && option === selectedAnswer && option !== challenge.correctAnswer && (
-                          <XCircle size={18} className="icon-incorrect" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-                
-                {!isAnswerSubmitted && (
-                  <button className="btn-hint-inline" onClick={() => setShowHint(!showHint)}>
-                    <HelpCircle size={14} />
-                    {showHint ? 'Ẩn gợi ý' : 'Gợi ý'}
+                return (
+                  <button
+                    key={idx}
+                    className={optionClass}
+                    onClick={() => !isAnswerSubmitted && setSelectedAnswer(option)}
+                    disabled={isAnswerSubmitted}
+                  >
+                    <span className="option-letter">{String.fromCharCode(65 + idx)}</span>
+                    <span className="option-text">{option}</span>
+                    {isAnswerSubmitted && option === challenge.correctAnswer && (
+                      <CheckCircle2 size={18} className="icon-correct" />
+                    )}
+                    {isAnswerSubmitted && option === selectedAnswer && option !== challenge.correctAnswer && (
+                      <XCircle size={18} className="icon-incorrect" />
+                    )}
                   </button>
-                )}
-                {showHint && !isAnswerSubmitted && (
-                  <p className="hint-text">{challenge.hint}</p>
-                )}
-                
-                {isAnswerSubmitted && challenge.equation && (
-                  <div className="equation-box">
-                    <strong>PT:</strong> {challenge.equation}
-                  </div>
-                )}
-              </>
+                );
+              })}
+            </div>
+            
+            {!isAnswerSubmitted && (
+              <button className="btn-hint-inline" onClick={() => setShowHint(!showHint)}>
+                <HelpCircle size={14} />
+                {showHint ? 'Ẩn gợi ý' : 'Gợi ý'}
+              </button>
+            )}
+            {showHint && !isAnswerSubmitted && (
+              <p className="hint-text">{challenge.hint}</p>
+            )}
+            
+            {isAnswerSubmitted && challenge.equation && (
+              <div className="equation-box">
+                <strong>PT:</strong> {challenge.equation}
+              </div>
             )}
           </div>
         </div>
@@ -1049,15 +1043,22 @@ const Bai15_KIM_LOAI = () => {
         </div>
         
         <div className="action-buttons">
-          {!isAnswerSubmitted && isExperimentComplete ? (
-            <button 
-              className="btn-submit"
-              onClick={checkAnswer}
-              disabled={!selectedAnswer}
-            >
-              <CheckCircle2 size={18} /> Kiểm tra
-            </button>
-          ) : isAnswerSubmitted ? (
+          {!isAnswerSubmitted ? (
+            <>
+              <button 
+                className="btn-submit"
+                onClick={checkAnswer}
+                disabled={!selectedAnswer || !isExperimentComplete}
+              >
+                <CheckCircle2 size={18} /> Kiểm tra
+              </button>
+              {!isExperimentComplete && (
+                <div className="action-hint">
+                  <Play size={16} /> Chạy thí nghiệm để kiểm tra đáp án
+                </div>
+              )}
+            </>
+          ) : (
             <button className="btn-next" onClick={nextChallenge}>
               {isRetryMode ? (
                 retryQueue.length > 1 ? (
@@ -1073,10 +1074,6 @@ const Bai15_KIM_LOAI = () => {
                 <>Xem kết quả <Trophy size={18} /></>
               )}
             </button>
-          ) : (
-            <div className="status-hint">
-              <Play size={16} /> Chạy thí nghiệm để tiếp tục
-            </div>
           )}
         </div>
         

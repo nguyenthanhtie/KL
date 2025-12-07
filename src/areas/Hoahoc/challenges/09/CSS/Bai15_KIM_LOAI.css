@@ -246,6 +246,29 @@
   min-height: 0;
 }
 
+.question-hint-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px dashed rgba(59, 130, 246, 0.4);
+  border-radius: 10px;
+  color: #bfdbfe;
+  font-size: 13px;
+}
+.question-hint-text strong {
+  display: block;
+  color: #e2e8f0;
+  font-size: 13px;
+}
+.question-hint-text span {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
 .waiting-message {
   flex: 1;
   display: flex;
@@ -294,6 +317,9 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+.options-grid.pre-experiment .option-btn {
+  border-style: dashed;
 }
 
 .option-btn {
@@ -497,6 +523,14 @@
 .btn-next:hover {
   transform: translateY(-1px);
   box-shadow: 0 3px 10px rgba(16,185,129,0.3);
+}
+
+.action-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+  font-size: 13px;
 }
 
 /* ================== START SCREEN ================== */

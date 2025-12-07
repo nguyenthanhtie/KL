@@ -393,6 +393,9 @@
   flex-direction: column;
   gap: 8px;
 }
+.options-grid.pre-experiment .option-btn {
+  border-style: dashed;
+}
 
 .option-btn {
   display: flex !important;
@@ -1188,21 +1191,27 @@
   justify-content: center;
   overflow: hidden;
   position: relative;
+  border-radius: 0 0 32px 32px;
 }
 
-.fecl-exp .gas-label-inside {
-  font-size: 12px;
-  font-weight: 800;
-  color: #14532d;
+.fecl-exp .cl2-mist {
   position: absolute;
-  top: 10px;
-  left: 12px;
-  z-index: 1;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.12), transparent 45%),
+              radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.1), transparent 40%),
+              radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1), transparent 35%);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  animation: mistFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes mistFloat {
+  0% { transform: translateY(0); opacity: 0.5; }
+  100% { transform: translateY(-6px); opacity: 0.8; }
 }
 
 /* Hiệu ứng cháy sáng ở giữa bình */
-.fecl-exp .burning-effect-center {
+.fecl-exp .reaction-flare {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1214,7 +1223,7 @@
 .fecl-exp .spark-particle {
   position: absolute;
   width: 4px;
-  height: 12px;
+  height: 14px;
   background: linear-gradient(180deg, #fbbf24, #f59e0b);
   border-radius: 2px;
   top: 50%;
@@ -1262,30 +1271,60 @@
   bottom: 40%;
   width: 30px;
   height: 30px;
-  background: radial-gradient(circle, #ea580c 0%, #9a3412 100%);
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.9) 0%, rgba(154, 52, 18, 0.85) 60%, rgba(79, 44, 15, 0.7) 100%);
   border-radius: 50%;
   filter: blur(8px);
   opacity: 0;
-  animation: smokeRiseUp 3s ease-out infinite;
+  animation: smokeRiseUp 3.2s ease-out infinite;
+  animation-delay: var(--delay, 0s);
 }
 
 @keyframes smokeRiseUp {
   0% { 
     bottom: 40%; 
     opacity: 0; 
-    transform: translateX(0) scale(0.5); 
+    transform: translateX(0) scale(0.45); 
   }
   20% { 
     opacity: 0.9; 
   }
   50% {
-    transform: translateX(-15px) scale(1.5);
+    transform: translateX(-10px) scale(1.35);
   }
   100% { 
     bottom: 95%; 
     opacity: 0; 
-    transform: translateX(15px) scale(2.5); 
+    transform: translateX(14px) scale(2.1); 
   }
+}
+
+.fecl-exp .fecl3-deposit {
+  position: absolute;
+  bottom: 10%;
+  left: 8%;
+  right: 8%;
+  height: 12px;
+  background: linear-gradient(180deg, rgba(148, 74, 16, 0.85), rgba(90, 45, 10, 0.9));
+  border-radius: 12px;
+  filter: blur(2px);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.fecl-exp .iron-trail {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 6px;
+  height: 90px;
+  background: linear-gradient(180deg, rgba(250, 204, 21, 0.7), rgba(249, 115, 22, 0.05));
+  transform: translateX(-50%);
+  filter: blur(6px);
+  animation: trailFade 0.8s ease-out infinite;
+}
+
+@keyframes trailFade {
+  0% { opacity: 0.9; transform: translateX(-50%) scaleY(1); }
+  100% { opacity: 0; transform: translateX(-50%) scaleY(0.6); }
 }
 
 .fecl-exp .flask-name {
@@ -1313,6 +1352,188 @@
 }
 
 .fecl-exp .obs-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================== EXPERIMENT: Cl2 + KI ================== */
+.cl2ki-exp {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transform: scale(1.1);
+}
+
+.cl2ki-setup {
+  position: relative;
+  width: 240px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.cl2-inlet {
+  position: relative;
+  width: 120px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.cl2-inlet.active {
+  opacity: 1;
+}
+
+.cl2-label {
+  padding: 4px 10px;
+  background: #ecfccb;
+  color: #166534;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.cl2-stream {
+  flex: 1;
+  height: 5px;
+  background: linear-gradient(90deg, rgba(190, 242, 100, 0.35), rgba(255, 255, 191, 0.7));
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cl2-stream::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0));
+  transform: translateX(-100%);
+  animation: flowMove 1.4s linear infinite;
+}
+
+.ki-beaker {
+  position: relative;
+  width: 140px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.beaker-glass {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+  border: 2px solid rgba(148, 163, 184, 0.4);
+  border-left: 3px solid rgba(148, 163, 184, 0.5);
+  border-right: 3px solid rgba(148, 163, 184, 0.5);
+  border-bottom: 4px solid rgba(148, 163, 184, 0.6);
+  border-radius: 0 0 26px 26px;
+  overflow: hidden;
+}
+
+.ki-solution {
+  position: absolute;
+  inset: 18% 12% 0 12%;
+  border-radius: 0 0 18px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ki-bubbles {
+  position: absolute;
+  inset: 0;
+}
+
+.ki-bubbles .bubble-rise {
+  position: absolute;
+  bottom: 8%;
+  width: 10px;
+  height: 10px;
+  background: rgba(190, 242, 100, 0.6);
+  border-radius: 50%;
+  animation: bubbleRiseInLiquid 1.8s ease-out infinite;
+  animation-delay: var(--delay, 0s);
+  left: var(--left, 50%);
+}
+
+.ki-bubbles .bubble-label {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: #84cc16;
+  font-weight: 700;
+}
+
+.iodine-particles {
+  position: absolute;
+  inset: 10% 8% 14% 8%;
+}
+
+.i2-particle {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 800;
+  color: #7c3aed;
+  animation: i2Float 2.4s ease-in-out infinite;
+}
+
+.i2-particle:nth-child(n) {
+  left: calc(8% + (var(--i) * 7%));
+  top: calc(15% + (var(--i) / 4) * 16%);
+  animation-delay: calc(var(--i) * 0.1s);
+}
+
+@keyframes i2Float {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.75; }
+  50% { transform: translateY(-6px) scale(1.05); opacity: 1; }
+}
+
+.iodine-vapor {
+  position: absolute;
+  inset: -6% 12% 40% 12%;
+  background: radial-gradient(circle at 50% 30%, rgba(124, 58, 237, 0.35), transparent 70%);
+  filter: blur(6px);
+  animation: vaporDrift 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes vaporDrift {
+  0% { transform: translateY(0); opacity: 0.6; }
+  100% { transform: translateY(-8px); opacity: 0.85; }
+}
+
+.cl2ki-observations {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cl2ki-observations .obs-item {
+  padding: 6px 10px;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 6px;
+  font-size: 11px;
+  color: #cbd5e1;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+
+.cl2ki-observations .obs-item.show {
   opacity: 1;
   transform: translateY(0);
 }

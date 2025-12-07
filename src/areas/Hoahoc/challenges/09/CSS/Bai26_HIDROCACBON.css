@@ -1,198 +1,283 @@
-/* ================== HIDROCACBON GAME STYLES ================== */
+/* ================== LAYOUT ================== */
 .hidrocacbon-game {
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   max-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #0f172a 0%, #1f2937 45%, #0f172a 100%);
+  color: #e2e8f0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow: hidden;
 }
 
 .hidrocacbon-game.fullscreen {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  overflow: hidden;
   height: 100vh;
-  max-height: 100vh;
 }
 
-/* ================== START SCREEN ================== */
-.start-container {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 16px;
+/* ================== METHANE EXPERIMENT V3 ================== */
+.methane-setup-v3 {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 380px;
+  padding-bottom: 40px;
+  position: relative;
+  width: 100%;
 }
 
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.gas-pipe-system {
+  display: flex;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 15px; /* giữ khoảng cách với ống nghiệm */
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.gas-label {
+  position: absolute;
+  bottom: 10px;
+  right: 100%;
+  white-space: nowrap;
   color: #94a3b8;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 8px 12px;
-  border-radius: 8px;
   font-size: 14px;
-  transition: all 0.2s;
+  margin-right: 10px;
+  font-weight: 500;
+  writing-mode: horizontal-tb; /* Đặt hướng chữ nằm ngang */
+  transform: none;
+  top: 5px;
 }
 
-.back-link:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #e2e8f0;
+.pipe-horizontal {
+  width: 100px;
+  height: 10px;
+  background: linear-gradient(to bottom, #94a3b8, #64748b);
+  border-radius: 5px 0 0 5px;
 }
 
-.start-card {
-  background: rgba(30, 41, 59, 0.9);
-  border: 1px solid rgba(100, 116, 139, 0.3);
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  text-align: center;
+.pipe-curve {
+  width: 25px;
+  height: 25px;
+  border-bottom: 10px solid #64748b;
+  border-right: 10px solid #64748b;
+  border-radius: 0 0 15px 0;
+  margin-left: -10px;
+  margin-bottom: 0;
 }
 
-.start-header {
-  margin-bottom: 16px;
-}
-
-.start-icon {
-  font-size: 40px;
-  margin-bottom: 8px;
-}
-
-.start-header h1 {
-  margin: 0 0 6px;
-  font-size: 22px;
-  color: #e2e8f0;
-  background: linear-gradient(135deg, #f59e0b, #10b981);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.start-header p {
-  color: #94a3b8;
-  margin: 0;
-}
-
-.challenge-info {
+.pipe-vertical {
+  position: absolute;
+  bottom: 25px;
+  right: 0;
+  width: 10px;
+  height: 80px;
+  background: linear-gradient(to right, #94a3b8, #64748b);
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin: 16px 0;
-  flex-wrap: wrap;
 }
 
-.info-item {
+.pipe-tip {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 8px;
+  background: #475569;
+  border-radius: 2px;
+}
+
+/* Ngọn lửa mới */
+.methane-flame-v3 {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 60px;
   display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #cbd5e1;
-  font-size: 13px;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 5;
+  filter: blur(1px);
 }
 
-.info-item svg {
-  color: #f59e0b;
+.flame-core {
+  position: absolute;
+  bottom: 0;
+  width: 10px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50% 50% 30% 30%;
+  z-index: 3;
+  box-shadow: 0 0 10px #fff;
 }
 
-.topics-list {
-  text-align: left;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(100, 116, 139, 0.2);
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin: 16px 0;
+.flame-middle {
+  position: absolute;
+  bottom: 0;
+  width: 18px;
+  height: 45px;
+  background: #60a5fa;
+  border-radius: 50% 50% 30% 30%;
+  z-index: 2;
+  opacity: 0.8;
 }
 
-.topics-list h3 {
-  margin: 0 0 8px;
-  font-size: 13px;
-  color: #e2e8f0;
+.flame-outer {
+  position: absolute;
+  bottom: 0;
+  width: 26px;
+  height: 60px;
+  background: rgba(59, 130, 246, 0.4);
+  border-radius: 50% 50% 30% 30%;
+  z-index: 1;
+  animation: flame-flicker 0.1s infinite alternate;
 }
 
-.topics-list ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+@keyframes flame-flicker {
+  0% { transform: scaleY(1) skewX(0deg); }
+  100% { transform: scaleY(1.05) skewX(1deg); }
 }
 
-.topics-list li {
-  padding: 4px 0;
-  color: #94a3b8;
-  font-size: 12px;
+/* ================== NEW TEST TUBE ================== */
+.new-test-tube-container {
+  position: absolute;
+  top: 20px; /* Cách lề trên 20px */
+  left: 49%;
+  transform: translateX(-50%);
+  z-index: 20;
 }
 
-.btn-start {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+.test-tube-glass {
+  position: relative;
+  width: 60px;
+  height: 180px;
+  background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.05) 60%, rgba(255,255,255,0.1));
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-bottom: none; /* Úp ngược */
+  border-radius: 30px 30px 0 0;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
 }
 
-.btn-start:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
-}
-
-/* ================== TOP BAR ================== */
-.top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 16px;
-  background: rgba(15, 23, 42, 0.95);
-  border-bottom: 1px solid rgba(100, 116, 139, 0.2);
-  flex-shrink: 0;
-  height: 48px;
-  min-height: 48px;
-}
-
-.challenge-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 16px;
-  color: white;
-  font-weight: 600;
-  font-size: 12px;
-}
-
-.top-bar-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.progress-compact {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-.progress-dots {
-  display: flex;
-  gap: 3px;
-}
-
-.dot {
-  width: 6px;
+.tube-rim {
+  position: absolute;
+  bottom: 0;
+  left: -4px;
+  right: -4px;
   height: 6px;
-  border-radius: 50%;
-  background: rgba(100, 116, 139, 0.4);
-  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
+
+.tube-reflection {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  width: 6px;
+  height: 120px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0));
+  border-radius: 3px;
+}
+
+.tube-reflection-right {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  width: 3px;
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0));
+  border-radius: 2px;
+}
+
+/* Giọt nước ngưng tụ */
+.condensation-droplets-v3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.water-drop-v3 {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  opacity: 0;
+  animation: condense 2s forwards;
+}
+
+/* Random positions for drops */
+.water-drop-v3:nth-child(1) { top: 20%; left: 20%; width: 6px; height: 6px; animation-delay: 0.5s; }
+.water-drop-v3:nth-child(2) { top: 30%; right: 25%; width: 8px; height: 8px; animation-delay: 1s; }
+.water-drop-v3:nth-child(3) { top: 15%; left: 40%; width: 5px; height: 5px; animation-delay: 1.5s; }
+.water-drop-v3:nth-child(4) { top: 40%; left: 15%; width: 7px; height: 7px; animation-delay: 2s; }
+.water-drop-v3:nth-child(5) { top: 25%; right: 15%; width: 6px; height: 6px; animation-delay: 2.5s; }
+.water-drop-v3:nth-child(6) { top: 50%; left: 30%; width: 9px; height: 9px; animation-delay: 3s; }
+.water-drop-v3:nth-child(7) { top: 10%; right: 40%; width: 5px; height: 5px; animation-delay: 3.5s; }
+.water-drop-v3:nth-child(8) { top: 60%; right: 20%; width: 8px; height: 8px; animation-delay: 4s; }
+.water-drop-v3:nth-child(9) { top: 35%; left: 50%; width: 6px; height: 6px; animation-delay: 4.5s; }
+.water-drop-v3:nth-child(10) { top: 45%; right: 50%; width: 7px; height: 7px; animation-delay: 5s; }
+.water-drop-v3:nth-child(11) { top: 55%; left: 10%; width: 5px; height: 5px; animation-delay: 5.5s; }
+.water-drop-v3:nth-child(12) { top: 20%; right: 10%; width: 6px; height: 6px; animation-delay: 6s; }
+
+@keyframes condense {
+  0% { opacity: 0; transform: scale(0); }
+  100% { opacity: 0.9; transform: scale(1); }
+}
+
+/* CO2 Gas Effect */
+.co2-gas-system {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.co2-particle {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 10px;
+  font-weight: bold;
+  opacity: 0;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.co2-particle:nth-child(odd) {
+  animation: rise-left 3s infinite ease-out;
+}
+
+.co2-particle:nth-child(even) {
+  animation: rise-right 3s infinite ease-out;
+}
+
+.co2-particle:nth-child(1) { animation-delay: 0s; animation-duration: 2.5s; }
+.co2-particle:nth-child(2) { animation-delay: 0.5s; animation-duration: 3s; }
+.co2-particle:nth-child(3) { animation-delay: 1s; animation-duration: 2.8s; }
+.co2-particle:nth-child(4) { animation-delay: 1.5s; animation-duration: 3.2s; }
+.co2-particle:nth-child(5) { animation-delay: 2s; animation-duration: 2.6s; }
+
+@keyframes rise-left {
+  0% { bottom: 0; left: 50%; opacity: 0; transform: scale(0.5); }
+  20% { opacity: 0.8; }
+  100% { bottom: 80%; left: 10%; opacity: 0; transform: scale(1.2); }
+}
+
+@keyframes rise-right {
+  0% { bottom: 0; left: 50%; opacity: 0; transform: scale(0.5); }
+  20% { opacity: 0.8; }
+  100% { bottom: 80%; left: 90%; opacity: 0; transform: scale(1.2); }
+}
+
 
 .dot.active {
   background: #f59e0b;
@@ -287,6 +372,36 @@
   background: rgba(15, 23, 42, 0.5);
   border-radius: 8px;
   margin: 8px;
+  position: relative;
+}
+
+.exp-hint-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  max-width: 220px;
+  background: rgba(251, 191, 36, 0.18);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: 10px;
+  padding: 8px 10px;
+  color: #fbbf24;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.exp-hint-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fcd34d;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.exp-hint-text {
+  font-size: 11px;
+  line-height: 1.35;
+  color: #fde68a;
 }
 
 .experiment-controls {
@@ -769,65 +884,195 @@
 /* ================== METHANE EXPERIMENT ================== */
 .methane-setup {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 28px;
 }
 
-.gas-pipe {
-  position: relative;
+.inlet-guide {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  color: #94a3b8;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.inlet-arrow {
+  display: flex;
   align-items: center;
+  gap: 8px;
 }
 
-.pipe-body {
-  width: 20px;
-  height: 60px;
-  background: linear-gradient(90deg, #64748b, #94a3b8, #64748b);
-  border-radius: 4px;
+.arrow-text {
+  color: #e2e8f0;
+  font-size: 14px;
+}
+
+.arrow-body {
   position: relative;
-  overflow: hidden;
+  width: 70px;
+  height: 4px;
+  background: linear-gradient(90deg, #94a3b8, #e2e8f0);
+  border-radius: 4px;
 }
 
-.gas-flow {
+.arrow-body::after {
+  content: '';
   position: absolute;
-  width: 100%;
-  height: 100%;
+  right: -7px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  border-top: 3px solid #e2e8f0;
+  border-right: 3px solid #e2e8f0;
+  border-radius: 2px;
+}
+
+.inlet-text {
+  color: #e2e8f0;
+}
+
+.methane-apparatus {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.pipe-run {
+  position: relative;
+  width: 170px;
+  height: 14px;
+  background: linear-gradient(180deg, #475569, #64748b);
+  border-radius: 10px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  margin-right: -4px;
+}
+
+.pipe-flow {
+  position: absolute;
+  inset: 0;
 }
 
 .ch4-bubble {
   position: absolute;
+  bottom: 2px;
   font-size: 8px;
-  color: #3b82f6;
-  animation: bubbleUp 1s infinite;
+  color: #38bdf8;
+  animation: flowRight 1.6s linear infinite;
   animation-delay: var(--delay);
 }
 
-@keyframes bubbleUp {
-  0% { bottom: 0; opacity: 0; }
-  50% { opacity: 1; }
-  100% { bottom: 100%; opacity: 0; }
+@keyframes flowRight {
+  0% { left: -15%; opacity: 0; }
+  20% { opacity: 1; }
+  100% { left: 95%; opacity: 0; }
 }
 
-.pipe-nozzle {
-  width: 30px;
-  height: 10px;
-  background: #475569;
-  border-radius: 0 0 4px 4px;
+.pipe-elbow {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #475569, #94a3b8);
+  border-radius: 0 0 12px 12px;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.25);
+  margin-right: -6px;
 }
 
-.pipe-label {
-  margin-top: 4px;
-  font-size: 11px;
-  color: #94a3b8;
+.pipe-elbow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 16px;
+  height: 12px;
+  background: inherit;
+  border-radius: 10px 0 0 0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.methane-flame {
-  height: 80px;
+.pipe-drop {
+  position: relative;
+  width: 16px;
+  height: 32px;
+  background: linear-gradient(180deg, #475569, #94a3b8);
+  border-radius: 0 0 10px 10px;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.25);
+  margin-right: -6px;
+}
+
+.vertical-assembly {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 6px;
+  margin-left: -6px;
+}
+
+.chimney {
+  position: relative;
+  width: 48px;
+  height: 200px;
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.6), rgba(148, 163, 184, 0.2));
+  border: 2px solid #e2e8f0;
+  border-radius: 16px 16px 10px 10px;
+  box-shadow: inset 0 8px 12px rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.chimney::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.08));
+  pointer-events: none;
+}
+
+.chimney-vent {
+  position: absolute;
+  width: 9px;
+  height: 14px;
+  background: rgba(51, 65, 85, 0.6);
+  border-radius: 10px 10px 8px 8px;
+  top: calc(20px + var(--i) * 28px);
+  left: calc(10px + (var(--i) /2) * 18px);
+  transform: rotate(-8deg);
+}
+
+.chimney-foot {
+  width: 38px;
+  height: 12px;
+  background: linear-gradient(180deg, #475569, #1f2937);
+  border-radius: 0 0 10px 10px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin-top: -6px;
+}
+
+.burner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pipe-nozzle {
+  width: 34px;
+  height: 12px;
+  background: linear-gradient(90deg, #1f2937, #475569, #1f2937);
+  border-radius: 6px 6px 4px 4px;
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.2);
+}
+
+.methane-flame {
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -4px;
 }
 
 .flame-blue {
@@ -937,260 +1182,164 @@
 }
 
 /* ================== ETHYLENE EXPERIMENT ================== */
-.ethylene-setup {
-  display: flex;
-  align-items: flex-end;
-  gap: 30px;
-}
-
-.gas-inlet {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.inlet-pipe {
-  width: 16px;
-  height: 80px;
-  background: linear-gradient(90deg, #64748b, #94a3b8, #64748b);
-  border-radius: 4px;
+.ethylene-exp .ethylene-apparatus {
   position: relative;
+  width: 360px;
+  height: 360px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 70px 30px;
+  box-sizing: border-box;
+}
+
+.ethylene-exp .ethylene-tube {
+  position: relative;
+  width: 100px; 
+  height: 260px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08));
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 16px 16px 20px 20px;
+  overflow: visible;
+  margin-left: 48px; /* increased gap from inlet */
+}
+
+.ethylene-exp .tube-glass-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
-.c2h4-bubble {
-  position: absolute;
-  font-size: 7px;
-  color: #10b981;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: bubbleDown 1.5s infinite;
-  animation-delay: var(--delay);
-}
-
-@keyframes bubbleDown {
-  0% { top: 0; opacity: 0; }
-  30% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
-
-.inlet-label {
-  margin-top: 6px;
-  font-size: 11px;
-  color: #94a3b8;
-}
-
-.brom-flask {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.flask-body {
-  width: 80px;
-  height: 100px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
-  border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 0 0 40px 40px;
-  border-top: none;
-  position: relative;
-  overflow: hidden;
-}
-
-.flask-body::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 15px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
-  border: 2px solid rgba(255,255,255,0.3);
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
-}
-
-.brom-solution {
+.ethylene-exp .tube-liquid {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 70%;
-  border-radius: 0 0 36px 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.5s;
+  height: 45%;
+  border-radius: 0 0 16px 16px;
+  transition: background 0.5s ease;
+  box-shadow: inset 0 6px 10px rgba(0,0,0,0.15);
 }
 
-.solution-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.reaction-bubbles {
+.ethylene-exp .tube-reaction-bubbles {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  overflow: hidden;
 }
 
-.reaction-bubble {
+.ethylene-exp .tube-bubble {
   position: absolute;
+  bottom: 8%;
   width: 8px;
   height: 8px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 50%;
-  animation: riseBubble 1s infinite;
+  animation: ethyleneLiquidRise 1.6s infinite ease-in;
   left: calc(20% + var(--i) * 10%);
-  animation-delay: calc(var(--i) * 0.15s);
+  animation-delay: calc(var(--i) * 0.12s);
 }
 
-@keyframes riseBubble {
-  0% { bottom: 10%; opacity: 0; }
-  50% { opacity: 1; }
-  100% { bottom: 90%; opacity: 0; }
+@keyframes ethyleneLiquidRise {
+  0% { transform: translateY(0); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateY(-120px); opacity: 0; }
 }
 
-.flask-label {
+.ethylene-exp .tube-rising-gas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ethylene-exp .gas-bubble {
+  position: absolute;
+  bottom: 6%;
+  left: calc(25% + var(--i) * 10%);
+  width: 6px;
+  height: 6px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  animation: ethyleneGasRise 2s infinite ease-out;
+  animation-delay: calc(var(--i) * 0.18s);
+}
+
+@keyframes ethyleneGasRise {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-160px) scale(1.1); opacity: 0; }
+}
+
+.ethylene-exp .tube-caption {
   margin-top: 8px;
   font-size: 11px;
   color: #94a3b8;
   text-align: center;
 }
 
-/* ================== ACETYLENE EXPERIMENT ================== */
-.welding-setup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.gas-tanks {
-  display: flex;
-  gap: 20px;
-}
-
-.tank {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.tank-body {
-  width: 30px;
-  height: 50px;
-  border-radius: 8px 8px 4px 4px;
-}
-
-.c2h2-tank .tank-body {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-}
-
-.o2-tank .tank-body {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-}
-
-.tank span {
-  font-size: 10px;
-  color: #94a3b8;
-}
-
-.welding-torch {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.torch-body {
-  width: 60px;
-  height: 16px;
-  background: linear-gradient(180deg, #64748b, #475569);
-  border-radius: 4px;
-}
-
-.torch-tip {
-  width: 20px;
-  height: 8px;
-  background: #94a3b8;
-  border-radius: 0 4px 4px 0;
-}
-
-.welding-flame {
+.ethylene-exp .inlet-assembly {
   position: absolute;
-  right: -50px;
-  display: flex;
-  align-items: center;
+  top: 12px;
+  right: 176px; /* move inlet further left to avoid touching tube */
+  width: 180px;
+  height: 250px;
+  pointer-events: none;
 }
 
-.flame-core-hot {
-  width: 15px;
-  height: 15px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 10px white, 0 0 20px #60a5fa;
-}
-
-.flame-middle {
-  width: 25px;
-  height: 20px;
-  background: linear-gradient(90deg, #60a5fa, #3b82f6);
-  border-radius: 0 50% 50% 0;
-  margin-left: -8px;
-}
-
-.flame-outer-hot {
-  width: 20px;
-  height: 15px;
-  background: linear-gradient(90deg, #3b82f6, transparent);
-  border-radius: 0 50% 50% 0;
-  margin-left: -5px;
-}
-
-.temp-indicator {
+.ethylene-exp .inlet-label-inline {
   position: absolute;
-  top: -25px;
-  right: 0;
-  font-size: 11px;
-  color: #f59e0b;
+  top: -22px;
+  right:50px;
+  font-size: 12px;
+  color: #cbd5e1;
   font-weight: 600;
-  animation: pulse 1s infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-.metal-pieces {
-  display: flex;
-  gap: 4px;
-  margin-top: 10px;
-}
-
-.metal-piece {
-  width: 40px;
-  height: 20px;
-  background: linear-gradient(180deg, #94a3b8, #64748b);
-  border-radius: 4px;
-}
-
-.metal-pieces.complete {
-  gap: 0;
-}
-
-.weld-seam {
+.ethylene-exp .inlet-curve {
   position: absolute;
+  top: 0;
+  right: 0;
+  width: 110px;
+  height: 44px;
+  border: 9px solid #94a3b8;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 0 26px 0 0;
+ 
+}
+
+.ethylene-exp .inlet-vertical {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  width: 10px;
+  height: 204px;
+  background: linear-gradient(90deg, #64748b, #94a3b8, #64748b);
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  box-shadow: inset 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.ethylene-exp .inlet-bubble {
+  position: absolute;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%);
   width: 8px;
-  height: 20px;
-  background: linear-gradient(180deg, #fbbf24, #f59e0b);
-  border-radius: 2px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: inletFlow 1.4s infinite ease-in;
+  animation-delay: calc(var(--i) * 0.18s);
+  box-shadow: 0 0 6px rgba(34,197,94,0.6);
 }
+
+@keyframes inletFlow {
+  0% { top: -12px; opacity: 0; }
+  25% { opacity: 1; }
+  100% { top: 190px; opacity: 0; }
+}
+
 
 /* ================== BENZENE EXPERIMENT ================== */
 .benzene-showcase {

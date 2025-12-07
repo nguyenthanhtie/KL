@@ -439,7 +439,12 @@
   justify-content: center;
   padding: 1.5rem;
   background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 100%);
-  min-height: 200px;
+  /* scale factor for beakers; shrunk 3x from previous 4 -> 1.33 */
+  --beaker-scale: 1.3333;
+  /* allow scaled elements to overflow the card area */
+  overflow: visible;
+  /* compute base min-height multiplied by scale to avoid clipping */
+  min-height: calc(200px * var(--beaker-scale));
   position: relative;
 }
 
@@ -1183,11 +1188,15 @@
 .beaker-dip {
   position: absolute;
   bottom: 20px;
+  left: 50%;
+  /* raise the beaker so it doesn't sit too low after scaling */
+  transform: translate(-50%, -0%);
+  z-index: 5;
 }
 
 .beaker-glass {
-  width: 120px;
-  height: 200px;
+  width: 180px;
+  height: 250px;
   background: linear-gradient(180deg, 
     rgba(255, 255, 255, 0.15) 0%,
     rgba(255, 255, 255, 0.08) 100%
@@ -1197,6 +1206,19 @@
   border-top: none;
   position: relative;
   overflow: hidden;
+}
+
+/* Scale beaker visuals by the --beaker-scale variable for large size control */
+.beaker-glass,
+.beaker-body-mix {
+  transform-origin: center bottom;
+  transform: scale(var(--beaker-scale));
+  will-change: transform;
+}
+
+.beaker-body-mix.large {
+  transform-origin: center bottom;
+  transform: scale(var(--beaker-scale));
 }
 
 .beaker-glass::before {
@@ -1223,9 +1245,9 @@
 }
 
 .ripple-effect {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255,255,255,0.4);
+  width: calc(20px * var(--beaker-scale));
+  height: calc(20px * var(--beaker-scale));
+  border: calc(2px * var(--beaker-scale)) solid rgba(255,255,255,0.4);
   border-radius: 50%;
   animation: ripple 1s ease-out infinite;
 }
@@ -1236,10 +1258,12 @@
 }
 
 .solution-name {
-  position: absolute;
-  bottom: -22px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  bottom: 0;
+  left: 0;
+  transform: none;
+  margin-top: 8px;
+  display: block;
   font-size: 0.75rem;
   font-weight: 600;
   color: #94a3b8;
@@ -1338,8 +1362,10 @@
     min-height: auto;
   }
   
+  /* medium screens: reduce beaker scale to 2x */
   .exp-visual {
-    min-height: 180px;
+    --beaker-scale: 0.6667;
+    min-height: calc(180px * var(--beaker-scale));
   }
 }
 
@@ -1376,6 +1402,18 @@
   
   .results-card {
     padding: 1.5rem;
+  }
+
+  /* small screens: set beaker scale back to 1 (normal size) and ensure transforms apply */
+  .exp-visual {
+    --beaker-scale: 0.3333;
+    min-height: calc(160px * var(--beaker-scale));
+  }
+
+  .beaker-glass,
+  .beaker-body-mix,
+  .beaker-body-mix.large {
+    transform: scale(var(--beaker-scale));
   }
 }
 
@@ -1479,8 +1517,8 @@
 .bubble-rise {
   position: absolute;
   bottom: 10%;
-  width: 10px;
-  height: 10px;
+  width: calc(10px * var(--beaker-scale));
+  height: calc(10px * var(--beaker-scale));
   background: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   animation: bubbleFloat 1.2s ease-in-out infinite;
