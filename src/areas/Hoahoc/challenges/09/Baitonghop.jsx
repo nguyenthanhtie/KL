@@ -46,7 +46,7 @@ const Baitonghop = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [showResume, setShowResume] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState(20);
 
   // Current Challenge Data
   const currentChallenge = CHALLENGES[currentStep];
@@ -60,10 +60,10 @@ const Baitonghop = () => {
     }
   }, []);
 
-  // Countdown timer: 10s each question
+  // Countdown timer: 20s each question
   useEffect(() => {
     if (gameState !== 'playing') return;
-    setTimeLeft(10);
+    setTimeLeft(20);
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -86,7 +86,7 @@ const Baitonghop = () => {
 
   const handleStart = () => {
     setGameState('playing');
-    setTimeLeft(10);
+    setTimeLeft(20);
   };
 
   const handleResume = () => {
@@ -95,7 +95,7 @@ const Baitonghop = () => {
       setCurrentStep(saved.step);
       setScore(saved.score);
       setGameState('playing');
-      setTimeLeft(10);
+      setTimeLeft(20);
     }
     setShowResume(false);
   };
@@ -106,7 +106,7 @@ const Baitonghop = () => {
     setScore(0);
     setGameState('playing');
     setShowResume(false);
-    setTimeLeft(10);
+    setTimeLeft(20);
   };
 
   const handleOptionSelect = (option) => {
@@ -136,7 +136,7 @@ const Baitonghop = () => {
       setSelectedOption(null);
       setIsCorrect(null);
       setShowExplanation(false);
-      setTimeLeft(10);
+      setTimeLeft(20);
       
       // Save progress
       localStorage.setItem('chemistry_tonghop_9_progress', JSON.stringify({
