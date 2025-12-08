@@ -420,6 +420,27 @@ const challenges = [
       lessonId: 26
     }
   },
+  // TONG HOP - Grade 9 (NEW)
+  {
+    id: 20,
+    name: 'Tổng Hợp Hóa Học 9',
+    description: 'Kiểm tra kiến thức tổng hợp về Hóa học Vô cơ và Hữu cơ lớp 9. Vượt qua các thử thách để chứng tỏ bản lĩnh nhà hóa học trẻ!',
+    icon: '🏆',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-500',
+    category: 'structure',
+    grade: 9,
+    time: '20-30 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/tong-hop-lop-9',
+    features: ['Tổng hợp Vô cơ', 'Tổng hợp Hữu cơ', 'Nhận biết chất', 'Thí nghiệm ảo'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 50
+    }
+  },
   
     
   

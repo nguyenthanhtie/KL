@@ -66,28 +66,10 @@ const CHALLENGES = [
     gradient: 'linear-gradient(135deg, #fb7185, #f97316)',
     icon: Beaker
   },
+  
+    /* Experiment 3 (ester) removed per request */
   {
     id: 3,
-    type: 'ester',
-    title: 'Este (Etyl axetat)',
-    description: 'Nhận biết mùi thơm của este và cách điều chế.',
-    question: 'Phát biểu nào đúng về etyl axetat?',
-    options: [
-      'Có mùi thơm của dứa/chuối chín',
-      'Được điều chế từ axit axetic và ancol etylic',
-      'Làm xanh quỳ tím ẩm',
-      'Cả 2 nhận xét đầu đều đúng'
-    ],
-    correctAnswer: 'Cả 2 nhận xét đầu đều đúng',
-    phenomenon: 'Đun hỗn hợp axit axetic + ancol etylic (có H₂SO₄ đặc) tạo este thơm dễ bay hơi.',
-    hint: 'Este trung tính, không đổi màu quỳ.',
-    difficulty: 'medium',
-    points: 20,
-    gradient: 'linear-gradient(135deg, #a855f7, #ec4899)',
-    icon: Sparkles
-  },
-  {
-    id: 4,
     type: 'glucose',
     title: 'Glucozơ',
     description: 'Tính khử mạnh: phản ứng tráng bạc.',
@@ -108,7 +90,7 @@ const CHALLENGES = [
     icon: Atom
   },
   {
-    id: 5,
+    id: 4,
     type: 'sucrose',
     title: 'Saccarozơ',
     description: 'So sánh với glucozơ và phản ứng thủy phân.',
@@ -131,7 +113,7 @@ const CHALLENGES = [
     icon: GraduationCap
   },
   {
-    id: 6,
+    id: 5,
     type: 'starch-cellulose',
     title: 'Tinh bột & Xenlulozơ',
     description: 'Thử iot và ứng dụng vật liệu.',
@@ -149,50 +131,6 @@ const CHALLENGES = [
     points: 15,
     gradient: 'linear-gradient(135deg, #0ea5e9, #22d3ee)',
     icon: Leaf
-  },
-  {
-    id: 7,
-    type: 'polymer',
-    title: 'Polime & vật liệu',
-    description: 'Khái niệm mạch polime và nhựa ứng dụng.',
-    question: 'Đặc điểm chung của polime là gì?',
-    options: [
-      'Phân tử khối rất lớn, gồm nhiều mắt xích lặp lại',
-      'Là các hợp chất ion nên tan tốt trong nước',
-      'Chỉ được tạo thành từ glucozơ',
-      'Không thể gia công thành sợi hay màng'
-    ],
-    correctAnswer: 'Phân tử khối rất lớn, gồm nhiều mắt xích lặp lại',
-    phenomenon: 'Polime có mạch dài (nhựa PE, PVC, cao su) tạo vật liệu dẻo, sợi, chất dẻo kỹ thuật.',
-    hint: 'Polime tạo từ monome qua phản ứng trùng hợp/trùng ngưng.',
-    difficulty: 'easy',
-    points: 10,
-    gradient: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-    icon: Layers
-  },
-  {
-    id: 8,
-    type: 'practice',
-    title: 'Luyện tập dẫn xuất – polime',
-    description: 'Tổng hợp nhanh toàn chương.',
-    question: 'Chọn các ý đúng về chương dẫn xuất – polime.',
-    options: [
-      'Ancol, axit, este đều chứa nhóm chức đặc trưng',
-      'Glucozơ có thể lên men rượu và tráng bạc',
-      'Tinh bột, xenlulozơ là polisaccarit thiên nhiên',
-      'Polime đều có thể phân hủy sinh học nhanh'
-    ],
-    correctAnswers: [
-      'Ancol, axit, este đều chứa nhóm chức đặc trưng',
-      'Glucozơ có thể lên men rượu và tráng bạc',
-      'Tinh bột, xenlulozơ là polisaccarit thiên nhiên'
-    ],
-    phenomenon: 'Nhận diện nhanh nhóm chức –OH, –COOH, –COO–; chất thiên nhiên (tinh bột, xenlulozơ) là polime sinh học; nhiều polime tổng hợp khó phân hủy.',
-    hint: 'Nhớ liên hệ tính chất với nhóm chức và nguồn gốc polime.',
-    difficulty: 'hard',
-    points: 25,
-    gradient: 'linear-gradient(135deg, #f43f5e, #22c55e)',
-    icon: Zap
   }
 ];
 
@@ -302,235 +240,270 @@ const AceticExperiment = ({ progress }) => {
   );
 };
 
-const EsterExperiment = ({ progress }) => {
-  const stage = progress < 40 ? 'ready' : progress < 80 ? 'heating' : 'complete';
-  return (
-    <div className="exp-card ester">
-      <div className="exp-title">Tạo etyl axetat</div>
-      
-      <div className="ester-apparatus">
-        {/* Left side: Reaction tube with stand */}
-        <div className="left-section">
-          
-          
-          {/* Metal stand */}
-          <div className="stand-base" />
-          <div className="stand-vertical" />
-          <div className="stand-clamp" />
-          
-          {/* Thermometer inserted in tube */}
-          <div className="thermometer-insert">
-            <div className="thermo-top" />
-            <div className="thermo-body" />
-          </div>
-          
-          {/* Reaction test tube - SMALLER */}
-          <div className="test-tube-reaction">
-            <div className="tube-liquid">
-              <span className="reagent-info">Hỗn hợp<br/>phản ứng</span>
-            </div>
-            {/* Catalyst label */}
-            <div className="catalyst-label">H₂SO₄ đặc</div>
-            {stage !== 'ready' && (
-              <>
-                <div className="vapor-particle v1" />
-                <div className="vapor-particle v2" />
-              </>
-            )}
-          </div>
-          
-          {/* Alcohol burner under tube */}
-          <div className={`burner ${stage !== 'ready' ? 'burning' : ''}`}>
-            <div className="burner-body" />
-            <div className="burner-wick" />
-            {stage !== 'ready' && (
-              <>
-                <div className="fire-flame" />
-                {/* Heat waves rising */}
-                <div className="heat-wave hw1" />
-                <div className="heat-wave hw2" />
-                <div className="heat-wave hw3" />
-              </>
-            )}
-          </div>
-        </div>
-        
-        {/* Connecting tube (curved) */}
-        <div className="connecting-tube">
-          <svg className="tube-path" viewBox="0 0 120 80" preserveAspectRatio="none">
-            {/* L-shaped path: horizontal (left->right) then vertical down into condenser */}
-            <path
-              d="M5 40 L95 40 L95 72"
-              fill="none"
-              stroke="rgba(150, 200, 255, 0.7)"
-              strokeWidth="6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        
-        </div>
-        
-        {/* Right side: Condenser in cold water */}
-        <div className="right-section">
-          {/* Water bath container */}
-          <div className="water-container">
-            <div className="cold-water">
-              <span className="water-text">Nước lạnh</span>
-            </div>
-          </div>
-          
-          {/* Test tube inside water bath */}
-          <div className="test-tube-collect">
-            {stage === 'complete' && (
-              <>
-                <div className="ester-drop d1" />
-                <div className="ester-drop d2" />
-                <div className="ester-layer">
-                  <span className="ester-name">CH₃COOC₂H₅</span>
-                </div>
-              </>
-            )}
-          </div>
-          
-          {/* Aroma indicator */}
-          {stage === 'complete' && (
-            <div className="aroma-smell">🍍 Mùi thơm</div>
-          )}
-        </div>
-      </div>
-      
-      {/* Grouped process notes in one frame */}
-      {stage !== 'ready' && (
-        <div className="process-steps">
-          <div className="step-item">
-            <span className="step-number">1</span>
-            <span className="step-text">Đun nóng hỗn hợp rượu + acid + H₂SO₄</span>
-          </div>
-          <div className="step-item">
-            <span className="step-number">2</span>
-            <span className="step-text">Hơi este đi qua ống dẫn</span>
-          </div>
-          <div className="step-item">
-            <span className="step-number">3</span>
-            <span className="step-text">Nước lạnh ngưng tụ hơi este</span>
-          </div>
-          {stage === 'complete' && (
-            <div className="step-item">
-              <span className="step-number">4</span>
-              <span className="step-text">Este nhẹ hơn nước, nổi lên trên</span>
-            </div>
-          )}
-        </div>
-      )}
-      
-      {/* Connection arrow from apparatus to equation */}
-      {stage !== 'ready' && (
-        <div className="equation-connector">↓</div>
-      )}
-      
-      {/* Chemical equation below */}
-      <div className="chem-equation">
-        <span className="reactant">C₂H₅OH</span> + <span className="reactant">CH₃COOH</span>
-        <span className="eq-arrow">⇌</span>
-        <span className="product">CH₃COOC₂H₅</span> + <span className="product">H₂O</span>
-        <div className="eq-condition">H₂SO₄ đặc, t°</div>
-      </div>
-      
-      <div className="note">Este có mùi thơm đặc trưng của trái cây</div>
-    </div>
-  );
-};
+/* Ester experiment removed */
 
 const GlucoseExperiment = ({ progress }) => {
   const stage = progress < 35 ? 'ready' : progress < 75 ? 'reaction' : 'mirror';
+  
   return (
     <div className="exp-card glucose">
-      <div className="exp-title">Tráng bạc</div>
-      <div className={`silver-tube ${stage}`}>
-        <div className="warm-water" />
-        <div className="mirror" />
+      <div className="exp-title">Thí nghiệm tráng bạc</div>
+      
+      <div className="glucose-experiment-container">
+        {/* Test tube with realistic shape */}
+        <div className={`test-tube-glucose ${stage}`}>
+         
+          
+          {/* Main tube body */}
+          <div className="tube-body">
+            {/* Tollens reagent + Glucose solution */}
+            <div className="tollens-solution">
+              <div className="solution-surface">
+                <div className="surface-wave" />
+                <div className="surface-wave" style={{ animationDelay: '0.5s' }} />
+              </div>
+              
+              {/* Ag+ ions in solution (ready state) */}
+              {stage === 'ready' && (
+                <div className="floating-ions">
+                  {[...Array(16)].map((_, i) => (
+                    <div key={i} className="ag-ion-real" style={{
+                      left: `${8 + (i % 4) * 21}%`,
+                      top: `${15 + Math.floor(i / 4) * 18}%`,
+                      animationDelay: `${i * 0.12}s`
+                    }}>
+                      Ag⁺
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {/* Reaction in progress: Ag+ → Ag particles forming */}
+              {stage === 'reaction' && (
+                <div className="reaction-zone">
+                  {/* Silver particles precipitating */}
+                  {[...Array(20)].map((_, i) => (
+                    <div key={i} className="ag-precipitate" style={{
+                      left: `${5 + (i % 5) * 18}%`,
+                      top: `${10 + Math.floor(i / 5) * 15}%`,
+                      animationDelay: `${i * 0.08}s`
+                    }}>
+                      <span className="ion-state">Ag⁺</span>
+                      <span className="metal-state">Ag</span>
+                    </div>
+                  ))}
+                  
+                  {/* Silver depositing on walls */}
+                  <div className="depositing-silver">
+                    {[...Array(6)].map((_, i) => (
+                      <div key={i} className="silver-stream" style={{
+                        left: `${10 + i * 15}%`,
+                        animationDelay: `${i * 0.15}s`
+                      }} />
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+            </div>
+            
+            {/* Silver mirror coating on inner walls */}
+            <div className="silver-coating" />
+            
+            {/* Shine/reflection effects */}
+            {stage === 'mirror' && (
+              <>
+                <div className="tube-shine shine-1" />
+                <div className="tube-shine shine-2" />
+                <div className="tube-shine shine-3" />
+              </>
+            )}
+          </div>
+          
+          {/* Rounded bottom */}
+          
+        </div>
+        
+        {/* Water bath (beaker with warm water) */}
+        <div className="water-bath">
+          <div className="beaker-water">
+            <div className="water-level" />
+            <div className="heat-indicator">
+              <span>60-70°C</span>
+            </div>
+            <div className="steam-bubble b1" />
+            <div className="steam-bubble b2" />
+            <div className="steam-bubble b3" />
+          </div>
+        </div>
       </div>
-      <div className="note">Glucozơ khử Ag⁺ thành Ag</div>
+      
+      <div className="reaction-info">
+        <div className="info-step">
+          <strong>Thuốc thử:</strong> AgNO₃/NH₃ (Tollens)
+        </div>
+        <div className="info-step">
+          <strong>Phản ứng:</strong> C₆H₁₂O₆ + 2Ag⁺ → Ag↓ + ...
+        </div>
+        <div className="info-status">
+          {stage === 'ready' && '① Dung dịch không màu chứa ion Ag⁺'}
+          {stage === 'reaction' && '② Đang gia nhiệt - Ag⁺ bị khử → Ag kim loại'}
+          {stage === 'mirror' && '③ Hoàn thành - Lớp bạc sáng bám thành ống'}
+        </div>
+      </div>
     </div>
   );
 };
 
 const SucroseExperiment = ({ progress }) => {
-  const hydrolyzed = progress > 50;
+  const stage = progress < 30 ? 'setup' : progress < 65 ? 'hydrolysis' : 'tollens';
+  const hydrolyzed = stage !== 'setup';
+  const silvered = stage === 'tollens';
+
   return (
     <div className="exp-card sucrose">
-      <div className="exp-title">Saccarozơ → thủy phân</div>
-      <div className="dual-tubes">
-        <div className={`tube ${hydrolyzed ? 'inactive' : 'active'}`}>
-          <span className="tube-label">Trước</span>
-          <span className="tube-content">Không tráng bạc</span>
+      <div className="exp-title">Thủy phân saccarozơ rồi thử Tollens</div>
+
+      <div className="sucrose-lab">
+        <div className={`bath-rig ${stage !== 'setup' ? 'heated' : ''}`}>
+          <div className="bath-water">
+            <div className="temp-chip">60-70°C</div>
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className={`bath-bubble b${i + 1}`} />
+            ))}
+          </div>
+
+          <div className="flask">
+            <div className="flask-neck">
+              {stage !== 'setup' && <div className="acid-drop" />}
+            </div>
+            <div className={`flask-body ${hydrolyzed ? 'acidified' : ''}`}>
+              <div className="solution sucrose">
+                <span>Saccarozơ</span>
+              </div>
+              {hydrolyzed && (
+                <div className={`hydrolysis-layer ${stage === 'hydrolysis' ? 'active' : ''}`}>
+                  <span>H₂SO₄ loãng</span>
+                </div>
+              )}
+              <div className={`steam ${stage === 'hydrolysis' ? 'on' : ''}`} />
+            </div>
+          </div>
+
+          <div className="hot-plate">
+            <span>Gia nhiệt cách thủy</span>
+          </div>
         </div>
-        <div className={`tube ${hydrolyzed ? 'active' : ''}`}>
-          <span className="tube-label">Sau thủy phân</span>
-          <span className="tube-content">Glucozơ + Fructozơ</span>
+
+        <div className="tollens-rack">
+          <div className="tollens-label">Thuốc thử Tollens (AgNO₃/NH₃)</div>
+          <div className="tube-card control">
+            <div className="tube-head">Mẫu chưa thủy phân + Tollens</div>
+            <div className="tube-glass">
+              <div className="tube-liquid control" />
+              <div className="tube-wall" />
+            </div>
+            <div className="tube-note">Không có –CHO tự do → Không bám bạc</div>
+          </div>
+
+          <div className={`tube-card product ${silvered ? 'silvered' : ''}`}>
+            <div className="tube-head">Mẫu sau thủy phân + Tollens</div>
+            <div className="tube-glass">
+              <div className={`tube-liquid product ${silvered ? 'reacting' : ''}`} />
+              <div className={`tube-wall ${silvered ? 'mirror' : ''}`} />
+              {silvered && <div className="silver-specks" />}
+            </div>
+            <div className="tube-note">Glucozơ + Fructozơ khử Ag⁺ → bạc bám thành ống</div>
+          </div>
         </div>
       </div>
-      <div className="note">Thuốc thử Tollens chỉ phản ứng sau thủy phân</div>
+
+      <div className="step-legend">
+        <div className={`step-chip ${stage === 'setup' ? 'active' : ''}`}>
+          B1: Thêm H₂SO₄ loãng vào dung dịch saccarozơ
+        </div>
+        <div className={`step-chip ${stage === 'hydrolysis' ? 'active' : ''}`}>
+          B2: Đun cách thủy 60-70°C vài phút → saccarozơ thủy phân
+        </div>
+        <div className={`step-chip ${stage === 'tollens' ? 'active' : ''}`}>
+          B3: Thêm thuốc thử Tollens → chỉ mẫu đã thủy phân tráng bạc
+        </div>
+        <div className="step-chip subtle">Tóm tắt: Saccarozơ → (H₂SO₄, đun) → Glucozơ + Fructozơ → Tollens → bạc bám</div>
+      </div>
     </div>
   );
 };
 
 const StarchCelluloseExperiment = ({ progress }) => {
-  const showColor = progress > 40;
-  return (
-    <div className="exp-card bio">
-      <div className="exp-title">Thử iot</div>
-      <div className="bio-row">
-        <div className={`bio-card starch ${showColor ? 'colored' : ''}`}>
-          <span>Tinh bột</span>
-          <div className="iodine-drop">I₂</div>
-        </div>
-        <div className="bio-card cellulose">
-          <span>Xenlulozơ</span>
-          <div className="iodine-drop">I₂</div>
-        </div>
-      </div>
-      <div className="note">Chỉ tinh bột đổi xanh tím</div>
-    </div>
-  );
-};
+  // Stages based on progress 0-100
+  const stage = progress < 10 ? 'ready' 
+              : progress < 45 ? 'dropping-starch' 
+              : progress < 55 ? 'reacting-starch'
+              : progress < 85 ? 'dropping-cellulose'
+              : 'complete';
 
-const PolymerExperiment = ({ progress }) => {
-  const blocks = [0, 1, 2, 3, 4, 5];
-  return (
-    <div className="exp-card polymer">
-      <div className="exp-title">Mạch polime</div>
-      <div className="chain">
-        {blocks.map((b) => (
-          <div key={b} className={`unit ${progress > b * 12 ? 'show' : ''}`}>
-            –CH₂–CH₂–
-          </div>
-        ))}
-      </div>
-      <div className="note">Mắt xích lặp lại → phân tử khối rất lớn</div>
-    </div>
-  );
-};
+  const starchBlue = stage === 'reacting-starch' || stage === 'dropping-cellulose' || stage === 'complete';
+  const celluloseIodine = stage === 'complete';
 
-const PracticeExperiment = ({ progress }) => {
-  const topics = [
-    { title: 'Nhóm chức', doneAt: 15 },
-    { title: 'Tính khử', doneAt: 40 },
-    { title: 'Polisaccarit', doneAt: 65 },
-    { title: 'Polime tổng hợp', doneAt: 85 }
-  ];
   return (
-    <div className="exp-card practice">
-      <div className="exp-title">Checklist kiến thức</div>
-      <div className="checklist">
-        {topics.map((topic, idx) => (
-          <div key={idx} className={`item ${progress > topic.doneAt ? 'done' : ''}`}>
-            <CheckCircle2 size={16} /> {topic.title}
+    <div className="exp-card bio-tubes">
+      <div className="exp-title">Phân biệt Tinh bột & Xenlulozơ bằng Iot</div>
+      
+      <div className="tube-rack-container">
+        {/* Moving Dropper */}
+        <div className={`moving-dropper ${stage}`}>
+          <div className="dropper-body">
+            <div className="dropper-bulb" />
+            <div className="dropper-glass" />
+            <div className="dropper-liquid-fill">I₂</div>
           </div>
-        ))}
+          {(stage === 'dropping-starch' || stage === 'dropping-cellulose') && (
+            <div className="iodine-drops">
+              <div className="i-drop d1" />
+              <div className="i-drop d2" />
+            </div>
+          )}
+        </div>
+
+        {/* Tube Rack */}
+        <div className="tube-rack">
+          {/* Tube 1: Starch */}
+          <div className="test-tube-slot">
+            <div className="test-tube">
+              <div className="tube-mouth" />
+              <div className={`tube-liquid starch ${starchBlue ? 'turned-blue' : ''}`}>
+                <span className="liquid-label">Tinh bột</span>
+              </div>
+              <div className="tube-glass-overlay" />
+            </div>
+            <div className="tube-label-bottom">Tinh bột</div>
+            <div className="tube-result">
+              {starchBlue && <span className="res-blue">→ Xanh tím</span>}
+            </div>
+          </div>
+
+          {/* Tube 2: Cellulose */}
+          <div className="test-tube-slot">
+            <div className="test-tube">
+              <div className="tube-mouth" />
+              <div className={`tube-liquid cellulose ${celluloseIodine ? 'added-iodine' : ''}`}>
+                <span className="liquid-label">Xenlulozơ</span>
+              </div>
+              <div className="tube-glass-overlay" />
+            </div>
+            <div className="tube-label-bottom">Xenlulozơ</div>
+            <div className="tube-result">
+              {celluloseIodine && <span className="res-none">→ Không đổi</span>}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="note">Ôn nhanh trước khi làm câu tổng hợp</div>
+
+      <div className="bio-summary">
+        <div className="summary-step">
+          <strong>Hiện tượng:</strong> Iot gặp tinh bột tạo phức màu xanh tím. Xenlulozơ không có cấu trúc xoắn lò xo nên không tạo phức màu với Iot.
+        </div>
+      </div>
     </div>
   );
 };
@@ -541,18 +514,12 @@ const ExperimentRenderer = ({ challenge, progress }) => {
       return <EthanolExperiment progress={progress} />;
     case 'acetic':
       return <AceticExperiment progress={progress} />;
-    case 'ester':
-      return <EsterExperiment progress={progress} />;
     case 'glucose':
       return <GlucoseExperiment progress={progress} />;
     case 'sucrose':
       return <SucroseExperiment progress={progress} />;
     case 'starch-cellulose':
       return <StarchCelluloseExperiment progress={progress} />;
-    case 'polymer':
-      return <PolymerExperiment progress={progress} />;
-    case 'practice':
-      return <PracticeExperiment progress={progress} />;
     default:
       return null;
   }
@@ -902,11 +869,7 @@ const Bai34_HIDROCACBON_POLIME = () => {
           </div>
           <div className="panel-body">
             <ExperimentRenderer challenge={challenge} progress={experimentProgress} />
-            {isExperimentComplete && (
-              <div className="phenomenon">
-                <strong>Hiện tượng:</strong> {challenge.phenomenon}
-              </div>
-            )}
+            
             <div className="experiment-actions">
               {!isExperimentComplete ? (
                 <button className="btn-primary" onClick={runExperiment} disabled={isExperimentRunning}>
