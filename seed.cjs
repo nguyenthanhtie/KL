@@ -441,6 +441,27 @@ const challenges = [
       lessonId: 50
     }
   },
+  // SOLUTION - Grade 10 (NEW)
+  {
+    id: 21,
+    name: 'CD — DUNG DỊCH',
+    description: 'Ôn các khái niệm dung dịch: chất tan, dung môi, độ tan, nồng độ phần trăm, nồng độ mol, pha chế và pH. Bao gồm câu hỏi trắc nghiệm và thực hành pha chế.',
+    icon: '💧',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-cyan-500',
+    category: 'solution',
+    grade: 10,
+    time: '15-25 phút',
+    points: 260,
+    status: 'available',
+    link: '/advanced-challenge/cd-dung-dich',
+    features: ['Khái niệm cơ bản', 'Bài tập nồng độ %', 'Pha chế molarity', 'Mini-quiz tự chấm'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 6
+    }
+  },
   
     
   

@@ -37,6 +37,7 @@ import Bai20_PHI_KIM_HALOGEN from './areas/Hoahoc/challenges/09/Bai20_PHI_KIM_HA
 import Bai26_HIDROCACBON from './areas/Hoahoc/challenges/09/Bai26_HIDROCACBON';
 import Bai34_HIDROCACBON_POLIME from './areas/Hoahoc/challenges/09/Bai34_HIDROCACBON_POLIME';
 import Baitonghop from './areas/Hoahoc/challenges/09/Baitonghop';
+import CD_DUNG_DICH from './areas/Hoahoc/challenges/10/CD_DUNG_DICH';
 
 
 
@@ -72,6 +73,7 @@ const AppContent = () => {
         <Route path="/advanced-challenge/hidrocacbon" element={<Bai26_HIDROCACBON />} />
         <Route path="/advanced-challenge/hidrocacbon-polime" element={<Bai34_HIDROCACBON_POLIME />} />
         <Route path="/advanced-challenge/mol-quick-calc" element={<MolQuickCalc />} />
+        <Route path="/advanced-challenge/cd-dung-dich" element={<CD_DUNG_DICH />} />
         <Route path="/advanced-challenge/quan-sat-phan-ung" element={<QuanSatPhanUng />} />
         <Route path="/advanced-challenge/tong-ket-lop-8" element={<TongKetLop8 />} />
         <Route path="/advanced-challenge/tong-hop-lop-9" element={<Baitonghop />} />
