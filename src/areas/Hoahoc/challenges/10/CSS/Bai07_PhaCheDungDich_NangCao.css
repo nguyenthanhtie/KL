@@ -1,0 +1,1176 @@
+/* Pha Chế Dung Dịch Nâng Cao - Lớp 10 - Fullscreen Game */
+.molarity-game-advanced {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* ===== HEADER WITH PROGRESS ===== */
+.molarity-game-advanced .molarity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 3px solid #3b82f6;
+}
+
+.molarity-game-advanced .molarity-header .btn-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.molarity-game-advanced .molarity-header .btn-back:hover {
+  background: #2563eb;
+}
+
+/* Header Center - Title + Progress Info */
+.molarity-game-advanced .molarity-header .header-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.molarity-game-advanced .molarity-header .title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.molarity-game-advanced .molarity-header .title svg {
+  color: #3b82f6;
+}
+
+/* Header Info Row */
+.molarity-game-advanced .molarity-header .header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.molarity-game-advanced .molarity-header .header-info .level-tag {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 11px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.molarity-game-advanced .molarity-header .header-info .level-tag.lv1 { background: #22c55e; }
+.molarity-game-advanced .molarity-header .header-info .level-tag.lv2 { background: #f59e0b; }
+.molarity-game-advanced .molarity-header .header-info .level-tag.lv3 { background: #ef4444; }
+
+.molarity-game-advanced .molarity-header .header-info .category-tag {
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 11px;
+  color: white;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.molarity-game-advanced .molarity-header .header-info .progress-text {
+  font-weight: 600;
+  color: #475569;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.molarity-game-advanced .molarity-header .header-info .progress-track {
+  flex: 1;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 60px;
+}
+
+.molarity-game-advanced .molarity-header .header-info .progress-track .fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.molarity-game-advanced .molarity-header .header-info .points-tag {
+  padding: 4px 10px;
+  background: #8b5cf6;
+  color: white;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.molarity-game-advanced .molarity-header .score-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ===== MAIN CONTENT ===== */
+.molarity-game-advanced .molarity-main {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ===== LEFT: LAB PANEL ===== */
+.molarity-game-advanced .lab-panel {
+  width: 380px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.molarity-game-advanced .lab-panel .solute-card {
+  text-align: center;
+  padding: 14px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 12px;
+  color: white;
+}
+
+.molarity-game-advanced .lab-panel .solute-card .name {
+  font-size: 13px;
+  opacity: 0.9;
+  margin-bottom: 2px;
+}
+
+.molarity-game-advanced .lab-panel .solute-card .formula {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.molarity-game-advanced .lab-panel .solute-card .mass {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+/* Beaker Visual - Professional Lab Style */
+.molarity-game-advanced .lab-panel .beaker-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  gap: 12px;
+}
+
+.molarity-game-advanced .lab-panel .beaker-visual .beaker-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Beaker Spout (Miệng cốc) */
+.molarity-game-advanced .lab-panel .beaker-visual .beaker-spout {
+  width: 130px;
+  height: 12px;
+  background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+  border-radius: 8px 8px 0 0;
+  border: 3px solid #94a3b8;
+  border-bottom: none;
+  box-shadow: 
+    inset 0 2px 4px rgba(255,255,255,0.5),
+    0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Main Beaker Body */
+.molarity-game-advanced .lab-panel .beaker-visual .beaker {
+  position: relative;
+  width: 120px;
+  height: 160px;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0.3) 0%,
+    rgba(255,255,255,0.8) 10%,
+    rgba(255,255,255,0.95) 45%,
+    rgba(255,255,255,0.98) 50%,
+    rgba(255,255,255,0.95) 55%,
+    rgba(255,255,255,0.7) 90%,
+    rgba(255,255,255,0.3) 100%
+  );
+  border-left: 4px solid #94a3b8;
+  border-right: 4px solid #64748b;
+  border-bottom: 4px solid #94a3b8;
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 20px rgba(2,6,23,0.4),
+    inset 8px 0 16px rgba(255,255,255,0.4),
+    inset -8px 0 16px rgba(0,0,0,0.1);
+  z-index: 5;
+}
+
+/* Glass Reflection Effect */
+.molarity-game-advanced .lab-panel .beaker-visual .beaker::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.7) 0%,
+    rgba(255,255,255,0.4) 50%,
+    transparent 100%
+  );
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Glass Shine Animation */
+.molarity-game-advanced .lab-panel .beaker-visual .beaker::after {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: 10%;
+  width: 30px;
+  height: 80%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,0.6) 50%,
+    transparent 100%
+  );
+  transform: skewX(-10deg);
+  animation: glassShine 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 11;
+}
+
+@keyframes glassShine {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* Liquid Content */
+.molarity-game-advanced .lab-panel .beaker-visual .beaker .liquid {
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
+  
+  border-radius: 0 0 11px 11px;
+  transition: height 0.5s ease, background 0.3s;
+  box-shadow: 
+    inset 0 4px 12px rgba(0,0,0,0.2),
+    inset 0 -2px 8px rgba(255,255,255,0.3);
+  z-index: 1;
+}
+
+/* Liquid Surface Effect */
+.molarity-game-advanced .lab-panel .beaker-visual .beaker .liquid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.7) 0%,
+    rgba(255,255,255,0.3) 50%,
+    transparent 100%
+  );
+  border-radius: 50%;
+}
+
+/* Volume Measurement Marks */
+.molarity-game-advanced .lab-panel .beaker-visual .beaker .scale {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #475569 15%,
+    #475569 30%,
+    transparent 30%
+  );
+  font-size: 9px;
+  font-weight: 700;
+  color: #475569;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding-left: 35%;
+  text-shadow: 0 0 2px rgba(255,255,255,0.9);
+}
+
+.molarity-game-advanced .lab-panel .beaker-visual .beaker .scale-5L { top: 5%; }
+.molarity-game-advanced .lab-panel .beaker-visual .beaker .scale-4L { top: 25%; }
+.molarity-game-advanced .lab-panel .beaker-visual .beaker .scale-3L { top: 45%; }
+.molarity-game-advanced .lab-panel .beaker-visual .beaker .scale-2L { top: 65%; }
+.molarity-game-advanced .lab-panel .beaker-visual .beaker .scale-1L { top: 85%; }
+
+/* Beaker Base Stand */
+.molarity-game-advanced .lab-panel .beaker-visual .beaker-stand {
+  width: 140px;
+  height: 10px;
+  background: linear-gradient(180deg, #64748b 0%, #475569 100%);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  margin-top: -1px;
+}
+
+/* Dual concentration badges */
+.molarity-game-advanced .lab-panel .beaker-visual .concentration-badges {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.molarity-game-advanced .lab-panel .beaker-visual .concentration-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: white;
+}
+
+.molarity-game-advanced .lab-panel .beaker-visual .concentration-badge.percent {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.molarity-game-advanced .lab-panel .beaker-visual .concentration-badge.molar {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.molarity-game-advanced .lab-panel .beaker-visual .concentration-badge .val {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.molarity-game-advanced .lab-panel .beaker-visual .concentration-badge .unit {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* Controls */
+.molarity-game-advanced .lab-panel .control-row {
+  background: #f1f5f9;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.molarity-game-advanced .lab-panel .control-row .label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.molarity-game-advanced .lab-panel .control-row .label sub {
+  font-size: 10px;
+}
+
+.molarity-game-advanced .lab-panel .control-row .adjust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.molarity-game-advanced .lab-panel .control-row .adjust button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.molarity-game-advanced .lab-panel .control-row .adjust button:hover {
+  background: #2563eb;
+}
+
+.molarity-game-advanced .lab-panel .control-row .adjust .value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  font-family: 'Courier New', monospace;
+}
+
+.molarity-game-advanced .lab-panel .control-row input[type="range"] {
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background: #cbd5e1;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.molarity-game-advanced .lab-panel .control-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+}
+
+/* Values Toggle */
+.molarity-game-advanced .lab-panel .values-toggle {
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.molarity-game-advanced .lab-panel .values-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  color: #475569;
+  cursor: pointer;
+}
+
+.molarity-game-advanced .lab-panel .values-toggle .values-list {
+  margin-top: 10px;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  border-left: 3px solid #3b82f6;
+}
+
+.molarity-game-advanced .lab-panel .values-toggle .values-list p {
+  margin: 3px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.molarity-game-advanced .lab-panel .values-toggle .values-list p sub {
+  font-size: 9px;
+}
+
+.molarity-game-advanced .lab-panel .values-toggle .values-list hr {
+  border: none;
+  border-top: 1px dashed #cbd5e1;
+  margin: 6px 0;
+}
+
+.molarity-game-advanced .lab-panel .values-toggle .values-list p strong {
+  color: #3b82f6;
+}
+
+/* ===== RIGHT: CHALLENGE PANEL ===== */
+.molarity-game-advanced .challenge-panel {
+  flex: 1;
+  background: white;
+  border-radius: 16px;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.molarity-game-advanced .challenge-panel .challenge-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.molarity-game-advanced .challenge-panel .question-box {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 12px;
+  color: white;
+  align-items: flex-start;
+}
+
+.molarity-game-advanced .challenge-panel .question-box svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.molarity-game-advanced .challenge-panel .question-box p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Formula Section */
+.molarity-game-advanced .challenge-panel .formula-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.molarity-game-advanced .challenge-panel .btn-formula {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  background: #e2e8f0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.molarity-game-advanced .challenge-panel .btn-formula:hover {
+  background: #cbd5e1;
+}
+
+.molarity-game-advanced .challenge-panel .formula-ref {
+  background: #fef3c7;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border-left: 4px solid #f59e0b;
+}
+
+.molarity-game-advanced .challenge-panel .formula-ref h4 {
+  margin: 0 0 10px 0;
+  font-size: 13px;
+  color: #92400e;
+}
+
+.molarity-game-advanced .challenge-panel .formula-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.molarity-game-advanced .challenge-panel .formula-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.molarity-game-advanced .challenge-panel .formula-item .formula-name {
+  font-size: 11px;
+  color: #78350f;
+  font-weight: 500;
+}
+
+.molarity-game-advanced .challenge-panel .formula-item code {
+  background: rgba(245, 158, 11, 0.2);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #b45309;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+}
+
+.molarity-game-advanced .challenge-panel .formula-item code sub {
+  font-size: 9px;
+}
+
+/* Given Data */
+.molarity-game-advanced .challenge-panel .given-data {
+  background: #f0fdf4;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border-left: 4px solid #22c55e;
+}
+
+.molarity-game-advanced .challenge-panel .given-data h4 {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #166534;
+}
+
+.molarity-game-advanced .challenge-panel .given-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.molarity-game-advanced .challenge-panel .given-item {
+  background: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #166534;
+  font-family: 'Courier New', monospace;
+}
+
+.molarity-game-advanced .challenge-panel .given-item strong {
+  color: #15803d;
+}
+
+/* Answer Input */
+.molarity-game-advanced .challenge-panel .answer-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.molarity-game-advanced .challenge-panel .answer-row label {
+  font-weight: 600;
+  color: #334155;
+  font-size: 13px;
+}
+
+.molarity-game-advanced .challenge-panel .answer-row .input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.molarity-game-advanced .challenge-panel .answer-row input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  transition: border-color 0.2s;
+}
+
+.molarity-game-advanced .challenge-panel .answer-row input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.molarity-game-advanced .challenge-panel .answer-row input:disabled {
+  background: #f1f5f9;
+}
+
+.molarity-game-advanced .challenge-panel .answer-row .unit-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.molarity-game-advanced .challenge-panel .answer-row .answer-hint {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Hint Section */
+.molarity-game-advanced .challenge-panel .hint-section {
+}
+
+.molarity-game-advanced .challenge-panel .hint-section .btn-hint {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #ec4899, #f43f5e);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+
+.molarity-game-advanced .challenge-panel .hint-section .btn-hint:hover {
+  opacity: 0.9;
+}
+
+.molarity-game-advanced .challenge-panel .hint-section .hint-content {
+  margin-top: 10px;
+  padding: 12px;
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.molarity-game-advanced .challenge-panel .hint-section .hint-content > svg {
+  flex-shrink: 0;
+  color: #f59e0b;
+}
+
+.molarity-game-advanced .challenge-panel .hint-section .hint-content p {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  color: #78350f;
+  line-height: 1.4;
+}
+
+.molarity-game-advanced .challenge-panel .hint-section .hint-content p strong {
+  color: #92400e;
+}
+
+/* Action Buttons */
+.molarity-game-advanced .challenge-panel .action-row {
+  display: flex;
+  gap: 12px;
+}
+
+.molarity-game-advanced .challenge-panel .action-row button {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.molarity-game-advanced .challenge-panel .action-row button:hover {
+  transform: translateY(-2px);
+}
+
+.molarity-game-advanced .challenge-panel .action-row .btn-reset {
+  background: #ef4444;
+  color: white;
+}
+
+.molarity-game-advanced .challenge-panel .action-row .btn-check {
+  background: #22c55e;
+  color: white;
+}
+
+/* Result Box */
+.molarity-game-advanced .challenge-panel .result-box {
+  padding: 16px 20px;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: auto;
+}
+
+.molarity-game-advanced .challenge-panel .result-box.correct {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border: 2px solid #22c55e;
+}
+
+.molarity-game-advanced .challenge-panel .result-box.incorrect {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+}
+
+.molarity-game-advanced .challenge-panel .result-box h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #166534;
+}
+
+.molarity-game-advanced .challenge-panel .result-box.incorrect h3 {
+  color: #b45309;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .points {
+  font-size: 22px;
+  font-weight: 700;
+  color: #15803d;
+  margin: 8px 0;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .correct-answer {
+  background: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin: 10px 0;
+  border-left: 4px solid #22c55e;
+  text-align: left;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .correct-answer .label {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .correct-answer .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #166534;
+  font-family: 'Courier New', monospace;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .correct-answer .display {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .explanation {
+  background: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 10px 0;
+  text-align: left;
+  border-left: 4px solid #f59e0b;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .explanation p {
+  margin: 0 0 4px 0;
+  font-size: 12px;
+  color: #78350f;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .explanation p strong {
+  color: #92400e;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .result-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .result-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .result-actions button:hover {
+  transform: translateY(-2px);
+}
+
+.molarity-game-advanced .challenge-panel .result-box .result-actions .btn-retry {
+  background: #ef4444;
+  color: white;
+}
+
+.molarity-game-advanced .challenge-panel .result-box .result-actions .btn-next {
+  background: #3b82f6;
+  color: white;
+}
+
+/* ===== GAME COMPLETE MODAL ===== */
+.molarity-game-advanced .game-complete-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.molarity-game-advanced .game-complete-modal {
+  background: white;
+  padding: 48px;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 520px;
+  width: 90%;
+  animation: modalPop 0.4s ease;
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.molarity-game-advanced .game-complete-modal .trophy-icon {
+  color: #f59e0b;
+  margin-bottom: 16px;
+}
+
+.molarity-game-advanced .game-complete-modal h2 {
+  font-size: 32px;
+  color: #1e293b;
+  margin: 0 0 24px 0;
+}
+
+.molarity-game-advanced .game-complete-modal .stats {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  padding: 24px;
+  border-radius: 16px;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.molarity-game-advanced .game-complete-modal .stats p {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.molarity-game-advanced .game-complete-modal .stats .score {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.molarity-game-advanced .game-complete-modal .message {
+  font-size: 18px;
+  color: #64748b;
+  margin-bottom: 28px;
+}
+
+.molarity-game-advanced .game-complete-modal .modal-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.molarity-game-advanced .game-complete-modal .modal-actions button,
+.molarity-game-advanced .game-complete-modal .modal-actions a {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s;
+}
+
+.molarity-game-advanced .game-complete-modal .modal-actions button:hover,
+.molarity-game-advanced .game-complete-modal .modal-actions a:hover {
+  transform: translateY(-2px);
+}
+
+.molarity-game-advanced .game-complete-modal .modal-actions .btn-replay {
+  background: #22c55e;
+  color: white;
+}
+
+.molarity-game-advanced .game-complete-modal .modal-actions .btn-home {
+  background: #3b82f6;
+  color: white;
+}
+
+/* ===== LOADING SCREEN ===== */
+.molarity-game-advanced .loading-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.molarity-game-advanced .loading-screen svg {
+  color: #3b82f6;
+  margin-bottom: 20px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+
+.molarity-game-advanced .loading-screen h2 {
+  font-size: 28px;
+  margin: 0 0 8px 0;
+}
+
+.molarity-game-advanced .loading-screen p {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+/* ===== SCROLLBAR ===== */
+.molarity-game-advanced .lab-panel::-webkit-scrollbar,
+.molarity-game-advanced .challenge-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.molarity-game-advanced .lab-panel::-webkit-scrollbar-track,
+.molarity-game-advanced .challenge-panel::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.molarity-game-advanced .lab-panel::-webkit-scrollbar-thumb,
+.molarity-game-advanced .challenge-panel::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+}
+
+.molarity-game-advanced .lab-panel::-webkit-scrollbar-thumb:hover,
+.molarity-game-advanced .challenge-panel::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .molarity-game-advanced .molarity-main {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .molarity-game-advanced .lab-panel {
+    width: 100%;
+    flex-shrink: 0;
+    max-height: 400px;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .molarity-game-advanced .lab-panel .beaker-visual {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .molarity-game-advanced .lab-panel .control-row {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .molarity-game-advanced .challenge-panel {
+    flex: 1;
+    min-height: 400px;
+  }
+
+  .molarity-game-advanced .challenge-panel .formula-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .molarity-game-advanced .molarity-header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .molarity-game-advanced .molarity-header .header-center {
+    width: 100%;
+  }
+
+  .molarity-game-advanced .molarity-header .header-info {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .molarity-game-advanced .lab-panel {
+    flex-direction: column;
+    max-height: none;
+  }
+
+  .molarity-game-advanced .lab-panel .beaker-visual .concentration-badges {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .molarity-game-advanced .challenge-panel .given-list {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .molarity-game-advanced .molarity-main {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .molarity-game-advanced .lab-panel,
+  .molarity-game-advanced .challenge-panel {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .molarity-game-advanced .challenge-panel .question-box {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .molarity-game-advanced .challenge-panel .action-row {
+    flex-direction: column;
+  }
+
+  .molarity-game-advanced .game-complete-modal {
+    padding: 24px;
+  }
+
+  .molarity-game-advanced .game-complete-modal .modal-actions {
+    flex-direction: column;
+  }
+}

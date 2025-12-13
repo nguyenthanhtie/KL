@@ -444,22 +444,64 @@ const challenges = [
   // SOLUTION - Grade 10 (NEW)
   {
     id: 21,
-    name: 'CD — DUNG DỊCH',
-    description: 'Ôn các khái niệm dung dịch: chất tan, dung môi, độ tan, nồng độ phần trăm, nồng độ mol, pha chế và pH. Bao gồm câu hỏi trắc nghiệm và thực hành pha chế.',
+    name: 'Chất Tan - Dung Môi',
+    description: 'Khám phá khái niệm chất tan, dung môi qua thí nghiệm tương tác! Thử nghiệm độ tan của muối, đường, cát, iot trong nước và cồn.',
     icon: '💧',
+    difficulty: 'Dễ',
+    difficultyLevel: 'easy',
+    difficultyColor: 'bg-green-500',
+    category: 'solution',
+    grade: 10,
+    time: '10-15 phút',
+    points: 180,
+    status: 'available',
+    link: '/advanced-challenge/bai06-chat-tan-dung-moi',
+    features: ['12 thí nghiệm', 'Mô phỏng bình thí nghiệm', 'Hiệu ứng hòa tan thực tế', 'Học về dung môi phân cực'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 6
+    }
+  },
+  // SOLUTION - ADVANCED - Grade 10 (NEW)
+  {
+    id: 22,
+    name: 'Pha Chế Dung Dịch - Nâng Cao',
+    description: 'Thử thách tổng hợp về nồng độ phần trăm, nồng độ mol, chuyển đổi, pha loãng và pha trộn! 20 câu hỏi nâng cao với mô phỏng thí nghiệm 3D.',
+    icon: '⚗️',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-500',
+    category: 'solution',
+    grade: 10,
+    time: '25-35 phút',
+    points: 420,
+    status: 'available',
+    link: '/advanced-challenge/pha-che-dung-dich-nang-cao',
+    features: ['20 thử thách', 'Nồng độ % & mol', 'Chuyển đổi C% ↔ CM', 'Pha loãng & trộn', 'Bài tập thực hành PTN'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 6
+    }
+  },
+  // HALOGEN - Grade 10 (NEW)
+  {
+    id: 23,
+    name: 'Nhóm Halogen (VIIA)',
+    description: 'Tổng hợp kiến thức nhóm halogen: Flo, Clo, Brom, Iot — tính chất, phản ứng, ứng dụng và một số hợp chất quan trọng (HCl, NaCl, Ca(ClO)2).',
+    icon: '🧪',
     difficulty: 'Trung bình',
     difficultyLevel: 'medium',
-    difficultyColor: 'bg-cyan-500',
-    category: 'solution',
+    difficultyColor: 'bg-indigo-500',
+    category: 'structure',
     grade: 10,
     time: '15-25 phút',
     points: 260,
     status: 'available',
-    link: '/advanced-challenge/cd-dung-dich',
-    features: ['Khái niệm cơ bản', 'Bài tập nồng độ %', 'Pha chế molarity', 'Mini-quiz tự chấm'],
+    link: '/advanced-challenge/nhom-halogen',
+    features: ['Flo, Clo, Brom, Iot', 'Tính chất hoá học và vật lí', 'Ứng dụng: khử trùng, tẩy rửa, y tế', 'Hợp chất: HCl, NaCl, Ca(ClO)2'],
     prerequisite: {
       classId: 10,
-      lessonId: 6
+      lessonId: 7
     }
   },
   
