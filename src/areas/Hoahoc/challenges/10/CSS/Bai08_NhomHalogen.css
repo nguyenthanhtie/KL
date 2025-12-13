@@ -83,7 +83,8 @@
   justify-content: space-between;
   margin-bottom: 10px;
   color: white;
-  font-weight: 500;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .progress-text {
@@ -349,8 +350,8 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 3px solid white;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.3);
   margin-left: auto;
 }
 
@@ -371,6 +372,8 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
+  font-weight: 600;
+  color: #334155;
 }
 
 .color-btn:hover:not(:disabled) {
@@ -388,7 +391,8 @@
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* === SORT ORDER === */
@@ -468,8 +472,9 @@
 }
 
 .order-display .placeholder {
-  color: #94a3b8;
+  color: #64748b;
   font-style: italic;
+  font-weight: 500;
 }
 
 .order-item {
@@ -477,15 +482,21 @@
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border-radius: 10px;
-  font-weight: 600;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .order-item.correct {
   background: linear-gradient(135deg, #10b981, #059669);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
 .order-item.wrong {
   background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
 .btn-clear {
@@ -538,8 +549,9 @@
 
 .statement-text {
   flex: 1;
-  font-weight: 500;
-  color: #334155;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.5;
 }
 
 .tf-buttons {
@@ -592,7 +604,8 @@
 }
 
 .equation-part {
-  color: #334155;
+  color: #1e293b;
+  font-weight: 600;
 }
 
 .blank-input {
@@ -723,8 +736,9 @@
 
 .step-text {
   flex: 1;
-  font-weight: 500;
-  color: #334155;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.5;
 }
 
 /* === REACTANTS DISPLAY === */

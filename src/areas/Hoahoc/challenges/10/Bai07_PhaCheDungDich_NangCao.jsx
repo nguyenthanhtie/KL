@@ -266,14 +266,15 @@ const PhaCheDungDichNangCao = () => {
   const moles = solute.molarMass > 0 ? massСТ / solute.molarMass : 0;
   const concentrationMolar = volume > 0 ? moles / volume : 0;
 
-  // Check for saved progress
+  // Check for saved progress on component mount - chỉ chạy 1 lần
   useEffect(() => {
-    if (hasProgress && !gameStarted) {
+    if (hasProgress) {
       setShowResumeDialog(true);
     } else {
       setGameStarted(true);
     }
-  }, [hasProgress, gameStarted]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Reset on challenge change
   useEffect(() => {
@@ -286,18 +287,23 @@ const PhaCheDungDichNangCao = () => {
     setShowFormula(false);
   }, [currentIndex]);
 
-  const startGame = (fromBeginning = false) => {
-    setShowResumeDialog(false);
-    if (fromBeginning) {
-      clearProgress();
-    } else {
-      const saved = getProgress();
-      if (saved) {
-        setCurrentIndex(saved.currentIndex || 0);
-        setTotalScore(saved.totalScore || 0);
-        setCompletedIds(saved.completedIds || []);
-      }
+  const handleResume = () => {
+    const saved = getProgress();
+    if (saved) {
+      setCurrentIndex(saved.currentIndex || 0);
+      setTotalScore(saved.totalScore || 0);
+      setCompletedIds(saved.completedIds || []);
     }
+    setShowResumeDialog(false);
+    setGameStarted(true);
+  };
+
+  const handleStartFromBeginning = () => {
+    clearProgress();
+    setCurrentIndex(0);
+    setTotalScore(0);
+    setCompletedIds([]);
+    setShowResumeDialog(false);
     setGameStarted(true);
   };
 
@@ -735,16 +741,18 @@ const PhaCheDungDichNangCao = () => {
         </div>
       </main>
 
-      <ResumeDialog
-        show={showResumeDialog}
-        onResume={() => startGame(false)}
-        onRestart={() => startGame(true)}
-        progressInfo={{
-          current: (getProgress()?.currentIndex || 0) + 1,
-          total: CHALLENGES.length,
-          score: getProgress()?.totalScore || 0
-        }}
-      />
+      {showResumeDialog && (
+        <ResumeDialog
+          show={showResumeDialog}
+          onResume={handleResume}
+          onRestart={handleStartFromBeginning}
+          progressInfo={{
+            current: (getProgress()?.currentIndex || 0) + 1,
+            total: CHALLENGES.length,
+            score: getProgress()?.totalScore || 0
+          }}
+        />
+      )}
     </div>
   );
 };

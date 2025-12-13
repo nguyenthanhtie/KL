@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { 
   ArrowLeft, Trophy, Star, Zap, CheckCircle, XCircle, 
   Beaker, FlaskConical, Atom, Sparkles, ChevronRight,
-  RotateCcw, HelpCircle, Play, Award
+  RotateCcw, HelpCircle, Play, Award, AlertCircle
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai08_NhomHalogen.css';
 
 // ==================== DỮ LIỆU CÁC CÂU HỎI ====================
@@ -455,6 +456,8 @@ const Bai08_NhomHalogen = () => {
   const [showResult, setShowResult] = useState(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const [savedProgress, setSavedProgress] = useState(null);
   
   // Answer states
   const [mcAnswer, setMcAnswer] = useState(null);
@@ -467,17 +470,36 @@ const Bai08_NhomHalogen = () => {
   const currentQuestion = QUIZ_DATA[currentIndex];
   const totalPoints = QUIZ_DATA.reduce((sum, q) => sum + q.points, 0);
 
-  // Load saved progress
+  // Load saved progress - chỉ chạy 1 lần khi mount
   useEffect(() => {
     if (hasProgress) {
       const saved = getProgress();
       if (saved) {
-        setCurrentIndex(saved.currentIndex || 0);
-        setScore(saved.score || 0);
-        setCompleted(saved.completed || []);
+        setSavedProgress(saved);
+        setShowResumeDialog(true);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Handle resume dialog actions
+  const handleResume = () => {
+    if (savedProgress) {
+      setCurrentIndex(savedProgress.currentIndex || 0);
+      setScore(savedProgress.score || 0);
+      setCompleted(savedProgress.completed || []);
+    }
+    setShowResumeDialog(false);
+  };
+
+  const handleRestart = () => {
+    clearProgress();
+    setCurrentIndex(0);
+    setScore(0);
+    setCompleted([]);
+    resetAnswerStates();
+    setShowResumeDialog(false);
+  };
 
   // Reset answer states when changing question
   const resetAnswerStates = useCallback(() => {
@@ -674,6 +696,20 @@ const Bai08_NhomHalogen = () => {
 
   return (
     <div className="halogen-quiz-game">
+      {/* Resume Dialog */}
+      {showResumeDialog && savedProgress && (
+        <ResumeDialog
+          show={showResumeDialog}
+          onResume={handleResume}
+          onRestart={handleRestart}
+          progressInfo={{
+            current: savedProgress.currentIndex + 1,
+            total: QUIZ_DATA.length,
+            score: savedProgress.score
+          }}
+        />
+      )}
+
       {/* Header */}
       <header className="quiz-header">
         <Link to="/hoa-hoc/lop-10" className="back-btn">

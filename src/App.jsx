@@ -26,6 +26,7 @@ import XayDungPhanTu from './areas/Hoahoc/challenges/10/Bai03_XayDungPhanTu';
 import PhaCheDungDich from './areas/Hoahoc/challenges/08/Bai06_PhaCheDungDich';
 import PhaCheDungDichNangCao from './areas/Hoahoc/challenges/10/Bai07_PhaCheDungDich_NangCao';
 import Bai08_NhomHalogen from './areas/Hoahoc/challenges/10/Bai08_NhomHalogen';
+import Bai09_Oxi_LuuHuynh from './areas/Hoahoc/challenges/10/Bai09_Oxi_LuuHuynh';
 import CauTrucNguyenTu from './areas/Hoahoc/challenges/10/Bai01_CauTrucNguyenTu';
 import PhongThiNghiem from './areas/Hoahoc/challenges/08/Bai05_PhongThiNghiem';
 import TinhOxiHoa from './areas/Hoahoc/challenges/10/Bai04_TinhOxiHoa';
@@ -68,6 +69,7 @@ const AppContent = () => {
         <Route path="/advanced-challenge/pha-che-dung-dich" element={<PhaCheDungDich />} />
         <Route path="/advanced-challenge/pha-che-dung-dich-nang-cao" element={<PhaCheDungDichNangCao />} />
         <Route path="/advanced-challenge/nhom-halogen" element={<Bai08_NhomHalogen />} />
+        <Route path="/advanced-challenge/oxi-luu-huynh" element={<Bai09_Oxi_LuuHuynh />} />
         <Route path="/advanced-challenge/cau-truc-nguyen-tu" element={<CauTrucNguyenTu />} />
         <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
         <Route path="/advanced-challenge/tinh-oxi-hoa" element={<TinhOxiHoa />} />

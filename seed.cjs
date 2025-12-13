@@ -504,6 +504,27 @@ const challenges = [
       lessonId: 7
     }
   },
+  // OXI - LƯU HUỲNH - Grade 10 (NEW)
+  {
+    id: 24,
+    name: 'Oxi - Lưu Huỳnh',
+    description: 'Tổng hợp kiến thức về oxi và lưu huỳnh: tính chất vật lý, phản ứng hóa học, hợp chất và thí nghiệm phòng lab.',
+    icon: '🔥',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-yellow-500',
+    category: 'structure',
+    grade: 10,
+    time: '15-25 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/oxi-luu-huynh',
+    features: ['Tính chất O₂ và S', 'Phản ứng cháy, SO₂, H₂S, H₂SO₄', 'Thí nghiệm điều chế O₂', 'Bài tập tính toán'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 20
+    }
+  },
   
     
   
@@ -511,7 +532,12 @@ const challenges = [
 
 async function seedDatabase() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://2200002540_db_user:Luan123@dan-1211.epxn7qi.mongodb.net/chemlearn?retryWrites=true&w=majority');
+    const mongoUri = process.env.MONGODB_URI;
+    if (!mongoUri) {
+      console.error('✗ MONGODB_URI environment variable is not set. Aborting seed.');
+      process.exit(1);
+    }
+    await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log('✓ Đã kết nối MongoDB');
 
     // Xóa dữ liệu cũ
