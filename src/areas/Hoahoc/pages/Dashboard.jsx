@@ -182,19 +182,6 @@ const Dashboard = () => {
     return '📖'; // default icon
   };
 
-  const getChapterTitle = (chapterId) => {
-    const chapterTitles = {
-      1: 'Chương 1: Chất - Nguyên tử - Phân tử',
-      2: 'Chương 2: Phản ứng hóa học',
-      3: 'Chương 3: Mol và tính toán hóa học',
-      4: 'Chương 4: Oxi - Không khí',
-      5: 'Chương 5: Hiđro - Nước',
-      6: 'Chương 6: Axit - Bazơ - Muối',
-      7: 'Chương 7: Dung dịch',
-      8: 'Ôn tập cuối năm'
-    };
-    return chapterTitles[chapterId] || `Chương ${chapterId}`;
-  };
 
   // Compute current-class specific statistics (used by UI cards)
   const currentClassData = classes.find(c => c.classId === selectedClass) || null;
@@ -334,7 +321,7 @@ const Dashboard = () => {
               <div className="space-y-4">
                 {classData.chapters.map((chapter) => (
                   <div key={chapter.chapterId} className="p-4 bg-gray-50 rounded-lg">
-                    <h4 className="font-semibold text-gray-800 mb-3">{getChapterTitle(chapter.chapterId)}</h4>
+                    <h4 className="font-semibold text-gray-800 mb-3">{chapter.chapterName || getChapterTitle(chapter.chapterId)}</h4>
                     <div className="space-y-3">
                       {chapter.lessons.map((lesson) => {
                         // Calculate uniqueId for this lesson

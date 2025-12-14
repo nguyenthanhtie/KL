@@ -1,13 +1,13 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 3,
-  chapterName: "Chương 3: Một số hợp chất thông dụng",
-  lessonId: 12,
-  order: 12,
-  title: 'Bài 12: Phân bón hóa học',
+  curriculumType: 'chantroicangtao',
+  chapterId: 2,
+  chapterName: "Chủ đề 2: Một số hợp chất vô cơ. Thang pH",
+  lessonId: 14,
+  title: 'Bài 14: Phân bón hóa học',
+  order: 14,
   theory: `
-    <h2>🌾 Bài 12: Phân bón hóa học</h2>
+    <h2>🌾 Bài 14: Phân bón hóa học</h2>
     <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận biết nhóm phân đạm, lân, kali, NPK; hiểu vai trò và lưu ý an toàn/môi trường.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
@@ -61,67 +61,57 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">So sánh phân đạm/lân/kali: <em>/images/hoahoc/lesson12-fertilizers.png</em></p>
-      <p style="margin:0;">Chu trình N trong đất: <em>/images/hoahoc/lesson12-nitrogen-cycle.png</em></p>
+      <p style="margin:0 0 4px;">So sánh phân đạm/lân/kali: <em>/images/hoahoc/lesson14-fertilizers.png</em></p>
+      <p style="margin:0;">Chu trình N trong đất: <em>/images/hoahoc/lesson14-nitrogen-cycle.png</em></p>
     </div>
   `,
   game: [
     {
-      type: 'multiple-choice',
       question: 'Phân đạm cung cấp nguyên tố:',
       options: ['P', 'K', 'N', 'Ca'],
       correctAnswer: 2
     },
     {
-      type: 'multiple-choice',
       question: 'Hàm lượng N trong ure khoảng:',
       options: ['16%', '30%', '46%', '60%'],
       correctAnswer: 2
     },
     {
-      type: 'multiple-choice',
       question: 'Phân kali điển hình là:',
       options: ['KCl, K₂SO₄', 'NH₄NO₃', 'Ca(H₂PO₄)₂', 'NaCl'],
       correctAnswer: 0
     },
     {
-      type: 'multiple-choice',
       question: 'Supe lân thuộc nhóm:',
       options: ['Phân đạm', 'Phân lân', 'Phân kali', 'Vi lượng'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
       question: 'Nguyên tắc “4 đúng” khi bón phân gồm:',
       options: ['Đúng loại, liều, lúc, cách', 'Đúng giá, chỗ, người, mùa', 'Đúng màu, mùi, vị, pH', 'Đúng đất, nước, khí, nhiệt'],
       correctAnswer: 0
     },
     {
-      type: 'multiple-choice',
       question: 'Công thức NPK 16-16-8 có ý nghĩa:',
       options: ['16% N, 16% P₂O₅, 8% K₂O', '16% N, 8% P₂O₅, 16% K₂O', '8% N, 16% P₂O₅, 16% K₂O', 'Tổng 40% chất trơ'],
       correctAnswer: 0
     },
     {
-      type: 'multiple-choice',
       question: 'Phân lân nung chảy tan tốt trong:',
       options: ['Nước lạnh', 'Dung dịch kiềm', 'Axit yếu trong đất chua', 'Rượu etylic'],
       correctAnswer: 2
     },
     {
-      type: 'multiple-choice',
       question: 'Lạm dụng phân đạm dễ gây hậu quả:',
       options: ['Đất kiềm hóa mạnh', 'Tích lũy nitrat, ô nhiễm nước', 'Thiếu vi lượng Fe', 'Giảm năng suất lá'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
       question: 'Khi bón phân kali cho cây củ (khoai, sắn) thường giúp:',
       options: ['Tăng protein hạt', 'Cứng cây, tăng chất lượng củ', 'Tăng màu xanh lá', 'Giảm đường trong củ'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
       question: 'Bón lót thường áp dụng cho:',
       options: ['Phân lân và một phần đạm', 'Chỉ phân đạm', 'Chỉ phân kali', 'Tất cả đều bón thúc'],
       correctAnswer: 0

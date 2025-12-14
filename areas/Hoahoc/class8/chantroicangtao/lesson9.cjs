@@ -1,13 +1,13 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 3,
-  chapterName: "Chương 3: Một số hợp chất thông dụng",
-  lessonId: 8,
-  order: 8,
-  title: 'Bài 8: Acid',
+  curriculumType: 'chantroicangtao',
+  chapterId: 2,
+  chapterName: "Chủ đề 2: Một số hợp chất vô cơ. Thang pH",
+  lessonId: 9,
+  title: 'Bài 9: Acid',
+  order: 9,
   theory: `
-    <h2>🌋 Bài 8: Acid</h2>
+    <h2>🌋 Bài 9: Acid</h2>
     <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu acid, tính chất, phản ứng đặc trưng và an toàn pha loãng.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
@@ -68,8 +68,8 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Chu trình phản ứng acid: <em>/images/hoahoc/lesson8-acid.png</em></p>
-      <p style="margin:0;">Sơ đồ pha loãng an toàn: <em>/images/hoahoc/lesson8-dilution.png</em></p>
+      <p style="margin:0 0 4px;">Chu trình phản ứng acid: <em>/images/hoahoc/lesson9-acid.png</em></p>
+      <p style="margin:0;">Sơ đồ pha loãng an toàn: <em>/images/hoahoc/lesson9-dilution.png</em></p>
     </div>
   `,
   game: [

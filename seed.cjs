@@ -605,10 +605,18 @@ async function seedDatabase() {
       ...(lessons8.canhdieu || []),
       ...(lessons8.chantroicangtao || [])
     ];
+
+    const class9Lessons = Array.isArray(lessons9)
+      ? lessons9
+      : [
+          ...(lessons9.ketnoi || []),
+          ...(lessons9.canhdieu || []),
+          ...(lessons9.chantroicangtao || [])
+        ];
     
     const allLessons = [
       ...class8Lessons,
-      ...lessons9,
+      ...class9Lessons,
       ...lessons10,
       ...lessons11,
       ...lessons12
@@ -665,7 +673,10 @@ async function seedDatabase() {
       (lessons8.ketnoi || []).length, 'Kết nối,',
       (lessons8.canhdieu || []).length, 'Cánh diều,',
       (lessons8.chantroicangtao || []).length, 'Chân trời)');
-    console.log('  - Lớp 9:', lessons9.length, 'bài');
+    console.log('  - Lớp 9:', class9Lessons.length, 'bài (',
+      (lessons9.ketnoi || []).length, 'Kết nối,',
+      (lessons9.canhdieu || []).length, 'Cánh diều,',
+      (lessons9.chantroicangtao || []).length, 'Chân trời)');
     console.log('  - Lớp 10:', lessons10.length, 'bài');
     console.log('  - Lớp 11:', lessons11.length, 'bài');
     console.log('  - Lớp 12:', lessons12.length, 'bài');

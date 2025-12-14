@@ -1,16 +1,16 @@
-// Import tất cả lessons cho lớp 9
-const lesson1 = require('./lesson1.cjs');
-const lesson2 = require('./lesson2.cjs');
-const lesson3 = require('./lesson3.cjs');
-const lesson4 = require('./lesson4.cjs');
-const lesson5 = require('./lesson5.cjs');
-const lesson6 = require('./lesson6.cjs');
+// Index file cho lớp 9 - nhóm theo từng bộ sách
+const ketnoi = require('./ketnoi/index.cjs');
+const canhdieu = require('./canhdieu/index.cjs');
+const chantroicangtao = require('./chantroicangtao/index.cjs');
 
-module.exports = [
-  lesson1,
-  lesson2,
-  lesson3,
-  lesson4,
-  lesson5,
-  lesson6
-];
+// Export lessons grouped by curriculum
+module.exports = {
+  ketnoi: ketnoi,
+  canhdieu: canhdieu,
+  chantroicangtao: chantroicangtao
+};
+
+// Helper: lấy bài học theo bộ sách
+module.exports.getLessonsByCurriculum = function (curriculumType) {
+  return module.exports[curriculumType] || [];
+};

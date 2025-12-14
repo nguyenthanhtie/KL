@@ -1,12 +1,13 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 2,
-  chapterName: "Chương 2: Phản ứng hóa học",
-  lessonId: 7,
-  title: 'Bài 7: Tốc độ phản ứng và chất xúc tác',
+  curriculumType: 'chantroicangtao',
+  chapterId: 1,
+  chapterName: "Chủ đề 1: Phản ứng hóa học",
+  lessonId: 8,
+  title: 'Bài 8: Tốc độ phản ứng và chất xúc tác',
+  order: 8,
   theory: `
-    <h2>🚀 Bài 7: Tốc độ phản ứng và chất xúc tác</h2>
+    <h2>🚀 Bài 8: Tốc độ phản ứng và chất xúc tác</h2>
     <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu tốc độ phản ứng, yếu tố ảnh hưởng và vai trò của xúc tác.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
@@ -59,8 +60,8 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Đồ thị năng lượng hoạt hóa có/không xúc tác: <em>/images/hoahoc/lesson7-catalyst.png</em></p>
-      <p style="margin:0;">Minh họa yếu tố ảnh hưởng tốc độ: <em>/images/hoahoc/lesson7-factors.png</em></p>
+      <p style="margin:0 0 4px;">Đồ thị năng lượng hoạt hóa có/không xúc tác: <em>/images/hoahoc/lesson8-catalyst.png</em></p>
+      <p style="margin:0;">Minh họa yếu tố ảnh hưởng tốc độ: <em>/images/hoahoc/lesson8-factors.png</em></p>
     </div>
   `,
   game: [

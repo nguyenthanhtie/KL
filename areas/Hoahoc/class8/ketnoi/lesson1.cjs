@@ -2,45 +2,77 @@
 module.exports = {
   classId: 8,
   curriculumType: 'ketnoi',
-  chapterId: 0,
+  chapterId: 1,
   chapterName: "Chương mở đầu",
   lessonId: 1,
-  title: "Bài mở đầu: Sử dụng một số hóa chất, thiết bị cơ bản trong phòng thí nghiệm",
-  description: "Giới thiệu về các hóa chất, thiết bị và kỹ thuật sử dụng trong phòng thí nghiệm",
+  title: "Bài 1: Sử dụng một số hóa chất, thiết bị cơ bản trong phòng thí nghiệm",
+  description: "Giới thiệu hóa chất, dụng cụ, an toàn phòng thí nghiệm cho chương Phản ứng hóa học",
   level: "Beginner",
   order: 1,
   theory: `
     <h2>🧪 Bài mở đầu: Sử dụng hóa chất và thiết bị trong phòng thí nghiệm</h2>
-    
-    <h3>I. Một số hóa chất thường dùng</h3>
-    <div style="background: #f0f9ff; padding: 15px; border-left: 4px solid #0284c7; margin: 15px 0;">
-      <h4>1. Axit</h4>
-      <p>• <strong>Axit clohidric (HCl):</strong> Chất lỏng không màu, có mùi hắc</p>
-      <p>• <strong>Axit sunfuric (H₂SO₄):</strong> Chất lỏng sánh, không màu</p>
-      <p>• <strong>Lưu ý:</strong> Không được chạm trực tiếp vào axit</p>
+    <p style="margin:12px 0; color:#334155;">Mục tiêu: nhận diện nhanh hóa chất cơ bản, nắm dụng cụ cốt lõi, và thực hành an toàn tức thì.</p>
+
+    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:16px 0;">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
+        <h4 style="margin:0 0 8px; color:#0f172a;">Hóa chất thường gặp</h4>
+        <ul style="margin:0; padding-left:18px; color:#475569;">
+          <li><strong>HCl:</strong> lỏng, mùi hắc; ăn mòn mạnh.</li>
+          <li><strong>H₂SO₄:</strong> lỏng sánh; thêm axit vào nước khi pha loãng.</li>
+          <li><strong>NaOH, Ca(OH)₂:</strong> bazơ ăn da; bảo quản kín, tránh ẩm.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0fdf4;">
+        <h4 style="margin:0 0 8px; color:#14532d;">Dụng cụ cốt lõi</h4>
+        <ul style="margin:0; padding-left:18px; color:#166534;">
+          <li>Ống nghiệm, giá ống nghiệm: phản ứng nhỏ.</li>
+          <li>Cốc thủy tinh, ống đong: chứa, đo thể tích gần đúng.</li>
+          <li>Pipet/ống nhỏ giọt: lấy thể tích nhỏ chính xác.</li>
+          <li>Cân phân tích: đo khối lượng chuẩn.</li>
+          <li>Đèn cồn, kẹp gỗ: đun nóng an toàn.</li>
+        </ul>
+      </div>
     </div>
 
-    <div style="background: #dcfce7; padding: 15px; border-left: 4px solid #16a34a; margin: 15px 0;">
-      <h4>2. Bazơ</h4>
-      <p>• <strong>Natri hidroxit (NaOH):</strong> Chất rắn màu trắng</p>
-      <p>• <strong>Canxi hidroxit (Ca(OH)₂):</strong> Bột trắng, ít tan trong nước</p>
+    <div style="margin:18px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
+      <h3 style="margin:0 0 10px; color:#312e81;">Sơ đồ thao tác an toàn nhanh</h3>
+      <ol style="margin:0; padding-left:18px; color:#334155;">
+        <li>Chuẩn bị: áo blouse, kính, găng; kiểm tra dụng cụ sạch, khô.</li>
+        <li>Cân/đong: hiệu chỉnh cân về 0; lót giấy/boat; đo thể tích bằng ống đong ở tầm mắt.</li>
+        <li>Pha chế: luôn rót <strong>axit vào nước</strong> từ từ, khuấy nhẹ.</li>
+        <li>Đun nóng: hướng miệng ống nghiệm ra xa, kẹp và lắc nhẹ.</li>
+        <li>Xử lý sự cố: rửa ngay bằng nước nhiều phút nếu dính da/mắt; báo giáo viên.</li>
+      </ol>
     </div>
 
-    <h3>II. Thiết bị phòng thí nghiệm</h3>
-    <ul>
-      <li>🧪 <strong>Ống nghiệm:</strong> Dùng để chứa và pha trộn hóa chất</li>
-      <li>🔬 <strong>Kính hiển vi:</strong> Quan sát các mẫu vật nhỏ</li>
-      <li>⚖️ <strong>Cân phân tích:</strong> Cân chính xác khối lượng chất</li>
-      <li>🌡️ <strong>Nhiệt kế:</strong> Đo nhiệt độ</li>
-      <li>🔥 <strong>Đèn cồn:</strong> Nguồn nhiệt trong thí nghiệm</li>
-    </ul>
+    <div style="margin:18px 0; display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+        <h4 style="margin:0 0 8px; color:#9a3412;">An toàn tức thì</h4>
+        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+          <li>Không nếm, không ngửi trực tiếp; dùng tay quạt nhẹ hơi.</li>
+          <li>Không đổ hóa chất thừa về chai gốc.</li>
+          <li>Không để gần nguồn lửa khi dùng dung môi dễ bay hơi.</li>
+          <li>Rửa tay sau khi thao tác; thu gom rác hóa chất đúng nơi.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#eff6ff;">
+        <h4 style="margin:0 0 8px; color:#1d4ed8;">Mẹo ghi nhớ nhanh</h4>
+        <ul style="margin:0; padding-left:18px; color:#1e3a8a;">
+          <li><strong>A vào N</strong>: Axit vào Nước.</li>
+          <li><strong>3 kiểm tra</strong>: cân về 0, ống đong ngang mắt, kẹp chắc trước khi đun.</li>
+          <li><strong>3 tránh</strong>: tránh hít mạnh, tránh quay miệng ống vào người, tránh để tràn hóa chất.</li>
+        </ul>
+      </div>
+    </div>
 
-    <h3>III. Quy tắc an toàn</h3>
-    <div style="background: #fef2f2; padding: 15px; border-left: 4px solid #dc2626; margin: 15px 0;">
-      <p>⚠️ <strong>Luôn đeo kính bảo hộ và áo blouse</strong></p>
-      <p>⚠️ <strong>Không nếm, ngửi trực tiếp hóa chất</strong></p>
-      <p>⚠️ <strong>Rửa tay sau khi làm thí nghiệm</strong></p>
-      <p>⚠️ <strong>Báo cáo ngay khi có sự cố</strong></p>
+    <div style="margin:18px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
+      <h3 style="margin:0 0 10px; color:#0f172a;">Mini quiz đọc nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#334155;">
+        <li>Khi pha loãng H₂SO₄ đặc, rót theo chiều nào?</li>
+        <li>Thiết bị đo khối lượng chính xác? Vì sao cần lót giấy?</li>
+        <li>Khi đun ống nghiệm, miệng ống nên hướng về đâu?</li>
+      </ul>
+      <p style="margin:10px 0 0; color:#475569; font-size:14px;">Trả lời nhanh để tự check trước khi làm bài test 10 câu.</p>
     </div>
   `,
   game: [
@@ -75,6 +107,97 @@ module.exports = {
       ],
       correctAnswer: 1,
       explanation: "✅ Natri hidroxit có công thức hóa học là NaOH.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Thiết bị nào dùng để đun nóng an toàn trong phòng thí nghiệm?",
+      options: [
+        "Ống đong",
+        "Đèn cồn",
+        "Pipet",
+        "Cân phân tích"
+      ],
+      correctAnswer: 1,
+      explanation: "Đèn cồn cung cấp nhiệt để đun nóng mẫu thử ở quy mô nhỏ.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Khi dung dịch bắn vào mắt, thao tác đúng là:",
+      options: [
+        "Dùng giấy lau",
+        "Rửa ngay bằng nhiều nước và báo giáo viên",
+        "Nhắm mắt đợi",
+        "Tiếp tục thí nghiệm"
+      ],
+      correctAnswer: 1,
+      explanation: "Rửa ngay dưới vòi nước và báo giáo viên để xử lý kịp thời.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Dụng cụ đo thể tích gần đúng (ml) thường dùng là:",
+      options: [
+        "Ống đong",
+        "Chén sứ",
+        "Phiễu giấy",
+        "Đũa thủy tinh"
+      ],
+      correctAnswer: 0,
+      explanation: "Ống đong chia vạch để đo thể tích dung dịch gần đúng.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Làm việc với axit/bazơ mạnh cần:",
+      options: [
+        "Mang kính, găng tay, áo blouse",
+        "Không cần bảo hộ",
+        "Thử bằng tay xem nóng",
+        "Ngửi trực tiếp"
+      ],
+      correctAnswer: 0,
+      explanation: "Trang bị bảo hộ cá nhân để tránh bỏng hóa chất.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Dụng cụ lấy lượng nhỏ dung dịch chính xác là:",
+      options: [
+        "Ống hút nhỏ giọt/Pipet",
+        "Chai rửa",
+        "Chày cối",
+        "Kẹp gỗ"
+      ],
+      correctAnswer: 0,
+      explanation: "Pipet/ống nhỏ giọt cho phép lấy thể tích nhỏ chính xác.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Bước đầu tiên trước khi cân hóa chất rắn là:",
+      options: [
+        "Bật đèn cồn",
+        "Hiệu chỉnh cân về 0 và lót giấy/boat cân",
+        "Thổi bụi vào cân",
+        "Đặt trực tiếp hóa chất lên đĩa cân"
+      ],
+      correctAnswer: 1,
+      explanation: "Hiệu chỉnh cân và dùng giấy/boat cân để bảo vệ đĩa cân.",
+      points: 10
+    },
+    {
+      type: "multiple-choice",
+      question: "Khi ngửi hóa chất dễ bay hơi, nên:",
+      options: [
+        "Hít mạnh vào",
+        "Dùng tay quạt nhẹ hơi về phía mũi",
+        "Đưa mũi sát miệng chai",
+        "Nếm thử"
+      ],
+      correctAnswer: 1,
+      explanation: "Quạt nhẹ hơi để ngửi, tránh hít trực tiếp khí đậm đặc.",
       points: 10
     }
   ]

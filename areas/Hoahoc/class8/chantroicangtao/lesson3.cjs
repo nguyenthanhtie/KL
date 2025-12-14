@@ -1,20 +1,21 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 2,
-  chapterName: "Chương 2: Phản ứng hóa học",
-  lessonId: 2,
-  title: 'Bài 2: Phản ứng hóa học',
+  curriculumType: 'chantroicangtao',
+  chapterId: 1,
+  chapterName: "Chủ đề 1: Phản ứng hóa học",
+  lessonId: 3,
+  title: 'Bài 3: Phản ứng hóa học và năng lượng',
+  order: 3,
   theory: `
-    <h2>⚡ Bài 2: Phản ứng hóa học</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận diện phản ứng qua dấu hiệu, phân loại 4 nhóm chính, và ghi nhớ ví dụ tiêu biểu.</p>
+    <h2>⚡ Bài 3: Phản ứng hóa học và năng lượng</h2>
+    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận diện phản ứng qua dấu hiệu, 4 kiểu chính, đồng thời ghi nhớ phản ứng tỏa/thu nhiệt.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
       <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
         <h4 style="margin:0 0 8px; color:#0f172a;">Dấu hiệu nhận biết</h4>
         <ul style="margin:0; padding-left:18px; color:#475569;">
           <li>Xuất hiện chất mới: khí, kết tủa, dung dịch đổi màu.</li>
-          <li>Thay đổi nhiệt: tỏa/thu nhiệt; có thể phát sáng.</li>
+          <li>Tỏa/thu nhiệt, có thể phát sáng.</li>
           <li>Thay đổi mùi, âm thanh (xì khí).</li>
         </ul>
       </div>
@@ -31,9 +32,9 @@ module.exports = {
     <div style="margin:16px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
       <h3 style="margin:0 0 10px; color:#312e81;">4 kiểu phản ứng – nhớ nhanh</h3>
       <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li><strong>Hóa hợp:</strong> A + B → AB (ghép lại). Ví dụ: 2H₂ + O₂ → 2H₂O.</li>
-        <li><strong>Phân hủy:</strong> AB → A + B (tách ra). Ví dụ: CaCO₃ → CaO + CO₂.</li>
-        <li><strong>Thế:</strong> AB + C → AC + B (C thế B). Ví dụ: Zn + 2HCl → ZnCl₂ + H₂.</li>
+        <li><strong>Hóa hợp:</strong> A + B → AB (ghép lại). Ví dụ: 2H₂ + O₂ → 2H₂O (tỏa nhiệt).</li>
+        <li><strong>Phân hủy:</strong> AB → A + B (tách ra). Ví dụ: CaCO₃ → CaO + CO₂ (thu nhiệt khi nung).</li>
+        <li><strong>Thế:</strong> AB + C → AC + B (C thế B). Ví dụ: Zn + 2HCl → ZnCl₂ + H₂ (tỏa nhiệt nhẹ).</li>
         <li><strong>Trao đổi:</strong> AB + CD → AD + CB (hoán vị). Ví dụ: AgNO₃ + NaCl → AgCl↓ + NaNO₃.</li>
       </ul>
     </div>
@@ -60,8 +61,8 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong> (thay bằng ảnh thật khi có):</p>
-      <p style="margin:0 0 4px;">Sơ đồ phân loại phản ứng: <em>/images/hoahoc/lesson2-types.png</em></p>
-      <p style="margin:0;">Dấu hiệu nhận biết phản ứng: <em>/images/hoahoc/lesson2-signs.png</em></p>
+      <p style="margin:0 0 4px;">Sơ đồ phân loại phản ứng: <em>/images/hoahoc/lesson3-types.png</em></p>
+      <p style="margin:0;">Đồ thị tỏa/thu nhiệt minh họa: <em>/images/hoahoc/lesson3-energy.png</em></p>
     </div>
   `,
   game: [

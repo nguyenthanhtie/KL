@@ -1,13 +1,13 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 3,
-  chapterName: "Chương 3: Một số hợp chất thông dụng",
-  lessonId: 10,
-  order: 10,
-  title: 'Bài 10: Oxide',
+  curriculumType: 'chantroicangtao',
+  chapterId: 2,
+  chapterName: "Chủ đề 2: Một số hợp chất vô cơ. Thang pH",
+  lessonId: 12,
+  title: 'Bài 12: Oxide',
+  order: 12,
   theory: `
-    <h2>🪨 Bài 10: Oxide</h2>
+    <h2>🪨 Bài 12: Oxide</h2>
     <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận diện oxide, phân loại, gọi tên, điều chế và ứng dụng.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
@@ -60,67 +60,57 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Bảng phân loại oxide: <em>/images/hoahoc/lesson10-oxides.png</em></p>
-      <p style="margin:0;">Quá trình nung đá vôi: <em>/images/hoahoc/lesson10-caco3.png</em></p>
+      <p style="margin:0 0 4px;">Bảng phân loại oxide: <em>/images/hoahoc/lesson12-oxides.png</em></p>
+      <p style="margin:0;">Quá trình nung đá vôi: <em>/images/hoahoc/lesson12-caco3.png</em></p>
     </div>
   `,
   game: [
     {
-      type: 'multiple-choice',
       question: 'Oxide là hợp chất của:',
       options: ['Hai kim loại', 'Một phi kim và hydro', 'Hai nguyên tố, có oxygen', 'Chỉ oxygen'],
       correctAnswer: 2
     },
     {
-      type: 'multiple-choice',
       question: 'Oxide acid thường phản ứng với:',
       options: ['Kim loại', 'Oxide bazơ hoặc bazơ', 'Khí trơ', 'Muối trung tính'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
       question: 'Oxide bazơ tan (kiềm) gồm:',
       options: ['Na₂O, K₂O', 'CO₂, SO₂', 'P₂O₅', 'SiO₂'],
       correctAnswer: 0
     },
     {
-      type: 'multiple-choice',
       question: 'Phản ứng CaO + H₂O → Ca(OH)₂ minh họa tính chất:',
       options: ['Oxide acid + nước', 'Oxide bazơ + nước tạo bazơ', 'Oxide lưỡng tính + nước', 'Không phản ứng'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
       question: 'SO₂ + 2NaOH → Na₂SO₃ + H₂O thuộc loại:',
       options: ['Oxide bazơ + bazơ', 'Oxide acid + bazơ', 'Oxide bazơ + acid', 'Oxide acid + muối'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
       question: 'Điều chế CaO trong công nghiệp thường bằng:',
       options: ['Đốt Mg trong O₂', 'Nhiệt phân đá vôi CaCO₃', 'Điện phân nước', 'Đốt H₂ trong O₂'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
       question: 'Oxide lưỡng tính có thể phản ứng với cả acid và bazơ. Ví dụ:',
       options: ['Al₂O₃', 'Na₂O', 'SO₂', 'CO₂'],
       correctAnswer: 0
     },
     {
-      type: 'multiple-choice',
       question: 'Chất nào là oxide bazơ?',
       options: ['CO₂', 'SO₂', 'CuO', 'P₂O₅'],
       correctAnswer: 2
     },
     {
-      type: 'multiple-choice',
       question: 'CO₂ + Ca(OH)₂ → CaCO₃ + H₂O là phản ứng giữa:',
       options: ['Oxide bazơ và nước', 'Oxide acid và bazơ', 'Oxide acid và acid', 'Oxide bazơ và bazơ'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
       question: 'Tên gọi Fe₂O₃ là:',
       options: ['Sắt oxide', 'Sắt(II) oxide', 'Sắt(III) oxide', 'Sắt(I) oxide'],
       correctAnswer: 2

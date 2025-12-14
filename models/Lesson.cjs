@@ -11,6 +11,11 @@ const lessonSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
+  // chapterName: display name for the chương (needed by UI)
+  chapterName: {
+    type: String,
+    required: false
+  },
   // curriculumType: ketnoi, canhdieu, chantroicangtao
   curriculumType: {
     type: String,

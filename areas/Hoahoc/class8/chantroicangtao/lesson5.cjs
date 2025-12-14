@@ -1,12 +1,13 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 2,
-  chapterName: "Chương 2: Phản ứng hóa học",
-  lessonId: 3,
-  title: 'Bài 3: Mol và tỉ khối chất khí',
+  curriculumType: 'chantroicangtao',
+  chapterId: 1,
+  chapterName: "Chủ đề 1: Phản ứng hóa học",
+  lessonId: 5,
+  title: 'Bài 5: Mol và tỉ khối chất khí',
+  order: 5,
   theory: `
-    <h2>🧩 Bài 3: Mol và tỉ khối chất khí</h2>
+    <h2>🧩 Bài 5: Mol và tỉ khối chất khí</h2>
     <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu mol, quy đổi n–m–M, tính nhanh thể tích khí và tỉ khối so với H₂/không khí.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
@@ -57,8 +58,8 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Sơ đồ n–m–M và V=22,4n: <em>/images/hoahoc/lesson3-formulas.png</em></p>
-      <p style="margin:0;">Bảng tỉ khối phổ biến: <em>/images/hoahoc/lesson3-density.png</em></p>
+      <p style="margin:0 0 4px;">Sơ đồ n–m–M và V=22,4n: <em>/images/hoahoc/lesson5-formulas.png</em></p>
+      <p style="margin:0;">Bảng tỉ khối phổ biến: <em>/images/hoahoc/lesson5-density.png</em></p>
     </div>
   `,
   game: [

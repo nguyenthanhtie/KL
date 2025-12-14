@@ -30,8 +30,12 @@ router.get('/grouped', async (req, res) => {
       const cId = l.classId || 0;
       const chId = l.chapterId || 0;
       if (!grouped[cId]) grouped[cId] = {};
-      if (!grouped[cId][chId]) grouped[cId][chId] = [];
-      grouped[cId][chId].push(l);
+      if (!grouped[cId][chId]) grouped[cId][chId] = { lessons: [], chapterName: l.chapterName };
+      // Keep first non-empty chapterName encountered
+      if (!grouped[cId][chId].chapterName && l.chapterName) {
+        grouped[cId][chId].chapterName = l.chapterName;
+      }
+      grouped[cId][chId].lessons.push(l);
     });
 
     // convert to array structure
@@ -39,7 +43,8 @@ router.get('/grouped', async (req, res) => {
       classId: parseInt(c, 10),
       chapters: Object.keys(grouped[c]).map((ch) => ({
         chapterId: parseInt(ch, 10),
-        lessons: grouped[c][ch]
+        chapterName: grouped[c][ch].chapterName,
+        lessons: grouped[c][ch].lessons
       }))
     }));
 

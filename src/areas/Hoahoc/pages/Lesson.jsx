@@ -20,6 +20,7 @@ const Lesson = () => {
   const [activeTab, setActiveTab] = useState('theory');
   const [progress, setProgress] = useState(null);
   const [startTime] = useState(Date.now()); // Track start time
+  const [theoryCompleted, setTheoryCompleted] = useState(false);
 
   // Fetch lesson data and progress from API
   useEffect(() => {
@@ -52,12 +53,14 @@ const Lesson = () => {
               completed: hasCompleted,
               highestScore: hasCompleted ? 100 : 0
             });
+            setTheoryCompleted(!!hasCompleted);
           } catch (err) {
             // No progress yet, set default
             setProgress({ 
               star: false,
               highestScore: 0
             });
+            setTheoryCompleted(false);
           }
         }
         
@@ -205,6 +208,11 @@ const Lesson = () => {
     navigate('/program/chemistry/dashboard');
   };
 
+  const handleMarkTheoryComplete = () => {
+    setTheoryCompleted(true);
+    setActiveTab('game');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="container mx-auto max-w-4xl">
@@ -251,10 +259,19 @@ const Lesson = () => {
                     )}
                   </div>
                 </div>
-                <Button onClick={() => navigate(`/gameplay/${classId}/${chapterId}/${lessonId}`)} className="bg-gradient-to-r from-blue-500 to-purple-600">
+                <Button
+                  onClick={() => theoryCompleted && navigate(`/gameplay/${classId}/${chapterId}/${lessonId}`)}
+                  disabled={!theoryCompleted}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600"
+                >
                   🎮 Chơi ngay
                 </Button>
               </div>
+              {!theoryCompleted && (
+                <p className="mt-3 text-sm text-orange-700">
+                  Hoàn thành phần lý thuyết để mở khoá trò chơi kiểm tra kiến thức.
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -269,8 +286,9 @@ const Lesson = () => {
               Lý thuyết
             </button>
             <button
-              onClick={() => setActiveTab('game')}
-              className={`px-4 py-2 rounded ${activeTab === 'game' ? 'bg-primary-600 text-white' : 'bg-white border'}`}
+              onClick={() => theoryCompleted && setActiveTab('game')}
+              disabled={!theoryCompleted}
+              className={`px-4 py-2 rounded ${activeTab === 'game' ? 'bg-primary-600 text-white' : 'bg-white border'} ${!theoryCompleted ? 'opacity-60 cursor-not-allowed' : ''}`}
             >
               Trò chơi
             </button>
@@ -305,6 +323,14 @@ const Lesson = () => {
                 </div>
               )}
               <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: lessonData.theory }} />
+              {!theoryCompleted && (
+                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-800 mb-3">Hoàn thành phần lý thuyết để mở khoá phần kiểm tra.</p>
+                  <Button onClick={handleMarkTheoryComplete} variant="primary">
+                    Tôi đã đọc xong lý thuyết
+                  </Button>
+                </div>
+              )}
             </div>
           )}
 

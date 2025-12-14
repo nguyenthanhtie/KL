@@ -1,12 +1,13 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 2,
-  chapterName: "Chương 2: Phản ứng hóa học",
-  lessonId: 4,
-  title: 'Bài 4: Dung dịch và nồng độ',
+  curriculumType: 'chantroicangtao',
+  chapterId: 1,
+  chapterName: "Chủ đề 1: Phản ứng hóa học",
+  lessonId: 7,
+  title: 'Bài 7: Nồng độ dung dịch',
+  order: 7,
   theory: `
-    <h2>💧 Bài 4: Dung dịch và nồng độ</h2>
+    <h2>💧 Bài 7: Nồng độ dung dịch</h2>
     <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu dung dịch, độ tan, tính C% và thao tác pha loãng/cô đặc an toàn.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
@@ -41,7 +42,7 @@ module.exports = {
       <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
         <h4 style="margin:0 0 8px; color:#9a3412;">Ghi nhớ nhanh</h4>
         <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Đọc kỹ đơn vị: g, g/100g, %. </li>
+          <li>Đọc kỹ đơn vị: g, g/100g, %.</li>
           <li>Mọi phép tính C% phải cộng khối lượng dung môi.</li>
           <li>Không trộn lung tung dung dịch khác loại nếu không biết phản ứng.</li>
         </ul>
@@ -59,8 +60,8 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Biểu đồ độ tan theo nhiệt độ: <em>/images/hoahoc/lesson4-solubility.png</em></p>
-      <p style="margin:0;">Sơ đồ pha loãng/cô đặc: <em>/images/hoahoc/lesson4-dilution.png</em></p>
+      <p style="margin:0 0 4px;">Biểu đồ độ tan theo nhiệt độ: <em>/images/hoahoc/lesson7-solubility.png</em></p>
+      <p style="margin:0;">Sơ đồ pha loãng/cô đặc: <em>/images/hoahoc/lesson7-dilution.png</em></p>
     </div>
   `,
   game: [

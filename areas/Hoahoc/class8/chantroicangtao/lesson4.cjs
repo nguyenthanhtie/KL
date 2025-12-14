@@ -1,12 +1,13 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 2,
-  chapterName: "Chương 2: Phản ứng hóa học",
-  lessonId: 5,
-  title: 'Bài 5: Định luật bảo toàn khối lượng và phương trình hóa học',
+  curriculumType: 'chantroicangtao',
+  chapterId: 1,
+  chapterName: "Chủ đề 1: Phản ứng hóa học",
+  lessonId: 4,
+  title: 'Bài 4: Định luật bảo toàn khối lượng và phương trình hóa học',
+  order: 4,
   theory: `
-    <h2>⚖️ Bài 5: Định luật bảo toàn khối lượng & phương trình hóa học</h2>
+    <h2>⚖️ Bài 4: Định luật bảo toàn khối lượng & phương trình hóa học</h2>
     <p style="margin:10px 0; color:#334155;">Mục tiêu: nắm phát biểu định luật, cách viết/cân bằng PTHH và ứng dụng tính khối lượng.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
@@ -60,8 +61,8 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Sơ đồ cân bằng PTHH: <em>/images/hoahoc/lesson5-balancing.png</em></p>
-      <p style="margin:0;">Minh họa bảo toàn khối lượng: <em>/images/hoahoc/lesson5-mass.png</em></p>
+      <p style="margin:0 0 4px;">Sơ đồ cân bằng PTHH: <em>/images/hoahoc/lesson4-balancing.png</em></p>
+      <p style="margin:0;">Minh họa bảo toàn khối lượng: <em>/images/hoahoc/lesson4-mass.png</em></p>
     </div>
   `,
   game: [

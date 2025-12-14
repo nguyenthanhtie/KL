@@ -1,13 +1,13 @@
 module.exports = {
   classId: 8,
-  curriculumType: 'ketnoi',
-  chapterId: 3,
-  chapterName: "Chương 3: Một số hợp chất thông dụng",
-  lessonId: 11,
-  order: 11,
-  title: 'Bài 11: Muối',
+  curriculumType: 'chantroicangtao',
+  chapterId: 2,
+  chapterName: "Chủ đề 2: Một số hợp chất vô cơ. Thang pH",
+  lessonId: 13,
+  title: 'Bài 13: Muối',
+  order: 13,
   theory: `
-    <h2>🧂 Bài 11: Muối</h2>
+    <h2>🧂 Bài 13: Muối</h2>
     <p style="margin:10px 0; color:#334155;">Mục tiêu: phân biệt muối trung hòa/acid, tính tan, phản ứng trao đổi và ứng dụng.</p>
 
     <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
@@ -62,69 +62,59 @@ module.exports = {
 
     <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
       <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Bảng tính tan muối phổ biến: <em>/images/hoahoc/lesson11-solubility.png</em></p>
-      <p style="margin:0;">Sơ đồ phân loại muối: <em>/images/hoahoc/lesson11-salts.png</em></p>
+      <p style="margin:0 0 4px;">Bảng tính tan muối phổ biến: <em>/images/hoahoc/lesson13-solubility.png</em></p>
+      <p style="margin:0;">Sơ đồ phân loại muối: <em>/images/hoahoc/lesson13-salts.png</em></p>
     </div>
   `,
   game: [
     {
-      type: 'multiple-choice',
       question: 'Muối là hợp chất giữa:',
-      options: ['Kim loại và oxygen', 'Cation kim loại/NH₄⁺ và anion gốc acid', 'Phi kim và hydrogen', 'Chỉ có oxygen'],
+      options: ['Kim loại và kim loại', 'Cation kim loại/NH₄⁺ và anion gốc acid', 'Hai phi kim', 'Kim loại và hydro'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
-      question: 'Khi cho NaCl vào dung dịch AgNO₃, hiện tượng:',
-      options: ['Không đổi', 'Xuất hiện kết tủa trắng AgCl', 'Tỏa khí H₂', 'Tỏa mùi khai'],
-      correctAnswer: 1
-    },
-    {
-      type: 'multiple-choice',
-      question: 'Muối nào sau đây không tan trong nước?',
-      options: ['NaCl', 'KNO₃', 'AgCl', 'CuSO₄'],
-      correctAnswer: 2
-    },
-    {
-      type: 'multiple-choice',
-      question: 'Muối acid đặc trưng bởi:',
-      options: ['Chỉ có kim loại', 'Chứa gốc acid còn H chưa thay thế hết', 'Chứa gốc bazơ', 'Không chứa ion'],
-      correctAnswer: 1
-    },
-    {
-      type: 'multiple-choice',
-      question: 'Điều kiện xảy ra phản ứng trao đổi giữa hai dung dịch muối/acid/bazơ là:',
-      options: ['Luôn xảy ra', 'Có tạo kết tủa/khí/điện li yếu', 'Chỉ cần khuấy', 'Chỉ khi đun nóng'],
-      correctAnswer: 1
-    },
-    {
-      type: 'multiple-choice',
       question: 'Muối acid khác muối trung hòa ở chỗ:',
-      options: ['Chứa gốc acid còn H chưa thay thế hết', 'Không chứa ion', 'Không có kim loại', 'Luôn không tan'],
-      correctAnswer: 0
-    },
-    {
-      type: 'multiple-choice',
-      question: 'Hiện tượng khi cho Na₂CO₃ vào HCl loãng:',
-      options: ['Không đổi', 'Sủi bọt CO₂', 'Kết tủa đỏ', 'Tỏa mùi khai'],
+      options: ['Không có gốc acid', 'Còn H chưa thay thế hết', 'Chỉ chứa kim loại', 'Không tan trong nước'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
-      question: 'Muối nào sau đây tan tốt trong nước?',
-      options: ['BaSO₄', 'AgCl', 'KNO₃', 'PbSO₄'],
+      question: 'Điều kiện để phản ứng trao đổi tạo muối xảy ra là có:',
+      options: ['Chỉ cần trộn', 'Kết tủa/khí/điện li yếu tạo thành', 'Nhiệt độ cao', 'Ánh sáng mạnh'],
+      correctAnswer: 1
+    },
+    {
+      question: 'Sản phẩm kết tủa khi NaCl + AgNO₃ là:',
+      options: ['NaNO₃', 'AgCl', 'Ag', 'Na'],
+      correctAnswer: 1
+    },
+    {
+      question: 'CaCO₃ + 2HCl tạo khí:',
+      options: ['H₂', 'O₂', 'CO₂', 'Cl₂'],
       correctAnswer: 2
     },
     {
-      type: 'multiple-choice',
-      question: 'Phản ứng tạo kết tủa xanh lam khi:',
-      options: ['NaCl + AgNO₃', 'NaOH + CuSO₄', 'HCl + NaOH', 'KNO₃ + NaCl'],
+      question: 'Muối nào ít tan trong nước?',
+      options: ['NaCl', 'KNO₃', 'AgCl', 'Na₂SO₄'],
+      correctAnswer: 2
+    },
+    {
+      question: 'Cu(OH)₂ kết tủa màu:',
+      options: ['Trắng', 'Lam', 'Đen', 'Vàng'],
       correctAnswer: 1
     },
     {
-      type: 'multiple-choice',
-      question: 'Khi viết tên muối, thứ tự là:',
-      options: ['Gốc acid trước, kim loại sau', 'Kim loại (hoặc NH₄⁺) trước, gốc acid sau', 'Tên bất kỳ', 'Ion âm trước'],
+      question: 'Phản ứng trung hòa cho sản phẩm:',
+      options: ['Chỉ muối', 'Muối + nước', 'Chỉ nước', 'Chỉ khí'],
+      correctAnswer: 1
+    },
+    {
+      question: 'Ứng dụng đúng của KNO₃:',
+      options: ['Gia vị', 'Phân bón', 'Dược phẩm an thần', 'Thuốc nhuộm'],
+      correctAnswer: 1
+    },
+    {
+      question: 'CuSO₄ thường dùng trong:',
+      options: ['Tẩy gỉ thép', 'Phun phòng nấm (boóc-đô)', 'Chế biến thực phẩm', 'Pha đồ uống'],
       correctAnswer: 1
     }
   ]

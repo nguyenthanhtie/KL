@@ -10,13 +10,8 @@ const lesson9 = require('./lesson9.cjs');
 const lesson10 = require('./lesson10.cjs');
 const lesson11 = require('./lesson11.cjs');
 const lesson12 = require('./lesson12.cjs');
-const lesson13 = require('./lesson13.cjs');
-const lesson14 = require('./lesson14.cjs');
-const lesson15 = require('./lesson15.cjs');
-const lesson16 = require('./lesson16.cjs');
-const lesson17 = require('./lesson17.cjs');
-const lesson18 = require('./lesson18.cjs');
 
+// Kết nối tri thức Hóa 8 chỉ gồm 12 bài theo cấu trúc 2 chương.
 module.exports = [
   lesson1,
   lesson2,
@@ -29,11 +24,5 @@ module.exports = [
   lesson9,
   lesson10,
   lesson11,
-  lesson12,
-  lesson13,
-  lesson14,
-  lesson15,
-  lesson16,
-  lesson17,
-  lesson18
+  lesson12
 ];
