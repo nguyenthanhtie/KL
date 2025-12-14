@@ -3,7 +3,7 @@ module.exports = {
   classId: 8,
   curriculumType: 'ketnoi',
   chapterId: 0,
-  chapterName: "Bài mở đầu",
+  chapterName: "Chương mở đầu",
   lessonId: 1,
   title: "Bài mở đầu: Sử dụng một số hóa chất, thiết bị cơ bản trong phòng thí nghiệm",
   description: "Giới thiệu về các hóa chất, thiết bị và kỹ thuật sử dụng trong phòng thí nghiệm",

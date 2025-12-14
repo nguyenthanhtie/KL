@@ -131,23 +131,31 @@ const ClassDashboard = () => {
       .sort((a, b) => a.lessonId - b.lessonId);
 
     const unlocked = new Set();
-    let lockAfterFirstIncomplete = false;
-    for (const lesson of allLessons) {
-      if (!lockAfterFirstIncomplete) {
-        unlocked.add(lesson.lessonId); // Current lesson always accessible until an earlier incomplete found
-        const prog = lessonsProgress[lesson.lessonId];
-        if (!prog?.completed) {
-          // First incomplete encountered; subsequent lessons locked
-          lockAfterFirstIncomplete = true;
-        }
+    
+    // Unlock lessons sequentially: first lesson is always unlocked,
+    // each subsequent lesson is unlocked only if the previous one is completed
+    for (let i = 0; i < allLessons.length; i++) {
+      const lesson = allLessons[i];
+      
+      if (i === 0) {
+        // First lesson is always unlocked
+        unlocked.add(lesson.lessonId);
       } else {
-        // After first incomplete, only already completed lessons remain unlocked
-        const prog = lessonsProgress[lesson.lessonId];
-        if (prog?.completed) {
+        // For subsequent lessons, check if previous lesson is completed
+        const prevLesson = allLessons[i - 1];
+        const prevProgress = lessonsProgress[prevLesson.lessonId];
+        
+        if (prevProgress?.completed) {
+          // Previous lesson completed, unlock this lesson
           unlocked.add(lesson.lessonId);
+        }
+        // If previous lesson not completed, stop unlocking (all subsequent lessons remain locked)
+        else {
+          break;
         }
       }
     }
+    
     setUnlockedLessonIds(unlocked);
   }, [chapters, lessonsProgress]);
 
@@ -266,7 +274,7 @@ const ClassDashboard = () => {
                 {/* Chapter Header */}
                 <div className="mb-6">
                   <h2 className="text-2xl font-bold text-gray-800 mb-3">
-                    Chương {chapter.chapterId}
+                    {chapter.chapterName || (chapter.chapterId === 0 ? 'Chương mở đầu' : `Chương ${chapter.chapterId}`)}
                   </h2>
                   
                   {user && chapter.lessons && chapter.lessons.length > 0 && (

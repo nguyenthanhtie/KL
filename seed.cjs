@@ -347,6 +347,14 @@ async function seedDatabase() {
     console.log('✓ Đã kết nối MongoDB');
 
     // Xóa dữ liệu cũ
+    // Drop old unique index first
+    try {
+      await mongoose.connection.collection('lessons').dropIndex('classId_1_lessonId_1');
+      console.log('✓ Đã xóa index cũ (classId, lessonId)');
+    } catch (err) {
+      console.log('⚠️ Index cũ không tồn tại hoặc đã được xóa');
+    }
+    
     await Lesson.deleteMany({});
     console.log('✓ Đã xóa dữ liệu bài học cũ');
 
@@ -369,11 +377,15 @@ async function seedDatabase() {
     // Transform game structure from array to object with quizzes
     const transformedLessons = allLessons.map(lesson => {
       if (Array.isArray(lesson.game)) {
-        // If game is an array, wrap it in quizzes property
+        // If game is an array, wrap it in quizzes property and add type field
+        const quizzesWithType = lesson.game.map(quiz => ({
+          ...quiz,
+          type: quiz.type || 'multiple-choice' // Add default type if not present
+        }));
         return {
           ...lesson,
           game: {
-            quizzes: lesson.game
+            quizzes: quizzesWithType
           }
         };
       }
@@ -410,13 +422,13 @@ async function seedDatabase() {
     console.log('  - Lớp 12:', lessons12.length, 'bài');
     console.log('✓ Tổng cộng:', allLessons.length, 'bài học');
 
-    // Tạo index unique để ngăn chặn trùng lặp trong tương lai
+    // Tạo index unique mới bao gồm curriculumType để ngăn chặn trùng lặp
     try {
       await mongoose.connection.collection('lessons').createIndex(
-        { classId: 1, lessonId: 1 },
-        { unique: true, background: true }
+        { classId: 1, curriculumType: 1, lessonId: 1 },
+        { unique: true, background: true, sparse: true }
       );
-      console.log('✓ Đã tạo index unique cho (classId, lessonId)');
+      console.log('✓ Đã tạo index unique cho (classId, curriculumType, lessonId)');
     } catch (idxErr) {
       console.warn('⚠️ Index unique đã tồn tại hoặc có lỗi:', idxErr.message);
     }
