@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Sparkles, Trophy, Zap, BookOpen, CheckCircle2, XCircle, Lightbulb, Calculator, Atom, Plus, Minus } from 'lucide-react';
+import useChallengeProgress from '../../../../hooks/useChallengeProgress';
 import './CSS/Bai18_TinhKhoiLuongMol.css';
 
 // Danh sách các chất hóa học
@@ -178,6 +179,14 @@ const challenges = [
 ];
 
 const MolQuickCalc = () => {
+  const { completeChallenge } = useChallengeProgress('tinh-khoi-luong-mol', {
+    challengeId: 18,
+    programId: 'chemistry',
+    grade: 8
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
+  
   const [gameState, setGameState] = useState('welcome'); // welcome, playing, completed
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState('');
@@ -223,6 +232,27 @@ const MolQuickCalc = () => {
     }
   }, [mass, currentChemical]);
 
+  // Hàm hoàn thành game
+  const handleCompleteGame = () => {
+    setGameState('completed');
+    
+    if (!isCompleted) {
+      setIsCompleted(true);
+      const maxScore = challenges.reduce((sum, c) => sum + c.points, 0);
+      const percentage = Math.round((score / maxScore) * 100);
+      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      completeChallenge({
+        score,
+        maxScore,
+        percentage,
+        stars,
+        timeSpent: Math.floor((Date.now() - startTime) / 1000),
+        correctAnswers: completedChallenges.length,
+        totalQuestions: challenges.length
+      });
+    }
+  };
+
   useEffect(() => {
     if (feedback) {
       const timer = setTimeout(() => {
@@ -244,7 +274,7 @@ const MolQuickCalc = () => {
               setFeedback(null);
               setShowHint(false);
             } else {
-              setGameState('completed');
+              handleCompleteGame();
             }
           } else {
             // Review pass finished
@@ -256,14 +286,14 @@ const MolQuickCalc = () => {
               setFeedback(null);
               setShowHint(false);
             } else {
-              setGameState('completed');
+              handleCompleteGame();
             }
           }
         }
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [feedback, currentIndex, activeIds, failedChallenges, isReviewMode]);
+  }, [feedback, currentIndex, activeIds, failedChallenges, isReviewMode, score, completedChallenges, isCompleted]);
 
   // Reset simulation khi chuyển câu hỏi
   useEffect(() => {
@@ -826,7 +856,7 @@ const MolQuickCalc = () => {
                     <span className="text-white text-xs font-bold">{currentIndex + 1}</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-base font-bold text-gray-800 mb-1.5">
+                    <h3 className="text-base font-bold text-gray-800 mb-1">
                       {currentChallenge.question}
                     </h3>
                     <div className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">

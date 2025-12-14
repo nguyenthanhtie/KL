@@ -24,6 +24,9 @@ import DuoiHinhBatChu from './areas/Hoahoc/challenges/08/Bai01_DoanHinhBatChu';
 import NhanBietDungDich from './areas/Hoahoc/challenges/08/Bai38_NhanBietDungDich';
 import XayDungPhanTu from './areas/Hoahoc/challenges/10/Bai03_XayDungPhanTu';
 import PhaCheDungDich from './areas/Hoahoc/challenges/08/Bai06_PhaCheDungDich';
+import PhaCheDungDichNangCao from './areas/Hoahoc/challenges/10/Bai07_PhaCheDungDich_NangCao';
+import Bai08_NhomHalogen from './areas/Hoahoc/challenges/10/Bai08_NhomHalogen';
+import Bai09_Oxi_LuuHuynh from './areas/Hoahoc/challenges/10/Bai09_Oxi_LuuHuynh';
 import CauTrucNguyenTu from './areas/Hoahoc/challenges/10/Bai01_CauTrucNguyenTu';
 import PhongThiNghiem from './areas/Hoahoc/challenges/08/Bai05_PhongThiNghiem';
 import TinhOxiHoa from './areas/Hoahoc/challenges/10/Bai04_TinhOxiHoa';
@@ -31,7 +34,16 @@ import MolQuickCalc from './areas/Hoahoc/challenges/08/Bai18_TinhKhoiLuongMol';
 import QuanSatPhanUng from './areas/Hoahoc/challenges/08/Bai12_QuanSatPhanUng';
 import TongKetLop8 from './areas/Hoahoc/challenges/08/Bai99_TongKetLop8';
 import Bai20_Oxi_KhongKhi from './areas/Hoahoc/challenges/08/Bai20_Oxi_KhongKhi';
+import Bai06_ChatTan_DungMoi from './areas/Hoahoc/challenges/10/Bai06_ChatTan_DungMoi';
 import HopChatVoCo from './areas/Hoahoc/challenges/09/Bai07_HopChatVoCo';
+import Bai15_KIM_LOAI from './areas/Hoahoc/challenges/09/Bai15_KIM_LOAI';
+import Bai20_PHI_KIM_HALOGEN from './areas/Hoahoc/challenges/09/Bai20_PHI_KIM_HALOGEN';
+import Bai26_HIDROCACBON from './areas/Hoahoc/challenges/09/Bai26_HIDROCACBON';
+import Bai34_HIDROCACBON_POLIME from './areas/Hoahoc/challenges/09/Bai34_HIDROCACBON_POLIME';
+import Baitonghop from './areas/Hoahoc/challenges/09/Baitonghop';
+import CanBangPhanUngNangCao from './areas/Hoahoc/challenges/11/Bai02_CanBangPhanUngNangCao';
+import NitoLuuHuynh from './areas/Hoahoc/challenges/11/Bai03_Nito_LuuHuynh';
+
 
 
 
@@ -57,14 +69,25 @@ const AppContent = () => {
         <Route path="/advanced-challenge/nhan-biet-dung-dich" element={<NhanBietDungDich />} />
         <Route path="/advanced-challenge/xay-dung-phan-tu" element={<XayDungPhanTu />} />
         <Route path="/advanced-challenge/pha-che-dung-dich" element={<PhaCheDungDich />} />
+        <Route path="/advanced-challenge/pha-che-dung-dich-nang-cao" element={<PhaCheDungDichNangCao />} />
+        <Route path="/advanced-challenge/nhom-halogen" element={<Bai08_NhomHalogen />} />
+        <Route path="/advanced-challenge/oxi-luu-huynh" element={<Bai09_Oxi_LuuHuynh />} />
         <Route path="/advanced-challenge/cau-truc-nguyen-tu" element={<CauTrucNguyenTu />} />
         <Route path="/advanced-challenge/phong-thi-nghiem" element={<PhongThiNghiem />} />
         <Route path="/advanced-challenge/tinh-oxi-hoa" element={<TinhOxiHoa />} />
         <Route path="/advanced-challenge/oxi-khong-khi" element={<Bai20_Oxi_KhongKhi />} />
         <Route path="/advanced-challenge/hop-chat-vo-co" element={<HopChatVoCo />} />
+        <Route path="/advanced-challenge/kim-loai" element={<Bai15_KIM_LOAI />} />
+        <Route path="/advanced-challenge/phi-kim-halogen" element={<Bai20_PHI_KIM_HALOGEN />} />
+        <Route path="/advanced-challenge/hidrocacbon" element={<Bai26_HIDROCACBON />} />
+        <Route path="/advanced-challenge/hidrocacbon-polime" element={<Bai34_HIDROCACBON_POLIME />} />
         <Route path="/advanced-challenge/mol-quick-calc" element={<MolQuickCalc />} />
         <Route path="/advanced-challenge/quan-sat-phan-ung" element={<QuanSatPhanUng />} />
+        <Route path="/advanced-challenge/bai06-chat-tan-dung-moi" element={<Bai06_ChatTan_DungMoi />} />
         <Route path="/advanced-challenge/tong-ket-lop-8" element={<TongKetLop8 />} />
+        <Route path="/advanced-challenge/tong-hop-lop-9" element={<Baitonghop />} />
+        <Route path="/advanced-challenge/can-bang-phan-ung-nang-cao" element={<CanBangPhanUngNangCao />} />
+        <Route path="/advanced-challenge/nito-luu-huynh" element={<NitoLuuHuynh />} />
         <Route 
           path="/program/chemistry/dashboard" 
           element={

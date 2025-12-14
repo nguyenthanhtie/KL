@@ -90,8 +90,14 @@ const DuoiHinhBatChu = () => {
     }
   ];
 
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('duoi-hinh-bat-chu');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('duoi-hinh-bat-chu', {
+    challengeId: 1,
+    programId: 'chemistry',
+    grade: 8
+  });
   
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   const [cauHienTai, setCauHienTai] = useState(0);
   const [diem, setDiem] = useState(0);
   const [ketQua, setKetQua] = useState('');
@@ -236,7 +242,41 @@ const DuoiHinhBatChu = () => {
     } else {
       setGameDangChay(false);
       setGameCompleted(true);
-      clearProgress(); // Xóa tiến trình khi hoàn thành
+      // Không cần gọi clearProgress() ở đây vì completeChallenge sẽ tự xóa
+      
+      // Lưu kết quả hoàn thành vào database
+      if (!isCompleted) {
+        setIsCompleted(true);
+        // Tính điểm cuối cùng: cộng thêm 10 nếu câu cuối đúng
+        const lastCorrect = ketQua === 'dung' ? 1 : 0;
+        const finalScore = diem + (lastCorrect * 10);
+        const maxScore = chatHoaHoc.length * 10;
+        const percentage = Math.round((finalScore / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        
+        // Tính số câu đúng: lichSu hiện tại + câu cuối (nếu đúng)
+        const correctInHistory = lichSu.filter(h => h.ketQua === 'dung').length;
+        const totalCorrect = correctInHistory + lastCorrect;
+        
+        console.log('🎮 Completing challenge:', {
+          finalScore,
+          maxScore,
+          percentage,
+          stars,
+          correctAnswers: totalCorrect,
+          totalQuestions: chatHoaHoc.length
+        });
+        
+        completeChallenge({
+          score: finalScore,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers: totalCorrect,
+          totalQuestions: chatHoaHoc.length
+        });
+      }
     }
   };
 

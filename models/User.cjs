@@ -111,11 +111,43 @@ const userSchema = new mongoose.Schema({
       }]
     },
     progress: {
-      completedLessons: [Number], // Danh sách ID các bài đã hoàn thành
+      completedLessons: {
+        type: [Number],
+        default: []
+      },
+      completedChallenges: {
+        type: [String],
+        default: []
+      },
       lessonStars: {
         type: Map,
         of: Number,
-        default: new Map() // Key: uniqueLessonId, Value: số sao (1-3)
+        default: () => new Map()
+      },
+      challengeStars: {
+        type: Map,
+        of: Number,
+        default: () => new Map()
+      },
+      // Tiến trình challenge đang làm dở - sử dụng Mixed thay vì nested Map
+      challengeProgress: {
+        type: Map,
+        of: mongoose.Schema.Types.Mixed,
+        default: () => new Map()
+      },
+      // Lịch sử hoàn thành challenge
+      challengeHistory: {
+        type: [{
+          challengeSlug: String,
+          challengeId: Number,
+          score: Number,
+          maxScore: Number,
+          percentage: Number,
+          stars: Number,
+          timeSpent: Number,
+          completedAt: Date
+        }],
+        default: []
       },
       totalScore: {
         type: Number,
@@ -162,14 +194,59 @@ userSchema.methods.addXP = function(amount) {
 };
 
 // Methods - Program
+// Helper method để đảm bảo progress object được khởi tạo đầy đủ
+userSchema.methods.ensureProgramProgress = function(programId) {
+  let program = this.programs.find(p => p.programId === programId);
+  
+  if (!program) {
+    return null;
+  }
+  
+  // Đảm bảo progress object tồn tại
+  if (!program.progress) {
+    program.progress = {};
+  }
+  
+  // Khởi tạo các field nếu chưa có
+  if (!program.progress.completedLessons) {
+    program.progress.completedLessons = [];
+  }
+  if (!program.progress.completedChallenges) {
+    program.progress.completedChallenges = [];
+  }
+  if (!program.progress.challengeHistory) {
+    program.progress.challengeHistory = [];
+  }
+  if (!program.progress.totalScore) {
+    program.progress.totalScore = 0;
+  }
+  
+  // Khởi tạo Map nếu chưa có hoặc không phải Map
+  if (!program.progress.lessonStars || !(program.progress.lessonStars instanceof Map)) {
+    program.progress.lessonStars = new Map(program.progress.lessonStars || []);
+  }
+  if (!program.progress.challengeStars || !(program.progress.challengeStars instanceof Map)) {
+    program.progress.challengeStars = new Map(program.progress.challengeStars || []);
+  }
+  if (!program.progress.challengeProgress || !(program.progress.challengeProgress instanceof Map)) {
+    program.progress.challengeProgress = new Map(program.progress.challengeProgress || []);
+  }
+  
+  return program;
+};
+
 userSchema.methods.enrollProgram = function(programId, programName, currentClass = null) {
   const existing = this.programs.find(p => p.programId === programId);
-  if (existing) return existing;
+  if (existing) {
+    // Đảm bảo progress được khởi tạo cho program đã tồn tại
+    this.ensureProgramProgress(programId);
+    return existing;
+  }
 
-    const newProgram = {
+  const newProgram = {
     programId,
     programName,
-    currentClass: currentClass, // Lớp được chọn khi đăng ký
+    currentClass: currentClass,
     enrolledAt: new Date(),
     studyTime: 0,
     studyStreak: {
@@ -180,13 +257,19 @@ userSchema.methods.enrollProgram = function(programId, programName, currentClass
     },
     progress: {
       completedLessons: [],
+      completedChallenges: [],
+      lessonStars: new Map(),
+      challengeStars: new Map(),
+      challengeProgress: new Map(),
+      challengeHistory: [],
       totalScore: 0,
       lastStudyDate: null
     }
   };
 
   this.programs.push(newProgram);
-  return newProgram;
+  this.markModified('programs');
+  return this.programs[this.programs.length - 1];
 };
 
 userSchema.methods.updateProgramProgress = function(programId, classId, lessonId, score) {

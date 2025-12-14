@@ -336,6 +336,241 @@ const challenges = [
       lessonId: 7
     }
   },
+  // KIM LOAI - Grade 9 (NEW)
+  {
+    id: 16,
+    name: 'Kim Loại',
+    description: 'Các tính chất vật lí và hoá học của kim loại, dãy hoạt động, phản ứng với dung dịch muối, hợp kim và phương pháp điều chế.',
+    icon: '🔩',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-amber-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-25 phút',
+    points: 260,
+    status: 'available',
+    link: '/advanced-challenge/kim-loai',
+    features: ['6 phần: tính chất vật lí, tính chất hoá học, dãy hoạt động, phản ứng với muối, hợp kim, điều chế'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 15
+    }
+  },
+  // PHI KIM - HALOGEN - Grade 9 (NEW)
+  {
+    id: 17,
+    name: 'Phi kim - Halogen',
+    description: 'Tổng hợp kiến thức về phi kim: tính chất chung, Clo và hợp chất, Brom, Iot, Flo và bài tập luyện tập.',
+    icon: '🧪',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-indigo-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-25 phút',
+    points: 240,
+    status: 'available',
+    link: '/advanced-challenge/phi-kim-halogen',
+    features: ['Tính chất của phi kim', 'Clo và hợp chất (HCl, NaCl, Ca(ClO)₂)', 'Tổng quan Br/ I/ F', 'Bài tập luyện tập'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 20
+    }
+  },
+  // HIDROCACBON - Grade 9 (NEW)
+  {
+    id: 18,
+    name: 'Hidrocacbon',
+    description: 'Tìm hiểu về các hợp chất hidrocacbon: Metan, Etilen, Axetilen, Benzen, nhiên liệu (than, dầu mỏ, khí thiên nhiên) và luyện tập tổng hợp.',
+    icon: '⛽',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-orange-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-25 phút',
+    points: 100,
+    status: 'available',
+    link: '/advanced-challenge/hidrocacbon',
+    features: ['Metan (CH₄)', 'Etilen (C₂H₄)', 'Axetilen (C₂H₂)', 'Benzen (C₆H₆)', 'Nhiên liệu hóa thạch', 'Bài tập luyện tập'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 26
+    }
+  },
+  // HIDROCACBON - POLIME - Grade 9 (NEW)
+  {
+    id: 19,
+    name: 'Hidrocacbon - Dẫn xuất & Polime',
+    description: 'Mở rộng: ancol, axit axetic, este, glucozơ, saccarozơ, tinh bột, xenlulozơ và polime. Ôn tập dẫn xuất và ứng dụng vật liệu.',
+    icon: '🧬',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-pink-500',
+    category: 'structure',
+    grade: 9,
+    time: '15-30 phút',
+    points: 120,
+    status: 'available',
+    link: '/advanced-challenge/hidrocacbon-polime',
+    features: ['Ancol (Ethanol)', 'Axit axetic', 'Este', 'Glucozơ, Saccarozơ', 'Tinh bột & Xenlulozơ', 'Polime', 'Bài tập tổng hợp'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 26
+    }
+  },
+  // TONG HOP - Grade 9 (NEW)
+  {
+    id: 20,
+    name: 'Tổng Hợp Hóa Học 9',
+    description: 'Kiểm tra kiến thức tổng hợp về Hóa học Vô cơ và Hữu cơ lớp 9. Vượt qua các thử thách để chứng tỏ bản lĩnh nhà hóa học trẻ!',
+    icon: '🏆',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-500',
+    category: 'structure',
+    grade: 9,
+    time: '20-30 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/tong-hop-lop-9',
+    features: ['Tổng hợp Vô cơ', 'Tổng hợp Hữu cơ', 'Nhận biết chất', 'Thí nghiệm ảo'],
+    prerequisite: {
+      classId: 9,
+      lessonId: 50
+    }
+  },
+  // SOLUTION - Grade 10 (NEW)
+  {
+    id: 21,
+    name: 'Chất Tan - Dung Môi',
+    description: 'Khám phá khái niệm chất tan, dung môi qua thí nghiệm tương tác! Thử nghiệm độ tan của muối, đường, cát, iot trong nước và cồn.',
+    icon: '💧',
+    difficulty: 'Dễ',
+    difficultyLevel: 'easy',
+    difficultyColor: 'bg-green-500',
+    category: 'solution',
+    grade: 10,
+    time: '10-15 phút',
+    points: 180,
+    status: 'available',
+    link: '/advanced-challenge/bai06-chat-tan-dung-moi',
+    features: ['12 thí nghiệm', 'Mô phỏng bình thí nghiệm', 'Hiệu ứng hòa tan thực tế', 'Học về dung môi phân cực'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 6
+    }
+  },
+  // SOLUTION - ADVANCED - Grade 10 (NEW)
+  {
+    id: 22,
+    name: 'Pha Chế Dung Dịch - Nâng Cao',
+    description: 'Thử thách tổng hợp về nồng độ phần trăm, nồng độ mol, chuyển đổi, pha loãng và pha trộn! 20 câu hỏi nâng cao với mô phỏng thí nghiệm 3D.',
+    icon: '⚗️',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-500',
+    category: 'solution',
+    grade: 10,
+    time: '25-35 phút',
+    points: 420,
+    status: 'available',
+    link: '/advanced-challenge/pha-che-dung-dich-nang-cao',
+    features: ['20 thử thách', 'Nồng độ % & mol', 'Chuyển đổi C% ↔ CM', 'Pha loãng & trộn', 'Bài tập thực hành PTN'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 6
+    }
+  },
+  // HALOGEN - Grade 10 (NEW)
+  {
+    id: 23,
+    name: 'Nhóm Halogen (VIIA)',
+    description: 'Tổng hợp kiến thức nhóm halogen: Flo, Clo, Brom, Iot — tính chất, phản ứng, ứng dụng và một số hợp chất quan trọng (HCl, NaCl, Ca(ClO)2).',
+    icon: '🧪',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-indigo-500',
+    category: 'structure',
+    grade: 10,
+    time: '15-25 phút',
+    points: 260,
+    status: 'available',
+    link: '/advanced-challenge/nhom-halogen',
+    features: ['Flo, Clo, Brom, Iot', 'Tính chất hoá học và vật lí', 'Ứng dụng: khử trùng, tẩy rửa, y tế', 'Hợp chất: HCl, NaCl, Ca(ClO)2'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 7
+    }
+  },
+  // OXI - LƯU HUỲNH - Grade 10 (NEW)
+  {
+    id: 24,
+    name: 'Oxi - Lưu Huỳnh',
+    description: 'Tổng hợp kiến thức về oxi và lưu huỳnh: tính chất vật lý, phản ứng hóa học, hợp chất và thí nghiệm phòng lab.',
+    icon: '🔥',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-yellow-500',
+    category: 'structure',
+    grade: 10,
+    time: '15-25 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/oxi-luu-huynh',
+    features: ['Tính chất O₂ và S', 'Phản ứng cháy, SO₂, H₂S, H₂SO₄', 'Thí nghiệm điều chế O₂', 'Bài tập tính toán'],
+    prerequisite: {
+      classId: 10,
+      lessonId: 20
+    }
+  },
+
+ 
+
+  // CÂN BẰNG PHẢN ỨNG NÂNG CAO - Grade 11
+  {
+    id: 26,
+    name: 'Cân Bằng Phản Ứng Nâng Cao',
+    description: 'Game cân bằng phương trình hóa học nâng cao với 4 loại phản ứng: Oxi hóa-khử, Axit-bazơ, Hữu cơ và Phức tạp. Phù hợp với kiến thức lớp 11.',
+    icon: '⚖️',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-500',
+    category: 'game',
+    grade: 11,
+    time: '20-30 phút',
+    points: 400,
+    status: 'available',
+    link: '/advanced-challenge/can-bang-phan-ung-nang-cao',
+    features: ['20+ phản ứng từ dễ đến khó', '4 loại phản ứng (Oxi hóa-khử, Axit-bazơ, Hữu cơ, Phức tạp)', 'Hệ thống điểm & combo streak', 'So sánh số nguyên tử trực quan', 'Gợi ý cho từng phản ứng'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 1
+    }
+  },
+
+  // NITƠ - LƯU HUỲNH - Grade 11
+  {
+    id: 27,
+    name: 'Nitơ - Lưu huỳnh',
+    description: 'Thử thách tổng hợp về Nitơ và Lưu huỳnh: N₂, NH₃, HNO₃, S, H₂S, SO₂, H₂SO₄. Gồm 30 câu hỏi đa dạng từ lý thuyết đến tính toán.',
+    icon: '⚗️',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-yellow-500',
+    category: 'game',
+    grade: 11,
+    time: '25-35 phút',
+    points: 350,
+    status: 'available',
+    link: '/advanced-challenge/nito-luu-huynh',
+    features: ['30 câu hỏi tổng hợp', '4 chủ đề (N₂ & hợp chất, S & hợp chất, Phản ứng đặc trưng, Ứng dụng)', 'Chế độ thử thách có giới hạn thời gian', 'Nhiều dạng câu hỏi (trắc nghiệm, đúng/sai, điền từ, sắp xếp, ghép đôi)', 'Bài tập tính toán nâng cao'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 2
+    }
+  },
   
     
   
@@ -343,7 +578,12 @@ const challenges = [
 
 async function seedDatabase() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://2200002540_db_user:Luan123@dan-1211.epxn7qi.mongodb.net/chemlearn?retryWrites=true&w=majority');
+    const mongoUri = process.env.MONGODB_URI;
+    if (!mongoUri) {
+      console.error('✗ MONGODB_URI environment variable is not set. Aborting seed.');
+      process.exit(1);
+    }
+    await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log('✓ Đã kết nối MongoDB');
 
     // Xóa dữ liệu cũ
@@ -410,7 +650,16 @@ async function seedDatabase() {
       return lesson;
     });
 
-    await Lesson.insertMany(transformedLessons);
+    // Deduplicate lessons by (classId, lessonId) to avoid bulk insert duplicate key errors
+    const dedupMap = new Map();
+    for (const ls of transformedLessons) {
+      const key = `${ls.classId ?? 'x'}-${ls.lessonId ?? 'x'}`;
+      if (!dedupMap.has(key)) dedupMap.set(key, ls);
+    }
+    const dedupedLessons = Array.from(dedupMap.values());
+    console.log('• Lessons before dedupe:', transformedLessons.length, 'after dedupe:', dedupedLessons.length);
+    // Use ordered:false so insertion continues when there are remaining non-duplicate issues
+    await Lesson.insertMany(dedupedLessons, { ordered: false });
     console.log('✓ Đã thêm bài học:');
     console.log('  - Lớp 8:', class8Lessons.length, 'bài (', 
       (lessons8.ketnoi || []).length, 'Kết nối,',

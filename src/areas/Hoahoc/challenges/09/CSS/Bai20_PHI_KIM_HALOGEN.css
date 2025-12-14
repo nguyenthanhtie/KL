@@ -1,0 +1,2009 @@
+/* ================== HALOGEN GAME STYLES ================== */
+.halogen-game {
+  height: 100vh;
+  max-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+.halogen-game.fullscreen {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+/* ================== START SCREEN ================== */
+.start-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.back-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+.start-card {
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.start-header {
+  margin-bottom: 16px;
+}
+
+.start-icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.start-header h1 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  color: #e2e8f0;
+  background: linear-gradient(135deg, #84cc16, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.start-header p {
+  color: #94a3b8;
+  margin: 0;
+}
+
+.challenge-info {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.info-item svg {
+  color: #84cc16;
+}
+
+.topics-list {
+  text-align: left;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(100, 116, 139, 0.2);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin: 16px 0;
+}
+
+.topics-list h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #e2e8f0;
+}
+
+.topics-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topics-list li {
+  padding: 4px 0;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.btn-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #84cc16, #65a30d);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(132, 204, 22, 0.4);
+}
+
+.btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(132, 204, 22, 0.5);
+}
+
+/* ================== TOP BAR ================== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+  flex-shrink: 0;
+  height: 48px;
+  min-height: 48px;
+}
+
+.challenge-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-compact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.progress-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(100, 116, 139, 0.4);
+  transition: all 0.2s;
+}
+
+.dot.active {
+  background: #84cc16;
+  transform: scale(1.3);
+}
+
+.dot.done {
+  background: #10b981;
+}
+
+.score-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 16px;
+  color: #fbbf24;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+/* ================== GAME MAIN ================== */
+.game-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.panel-left, .panel-right {
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 16px;
+  border: 1px solid rgba(100, 116, 139, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(30, 41, 59, 0.6);
+  border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.panel-header svg {
+  color: #84cc16;
+}
+
+.difficulty-tag {
+  margin-left: auto;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.difficulty-tag.easy { background: #dcfce7; color: #16a34a; }
+.difficulty-tag.medium { background: #fef3c7; color: #d97706; }
+.difficulty-tag.hard { background: #fee2e2; color: #dc2626; }
+
+.points-badge {
+  margin-left: auto;
+  padding: 4px 10px;
+  background: #84cc16;
+  color: white;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.experiment-area {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 0;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 8px;
+  margin: 8px;
+}
+
+.experiment-controls {
+  padding: 8px 14px;
+  border-top: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-shrink: 0;
+  background: rgba(15, 23, 42, 0.5);
+  margin: 0 8px 8px 8px;
+  border-radius: 0 0 8px 8px;
+}
+
+.btn-experiment {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #84cc16, #65a30d);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-experiment:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(100, 116, 139, 0.3);
+  color: #e2e8f0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reset:hover {
+  background: rgba(100, 116, 139, 0.5);
+}
+
+/* ================== QUESTION AREA ================== */
+.question-area {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.waiting-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #9ca3af;
+  gap: 12px;
+}
+
+.waiting-message svg {
+  opacity: 0.5;
+}
+
+.phenomenon-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 10px;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #fbbf24;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.phenomenon-box svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.question-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.options-grid.pre-experiment .option-btn {
+  border-style: dashed;
+}
+
+.option-btn {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: rgba(132, 204, 22, 0.5);
+  background: rgba(30, 41, 59, 0.8);
+}
+
+.option-btn.selected {
+  border-color: #84cc16;
+  background: rgba(132, 204, 22, 0.15);
+}
+
+.option-btn.correct {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.option-btn.incorrect {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.option-btn:disabled {
+  cursor: default;
+}
+
+.option-letter {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.option-btn.selected .option-letter { background: #84cc16; color: white; }
+.option-btn.correct .option-letter { background: #10b981; color: white; }
+.option-btn.incorrect .option-letter { background: #ef4444; color: white; }
+
+.option-text {
+  flex: 1;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+
+.icon-correct { color: #10b981; margin-left: auto; }
+.icon-incorrect { color: #ef4444; margin-left: auto; }
+
+.btn-hint-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: transparent;
+  border: 1px dashed rgba(148, 163, 184, 0.5);
+  border-radius: 6px;
+  color: #94a3b8;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-hint-inline:hover {
+  background: rgba(100, 116, 139, 0.2);
+  color: #e2e8f0;
+}
+
+.hint-text {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  color: #93c5fd;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.equation-box {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 10px;
+  font-size: 13px;
+  color: #93c5fd;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+/* ================== BOTTOM BAR ================== */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(15, 23, 42, 0.9);
+  border-top: 1px solid rgba(100, 116, 139, 0.2);
+  flex-shrink: 0;
+  height: 50px;
+  min-height: 50px;
+}
+
+.bottom-left, .bottom-right {
+  width: 130px;
+}
+
+.retry-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: rgba(251, 191, 36, 0.2);
+  border-radius: 16px;
+  color: #fbbf24;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #84cc16, #65a30d);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 3px 10px rgba(132, 204, 22, 0.3);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(132, 204, 22, 0.4);
+}
+
+.btn-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+}
+
+.btn-next:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.status-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.progress-text {
+  color: #94a3b8;
+  font-size: 12px;
+  text-align: right;
+}
+
+/* ================== RESULTS SCREEN ================== */
+.results-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 98px);
+  padding: 16px;
+}
+
+.results-card {
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 20px;
+  padding: 28px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+.trophy-section {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.trophy-emoji {
+  font-size: 48px;
+}
+
+.grade-badge {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  transform: translateX(50px);
+  padding: 4px 10px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.results-card h1 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  color: var(--accent);
+}
+
+.score-display {
+  margin-bottom: 20px;
+}
+
+.score-circle {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: conic-gradient(var(--accent) calc(var(--progress) * 1%), rgba(100, 116, 139, 0.3) 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.score-circle::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  background: rgba(30, 41, 59, 0.95);
+  border-radius: 50%;
+}
+
+.score-value, .score-total {
+  position: relative;
+  z-index: 1;
+}
+
+.score-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.score-total {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.score-display p {
+  margin: 0;
+  color: #94a3b8;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #84cc16, #65a30d);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: rgba(100, 116, 139, 0.3);
+  color: #e2e8f0;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(100, 116, 139, 0.5);
+}
+
+/* ================== EXPERIMENT: CHLORINE GAS ================== */
+.experiment-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transform: scale(1.25);
+  transform-origin: center center;
+}
+
+.chlorine-exp .gas-jar-area {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.chlorine-exp .gas-jar {
+  position: relative;
+  width: 90px;
+  height: 130px;
+}
+
+.chlorine-exp .jar-glass {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+  border: 2px solid #d1d5db;
+  border-radius: 0 0 16px 16px;
+  border-top: none;
+  overflow: hidden;
+}
+
+.chlorine-exp .chlorine-gas-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--fill-height);
+  background: linear-gradient(180deg, var(--gas-color), rgba(190, 242, 100, 0.6));
+  transition: height 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chlorine-exp .gas-particles {
+  position: absolute;
+  inset: 0;
+}
+
+.chlorine-exp .cl2-particle {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4d7c0f;
+  animation: floatParticle 3s infinite ease-in-out;
+  animation-delay: calc(var(--i) * 0.3s);
+}
+
+.chlorine-exp .cl2-particle:nth-child(1) { left: 10%; top: 20%; }
+.chlorine-exp .cl2-particle:nth-child(2) { left: 50%; top: 10%; }
+.chlorine-exp .cl2-particle:nth-child(3) { left: 70%; top: 30%; }
+.chlorine-exp .cl2-particle:nth-child(4) { left: 30%; top: 50%; }
+.chlorine-exp .cl2-particle:nth-child(5) { left: 60%; top: 60%; }
+.chlorine-exp .cl2-particle:nth-child(6) { left: 20%; top: 70%; }
+.chlorine-exp .cl2-particle:nth-child(7) { left: 75%; top: 80%; }
+.chlorine-exp .cl2-particle:nth-child(8) { left: 40%; top: 85%; }
+
+@keyframes floatParticle {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+  50% { transform: translateY(-10px) rotate(10deg); opacity: 1; }
+}
+
+.chlorine-exp .jar-cap {
+  width: 80px;
+  height: 15px;
+  background: linear-gradient(180deg, #6b7280, #4b5563);
+  border-radius: 4px 4px 0 0;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+}
+
+.chlorine-exp .jar-label {
+  text-align: center;
+  font-size: 13px;
+  color: #374151;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.chlorine-exp .gas-info-card {
+  background: #f8fafc;
+  padding: 10px 12px;
+  border-radius: 10px;
+  min-width: 150px;
+}
+
+.chlorine-exp .gas-info-card h4 {
+  margin: 0 0 8px;
+  color: #4d7c0f;
+  font-size: 13px;
+}
+
+.chlorine-exp .info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  color: #374151;
+  font-size: 11px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s;
+}
+
+.chlorine-exp .info-item.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.chlorine-exp .warning-box {
+  padding: 8px 14px;
+  background: #fef2f2;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* ================== EXPERIMENT: Cl2 + NaBr (Displacement) ================== */
+.cl2nabr-exp .displacement-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 220px;
+}
+
+/* Ống sục khí từ trên xuống */
+.cl2nabr-exp .gas-tube-vertical {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.cl2nabr-exp .tube-top {
+  background: rgba(190, 242, 100, 0.2);
+  border: 2px solid rgba(132, 204, 22, 0.5);
+  border-radius: 8px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cl2nabr-exp .gas-source {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #84cc16;
+}
+
+.cl2nabr-exp .tube-pipe {
+  width: 8px;
+  height: 70px;
+  background: linear-gradient(90deg, rgba(132,204,22,0.2), rgba(132,204,22,0.4), rgba(132,204,22,0.2));
+  border-left: 1px solid rgba(132,204,22,0.3);
+  border-right: 1px solid rgba(132,204,22,0.3);
+}
+
+.cl2nabr-exp .tube-end {
+  width: 12px;
+  height: 30px;
+  background: linear-gradient(90deg, rgba(132,204,22,0.2), rgba(132,204,22,0.4), rgba(132,204,22,0.2));
+  border-radius: 0 0 3px 3px;
+  border: 1px solid rgba(132,204,22,0.3);
+  border-top: none;
+  position: relative;
+}
+
+.cl2nabr-exp .bubbles-from-tube {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cl2nabr-exp .bubble-out {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(190, 242, 100, 0.7);
+  border-radius: 50%;
+  border: 1px solid rgba(132,204,22,0.5);
+  animation: bubbleFromTube 1s ease-out infinite;
+}
+
+@keyframes bubbleFromTube {
+  0% { 
+    transform: translateY(0) scale(0.5); 
+    opacity: 1; 
+  }
+  50% {
+    transform: translateY(20px) scale(1);
+    opacity: 0.8;
+  }
+  100% { 
+    transform: translateY(50px) scale(0.8); 
+    opacity: 0; 
+  }
+}
+
+/* Cốc dung dịch bên dưới ống sục */
+.cl2nabr-exp .water-container-below {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.cl2nabr-exp .beaker-body-mix {
+  width: 110px;
+  height: 95px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  border: 2px solid rgba(148, 163, 184, 0.4);
+  border-left: 3px solid rgba(148, 163, 184, 0.5);
+  border-right: 3px solid rgba(148, 163, 184, 0.5);
+  border-bottom: 4px solid rgba(148, 163, 184, 0.6);
+  border-radius: 0 0 30px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cl2nabr-exp .liquid-mix {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cl2nabr-exp .solution-label-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  color: #94a3b8;
+  font-size: 12px;
+  z-index: 1;
+}
+
+/* Bọt khí nổi lên trong dung dịch */
+.cl2nabr-exp .bubbles-container {
+  position: absolute;
+  inset: 0;
+}
+
+.cl2nabr-exp .bubble-rise {
+  position: absolute;
+  bottom: 10%;
+  width: 6px;
+  height: 6px;
+  background: rgba(190, 242, 100, 0.8);
+  border-radius: 50%;
+  border: 1px solid rgba(132,204,22,0.6);
+  animation: bubbleRiseInLiquid 2s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cl2nabr-exp .bubble-label {
+  font-size: 6px;
+  font-weight: 700;
+  color: #4d7c0f;
+}
+
+@keyframes bubbleRiseInLiquid {
+  0% { 
+    bottom: 10%; 
+    opacity: 0; 
+    transform: translateX(0) scale(0.6); 
+  }
+  20% { 
+    opacity: 1; 
+    transform: translateX(2px) scale(1); 
+  }
+  50% {
+    transform: translateX(-3px) scale(1.1);
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% { 
+    bottom: 90%; 
+    opacity: 0; 
+    transform: translateX(1px) scale(0.7); 
+  }
+}
+
+/* Phân tử Br₂ khuếch tán */
+.cl2nabr-exp .br2-diffusion {
+  position: absolute;
+  inset: 0;
+}
+
+.cl2nabr-exp .br2-particle-float {
+  position: absolute;
+  font-size: 9px;
+  font-weight: 700;
+  color: #7f1d1d;
+  animation: br2DiffuseFloat 3.5s infinite ease-in-out;
+  opacity: 0;
+}
+
+@keyframes br2DiffuseFloat {
+  0% { 
+    opacity: 0; 
+    transform: translate(0, 0) rotate(0deg); 
+  }
+  20% { 
+    opacity: 0.9; 
+  }
+  50% { 
+    opacity: 1; 
+    transform: translate(-6px, -10px) rotate(12deg); 
+  }
+  80% { 
+    opacity: 0.9; 
+  }
+  100% { 
+    opacity: 0; 
+    transform: translate(4px, -5px) rotate(-8deg); 
+  }
+}
+
+.cl2nabr-exp .beaker-name {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.cl2nabr-exp .reaction-observations {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.cl2nabr-exp .obs-item {
+  padding: 5px 10px;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 6px;
+  font-size: 11px;
+  color: #cbd5e1;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+
+.cl2nabr-exp .obs-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================== EXPERIMENT: Fe + Cl2 ================== */
+.fecl-exp .fecl-setup-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 220px;
+}
+
+/* Bột sắt rơi từ trên xuống */
+.fecl-exp .falling-iron {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fecl-exp .falling-iron.falling {
+  top: 90px;
+  transform: scale(0.85);
+}
+
+.fecl-exp .falling-iron.dissolved {
+  opacity: 0;
+  transform: scale(0.2);
+}
+
+.fecl-exp .iron-piece-falling {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--metal-color), #52525b);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.fecl-exp .iron-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Bình khí Clo bên dưới */
+.fecl-exp .cl2-flask-below {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.fecl-exp .flask-body-mix {
+  width: 120px;
+  height: 100px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  border: 2px solid rgba(148, 163, 184, 0.4);
+  border-left: 3px solid rgba(148, 163, 184, 0.5);
+  border-right: 3px solid rgba(148, 163, 184, 0.5);
+  border-bottom: 4px solid rgba(148, 163, 184, 0.6);
+  border-radius: 0 0 35px 35px;
+  position: relative;
+  overflow: hidden;
+}
+
+.fecl-exp .cl2-gas-mix {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  border-radius: 0 0 32px 32px;
+}
+
+.fecl-exp .cl2-mist {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.12), transparent 45%),
+              radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.1), transparent 40%),
+              radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1), transparent 35%);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  animation: mistFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes mistFloat {
+  0% { transform: translateY(0); opacity: 0.5; }
+  100% { transform: translateY(-6px); opacity: 0.8; }
+}
+
+/* Hiệu ứng cháy sáng ở giữa bình */
+.fecl-exp .reaction-flare {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+}
+
+.fecl-exp .spark-particle {
+  position: absolute;
+  width: 4px;
+  height: 14px;
+  background: linear-gradient(180deg, #fbbf24, #f59e0b);
+  border-radius: 2px;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  transform: rotate(var(--angle)) translateY(-15px);
+  animation: sparkShoot 0.8s ease-out infinite;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
+}
+
+@keyframes sparkShoot {
+  0% {
+    opacity: 1;
+    transform: rotate(var(--angle)) translateY(-10px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateY(-25px) scale(0.5);
+  }
+}
+
+.fecl-exp .fire-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  animation: glowPulse 0.5s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.8));
+}
+
+@keyframes glowPulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  100% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* Khói FeCl₃ nổi lên */
+.fecl-exp .fecl3-smoke-rise {
+  position: absolute;
+  inset: 0;
+}
+
+.fecl-exp .smoke-particle-rise {
+  position: absolute;
+  bottom: 40%;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.9) 0%, rgba(154, 52, 18, 0.85) 60%, rgba(79, 44, 15, 0.7) 100%);
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0;
+  animation: smokeRiseUp 3.2s ease-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes smokeRiseUp {
+  0% { 
+    bottom: 40%; 
+    opacity: 0; 
+    transform: translateX(0) scale(0.45); 
+  }
+  20% { 
+    opacity: 0.9; 
+  }
+  50% {
+    transform: translateX(-10px) scale(1.35);
+  }
+  100% { 
+    bottom: 95%; 
+    opacity: 0; 
+    transform: translateX(14px) scale(2.1); 
+  }
+}
+
+.fecl-exp .fecl3-deposit {
+  position: absolute;
+  bottom: 10%;
+  left: 8%;
+  right: 8%;
+  height: 12px;
+  background: linear-gradient(180deg, rgba(148, 74, 16, 0.85), rgba(90, 45, 10, 0.9));
+  border-radius: 12px;
+  filter: blur(2px);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.fecl-exp .iron-trail {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 6px;
+  height: 90px;
+  background: linear-gradient(180deg, rgba(250, 204, 21, 0.7), rgba(249, 115, 22, 0.05));
+  transform: translateX(-50%);
+  filter: blur(6px);
+  animation: trailFade 0.8s ease-out infinite;
+}
+
+@keyframes trailFade {
+  0% { opacity: 0.9; transform: translateX(-50%) scaleY(1); }
+  100% { opacity: 0; transform: translateX(-50%) scaleY(0.6); }
+}
+
+.fecl-exp .flask-name {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.fecl-exp .fecl-observations {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.fecl-exp .obs-item {
+  padding: 5px 10px;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 6px;
+  font-size: 11px;
+  color: #cbd5e1;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+
+.fecl-exp .obs-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================== EXPERIMENT: Cl2 + KI ================== */
+.cl2ki-exp {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transform: scale(1.1);
+}
+
+.cl2ki-setup {
+  position: relative;
+  width: 240px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.cl2-inlet {
+  position: relative;
+  width: 120px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.cl2-inlet.active {
+  opacity: 1;
+}
+
+.cl2-label {
+  padding: 4px 10px;
+  background: #ecfccb;
+  color: #166534;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.cl2-stream {
+  flex: 1;
+  height: 5px;
+  background: linear-gradient(90deg, rgba(190, 242, 100, 0.35), rgba(255, 255, 191, 0.7));
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cl2-stream::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0));
+  transform: translateX(-100%);
+  animation: flowMove 1.4s linear infinite;
+}
+
+.ki-beaker {
+  position: relative;
+  width: 140px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.beaker-glass {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+  border: 2px solid rgba(148, 163, 184, 0.4);
+  border-left: 3px solid rgba(148, 163, 184, 0.5);
+  border-right: 3px solid rgba(148, 163, 184, 0.5);
+  border-bottom: 4px solid rgba(148, 163, 184, 0.6);
+  border-radius: 0 0 26px 26px;
+  overflow: hidden;
+}
+
+.ki-solution {
+  position: absolute;
+  inset: 18% 12% 0 12%;
+  border-radius: 0 0 18px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ki-bubbles {
+  position: absolute;
+  inset: 0;
+}
+
+.ki-bubbles .bubble-rise {
+  position: absolute;
+  bottom: 8%;
+  width: 10px;
+  height: 10px;
+  background: rgba(190, 242, 100, 0.6);
+  border-radius: 50%;
+  animation: bubbleRiseInLiquid 1.8s ease-out infinite;
+  animation-delay: var(--delay, 0s);
+  left: var(--left, 50%);
+}
+
+.ki-bubbles .bubble-label {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: #84cc16;
+  font-weight: 700;
+}
+
+.iodine-particles {
+  position: absolute;
+  inset: 10% 8% 14% 8%;
+}
+
+.i2-particle {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 800;
+  color: #7c3aed;
+  animation: i2Float 2.4s ease-in-out infinite;
+}
+
+.i2-particle:nth-child(n) {
+  left: calc(8% + (var(--i) * 7%));
+  top: calc(15% + (var(--i) / 4) * 16%);
+  animation-delay: calc(var(--i) * 0.1s);
+}
+
+@keyframes i2Float {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.75; }
+  50% { transform: translateY(-6px) scale(1.05); opacity: 1; }
+}
+
+.iodine-vapor {
+  position: absolute;
+  inset: -6% 12% 40% 12%;
+  background: radial-gradient(circle at 50% 30%, rgba(124, 58, 237, 0.35), transparent 70%);
+  filter: blur(6px);
+  animation: vaporDrift 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes vaporDrift {
+  0% { transform: translateY(0); opacity: 0.6; }
+  100% { transform: translateY(-8px); opacity: 0.85; }
+}
+
+.cl2ki-observations {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cl2ki-observations .obs-item {
+  padding: 6px 10px;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 6px;
+  font-size: 11px;
+  color: #cbd5e1;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+
+.cl2ki-observations .obs-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================== EXPERIMENT: HCl + Metal ================== */
+.hcl-metal-exp .hcl-title {
+  font-weight: 600;
+  color: #374151;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.hcl-metal-exp .test-tubes-row {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.hcl-metal-exp .test-tube-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.hcl-metal-exp .test-tube {
+  width: 32px;
+  height: 70px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+  border: 2px solid #d1d5db;
+  border-radius: 0 0 16px 16px;
+  border-top: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.hcl-metal-exp .hcl-solution {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70%;
+  background: linear-gradient(180deg, var(--acid-color), #fecdd3);
+  border-radius: 0 0 20px 20px;
+}
+
+.hcl-metal-exp .metal-piece-tube {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, var(--metal-color), #71717a);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  color: white;
+  transition: top 0.5s;
+  z-index: 2;
+}
+
+.hcl-metal-exp .metal-piece-tube.dropped {
+  top: 35px;
+}
+
+.hcl-metal-exp .bubbles-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hcl-metal-exp .h2-bubble {
+  position: absolute;
+  bottom: 30%;
+  left: var(--left);
+  width: var(--size);
+  height: var(--size);
+  background: radial-gradient(circle at 30% 30%, white, #e0f2fe);
+  border-radius: 50%;
+  animation: bubbleUp 1.2s infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes bubbleUp {
+  0% { transform: translateY(0); opacity: 0.8; }
+  100% { transform: translateY(-60px); opacity: 0; }
+}
+
+.hcl-metal-exp .tube-label {
+  font-weight: 600;
+  font-size: 11px;
+  color: #374151;
+}
+
+.hcl-metal-exp .reaction-badge {
+  font-size: 9px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  min-height: 16px;
+}
+
+.hcl-metal-exp .reaction-badge.reacts {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.hcl-metal-exp .reaction-badge.no-react {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.hcl-metal-exp .hcl-conclusion {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #eff6ff;
+  border-radius: 8px;
+  font-size: 11px;
+  color: #1e40af;
+  text-align: center;
+}
+
+/* ================== EXPERIMENT: Electrolysis ================== */
+.electrolysis-exp .electrolysis-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.electrolysis-exp .power-source {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.electrolysis-exp .battery {
+  display: flex;
+  gap: 14px;
+  padding: 5px 14px;
+  background: linear-gradient(180deg, #374151, #1f2937);
+  border-radius: 6px;
+  color: white;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.electrolysis-exp .plus { color: #ef4444; }
+.electrolysis-exp .minus { color: #3b82f6; }
+
+.electrolysis-exp .wires {
+  display: flex;
+  gap: 45px;
+}
+
+.electrolysis-exp .wire {
+  width: 2px;
+  height: 12px;
+  background: #6b7280;
+}
+
+.electrolysis-exp .electrolysis-tank {
+  position: relative;
+}
+
+.electrolysis-exp .nacl-solution {
+  width: 160px;
+  height: 80px;
+  background: linear-gradient(180deg, var(--solution-color), #c7d2fe);
+  border: 2px solid #a5b4fc;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.electrolysis-exp .solution-label {
+  font-weight: 600;
+  color: #4338ca;
+  font-size: 10px;
+}
+
+.electrolysis-exp .membrane {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  background: repeating-linear-gradient(
+    180deg,
+    #9ca3af 0px,
+    #9ca3af 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 5px;
+}
+
+.electrolysis-exp .membrane span {
+  font-size: 9px;
+  color: #6b7280;
+  white-space: nowrap;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  position: absolute;
+  bottom: 50%;
+}
+
+.electrolysis-exp .electrode {
+  position: absolute;
+  bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.electrolysis-exp .electrode.catot {
+  left: 18px;
+}
+
+.electrolysis-exp .electrode.anot {
+  right: 18px;
+}
+
+.electrolysis-exp .electrode-rod {
+  width: 7px;
+  height: 40px;
+  background: linear-gradient(90deg, #6b7280, #9ca3af, #6b7280);
+  border-radius: 2px;
+}
+
+.electrolysis-exp .electrode-label {
+  font-size: 8px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.electrolysis-exp .electrode-bubbles {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.electrolysis-exp .e-bubble {
+  position: absolute;
+  font-size: 9px;
+  font-weight: 700;
+  animation: eBubbleRise 1.5s infinite;
+  animation-delay: calc(var(--i) * 0.2s);
+}
+
+.electrolysis-exp .e-bubble:nth-child(odd) { left: -15px; }
+.electrolysis-exp .e-bubble:nth-child(even) { right: -15px; }
+
+.electrolysis-exp .h2-bubbles .e-bubble { color: #2563eb; }
+.electrolysis-exp .cl2-bubbles .e-bubble { color: #4d7c0f; }
+.electrolysis-exp .e-bubble.cl2 { color: #4d7c0f; }
+
+@keyframes eBubbleRise {
+  0% { transform: translateY(0); opacity: 0.8; }
+  100% { transform: translateY(-40px); opacity: 0; }
+}
+
+.electrolysis-exp .electrolysis-products {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.electrolysis-exp .product-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  background: #f8fafc;
+  border-radius: 6px;
+  font-size: 10px;
+  color: #374151;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+
+.electrolysis-exp .product-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.electrolysis-exp .product-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  color: white;
+}
+
+.electrolysis-exp .product-icon.h2 { background: #3b82f6; }
+.electrolysis-exp .product-icon.cl2 { background: #84cc16; }
+.electrolysis-exp .product-icon.naoh { background: #8b5cf6; }
+
+/* ================== EXPERIMENT: Halogen Series ================== */
+.halogen-series-exp .halogen-title {
+  font-weight: 600;
+  color: #374151;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.halogen-series-exp .halogen-cards {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.halogen-series-exp .halogen-card {
+  width: 70px;
+  background: white;
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.4s;
+  transition-delay: var(--delay);
+}
+
+.halogen-series-exp .halogen-card.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.halogen-series-exp .halogen-sample {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  background: var(--halogen-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 11px;
+  color: #374151;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.halogen-series-exp .halogen-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.halogen-series-exp .halogen-state {
+  font-size: 9px;
+  color: #6b7280;
+}
+
+.halogen-series-exp .halogen-activity {
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.halogen-series-exp .halogen-activity.rất-mạnh { background: #dcfce7; color: #16a34a; }
+.halogen-series-exp .halogen-activity.mạnh { background: #dbeafe; color: #2563eb; }
+.halogen-series-exp .halogen-activity.tb { background: #fef3c7; color: #d97706; }
+.halogen-series-exp .halogen-activity.yếu { background: #fee2e2; color: #dc2626; }
+
+.halogen-series-exp .halogen-order {
+  margin-top: 10px;
+  padding: 10px;
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.halogen-series-exp .order-label {
+  font-size: 11px;
+  color: #374151;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.halogen-series-exp .order-sequence {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.halogen-series-exp .h-strong { color: #16a34a; font-size: 14px; }
+.halogen-series-exp .h-medium { color: #65a30d; font-size: 13px; }
+.halogen-series-exp .h-weak { color: #d97706; font-size: 12px; }
+.halogen-series-exp .h-very-weak { color: #dc2626; font-size: 11px; }
+.halogen-series-exp .arrow { color: #9ca3af; font-size: 10px; }
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 900px) {
+  .game-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  
+  .challenge-info {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .halogen-series-exp .halogen-cards {
+    gap: 10px;
+  }
+  
+  .halogen-series-exp .halogen-card {
+    width: 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .top-bar {
+    padding: 10px 16px;
+  }
+  
+  .challenge-badge span {
+    display: none;
+  }
+  
+  .bottom-bar {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .bottom-left, .bottom-right {
+    width: auto;
+  }
+  
+  .action-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .h2cl2-exp .gas-tubes {
+    gap: 20px;
+  }
+  
+  .electrolysis-exp .nacl-solution {
+    width: 180px;
+  }
+  
+  .electrolysis-exp .electrolysis-products {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

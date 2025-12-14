@@ -6,6 +6,10 @@ import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai99_TongKetLop8.css';
 
 const TongKetLop8 = () => {
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('tong-ket-lop-8');
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
+  
   // Ngân hàng câu hỏi tổng hợp toàn bộ chương trình lớp 8
   const questionBank = [
     // PHẦN 1: CHẤT - NGUYÊN TỬ - PHÂN TỬ
@@ -328,8 +332,6 @@ const TongKetLop8 = () => {
     }
   ];
 
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('tong-ket-lop-8');
-  
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
@@ -494,6 +496,24 @@ const TongKetLop8 = () => {
       setGameStarted(false);
       setGameCompleted(true);
       clearProgress();
+      
+      // Lưu kết quả hoàn thành vào database
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const correctCount = history.filter(h => h.correct).length;
+        const maxScore = questionBank.length * 10;
+        const percentage = Math.round((score / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers: correctCount,
+          totalQuestions: questionBank.length
+        });
+      }
     }
   };
 

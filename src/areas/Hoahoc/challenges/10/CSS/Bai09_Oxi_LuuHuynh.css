@@ -1,0 +1,2768 @@
+/* ==================== OXI - LƯU HUỲNH INTERACTIVE GAME ==================== */
+
+/* === BASE STYLES === */
+.oxi-sulfur-game {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f97316 0%, #eab308 50%, #84cc16 100%);
+  padding: 20px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* === GAME HEADER === */
+.oxi-sulfur-game .game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.oxi-sulfur-game .game-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.oxi-sulfur-game .icon-flame {
+  color: #f97316;
+  animation: flicker 1.5s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  25% { transform: scale(1.1) rotate(-5deg); opacity: 0.9; }
+  50% { transform: scale(0.95); opacity: 1; }
+  75% { transform: scale(1.05) rotate(5deg); opacity: 0.9; }
+}
+
+.oxi-sulfur-game .back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #f1f5f9;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-game .back-btn:hover {
+  background: #e2e8f0;
+  transform: translateX(-2px);
+}
+
+.oxi-sulfur-game .header-score {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+/* === LEVEL PROGRESS === */
+.oxi-sulfur-game .level-progress {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+}
+
+.oxi-sulfur-game .progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.oxi-sulfur-game .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  border-radius: 4px;
+  transition: width 0.5s ease-out;
+}
+
+.oxi-sulfur-game .level-indicators {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.oxi-sulfur-game .level-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: white;
+  transition: all 0.3s;
+}
+
+.oxi-sulfur-game .level-dot.completed {
+  background: #10b981;
+  transform: scale(1.1);
+}
+
+.oxi-sulfur-game .level-dot.current {
+  background: #3b82f6;
+  animation: pulse-dot 1.5s infinite;
+  transform: scale(1.15);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+  50% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+}
+
+/* === LEVEL CARD === */
+.oxi-sulfur-game .level-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.oxi-sulfur-game .level-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+}
+
+.oxi-sulfur-game .level-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.oxi-sulfur-game .level-points {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.oxi-sulfur-game .level-description {
+  padding: 16px 24px;
+  margin: 0;
+  background: #f8fafc;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.oxi-sulfur-game .level-content {
+  padding: 24px;
+}
+
+/* === DRAG & DROP COMPONENTS === */
+.drag-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: grab;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.drag-item:hover:not(.disabled) {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+.drag-item:active:not(.disabled) {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+.drag-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.drag-item .grip-icon {
+  color: #94a3b8;
+}
+
+.drop-zone {
+  min-height: 80px;
+  border: 3px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-zone.drag-over {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  transform: scale(1.02);
+}
+
+.drop-zone.highlight {
+  animation: highlight-pulse 2s infinite;
+}
+
+@keyframes highlight-pulse {
+  0%, 100% { border-color: #cbd5e1; }
+  50% { border-color: #f97316; background: rgba(249, 115, 22, 0.05); }
+}
+
+/* === BURN EXPERIMENT (Level 1) === */
+.burn-experiment .task-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.burn-experiment .task-number {
+  color: #64748b;
+}
+
+.burn-experiment .task-score {
+  color: #f59e0b;
+}
+
+.burn-experiment .task-instruction {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-weight: 500;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 10px;
+  border-left: 4px solid #f59e0b;
+}
+
+/* === LAYOUT 2 CỘT: THÍ NGHIỆM + TRẮC NGHIỆM === */
+.burn-experiment .experiment-quiz-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+/* BÊN TRÁI: Khu vực thí nghiệm */
+.burn-experiment .experiment-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.burn-experiment .experiment-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 16px;
+  border: 2px solid #e2e8f0;
+  align-items: start;
+}
+
+.burn-experiment .substances-panel h4 {
+  margin: 0 0 12px;
+  color: #475569;
+}
+
+.burn-experiment .substances-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.burn-experiment .substance-item {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: #fbbf24;
+  position: relative;
+  padding: 10px 14px;
+}
+
+.burn-experiment .substance-item.target-substance {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  animation: pulse-target 1.5s infinite;
+}
+
+@keyframes pulse-target {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+
+.burn-experiment .substance-item.disabled-substance {
+  opacity: 0.4;
+  filter: grayscale(50%);
+}
+
+.burn-experiment .target-badge {
+  position: absolute;
+  right: 10px;
+  font-size: 0.75rem;
+  color: #059669;
+  font-weight: 700;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.burn-experiment .substance-icon {
+  font-size: 1.3rem;
+}
+
+.burn-experiment .oxygen-flask {
+  background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
+  border-style: solid;
+  border-color: #0ea5e9;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.burn-experiment .flask-container {
+  text-align: center;
+}
+
+.burn-experiment .flask-label {
+  font-weight: 700;
+  color: #0369a1;
+  margin-bottom: 10px;
+}
+
+.burn-experiment .flask-body {
+  width: 120px;
+  height: 140px;
+  margin: 0 auto;
+  background: radial-gradient(circle, rgba(255,255,255,0.8), rgba(186, 230, 253, 0.5));
+  border-radius: 0 0 60px 60px;
+  border: 3px solid #0ea5e9;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.burn-experiment .flask-body.reacting {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.burn-experiment .dropped-substance {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.burn-experiment .flame-effect {
+  position: absolute;
+  top: -25px;
+}
+
+.burn-experiment .flame-icon {
+  color: var(--flame-color, #ff6b35);
+  filter: drop-shadow(0 0 10px var(--flame-color, #ff6b35));
+}
+
+.burn-experiment .flame-icon.animated {
+  animation: flame-flicker 0.5s infinite;
+}
+
+@keyframes flame-flicker {
+  0%, 100% { transform: scale(1) rotate(-3deg); }
+  50% { transform: scale(1.2) rotate(3deg); }
+}
+
+.burn-experiment .drop-hint {
+  color: #64748b;
+  font-style: italic;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+/* Observation Panel */
+.burn-experiment .observation-panel {
+  background: #f0fdf4;
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #22c55e;
+}
+
+.burn-experiment .observation-panel h4 {
+  margin: 0 0 10px;
+  color: #15803d;
+  font-size: 0.95rem;
+}
+
+.burn-experiment .observation-content {
+  font-size: 0.9rem;
+}
+
+.burn-experiment .observation-content .effect-text {
+  color: #1e293b;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.burn-experiment .observation-content .equation-text {
+  color: #059669;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+/* BÊN PHẢI: Khu vực trắc nghiệm */
+.burn-experiment .quiz-side {
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.burn-experiment .quiz-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: 3px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.burn-experiment .quiz-placeholder .placeholder-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  opacity: 0.4;
+}
+
+.burn-experiment .quiz-placeholder p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Quiz Section */
+.burn-experiment .quiz-section {
+  flex: 1;
+  padding: 24px;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-radius: 16px;
+  border: 2px solid #3b82f6;
+  display: flex;
+  flex-direction: column;
+}
+
+.burn-experiment .quiz-section h4 {
+  margin: 0 0 16px;
+  color: #1e40af;
+  font-size: 1.1rem;
+}
+
+.burn-experiment .quiz-question {
+  font-size: 1.15rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.burn-experiment .quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.burn-experiment .quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.burn-experiment .quiz-option:hover:not(:disabled) {
+  border-color: #3b82f6;
+  background: #f8fafc;
+}
+
+.burn-experiment .quiz-option.selected {
+  border-color: #3b82f6;
+  background: #dbeafe;
+}
+
+.burn-experiment .quiz-option.correct {
+  border-color: #10b981;
+  background: #d1fae5;
+}
+
+.burn-experiment .quiz-option.wrong {
+  border-color: #ef4444;
+  background: #fee2e2;
+}
+
+.burn-experiment .quiz-option .option-letter {
+  width: 30px;
+  height: 30px;
+  background: #f1f5f9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #64748b;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+}
+
+.burn-experiment .quiz-option.selected .option-letter {
+  background: #3b82f6;
+  color: white;
+}
+
+.burn-experiment .quiz-option.correct .option-letter {
+  background: #10b981;
+  color: white;
+}
+
+.burn-experiment .quiz-option.wrong .option-letter {
+  background: #ef4444;
+  color: white;
+}
+
+.burn-experiment .quiz-option .option-text {
+  flex: 1;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.burn-experiment .quiz-option .correct-icon {
+  color: #10b981;
+}
+
+.burn-experiment .quiz-option .wrong-icon {
+  color: #ef4444;
+}
+
+/* Answer Result */
+.burn-experiment .answer-result {
+  margin-top: auto;
+  padding: 14px;
+  border-radius: 12px;
+  animation: slide-up 0.3s ease-out;
+}
+
+.burn-experiment .answer-result.correct {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 2px solid #10b981;
+}
+
+.burn-experiment .answer-result.incorrect {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 2px solid #ef4444;
+}
+
+.burn-experiment .answer-result .result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.burn-experiment .answer-result.correct .result-header {
+  color: #059669;
+}
+
+.burn-experiment .answer-result.incorrect .result-header {
+  color: #dc2626;
+}
+
+/* === RESULT PANEL === */
+.result-panel {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 16px;
+  animation: slide-up 0.3s ease-out;
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-panel.correct {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 2px solid #10b981;
+}
+
+.result-panel.incorrect {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 2px solid #ef4444;
+}
+
+.result-panel.partial {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+}
+
+.result-panel .result-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.result-panel.correct .result-header { color: #059669; }
+.result-panel.incorrect .result-header { color: #dc2626; }
+.result-panel.partial .result-header { color: #d97706; }
+
+.result-panel .result-content {
+  margin-bottom: 16px;
+}
+
+.result-panel .effect-text { color: #475569; margin-bottom: 8px; }
+.result-panel .equation-text { font-family: monospace; color: #1e293b; margin-bottom: 8px; }
+.result-panel .product-text { color: #059669; }
+
+.btn-next, .btn-check, .btn-continue, .btn-reset, .btn-restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-next {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.btn-next:hover { transform: translateX(4px); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+
+.btn-check {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.btn-check:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+
+.btn-continue { background: #f1f5f9; color: #475569; }
+.btn-continue:hover { background: #e2e8f0; }
+
+.btn-reset { background: #fef3c7; color: #92400e; }
+.btn-reset:hover { background: #fde68a; }
+
+.btn-restart { background: linear-gradient(135deg, #f97316, #ea580c); color: white; }
+.btn-restart:hover { transform: scale(1.02); }
+
+/* === GAS IDENTIFICATION (Level 2) === */
+.gas-identification .task-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.gas-identification .task-number {
+  color: #64748b;
+}
+
+.gas-identification .task-score {
+  color: #f59e0b;
+}
+
+.gas-identification .task-instruction {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-weight: 500;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-radius: 10px;
+  border-left: 4px solid #3b82f6;
+}
+
+/* Layout 2 cột cho Level 2 */
+.gas-identification .experiment-quiz-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+.gas-identification .experiment-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gas-identification .experiment-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 16px;
+  border: 2px solid #e2e8f0;
+  align-items: start;
+}
+
+.gas-identification .reagents-panel h4 {
+  margin: 0 0 12px;
+  color: #475569;
+}
+
+.gas-identification .reagents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gas-identification .reagent-item {
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+  border-color: #f97316;
+  position: relative;
+  padding: 10px 14px;
+}
+
+.gas-identification .reagent-item.target-reagent {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  animation: pulse-target 1.5s infinite;
+}
+
+.gas-identification .reagent-item.disabled-reagent {
+  opacity: 0.4;
+  filter: grayscale(50%);
+}
+
+.gas-identification .reagent-item .target-badge {
+  position: absolute;
+  right: 10px;
+  font-size: 0.75rem;
+  color: #059669;
+  font-weight: 700;
+  animation: blink 1s infinite;
+}
+
+.gas-identification .reagent-icon { font-size: 1.3rem; }
+
+.gas-identification .test-tube-zone {
+  background: linear-gradient(180deg, #f0fdf4, #dcfce7);
+  border-color: #22c55e;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gas-identification .test-tube {
+  text-align: center;
+}
+
+.gas-identification .tube-label {
+  font-weight: 700;
+  color: #15803d;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.gas-identification .tube-body {
+  position: relative;
+  display: inline-block;
+}
+
+.gas-identification .tube-body svg {
+  color: #22c55e;
+}
+
+.gas-identification .tube-body.reacting svg {
+  animation: shake 0.5s ease-in-out infinite;
+}
+
+.gas-identification .reagent-in-tube {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+}
+
+.gas-identification .reaction-effect-gas {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.gas-identification .sparkle-icon {
+  color: #f59e0b;
+  animation: sparkle 0.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
+}
+
+.gas-identification .drop-hint {
+  color: #64748b;
+  font-style: italic;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+/* Observation Panel for Gas */
+.gas-identification .observation-panel {
+  background: #f0fdf4;
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #22c55e;
+}
+
+.gas-identification .observation-panel.positive {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border-color: #10b981;
+}
+
+.gas-identification .observation-panel.negative {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border-color: #ef4444;
+}
+
+.gas-identification .observation-panel h4 {
+  margin: 0 0 10px;
+  color: #15803d;
+  font-size: 0.95rem;
+}
+
+.gas-identification .observation-content {
+  font-size: 0.9rem;
+}
+
+.gas-identification .observation-content .effect-text {
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.gas-identification .observation-content .conclusion-text {
+  color: #059669;
+  font-size: 0.85rem;
+}
+
+/* Quiz Side for Gas Level */
+.gas-identification .quiz-side {
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.gas-identification .quiz-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: 3px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+.gas-identification .quiz-placeholder .placeholder-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  opacity: 0.4;
+}
+
+.gas-identification .quiz-placeholder p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.gas-identification .quiz-section {
+  flex: 1;
+  padding: 24px;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-radius: 16px;
+  border: 2px solid #3b82f6;
+  display: flex;
+  flex-direction: column;
+}
+
+.gas-identification .quiz-section h4 {
+  margin: 0 0 16px;
+  color: #1e40af;
+  font-size: 1.1rem;
+}
+
+.gas-identification .quiz-question {
+  font-size: 1.15rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.gas-identification .quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.gas-identification .quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.gas-identification .quiz-option:hover:not(:disabled) {
+  border-color: #3b82f6;
+  background: #f8fafc;
+}
+
+.gas-identification .quiz-option.selected {
+  border-color: #3b82f6;
+  background: #dbeafe;
+}
+
+.gas-identification .quiz-option.correct {
+  border-color: #10b981;
+  background: #d1fae5;
+}
+
+.gas-identification .quiz-option.wrong {
+  border-color: #ef4444;
+  background: #fee2e2;
+}
+
+.gas-identification .quiz-option .option-letter {
+  width: 30px;
+  height: 30px;
+  background: #f1f5f9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #64748b;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+}
+
+.gas-identification .quiz-option.selected .option-letter {
+  background: #3b82f6;
+  color: white;
+}
+
+.gas-identification .quiz-option.correct .option-letter {
+  background: #10b981;
+  color: white;
+}
+
+.gas-identification .quiz-option.wrong .option-letter {
+  background: #ef4444;
+  color: white;
+}
+
+.gas-identification .quiz-option .option-text {
+  flex: 1;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.gas-identification .quiz-option .correct-icon {
+  color: #10b981;
+}
+
+.gas-identification .quiz-option .wrong-icon {
+  color: #ef4444;
+}
+
+/* Answer Result for Gas Level */
+.gas-identification .answer-result {
+  margin-top: auto;
+  padding: 14px;
+  border-radius: 12px;
+  animation: slide-up 0.3s ease-out;
+}
+
+.gas-identification .answer-result.correct {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 2px solid #10b981;
+}
+
+.gas-identification .answer-result.incorrect {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 2px solid #ef4444;
+}
+
+.gas-identification .answer-result .result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.gas-identification .answer-result.correct .result-header {
+  color: #059669;
+}
+
+.gas-identification .answer-result.incorrect .result-header {
+  color: #dc2626;
+}
+
+/* === ACID PREPARATION (Level 3) === */
+.acid-preparation .level-hint {
+  padding: 12px 16px;
+  background: #fef3c7;
+  border-radius: 10px;
+  color: #92400e;
+  margin-bottom: 20px;
+}
+
+.acid-preparation .preparation-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.acid-preparation .available-steps h4,
+.acid-preparation .order-zone h4 {
+  margin: 0 0 12px;
+  color: #475569;
+}
+
+.acid-preparation .step-item {
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+  border-color: #6366f1;
+}
+
+.acid-preparation .step-icon { font-size: 1.3rem; }
+.acid-preparation .step-content { flex: 1; }
+
+.acid-preparation .order-slot {
+  min-height: 60px;
+  margin-bottom: 10px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.acid-preparation .slot-number {
+  width: 32px;
+  height: 32px;
+  background: #6366f1;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.acid-preparation .slot-placeholder {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.acid-preparation .placed-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.acid-preparation .placed-step.correct {
+  background: #d1fae5;
+  border: 2px solid #10b981;
+}
+
+.acid-preparation .placed-step.wrong {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+}
+
+/* === ACID PROPERTIES (Level 4) === */
+.acid-properties .experiment-area {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+.acid-properties .substances-panel h4 {
+  margin: 0 0 12px;
+  color: #475569;
+}
+
+.acid-properties .substance-item {
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.acid-properties .substance-item.tested {
+  opacity: 0.6;
+  border-color: #10b981;
+  background: #d1fae5;
+}
+
+.acid-properties .tested-icon {
+  color: #10b981;
+  position: absolute;
+  right: 10px;
+}
+
+.acid-properties .acid-beaker {
+  background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+  border-color: #f59e0b;
+  min-height: 250px;
+}
+
+.acid-properties .beaker-container { text-align: center; }
+
+.acid-properties .beaker-label {
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 12px;
+}
+
+.acid-properties .beaker-body {
+  position: relative;
+}
+
+.acid-properties .beaker-body svg {
+  color: #f59e0b;
+}
+
+.acid-properties .beaker-body.reacting svg {
+  animation: shake 0.5s ease-in-out infinite;
+}
+
+.acid-properties .substance-in-beaker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+}
+
+.acid-properties .reaction-effect {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  animation: rise-effect 2s ease-out forwards;
+}
+
+@keyframes rise-effect {
+  0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-60px); }
+}
+
+.acid-properties .property-result {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+}
+
+.acid-properties .property-result.danger {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+.acid-properties .property-result h4 {
+  margin: 0 0 12px;
+  color: #1e293b;
+}
+
+.acid-properties .property-result .effect { font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+.acid-properties .property-result .explanation { color: #64748b; margin-bottom: 8px; }
+.acid-properties .property-result .property { color: #059669; }
+
+.acid-properties .progress-indicator {
+  margin-top: 16px;
+  text-align: center;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* === LAB PREPARATION (Level 5) === */
+.lab-preparation .equation-display {
+  text-align: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-radius: 12px;
+  color: #1e40af;
+  font-family: monospace;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.lab-preparation .lab-area {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+}
+
+.lab-preparation .equipment-panel h4,
+.lab-preparation .procedure-zone h4 {
+  margin: 0 0 12px;
+  color: #475569;
+}
+
+.lab-preparation .equipment-item {
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-color: #22c55e;
+}
+
+.lab-preparation .equip-icon { font-size: 1.3rem; }
+
+.lab-preparation .procedure-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 50px;
+  margin-bottom: 10px;
+  padding: 10px 16px;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.lab-preparation .step-number {
+  width: 28px;
+  height: 28px;
+  background: #64748b;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.lab-preparation .step-content {
+  flex: 1;
+}
+
+.lab-preparation .step-text {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.lab-preparation .placed-equip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: white;
+  border-radius: 8px;
+}
+
+.lab-preparation .placed-equip.correct {
+  background: #d1fae5;
+  border: 2px solid #10b981;
+}
+
+.lab-preparation .placed-equip.wrong {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+}
+
+.lab-preparation .action-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* === REACTION CHAIN (Level 6) === */
+.reaction-chain .chain-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 30px 0;
+  margin-bottom: 24px;
+}
+
+.reaction-chain .chain-node {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: white;
+  border: 3px dashed #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: auto;
+  padding: 10px;
+}
+
+.reaction-chain .chain-node.fixed {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 3px solid #f59e0b;
+}
+
+.reaction-chain .chain-node.correct {
+  background: #d1fae5;
+  border: 3px solid #10b981;
+}
+
+.reaction-chain .chain-node.wrong {
+  background: #fee2e2;
+  border: 3px solid #ef4444;
+}
+
+.reaction-chain .node-content {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1e293b;
+  cursor: pointer;
+}
+
+.reaction-chain .node-hint {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.reaction-chain .chain-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #64748b;
+}
+
+.reaction-chain .arrow-reagent {
+  font-size: 0.75rem;
+  margin-bottom: 2px;
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.reaction-chain .options-panel {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.reaction-chain .options-panel h4 {
+  margin: 0 0 12px;
+  color: #475569;
+}
+
+.reaction-chain .options-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.reaction-chain .option-item {
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  border-color: #0ea5e9;
+  font-weight: 600;
+}
+
+/* === BOSS CHALLENGE (Level 7) === */
+.boss-challenge .boss-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.boss-challenge .boss-question {
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.boss-challenge .boss-question p {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.boss-challenge .boss-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.boss-challenge .boss-option {
+  padding: 14px 20px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.boss-challenge .boss-option:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.boss-challenge .boss-option.selected {
+  border-color: #3b82f6;
+  background: #dbeafe;
+}
+
+.boss-challenge .fill-answer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.boss-challenge .fill-answer input {
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.boss-challenge .fill-answer input:focus {
+  border-color: #3b82f6;
+}
+
+.boss-challenge .hint-display {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* === COMPLETION SCREEN === */
+.oxi-sulfur-game .completion-screen {
+  max-width: 500px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.oxi-sulfur-game .completion-content {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.oxi-sulfur-game .trophy-icon {
+  color: #f59e0b;
+  animation: bounce-trophy 1s ease infinite;
+}
+
+@keyframes bounce-trophy {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+.oxi-sulfur-game .completion-content h2 {
+  font-size: 2rem;
+  margin: 20px 0 10px;
+  color: #1e293b;
+}
+
+.oxi-sulfur-game .completion-content p {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.oxi-sulfur-game .final-score {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.oxi-sulfur-game .score-label {
+  display: block;
+  color: #92400e;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.oxi-sulfur-game .score-value {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #f59e0b;
+}
+
+.oxi-sulfur-game .completion-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 24px;
+}
+
+.oxi-sulfur-game .stat {
+  text-align: center;
+}
+
+.oxi-sulfur-game .stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.oxi-sulfur-game .stat-label {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.oxi-sulfur-game .completion-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.oxi-sulfur-game .btn-back {
+  padding: 12px 24px;
+  background: #f1f5f9;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-game .btn-back:hover {
+  background: #e2e8f0;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .oxi-sulfur-game { padding: 12px; }
+  
+  .oxi-sulfur-game .game-header {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .oxi-sulfur-game .game-header h1 { font-size: 1.1rem; }
+  
+  /* Level 1 & 2: Stack vertically on mobile */
+  .burn-experiment .experiment-quiz-container,
+  .gas-identification .experiment-quiz-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .burn-experiment .experiment-area,
+  .gas-identification .experiment-area {
+    grid-template-columns: 1fr;
+  }
+  
+  .burn-experiment .quiz-placeholder,
+  .gas-identification .quiz-placeholder {
+    min-height: 150px;
+    padding: 30px 20px;
+  }
+  
+  .burn-experiment .quiz-placeholder .placeholder-icon,
+  .gas-identification .quiz-placeholder .placeholder-icon {
+    font-size: 2.5rem;
+  }
+  
+  .acid-preparation .preparation-area,
+  .acid-properties .experiment-area,
+  .lab-preparation .lab-area {
+    grid-template-columns: 1fr;
+  }
+  
+  .burn-experiment .observation-panel,
+  .gas-identification .observation-panel {
+    margin-top: 16px;
+  }
+  
+  .burn-experiment .quiz-option,
+  .gas-identification .quiz-option {
+    padding: 10px 14px;
+  }
+  
+  .reaction-chain .chain-node {
+    width: 60px;
+    height: 60px;
+    font-size: 0.9rem;
+  }
+  
+  .reaction-chain .chain-arrow svg { width: 18px; }
+}
+
+/* ==================== LEGACY QUIZ STYLES (for backward compatibility) ==================== */
+
+/* === HEADER === */
+.oxi-sulfur-quiz-game .quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 0 auto 20px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.oxi-sulfur-quiz-game .quiz-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.oxi-sulfur-quiz-game .quiz-header .icon-pulse {
+  animation: pulse 2s ease-in-out infinite;
+  color: #f97316;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.oxi-sulfur-quiz-game .back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #f1f5f9;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .back-btn:hover {
+  background: #e2e8f0;
+  transform: translateX(-2px);
+}
+
+.oxi-sulfur-quiz-game .header-score {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+/* === PROGRESS BAR === */
+.oxi-sulfur-quiz-game .quiz-progress-bar {
+  max-width: 800px;
+  margin: 0 auto 24px;
+}
+
+.oxi-sulfur-quiz-game .progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.oxi-sulfur-quiz-game .progress-text {
+  opacity: 0.9;
+}
+
+.oxi-sulfur-quiz-game .score-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.oxi-sulfur-quiz-game .progress-track {
+  position: relative;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  overflow: visible;
+}
+
+.oxi-sulfur-quiz-game .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #84cc16);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+}
+
+.oxi-sulfur-quiz-game .progress-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.oxi-sulfur-quiz-game .progress-dot.completed {
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+}
+
+.oxi-sulfur-quiz-game .progress-dot.current {
+  background: white;
+  transform: translate(-50%, -50%) scale(1.3);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+/* === MAIN CONTENT === */
+.oxi-sulfur-quiz-game .quiz-main {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* === QUESTION CARD === */
+.oxi-sulfur-quiz-game .question-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.oxi-sulfur-quiz-game .question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.oxi-sulfur-quiz-game .category-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.oxi-sulfur-quiz-game .category-badge.physical {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.oxi-sulfur-quiz-game .category-badge.chemical-o2 {
+  background: #cffafe;
+  color: #0e7490;
+}
+
+.oxi-sulfur-quiz-game .category-badge.chemical-s {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.oxi-sulfur-quiz-game .category-badge.compounds {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.oxi-sulfur-quiz-game .category-badge.experiment {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.oxi-sulfur-quiz-game .category-badge.application {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.oxi-sulfur-quiz-game .category-badge.calculation {
+  background: #fce7f3;
+  color: #9d174d;
+}
+
+.oxi-sulfur-quiz-game .points-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #f97316, #eab308);
+  color: white;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.oxi-sulfur-quiz-game .question-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 12px;
+}
+
+.oxi-sulfur-quiz-game .question-text {
+  font-size: 1.1rem;
+  color: #475569;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* === MULTIPLE CHOICE === */
+.oxi-sulfur-quiz-game .mc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.oxi-sulfur-quiz-game .mc-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.oxi-sulfur-quiz-game .mc-option:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #f97316;
+  transform: translateX(4px);
+}
+
+.oxi-sulfur-quiz-game .mc-option.selected {
+  background: linear-gradient(135deg, #fff7ed, #fef3c7);
+  border-color: #f97316;
+}
+
+.oxi-sulfur-quiz-game .mc-option.correct {
+  background: linear-gradient(135deg, #dcfce7, #d1fae5);
+  border-color: #22c55e;
+}
+
+.oxi-sulfur-quiz-game .mc-option.wrong {
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  border-color: #ef4444;
+}
+
+.oxi-sulfur-quiz-game .option-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #f97316, #eab308);
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.oxi-sulfur-quiz-game .option-text {
+  flex: 1;
+  font-size: 1rem;
+  color: #334155;
+}
+
+.oxi-sulfur-quiz-game .icon-correct {
+  color: #22c55e;
+}
+
+.oxi-sulfur-quiz-game .icon-wrong {
+  color: #ef4444;
+}
+
+/* === REACTANTS DISPLAY === */
+.oxi-sulfur-quiz-game .reactants-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #fff7ed, #fef3c7);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  color: #92400e;
+  font-weight: 600;
+}
+
+/* === CALCULATION HINT === */
+.oxi-sulfur-quiz-game .calc-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #f0f9ff;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  color: #0369a1;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* === COLOR MATCH === */
+.oxi-sulfur-quiz-game .color-match-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.oxi-sulfur-quiz-game .match-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.oxi-sulfur-quiz-game .match-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .match-item:hover {
+  background: #f1f5f9;
+  border-color: #f97316;
+}
+
+.oxi-sulfur-quiz-game .match-item.selected {
+  background: #fff7ed;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}
+
+.oxi-sulfur-quiz-game .match-item.matched {
+  background: #fef9c3;
+  border-color: #eab308;
+}
+
+.oxi-sulfur-quiz-game .match-item.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+}
+
+.oxi-sulfur-quiz-game .match-item.wrong {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+.oxi-sulfur-quiz-game .matched-color-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.oxi-sulfur-quiz-game .match-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.oxi-sulfur-quiz-game .color-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.oxi-sulfur-quiz-game .color-btn:hover:not(:disabled) {
+  border-color: var(--color);
+  transform: scale(1.02);
+}
+
+.oxi-sulfur-quiz-game .color-btn.used {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.oxi-sulfur-quiz-game .color-preview {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+}
+
+/* === SORT ORDER === */
+.oxi-sulfur-quiz-game .sort-order-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.oxi-sulfur-quiz-game .available-items .label,
+.oxi-sulfur-quiz-game .selected-order .label {
+  display: block;
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.oxi-sulfur-quiz-game .items-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.oxi-sulfur-quiz-game .sort-item {
+  position: relative;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #fff7ed, #fef9c3);
+  border: 2px solid #f97316;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #92400e;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .sort-item:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.oxi-sulfur-quiz-game .sort-item.selected {
+  background: #f97316;
+  color: white;
+}
+
+.oxi-sulfur-quiz-game .order-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
+  background: #22c55e;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oxi-sulfur-quiz-game .selected-order {
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.oxi-sulfur-quiz-game .order-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 40px;
+}
+
+.oxi-sulfur-quiz-game .order-item {
+  padding: 8px 16px;
+  background: white;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #334155;
+  border: 2px solid #e2e8f0;
+}
+
+.oxi-sulfur-quiz-game .order-item.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.oxi-sulfur-quiz-game .order-item.wrong {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.oxi-sulfur-quiz-game .placeholder {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.oxi-sulfur-quiz-game .btn-clear {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .btn-clear:hover {
+  background: #fecaca;
+}
+
+/* === TRUE FALSE === */
+.oxi-sulfur-quiz-game .tf-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.oxi-sulfur-quiz-game .tf-statement {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .tf-statement.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+}
+
+.oxi-sulfur-quiz-game .tf-statement.wrong {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+.oxi-sulfur-quiz-game .statement-text {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.oxi-sulfur-quiz-game .tf-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.oxi-sulfur-quiz-game .tf-btn {
+  padding: 8px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .tf-btn:hover:not(:disabled) {
+  border-color: #f97316;
+}
+
+.oxi-sulfur-quiz-game .tf-btn.selected.true {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: white;
+}
+
+.oxi-sulfur-quiz-game .tf-btn.selected.false {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: white;
+}
+
+/* === FILL BLANK === */
+.oxi-sulfur-quiz-game .fill-blank-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.oxi-sulfur-quiz-game .equation-display {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 20px;
+  background: linear-gradient(135deg, #fefce8, #fef9c3);
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #854d0e;
+}
+
+.oxi-sulfur-quiz-game .blank-input {
+  width: 80px;
+  padding: 8px 12px;
+  border: 2px dashed #f97316;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  background: white;
+  color: #1e293b;
+}
+
+.oxi-sulfur-quiz-game .blank-input:focus {
+  outline: none;
+  border-style: solid;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}
+
+.oxi-sulfur-quiz-game .blank-input.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+  border-style: solid;
+}
+
+.oxi-sulfur-quiz-game .blank-input.wrong {
+  background: #fef2f2;
+  border-color: #ef4444;
+  border-style: solid;
+}
+
+.oxi-sulfur-quiz-game .hint-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #f0f9ff;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #0369a1;
+}
+
+/* === LAB SIMULATION === */
+.oxi-sulfur-quiz-game .lab-sim-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.oxi-sulfur-quiz-game .lab-visual {
+  padding: 24px;
+  background: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 100%);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.oxi-sulfur-quiz-game .lab-bench {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.oxi-sulfur-quiz-game .flask-icon {
+  color: #0ea5e9;
+  animation: float 3s ease-in-out infinite;
+}
+
+.oxi-sulfur-quiz-game .beaker-icon {
+  color: #22c55e;
+  animation: float 3s ease-in-out infinite 0.5s;
+}
+
+.oxi-sulfur-quiz-game .flame-icon {
+  color: #f97316;
+  animation: flicker 0.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(0.95); }
+}
+
+.oxi-sulfur-quiz-game .steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.oxi-sulfur-quiz-game .step-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.oxi-sulfur-quiz-game .step-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #f97316;
+}
+
+.oxi-sulfur-quiz-game .step-btn.selected {
+  background: linear-gradient(135deg, #fff7ed, #fef3c7);
+  border-color: #f97316;
+}
+
+.oxi-sulfur-quiz-game .step-btn.correct {
+  background: linear-gradient(135deg, #dcfce7, #d1fae5);
+  border-color: #22c55e;
+}
+
+.oxi-sulfur-quiz-game .step-btn.wrong {
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  border-color: #ef4444;
+}
+
+.oxi-sulfur-quiz-game .step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #f97316;
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.oxi-sulfur-quiz-game .step-text {
+  flex: 1;
+  color: #334155;
+}
+
+/* === EQUATION BOX === */
+.oxi-sulfur-quiz-game .equation-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #fef9c3, #fef3c7);
+  border-radius: 12px;
+  margin-top: 16px;
+  color: #854d0e;
+}
+
+/* === RESULT BOX === */
+.oxi-sulfur-quiz-game .result-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.oxi-sulfur-quiz-game .result-box.correct {
+  background: linear-gradient(135deg, #dcfce7, #d1fae5);
+  color: #166534;
+}
+
+.oxi-sulfur-quiz-game .result-box.wrong {
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  color: #991b1b;
+}
+
+/* === EXPLANATION BOX === */
+.oxi-sulfur-quiz-game .explanation-box {
+  margin-top: 16px;
+}
+
+.oxi-sulfur-quiz-game .explanation-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  color: #475569;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .explanation-toggle:hover {
+  background: #e2e8f0;
+}
+
+.oxi-sulfur-quiz-game .explanation-text {
+  margin-top: 12px;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border-left: 4px solid #f97316;
+  border-radius: 0 8px 8px 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* === ACTION BUTTONS === */
+.oxi-sulfur-quiz-game .question-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.oxi-sulfur-quiz-game .btn-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+}
+
+.oxi-sulfur-quiz-game .btn-check:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
+}
+
+.oxi-sulfur-quiz-game .btn-check:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.oxi-sulfur-quiz-game .btn-next {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+.oxi-sulfur-quiz-game .btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+}
+
+/* === SPARKLE EFFECT === */
+.oxi-sulfur-quiz-game .sparkle-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 100;
+}
+
+.oxi-sulfur-quiz-game .sparkle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  border-radius: 50%;
+  animation: sparkle-fly 1s ease-out forwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes sparkle-fly {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(cos(var(--angle)) * 100px), calc(sin(var(--angle)) * 100px)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* === COMPLETION MODAL === */
+.oxi-sulfur-quiz-game .completion-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.oxi-sulfur-quiz-game .completion-content {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  animation: modal-pop 0.4s ease;
+}
+
+@keyframes modal-pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.oxi-sulfur-quiz-game .trophy-icon {
+  color: #f97316;
+  margin-bottom: 16px;
+  animation: trophy-bounce 0.6s ease;
+}
+
+@keyframes trophy-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.oxi-sulfur-quiz-game .completion-content h2 {
+  font-size: 1.8rem;
+  color: #1e293b;
+  margin: 0 0 20px;
+}
+
+.oxi-sulfur-quiz-game .final-score {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px;
+  background: linear-gradient(135deg, #fff7ed, #fef3c7);
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.oxi-sulfur-quiz-game .score-label {
+  font-size: 0.9rem;
+  color: #92400e;
+}
+
+.oxi-sulfur-quiz-game .score-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f97316;
+}
+
+.oxi-sulfur-quiz-game .completion-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.oxi-sulfur-quiz-game .stat {
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.oxi-sulfur-quiz-game .stat-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.oxi-sulfur-quiz-game .stat-label {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.oxi-sulfur-quiz-game .completion-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.oxi-sulfur-quiz-game .btn-restart {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .btn-restart:hover {
+  transform: translateY(-2px);
+}
+
+.oxi-sulfur-quiz-game .btn-back {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  background: #f1f5f9;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.oxi-sulfur-quiz-game .btn-back:hover {
+  background: #e2e8f0;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 640px) {
+  .oxi-sulfur-quiz-game {
+    padding: 12px;
+  }
+
+  .oxi-sulfur-quiz-game .quiz-header {
+    padding: 12px 16px;
+  }
+
+  .oxi-sulfur-quiz-game .quiz-header h1 {
+    font-size: 1.1rem;
+  }
+
+  .oxi-sulfur-quiz-game .question-card {
+    padding: 20px;
+  }
+
+  .oxi-sulfur-quiz-game .question-title {
+    font-size: 1.2rem;
+  }
+
+  .oxi-sulfur-quiz-game .mc-option {
+    padding: 12px 14px;
+  }
+
+  .oxi-sulfur-quiz-game .tf-statement {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .oxi-sulfur-quiz-game .completion-content {
+    padding: 24px;
+  }
+
+  .oxi-sulfur-quiz-game .score-value {
+    font-size: 2rem;
+  }
+}

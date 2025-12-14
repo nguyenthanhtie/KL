@@ -1,0 +1,2295 @@
+/* Layout */
+.polime-game {
+  min-height: 100vh;
+  background: radial-gradient(circle at 10% 20%, #0f172a 0%, #0b1220 30%, #050910 70%);
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.start-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  text-decoration: none;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.back-link:hover { color: #cbd5e1; }
+
+.start-card {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(236, 72, 153, 0.12));
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+}
+
+.start-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.start-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #22d3ee, #6366f1);
+  font-size: 24px;
+  box-shadow: 0 10px 30px rgba(34, 211, 238, 0.35);
+}
+
+.start-card h1 { margin: 0; font-size: 26px; color: #e2e8f0; }
+.start-card p { margin: 4px 0 0; color: #cbd5e1; }
+
+.start-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.start-item {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.start-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: #cbd5e1;
+  font-size: 14px;
+  align-items: center;
+}
+
+.start-meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+.btn-start,
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+}
+
+.btn-start,
+.btn-primary { background: linear-gradient(135deg, #22d3ee, #6366f1); color: #0b1220; }
+.btn-secondary { background: rgba(148, 163, 184, 0.15); color: #e2e8f0; border: 1px solid rgba(148, 163, 184, 0.4); }
+
+.btn-start:hover,
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(99, 102, 241, 0.35); }
+.btn-secondary:hover { opacity: 0.9; }
+
+/* Top bar & layout */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(10, 16, 32, 0.75);
+  backdrop-filter: blur(10px);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #0b1220;
+  font-weight: 700;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.top-right { display: flex; align-items: center; gap: 10px; }
+.progress-text { color: #cbd5e1; font-weight: 600; }
+.score-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.18);
+  color: #e2e8f0;
+  font-weight: 700;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+  padding: 12px 14px;
+  flex: 1;
+  align-items: start;
+  grid-auto-rows: minmax(0, 1fr);
+  min-height: 0;
+}
+
+.panel {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(255, 255, 255, 0.02);
+  text-transform: capitalize;
+}
+
+.diff { margin-left: auto; padding: 4px 8px; border-radius: 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.diff.easy { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.diff.medium { background: rgba(249, 115, 22, 0.2); color: #fb923c; }
+.diff.hard { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+.panel-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; overflow: auto; }
+
+.progress-bar { width: 100%; height: 8px; background: rgba(148, 163, 184, 0.2); border-radius: 999px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(135deg, #22d3ee, #6366f1); transition: width 0.2s ease; }
+
+.phenomenon { background: rgba(255, 255, 255, 0.03); border: 1px dashed rgba(148, 163, 184, 0.4); padding: 10px; border-radius: 12px; color: #cbd5e1; }
+
+.waiting { display: grid; place-items: center; gap: 8px; color: #cbd5e1; text-align: center; }
+.waiting-text { display: inline-flex; align-items: center; gap: 6px; color: #cbd5e1; }
+
+.question { font-weight: 700; color: #e2e8f0; margin: 0 0 4px; }
+.note-inline { color: #cbd5e1; font-size: 14px; margin: 0 0 10px; }
+
+.options { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  color: #e2e8f0;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.1s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.option:hover { transform: translateY(-1px); border-color: rgba(99, 102, 241, 0.6); }
+.option.selected { border-color: rgba(99, 102, 241, 0.9); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35); }
+.option.correct { border-color: rgba(34, 197, 94, 0.9); background: rgba(34, 197, 94, 0.1); }
+.option.incorrect { border-color: rgba(239, 68, 68, 0.8); background: rgba(239, 68, 68, 0.08); }
+
+.option-label { width: 28px; height: 28px; border-radius: 8px; background: rgba(148, 163, 184, 0.15); display: grid; place-items: center; font-weight: 700; color: #cbd5e1; }
+.option-text { flex: 1; }
+
+.hint-btn { margin-top: 6px; color: #cbd5e1; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; font-weight: 600; }
+.hint { background: rgba(255, 255, 255, 0.04); padding: 8px 10px; border-radius: 10px; color: #cbd5e1; border: 1px dashed rgba(148, 163, 184, 0.35); }
+.equation { background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.35); padding: 8px 10px; border-radius: 10px; color: #bbf7d0; font-weight: 700; }
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 12px;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(10, 16, 32, 0.9);
+}
+
+.retry { color: #fbbf24; font-weight: 700; }
+.chip { background: rgba(148, 163, 184, 0.2); padding: 6px 10px; border-radius: 999px; color: #e2e8f0; font-weight: 700; }
+
+/* Experiment blocks */
+.exp-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 14px;
+  padding: 12px;
+  min-height: 170px;
+  position: relative;
+  overflow: visible;
+}
+
+.exp-title { font-weight: 700; color: #e2e8f0; margin-bottom: 8px; }
+.note { color: #cbd5e1; font-size: 14px; margin-top: 10px; }
+
+.beaker { position: relative; height: 160px; border-radius: 14px; background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.08)); border: 1px solid rgba(59, 130, 246, 0.4); display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+.liquid { width: 90%; height: 40%; background: linear-gradient(180deg, #38bdf8, #0ea5e9); border-radius: 12px 12px 10px 10px; box-shadow: inset 0 5px 12px rgba(255, 255, 255, 0.2); }
+.bubble-column { position: absolute; bottom: 20px; left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.bubble { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.8); animation: rise 1.6s linear infinite; animation-delay: calc(var(--i) * 0.08s); opacity: 0.9; }
+
+.gas-label { position: absolute; top: 10px; right: 10px; color: #67e8f9; font-weight: 700; }
+
+@keyframes rise { from { transform: translateY(10px) scale(0.7); opacity: 0.8; } to { transform: translateY(-80px) scale(1.1); opacity: 0; } }
+
+/* Acetic acid + NaHCO3 experiment */
+.acetic-container {
+  position: relative;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.reaction-beaker {
+  width: 120px;
+  height: 140px;
+  background: linear-gradient(to bottom, 
+    rgba(255,255,255,0.05) 0%, 
+    rgba(59,130,246,0.08) 50%,
+    rgba(148,163,184,0.12) 100%);
+  border: 2px solid rgba(148,163,184,0.3);
+  border-radius: 0 0 20px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(255,255,255,0.1);
+}
+
+/* Vinegar liquid at bottom */
+.vinegar-liquid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(to bottom, 
+    rgba(251,113,133,0.3),
+    rgba(249,115,22,0.4));
+  border-radius: 0 0 18px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 -2px 6px rgba(249,115,22,0.3);
+}
+
+.vinegar-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fb7185;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.3);
+}
+
+/* Powder particles falling */
+.powder-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #fef3c7, #fde68a);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(217,119,6,0.3);
+  animation: powder-fall 1.5s ease-in infinite;
+}
+
+.powder-particle.p1 {
+  top: 20px;
+  left: 45%;
+  animation-delay: 0s;
+}
+
+.powder-particle.p2 {
+  top: 20px;
+  left: 55%;
+  animation-delay: 0.2s;
+}
+
+.powder-particle.p3 {
+  top: 20px;
+  left: 50%;
+  animation-delay: 0.4s;
+}
+
+.powder-particle.p4 {
+  top: 20px;
+  left: 48%;
+  animation-delay: 0.6s;
+}
+
+@keyframes powder-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* CO2 bubbles rising */
+.co2-bubbles-container {
+  position: absolute;
+  bottom: 35px;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+}
+
+.co2-bubble {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(255,255,255,0.9),
+    rgba(147,197,253,0.6));
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.4);
+  animation: bubble-rise-up 2s ease-out infinite;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.5);
+}
+
+.co2-bubble:nth-child(1) { left: 20%; animation-delay: 0s; }
+.co2-bubble:nth-child(2) { left: 40%; animation-delay: 0.2s; }
+.co2-bubble:nth-child(3) { left: 60%; animation-delay: 0.4s; }
+.co2-bubble:nth-child(4) { left: 80%; animation-delay: 0.6s; }
+.co2-bubble:nth-child(5) { left: 30%; animation-delay: 0.3s; }
+.co2-bubble:nth-child(6) { left: 70%; animation-delay: 0.5s; }
+.co2-bubble:nth-child(7) { left: 15%; animation-delay: 0.1s; }
+.co2-bubble:nth-child(8) { left: 50%; animation-delay: 0.7s; }
+.co2-bubble:nth-child(9) { left: 35%; animation-delay: 0.15s; }
+.co2-bubble:nth-child(10) { left: 65%; animation-delay: 0.45s; }
+.co2-bubble:nth-child(11) { left: 25%; animation-delay: 0.25s; }
+.co2-bubble:nth-child(12) { left: 75%; animation-delay: 0.55s; }
+
+@keyframes bubble-rise-up {
+  0% {
+    bottom: 0;
+    transform: translateX(0) scale(0.3);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(5px) scale(0.8);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 120px;
+    transform: translateX(-3px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Foam layer on top */
+.foam-layer {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  animation: foam-expand 1s ease-out forwards;
+}
+
+.foam-bubble {
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 40% 30%,
+    rgba(255,255,255,0.8),
+    rgba(191,219,254,0.4));
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.5);
+  animation: foam-pop 2s ease-in-out infinite;
+}
+
+.foam-bubble:nth-child(1) { animation-delay: 0s; }
+.foam-bubble:nth-child(2) { animation-delay: 0.3s; }
+.foam-bubble:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes foam-expand {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes foam-pop {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* Powder spoon */
+.powder-spoon {
+  position: absolute;
+  top: 5px;
+  
+  width: 50px;
+  height: 15px;
+  background: linear-gradient(135deg,
+    rgba(203,213,225,0.8),
+    rgba(148,163,184,0.6));
+  border: 1px solid rgba(148,163,184,0.5);
+  border-radius: 25px;
+  transition: transform 0.5s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2),
+              inset 0 1px 2px rgba(255,255,255,0.3);
+}
+
+.powder-spoon::before {
+  content: '';
+  position: absolute;
+  right: -35px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35px;
+  height: 3px;
+  background: linear-gradient(to right,
+    rgba(148,163,184,0.7),
+    rgba(100,116,139,0.5));
+  border-radius: 2px;
+}
+
+.powder-spoon.tilting {
+  transform: rotate(-45deg) translateY(10px) translateX(-15px);
+}
+
+.spoon-powder {
+  position: absolute;
+  inset: 2px;
+  background: radial-gradient(circle,
+    rgba(254,243,199,1),
+    rgba(253,230,138,0.9));
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  color: #78350f;
+  box-shadow: inset 0 -1px 2px rgba(217,119,6,0.2);
+}
+
+.spoon-powder span {
+  transform: scale(0.85);
+}
+
+/* ========== ESTER EXPERIMENT - Lab Setup ========== */
+.ester-apparatus {
+  position: relative;
+  height: 240px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 10px 15px;
+  gap: 10px;
+}
+
+/* LEFT SECTION: Reaction tube with burner */
+.left-section {
+  position: relative;
+  width: 140px;
+  height: 200px;
+  left: 20%;
+}
+
+/* Reagent bottles - separate tubes IN FRONT */
+.reagent-bottles {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  display: flex;
+  gap: 12px;
+  z-index: 30; /* High z-index to be in front */
+}
+
+.reagent-tube {
+  width: 24px;
+  height: 50px;
+  background: linear-gradient(to right,
+    rgba(200,230,255,0.4),
+    rgba(255,255,255,0.2),
+    rgba(200,230,255,0.4)
+  );
+  border: 2.5px solid rgba(150,200,255,0.7);
+  border-radius: 0 0 10px 10px;
+  position: relative;
+  box-shadow: inset 1px 0 5px rgba(255,255,255,0.4),
+              0 4px 10px rgba(0,0,0,0.3);
+}
+
+.reagent-liquid {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  height: 35px;
+  border-radius: 0 0 6px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ethanol-color {
+  background: linear-gradient(180deg,
+    rgba(251, 191, 36, 0.5),
+    rgba(245, 158, 11, 0.7)
+  );
+}
+
+.acetic-color {
+  background: linear-gradient(180deg,
+    rgba(147, 197, 253, 0.5),
+    rgba(96, 165, 250, 0.7)
+  );
+}
+
+.reagent-label {
+  font-size: 7px;
+  font-weight: 700;
+  color: #fef3c7;
+  text-shadow: 0 0 4px rgba(0,0,0,0.9);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Pour arrows from reagent tubes */
+.pour-arrow {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #22d3ee;
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.9);
+  animation: pour-bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes pour-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
+  50% { transform: translateX(-50%) translateY(3px); opacity: 1; }
+}
+
+/* Metal stand base and vertical rod */
+.stand-base {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(to right, rgba(80,80,80,0.9), rgba(100,100,100,0.7));
+  border-radius: 2px;
+}
+
+.stand-vertical {
+  position: absolute;
+  bottom: 4px;
+  left: 48px;
+  width: 4px;
+  height: 130px;
+  background: linear-gradient(to right, rgba(80,80,80,0.9), rgba(120,120,120,0.7));
+  border-radius: 2px;
+}
+
+.stand-clamp {
+  position: absolute;
+  top: 35px;
+  left: 48px;
+  width: 20px;
+  height: 8px;
+  background: linear-gradient(135deg, rgba(60,60,60,0.8), rgba(100,100,100,0.6));
+  border-radius: 3px;
+  border: 1px solid rgba(80,80,80,0.6);
+}
+
+/* Thermometer inserted in tube */
+.thermometer-insert {
+  position: absolute;
+  top: 10px;
+  left: 35px;
+  z-index: 15;
+}
+
+.thermo-top {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, rgba(220,38,38,0.9), rgba(153,27,27,0.8));
+  border-radius: 50%;
+  margin: 0 auto;
+  border: 1px solid rgba(100,0,0,0.5);
+}
+
+.thermo-body {
+  width: 4px;
+  height: 50px;
+  background: linear-gradient(to right, rgba(200,200,200,0.8), rgba(160,160,160,0.6));
+  margin: 2px auto 0;
+  border-radius: 2px;
+  border: 0.5px solid rgba(120,120,120,0.4);
+}
+
+/* Reaction test tube - SMALLER, behind reagent tubes */
+.test-tube-reaction {
+  position: absolute;
+  /* đưa ống tới gần vị trí kẹp, cho phép quay quanh điểm kẹp */
+  top: 30px;
+  left: 35px;
+  width: 36px;
+  height: 95px;
+  background: linear-gradient(to right,
+    rgba(200,230,255,0.35),
+    rgba(255,255,255,0.15),
+    rgba(200,230,255,0.35)
+  );
+  border: 2.5px solid rgba(150,200,255,0.65);
+  border-radius: 0 0 18px 18px;
+  box-shadow: inset 2px 0 6px rgba(255,255,255,0.3),
+              0 4px 12px rgba(0,0,0,0.2);
+  overflow: visible;
+  z-index: 5; /* Behind reagent tubes */
+  /* pivot point set so ống quay tại vị trí kẹp (khoảng 18px từ trái, ~10px từ trên của ống) */
+  transform-origin: 18px 10px;
+  /* quay nghiêng 45 độ về bên phải */
+  transform: rotate(45deg);
+}
+
+/* Liquid inside tube */
+.tube-liquid {
+  position: absolute;
+  bottom: 8px;
+  left: 3px;
+  right: 3px;
+  height: 55px;
+  background: linear-gradient(180deg,
+    rgba(234, 179, 8, 0.4),
+    rgba(202, 138, 4, 0.55),
+    rgba(161, 98, 7, 0.65)
+  );
+  border-radius: 0 0 14px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.reagent-info {
+  font-size: 7px;
+  font-weight: 700;
+  color: #fef3c7;
+  text-shadow: 0 0 4px rgba(0,0,0,0.9);
+  line-height: 1.3;
+}
+
+/* Catalyst label on tube */
+.catalyst-label {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 7px;
+  font-weight: 700;
+  color: #f87171;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  z-index: 20;
+  white-space: nowrap;
+}
+
+/* Vapor particles rising */
+.vapor-particle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: radial-gradient(circle, rgba(249,168,212,0.7), rgba(249,168,212,0.3));
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+.vapor-particle.v1 {
+  top: 10px;
+  left: 50%;
+  animation: vapor-rise-tube 2.5s ease-out infinite;
+}
+
+.vapor-particle.v2 {
+  top: 10px;
+  left: 50%;
+  animation: vapor-rise-tube 2.5s ease-out 1.2s infinite;
+}
+
+@keyframes vapor-rise-tube {
+  0% { opacity: 0; transform: translateX(-50%) translateY(0); }
+  20% { opacity: 0.8; transform: translateX(-50%) translateY(-20px); }
+  80% { opacity: 0.4; transform: translateX(-50%) translateY(-65px); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-80px); }
+}
+
+/* Alcohol burner */
+.burner {
+  position: absolute;
+  bottom: 0;
+  left: 35px;
+  width: 30px;
+  height: 25px;
+}
+
+.burner-body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 18px;
+  background: linear-gradient(180deg, rgba(100,100,100,0.7), rgba(60,60,60,0.9));
+  border-radius: 10px 10px 5px 5px;
+  border: 1.5px solid rgba(80,80,80,0.6);
+}
+
+.burner-wick {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 8px;
+  background: rgba(60,60,60,0.8);
+  border-radius: 1px;
+}
+
+.fire-flame {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 35px;
+  background: radial-gradient(ellipse at bottom,
+    rgba(251,191,36,0.4) 0%,
+    rgba(249,115,22,0.3) 40%,
+    rgba(239,68,68,0.15) 70%,
+    transparent 100%
+  );
+  filter: blur(2px);
+  animation: flame-flicker 0.8s ease-in-out infinite;
+}
+
+@keyframes flame-flicker {
+  0%, 100% { transform: translateX(-50%) scaleY(1) scaleX(1); opacity: 0.85; }
+  50% { transform: translateX(-50%) scaleY(1.15) scaleX(0.95); opacity: 1; }
+}
+
+/* Heat waves rising from burner */
+.heat-wave {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(251, 191, 36, 0.15) 0%,
+    rgba(249, 115, 22, 0.1) 50%,
+    transparent 80%
+  );
+  filter: blur(3px);
+  animation: heat-rise 2s ease-out infinite;
+}
+
+.heat-wave.hw1 {
+  animation-delay: 0s;
+}
+
+.heat-wave.hw2 {
+  animation-delay: 0.6s;
+}
+
+.heat-wave.hw3 {
+  animation-delay: 1.2s;
+}
+
+@keyframes heat-rise {
+  0% {
+    transform: translateX(-50%) translateY(0) scaleX(1);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  80% {
+    transform: translateX(-50%) translateY(-60px) scaleX(1.4);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-80px) scaleX(1.6);
+    opacity: 0;
+  }
+}
+
+/* CONNECTING TUBE (curved path) */
+.connecting-tube {
+  position: absolute;
+  bottom: 10%;
+  left: 20%;
+  /* rotate to match tilted setup from left reaction tube to right condenser */
+  transform: rotate(-45deg);
+  transform-origin: center center;
+  width: 30%;
+  height: 140%;
+  z-index: 3;
+}
+
+.tube-path {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* style the actual SVG path to look like a smooth glass tube */
+.tube-path path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* keep stroke color/width in svg element, but ensure smoothing */
+  vector-effect: non-scaling-stroke;
+}
+
+/* Vapor moving through tube */
+.vapor-moving {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(249,168,212,0.8), rgba(249,168,212,0.3));
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.vapor-moving.vm1 {
+  animation: move-through-tube 3s linear infinite;
+}
+
+.vapor-moving.vm2 {
+  animation: move-through-tube 3s linear 1.5s infinite;
+}
+
+@keyframes move-through-tube {
+  /* animate along L path: travel left->right across, then travel down */
+  0% {
+    left: 5px;
+    top: 40px;
+    opacity: 0;
+  }
+  10% { opacity: 0.9; }
+  40% {
+    /* near end of horizontal run (moving right) */
+    left: 70px;
+    top: 40px;
+    opacity: 0.9;
+  }
+  60% {
+    /* almost at corner */
+    left: 88px;
+    top: 40px;
+    opacity: 0.9;
+  }
+  75% {
+    /* start descending */
+    left: 88px;
+    top: 52px;
+    opacity: 0.8;
+  }
+  90% {
+    left: 88px;
+    top: 64px;
+    opacity: 0.6;
+  }
+  100% {
+    left: 90px;
+    top: 72px;
+    opacity: 0;
+  }
+}
+
+/* Flow direction arrows - LARGER */
+.flow-arrow {
+  position: absolute;
+  font-size: 28px;
+  font-weight: 700;
+  color: #22d3ee;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.9),
+               0 0 20px rgba(34, 211, 238, 0.6);
+  animation: arrow-pulse 1.5s ease-in-out infinite;
+  z-index: 20;
+}
+
+.flow-arrow.arrow1 {
+  left: 45px;
+  top: 28px;
+}
+
+.flow-arrow.arrow2 {
+  left: 85px;
+  top: 50px;
+}
+
+@keyframes arrow-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+/* RIGHT SECTION: Condenser in water bath */
+.right-section {
+  position: relative;
+  width: 90px;
+  height: 160px;
+  right: 30%;
+}
+
+/* Water container (beaker) */
+.water-container {
+  position: absolute;
+  bottom: 20px;
+  right: 5px;
+  width: 75px;
+  height: 110px;
+  background: linear-gradient(180deg,
+    rgba(59,130,246,0.15),
+    rgba(59,130,246,0.3)
+  );
+  border: 2.5px solid rgba(59,130,246,0.55);
+  border-radius: 12px;
+  box-shadow: inset 0 4px 8px rgba(96,165,250,0.2);
+}
+
+.cold-water {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(180deg,
+    rgba(96,165,250,0.15),
+    rgba(96,165,250,0.35)
+  );
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.water-text {
+  font-size: 9px;
+  font-weight: 700;
+  color: #60a5fa;
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+}
+
+/* Test tube for collecting ester */
+.test-tube-collect {
+  position: absolute;
+  /* nâng lên một chút và dịch phải để khi nghiêng vẫn nằm trong bể */
+  bottom: 40px;
+  left: -35%;
+  width: 32px;
+  height: 120px;
+  /* nghiêng sang trái 45 độ */
+  transform: rotate(-45deg);
+  transform-origin: top right;
+  background: linear-gradient(to right,
+    rgba(200,230,255,0.4),
+    rgba(255,255,255,0.2),
+    rgba(200,230,255,0.4)
+  );
+  border: 2.5px solid rgba(150,200,255,0.7);
+  border-radius: 0 0 14px 14px;
+  box-shadow: inset 2px 0 5px rgba(255,255,255,0.4);
+  z-index: 10;
+}
+
+/* Ester visuals removed (experiment deleted) */
+
+/* Aroma indicator */
+.aroma-smell {
+  position: absolute;
+  top: -5px;
+  right: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fbbf24;
+  text-shadow: 0 0 6px rgba(0,0,0,0.8);
+  animation: smell-wave 2s ease-in-out infinite;
+}
+
+@keyframes smell-wave {
+  0%, 100% { transform: translateY(0); opacity: 0.85; }
+  50% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Grouped process steps frame */
+.process-steps {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1.5px solid rgba(34, 211, 238, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+.step-number {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22d3ee, #6366f1);
+  color: #0b1220;
+  font-weight: 700;
+  font-size: 11px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px rgba(34, 211, 238, 0.4);
+}
+
+.step-text {
+  flex: 1;
+  font-weight: 600;
+}
+
+/* Remove old individual process notes */
+.process-note.heating-note,
+.process-note.condensing-note,
+.process-note.ester-note {
+  display: none;
+}
+
+/* Connection arrow from apparatus to equation */
+.equation-connector {
+  position: relative;
+  text-align: center;
+  font-size: 20px;
+  color: #22d3ee;
+  margin: 8px 0 4px;
+  animation: connector-bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes connector-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(3px); opacity: 1; }
+}
+
+/* Chemical equation at bottom */
+.chem-equation {
+  position: relative;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #e2e8f0;
+  text-align: center;
+  text-shadow: 0 0 4px rgba(0,0,0,0.6);
+}
+
+.reactant {
+  color: #60a5fa;
+}
+
+.product {
+  color: #f9a8d4;
+}
+
+.eq-arrow {
+  margin: 0 8px;
+  color: #fbbf24;
+  font-size: 14px;
+}
+
+.eq-condition {
+  font-size: 9px;
+  color: #cbd5e1;
+  margin-top: 3px;
+}
+
+@keyframes wave { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+
+/* ====== GLUCOSE SILVER MIRROR EXPERIMENT - REALISTIC ====== */
+.glucose-experiment-container {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+ 
+}
+
+/* Realistic test tube structure */
+.test-tube-glucose {
+  position: relative;
+  width: 80px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Tube opening/rim */
+.tube-rim {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 8px;
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.6), rgba(148, 163, 184, 0.4));
+  border-radius: 14px 14px 0 0;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  border-bottom: none;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+}
+
+/* Main tube body (cylinder) */
+.tube-body {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 160px;
+  background: linear-gradient(90deg, 
+    rgba(148, 163, 184, 0.08),
+    rgba(203, 213, 225, 0.15),
+    rgba(148, 163, 184, 0.08)
+  );
+  border-left: 2px solid rgba(148, 163, 184, 0.4);
+  border-right: 2px solid rgba(148, 163, 184, 0.35);
+  overflow: visible;
+  box-shadow: 
+    inset 2px 0 8px rgba(255, 255, 255, 0.1),
+    inset -2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Rounded bottom of tube */
+.tube-bottom {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 32px;
+  background: linear-gradient(180deg, 
+    rgba(148, 163, 184, 0.08),
+    rgba(203, 213, 225, 0.12)
+  );
+  border-radius: 0 0 14px 14px;
+  border: 2px solid rgba(148, 163, 184, 0.4);
+  border-top: none;
+  box-shadow: 
+    inset 0 -3px 6px rgba(255, 255, 255, 0.08),
+    0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-reflection {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  height: 8px;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.15), transparent);
+  border-radius: 50%;
+}
+
+/* Tollens reagent + Glucose solution inside tube */
+.tollens-solution {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(180deg, 
+    rgba(203, 213, 225, 0.12),
+    rgba(148, 163, 184, 0.18)
+  );
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+}
+
+/* Solution surface with waves */
+.solution-surface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  overflow: hidden;
+}
+
+.surface-wave {
+  position: absolute;
+  top: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(203, 213, 225, 0.4) 25%,
+    rgba(148, 163, 184, 0.5) 50%,
+    rgba(203, 213, 225, 0.4) 75%,
+    transparent
+  );
+  animation: surfaceWave 3s linear infinite;
+}
+
+@keyframes surfaceWave {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+/* Ag+ ions floating in solution (ready state) */
+.floating-ions {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ag-ion-real {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.5), rgba(6, 182, 212, 0.15));
+  border: 1px solid rgba(6, 182, 212, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  color: #06b6d4;
+  animation: ionFloat 2.5s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+}
+
+@keyframes ionFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.75; }
+  25% { transform: translate(2px, -4px) rotate(5deg); opacity: 0.9; }
+  50% { transform: translate(-1px, -8px) rotate(-3deg); opacity: 1; }
+  75% { transform: translate(-2px, -4px) rotate(3deg); opacity: 0.85; }
+}
+
+/* Reaction zone: Ag+ → Ag transformation */
+.reaction-zone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ag-precipitate {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+}
+
+.ion-state,
+.metal-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+.ion-state {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.6), rgba(6, 182, 212, 0.2));
+  border: 1px solid rgba(6, 182, 212, 0.8);
+  color: #06b6d4;
+  animation: ionFadeOut 1.8s ease-in-out infinite;
+}
+
+.metal-state {
+  background: radial-gradient(circle, 
+    rgba(226, 232, 240, 0.95), 
+    rgba(203, 213, 225, 0.8),
+    rgba(148, 163, 184, 0.6)
+  );
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: #0f172a;
+  animation: metalAppear 1.8s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(226, 232, 240, 0.5);
+}
+
+@keyframes ionFadeOut {
+  0% { opacity: 1; transform: scale(1) translateY(0); }
+  70% { opacity: 0.2; transform: scale(0.7) translateY(3px); }
+  100% { opacity: 0; transform: scale(0.5) translateY(5px); }
+}
+
+@keyframes metalAppear {
+  0% { opacity: 0; transform: scale(0.5) translateY(-3px); }
+  70% { opacity: 0.9; transform: scale(1.1) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Silver depositing/streaming to walls */
+.depositing-silver {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.silver-stream {
+  position: absolute;
+  width: 2px;
+  height: 0;
+  background: linear-gradient(180deg, 
+    rgba(226, 232, 240, 0.8),
+    rgba(203, 213, 225, 0.5),
+    transparent
+  );
+  top: 20%;
+  animation: streamDown 2s ease-out infinite;
+  box-shadow: 0 0 4px rgba(226, 232, 240, 0.4);
+}
+
+@keyframes streamDown {
+  0% { height: 0; opacity: 0; }
+  30% { height: 40px; opacity: 1; }
+  100% { height: 80px; opacity: 0; }
+}
+
+/* Silver coating on tube walls (mirror effect) */
+.silver-coating {
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px 12px 12px 12px;
+  background: linear-gradient(135deg,
+    rgba(226, 232, 240, 0) 0%,
+    rgba(226, 232, 240, 0.3) 20%,
+    rgba(203, 213, 225, 0.5) 40%,
+    rgba(226, 232, 240, 0.6) 50%,
+    rgba(203, 213, 225, 0.5) 60%,
+    rgba(226, 232, 240, 0.3) 80%,
+    rgba(226, 232, 240, 0) 100%
+  );
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+
+.test-tube-glucose.reaction .silver-coating {
+  opacity: 0.4;
+}
+
+.test-tube-glucose.mirror .silver-coating {
+  opacity: 1;
+  box-shadow: 
+    inset 0 0 20px rgba(255, 255, 255, 0.3),
+    inset 2px 0 10px rgba(226, 232, 240, 0.4),
+    inset -2px 0 10px rgba(226, 232, 240, 0.4),
+    0 0 15px rgba(226, 232, 240, 0.2);
+}
+
+/* Shine effects on mirror */
+.tube-shine {
+  position: absolute;
+  width: 3px;
+  background: linear-gradient(180deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  opacity: 0;
+  animation: shineMove 2.5s ease-in-out infinite;
+}
+
+.shine-1 {
+  left: 20%;
+  height: 50%;
+  top: 10%;
+  animation-delay: 0s;
+}
+
+.shine-2 {
+  right: 25%;
+  height: 60%;
+  top: 20%;
+  animation-delay: 0.8s;
+}
+
+.shine-3 {
+  left: 50%;
+  height: 40%;
+  top: 30%;
+  animation-delay: 1.6s;
+}
+
+@keyframes shineMove {
+  0%, 100% { opacity: 0; transform: translateY(0); }
+  50% { opacity: 0.8; transform: translateY(-10px); }
+}
+
+
+/* Water bath (beaker) */
+.water-bath {
+  position: relative;
+  width: 140px;
+  height: 100px;
+  margin-top: -30px;
+  z-index: 5;
+}
+
+.beaker-water {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg,
+    rgba(59, 130, 246, 0.05),
+    rgba(59, 130, 246, 0.15)
+  );
+  border: 2px solid rgba(148, 163, 184, 0.4);
+  border-top: 3px solid rgba(148, 163, 184, 0.5);
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 2px 8px rgba(59, 130, 246, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.water-level {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 75%;
+  background: linear-gradient(180deg,
+    rgba(59, 130, 246, 0.15),
+    rgba(59, 130, 246, 0.25)
+  );
+  border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.heat-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+/* Steam bubbles rising */
+.steam-bubble {
+  position: absolute;
+  bottom: 20%;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4), rgba(59, 130, 246, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: bubbleRise 2.5s ease-in infinite;
+}
+
+.steam-bubble.b1 {
+  left: 30%;
+  animation-delay: 0s;
+}
+
+.steam-bubble.b2 {
+  left: 50%;
+  animation-delay: 0.8s;
+}
+
+.steam-bubble.b3 {
+  left: 70%;
+  animation-delay: 1.6s;
+}
+
+@keyframes bubbleRise {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
+}
+
+/* Reaction info text */
+.reaction-info {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.info-step {
+  margin-bottom: 4px;
+  color: #cbd5e1;
+}
+
+.info-step strong {
+  color: #e2e8f0;
+}
+
+.info-status {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.3);
+  color: #22d3ee;
+  font-weight: 600;
+}
+
+.sucrose-lab { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; align-items: stretch; margin-top: 6px; }
+
+.bath-rig {
+  position: relative;
+  min-height: 180px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 14px;
+  padding: 12px;
+  background: linear-gradient(160deg, rgba(15, 23, 42, 0.65), rgba(30, 41, 59, 0.55));
+  overflow: hidden;
+}
+
+.bath-rig.heated { box-shadow: 0 10px 24px rgba(248, 113, 113, 0.12), inset 0 0 0 1px rgba(248, 113, 113, 0.18); }
+
+.bath-water {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 12px;
+  height: 70px;
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.2), rgba(14, 165, 233, 0.35));
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.temp-chip {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: rgba(56, 189, 248, 0.18);
+  color: #67e8f9;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.bath-bubble {
+  position: absolute;
+  bottom: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  animation: bathRise 2.6s ease-in infinite;
+  opacity: 0;
+}
+
+.bath-bubble.b1 { left: 22%; animation-delay: 0s; }
+.bath-bubble.b2 { left: 38%; animation-delay: 0.25s; }
+.bath-bubble.b3 { left: 56%; animation-delay: 0.5s; }
+.bath-bubble.b4 { left: 72%; animation-delay: 0.75s; }
+.bath-bubble.b5 { left: 30%; animation-delay: 1s; }
+.bath-bubble.b6 { left: 64%; animation-delay: 1.25s; }
+
+.flask {
+  position: relative;
+  width: 108px;
+  margin: 0 auto;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.flask-neck {
+  width: 26px;
+  height: 22px;
+  background: rgba(148, 163, 184, 0.25);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 8px 8px 4px 4px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.acid-drop {
+  width: 8px;
+  height: 12px;
+  background: linear-gradient(180deg, #fca5a5, #ef4444);
+  border-radius: 50% 50% 40% 40%;
+  animation: dropFall 1.8s ease-in-out infinite;
+}
+
+.flask-body {
+  width: 100px;
+  height: 96px;
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.18), rgba(148, 163, 184, 0.08));
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 0 0 34px 34px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.flask-body.acidified { box-shadow: inset 0 0 20px rgba(252, 165, 165, 0.15); }
+
+.solution.sucrose {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  height: 42px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.85), rgba(251, 191, 36, 0.65));
+  border-radius: 0 0 28px 28px;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: #1f2937;
+  font-weight: 700;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+}
+
+.hydrolysis-layer {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 32px;
+  height: 22px;
+  background: linear-gradient(180deg, rgba(248, 113, 113, 0.35), rgba(239, 68, 68, 0.25));
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #fee2e2;
+  font-weight: 700;
+  font-size: 11px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hydrolysis-layer.active { opacity: 1; transform: translateY(0); }
+
+.steam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 14px;
+  height: 50px;
+  height: 38px;
+  background: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.24), transparent 60%);
+  opacity: 0;
+  filter: blur(2px);
+  transition: opacity 0.3s ease;
+}
+
+.steam.on { opacity: 1; animation: steamRise 3s ease-in-out infinite; }
+
+.hot-plate {
+  margin-top: auto;
+  padding: 6px 8px;
+  background: rgba(248, 113, 113, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 10px;
+  color: #fecdd3;
+  font-weight: 700;
+  text-align: center;
+}
+
+.tollens-rack { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; align-items: start; }
+.tollens-label { grid-column: 1 / -1; font-size: 12px; color: #cbd5e1; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); padding: 6px 8px; border-radius: 10px; font-weight: 700; text-align: center; }
+
+.tube-card {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  display: grid;
+  gap: 8px;
+}
+
+.tube-card.silvered { border-color: rgba(226, 232, 240, 0.6); box-shadow: 0 10px 24px rgba(226, 232, 240, 0.12); }
+
+.tube-head { font-weight: 700; color: #e2e8f0; }
+
+.tube-glass {
+  position: relative;
+  height: 100px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.14));
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  overflow: hidden;
+}
+
+.tube-liquid {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  height: 38px;
+  border-radius: 0 0 12px 12px;
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.2);
+}
+
+.tube-liquid.control { background: linear-gradient(180deg, rgba(226, 232, 240, 0.3), rgba(148, 163, 184, 0.35)); }
+
+.tube-liquid.product { background: linear-gradient(180deg, rgba(74, 222, 128, 0.35), rgba(21, 128, 61, 0.45)); }
+
+.tube-liquid.product.reacting { animation: gentlePulse 1.6s ease-in-out infinite; }
+
+.tube-wall { position: absolute; inset: 4px; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+.tube-wall.mirror {
+  background: linear-gradient(135deg, rgba(226, 232, 240, 0.7), rgba(203, 213, 225, 0.55), rgba(148, 163, 184, 0.35));
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.35);
+}
+
+.silver-specks {
+  position: absolute;
+  inset: 10px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7), transparent 40%),
+    radial-gradient(circle at 60% 60%, rgba(226,232,240,0.8), transparent 38%),
+    radial-gradient(circle at 80% 40%, rgba(203,213,225,0.75), transparent 36%),
+    radial-gradient(circle at 35% 70%, rgba(248,250,252,0.7), transparent 36%);
+  opacity: 0;
+  animation: speckFade 1.8s ease-in forwards;
+}
+
+.step-chip.subtle { background: rgba(255, 255, 255, 0.03); color: #cbd5e1; border-style: dashed; font-weight: 500; }
+
+@keyframes speckFade {
+  0% { opacity: 0; }
+  60% { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+.tube-note { color: #cbd5e1; font-size: 12px; line-height: 1.35; }
+
+.step-legend { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.step-chip { border: 1px solid rgba(148, 163, 184, 0.3); padding: 6px 8px; border-radius: 10px; color: #cbd5e1; font-weight: 600; background: rgba(255, 255, 255, 0.02); }
+.step-chip.active { border-color: rgba(59, 130, 246, 0.7); color: #bfdbfe; box-shadow: 0 6px 16px rgba(59, 130, 246, 0.18); }
+
+@keyframes bathRise {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-70px) scale(1); opacity: 0; }
+}
+
+@keyframes dropFall {
+  0% { transform: translateY(-8px); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+@keyframes steamRise {
+  0% { transform: translateY(8px) scale(0.9); opacity: 0.6; }
+  50% { transform: translateY(-4px) scale(1.02); opacity: 0.8; }
+  100% { transform: translateY(-10px) scale(1); opacity: 0.3; }
+}
+
+@keyframes gentlePulse {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.15); }
+  100% { filter: brightness(1); }
+}
+
+/* Tube Rack Experiment Styles */
+.bio-tubes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tube-rack-container {
+  position: relative;
+  height: 200px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.4), rgba(30, 41, 59, 0.3));
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 20px;
+  overflow: hidden;
+}
+
+.tube-rack {
+  display: flex;
+  gap: 40px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.tube-rack::after {
+  content: '';
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: rgba(148, 163, 184, 0.15);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 4px;
+  z-index: -1;
+}
+
+.test-tube-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 60px;
+}
+
+.test-tube {
+  width: 36px;
+  height: 120px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2) 40%, rgba(255, 255, 255, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-top: none;
+  border-radius: 0 0 18px 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 -5px 10px rgba(255, 255, 255, 0.1);
+}
+
+.tube-mouth {
+  position: absolute;
+  top: 0;
+  left: -2px;
+  right: -2px;
+  height: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tube-liquid {
+  position: absolute;
+  bottom: 4px;
+  left: 2px;
+  right: 2px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.9); /* White for starch/cellulose powder/solution */
+  border-radius: 0 0 14px 14px;
+  transition: background 1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tube-liquid.starch {
+  background: rgba(241, 245, 249, 0.9); /* Milky white */
+}
+
+.tube-liquid.cellulose {
+  background: rgba(248, 250, 252, 0.95); /* Fibrous white */
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+}
+
+.tube-liquid.turned-blue {
+  background: linear-gradient(180deg, #1e3a8a, #312e81); /* Deep blue-violet */
+  box-shadow: 0 0 15px rgba(49, 46, 129, 0.6);
+}
+
+.tube-liquid.added-iodine {
+  background: rgba(254, 243, 199, 0.9); /* Slight yellow tint from iodine */
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+}
+
+.liquid-label {
+  font-size: 9px;
+  color: #0f172a;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.tube-glass-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+}
+
+.tube-label-bottom {
+  font-size: 12px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.tube-result {
+  height: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.res-blue { color: #818cf8; text-shadow: 0 0 10px rgba(129, 140, 248, 0.5); }
+.res-none { color: #94a3b8; }
+
+/* Moving Dropper */
+.moving-dropper {
+  position: absolute;
+  top: 20px;
+  left: 50%; /* Start center */
+  z-index: 10;
+  transition: left 1s ease-in-out, top 0.5s ease;
+}
+
+.moving-dropper.ready { left: 50%; top: 20px; opacity: 0.5; }
+.moving-dropper.dropping-starch { left: calc(50% - 50px); top: 40px; opacity: 1; } /* Adjust based on gap */
+.moving-dropper.reacting-starch { left: calc(50% - 50px); top: 20px; opacity: 1; }
+.moving-dropper.dropping-cellulose { left: calc(50% + 50px); top: 40px; opacity: 1; }
+.moving-dropper.complete { left: 50%; top: 20px; opacity: 0; }
+
+.dropper-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.dropper-bulb {
+  width: 20px;
+  height: 20px;
+  background: #ef4444;
+  border-radius: 50% 50% 20% 20%;
+}
+
+.dropper-glass {
+  width: 8px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+.dropper-liquid-fill {
+  position: absolute;
+  bottom: 2px;
+  width: 6px;
+  height: 30px;
+  background: #d97706; /* Iodine color */
+  border-radius: 0 0 3px 3px;
+  opacity: 0.8;
+}
+
+.iodine-drops {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.i-drop {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #d97706;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.moving-dropper.dropping-starch .i-drop,
+.moving-dropper.dropping-cellulose .i-drop {
+  animation: iodineDrop 0.8s linear infinite;
+}
+
+.i-drop.d1 { animation-delay: 0s; }
+.i-drop.d2 { animation-delay: 0.4s; }
+
+@keyframes iodineDrop {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(60px); opacity: 0; }
+}
+
+.chain { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.unit { padding: 8px 12px; border-radius: 10px; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.35); opacity: 0.3; transform: translateY(6px); transition: opacity 0.25s ease, transform 0.25s ease; color: #cbd5e1; }
+.unit.show { opacity: 1; transform: translateY(0); }
+
+/* Ethanol experiment: pipet dripping onto Na block */
+.ethanol-container {
+  position: relative;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+/* Pipet positioned at top */
+.pipet-holder {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.pipet-body {
+  position: relative;
+  width: 16px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pipet-bulb {
+  width: 24px;
+  height: 24px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(148,163,184,0.15));
+  border-radius: 50%;
+  border: 1px solid rgba(148,163,184,0.25);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+}
+
+.pipet-tube {
+  width: 10px;
+  height: 48px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(148,163,184,0.12));
+  border-left: 1px solid rgba(148,163,184,0.2);
+  border-right: 1px solid rgba(148,163,184,0.2);
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.05);
+}
+
+.pipet-tip {
+  width: 4px;
+  height: 16px;
+  background: linear-gradient(to bottom, rgba(200,213,225,0.6), rgba(148,163,184,0.4));
+  border-radius: 0 0 2px 2px;
+}
+
+/* Drops animation */
+.ethanol-drops {
+  position: absolute;
+  top: 86px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.drop {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  background: linear-gradient(180deg, #fb923c, #f97316);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(45deg);
+  box-shadow: 0 2px 6px rgba(249,115,22,0.3);
+  animation: drop-fall 1.2s ease-in infinite;
+}
+
+.drop-1 {
+  animation-delay: 0s;
+}
+
+.drop-2 {
+  animation-delay: 0.6s;
+}
+
+@keyframes drop-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(45deg) scale(0.8);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(70px) rotate(45deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(80px) rotate(45deg) scale(1.1);
+  }
+}
+
+/* Na block container */
+.na-block-container {
+  position: relative;
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.na-block {
+  width: 70px;
+  height: 46px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  box-shadow: 
+    0 8px 20px rgba(250,204,21,0.2),
+    inset 0 -3px 10px rgba(217,119,6,0.2),
+    inset 0 2px 4px rgba(255,255,255,0.3);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.na-block.reacting {
+  box-shadow: 
+    0 12px 30px rgba(250,204,21,0.35),
+    inset 0 -3px 10px rgba(217,119,6,0.3),
+    inset 0 2px 4px rgba(255,255,255,0.4);
+  animation: na-vibrate 0.3s ease-in-out infinite;
+}
+
+.na-symbol {
+  font-size: 32px;
+  font-weight: 900;
+  color: #0b1220;
+  letter-spacing: 2px;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+}
+
+@keyframes na-vibrate {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
+}
+
+/* H2 bubbles */
+.h2-bubbles {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 40px;
+  pointer-events: none;
+}
+
+.h2-bubble {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  animation: bubble-rise 1.5s ease-out infinite;
+}
+
+.h2-bubble:nth-child(1) { left: 10%; animation-delay: 0s; }
+.h2-bubble:nth-child(2) { left: 30%; animation-delay: 0.2s; }
+.h2-bubble:nth-child(3) { left: 50%; animation-delay: 0.4s; }
+.h2-bubble:nth-child(4) { left: 70%; animation-delay: 0.6s; }
+.h2-bubble:nth-child(5) { left: 20%; animation-delay: 0.3s; }
+.h2-bubble:nth-child(6) { left: 60%; animation-delay: 0.5s; }
+.h2-bubble:nth-child(7) { left: 40%; animation-delay: 0.1s; }
+.h2-bubble:nth-child(8) { left: 80%; animation-delay: 0.7s; }
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+.checklist { display: grid; gap: 8px; margin-top: 10px; }
+.item { display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.25); background: rgba(255, 255, 255, 0.02); color: #cbd5e1; }
+.item.done { border-color: rgba(34, 197, 94, 0.7); color: #bbf7d0; box-shadow: 0 10px 24px rgba(34, 197, 94, 0.25); }
+
+/* Results */
+.results-shell { display: grid; place-items: center; padding: 48px 16px; }
+.results-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 18px;
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.results-icon { font-size: 40px; }
+.results-grade { display: inline-block; margin: 10px 0; padding: 6px 14px; border-radius: 999px; background: var(--accent); color: #0b1220; font-weight: 800; }
+.results-card h1 { margin: 6px 0; }
+.results-score { font-weight: 700; color: #e2e8f0; margin: 6px 0; }
+.results-sub { color: #cbd5e1; margin: 0 0 16px; }
+.result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+@media (max-width: 720px) {
+  .start-grid { grid-template-columns: 1fr; }
+  .game-layout { grid-template-columns: 1fr; }
+ 
+}

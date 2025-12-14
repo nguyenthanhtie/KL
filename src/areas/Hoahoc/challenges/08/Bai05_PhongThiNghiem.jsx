@@ -7,7 +7,13 @@ import './CSS/Bai05_PhongThiNghiem.css';
 
 const PhongThiNghiem = () => {
   const navigate = useNavigate();
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('phong-thi-nghiem');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('phong-thi-nghiem', {
+    challengeId: 5,
+    programId: 'chemistry',
+    grade: 8
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   
   const [currentChallenge, setCurrentChallenge] = useState(0);
   const [score, setScore] = useState(0);
@@ -346,6 +352,23 @@ const PhongThiNghiem = () => {
     } else {
       setShowResults(true);
       clearProgress();
+      
+      // Lưu kết quả hoàn thành vào database
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const maxScore = challenges.reduce((sum, c) => sum + c.points, 0);
+        const percentage = Math.round((score / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers: challenges.length,
+          totalQuestions: challenges.length
+        });
+      }
     }
   };
 

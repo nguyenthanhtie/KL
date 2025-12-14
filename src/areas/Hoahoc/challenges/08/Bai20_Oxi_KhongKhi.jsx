@@ -121,7 +121,13 @@ const TOTAL_POINTS = CHALLENGES.reduce((sum, c) => sum + c.points, 0);
 
 const Bai20_Oxi_KhongKhi = () => {
   const navigate = useNavigate();
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('oxi-khong-khi');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('oxi-khong-khi', {
+    challengeId: 20,
+    programId: 'chemistry',
+    grade: 8
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   
   // State chính
   const [currentChallenge, setCurrentChallenge] = useState(0);
@@ -240,6 +246,22 @@ const Bai20_Oxi_KhongKhi = () => {
     } else {
       setShowResults(true);
       clearProgress();
+      
+      // Lưu kết quả hoàn thành vào database
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const percentage = Math.round((score / TOTAL_POINTS) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score,
+          maxScore: TOTAL_POINTS,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers: answeredCorrectly.length,
+          totalQuestions: CHALLENGES.length
+        });
+      }
     }
   };
 

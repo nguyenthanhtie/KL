@@ -1,0 +1,1918 @@
+/* ============================================
+   Bài 6: Chất tan & Dung môi - Modern Lab Style v2
+   ============================================ */
+
+.chat-tan-dung-moi-container {
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdfa 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.chat-tan-dung-moi-container .game-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #0369a1, #0891b2);
+  color: white;
+  box-shadow: 0 4px 20px rgba(3, 105, 161, 0.3);
+  z-index: 100;
+}
+
+.chat-tan-dung-moi-container .back-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 10px;
+  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chat-tan-dung-moi-container .back-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-2px);
+}
+
+.chat-tan-dung-moi-container .game-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.chat-tan-dung-moi-container .header-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.chat-tan-dung-moi-container .score-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+}
+
+/* ============================================
+   Content Area
+   ============================================ */
+.chat-tan-dung-moi-container .game-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+/* ============================================
+   Progress Bar
+   ============================================ */
+.chat-tan-dung-moi-container .progress-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-tan-dung-moi-container .progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.chat-tan-dung-moi-container .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0891b2, #06b6d4);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.chat-tan-dung-moi-container .progress-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  min-width: 40px;
+}
+
+/* ============================================
+   Challenge Header
+   ============================================ */
+.chat-tan-dung-moi-container .challenge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chat-tan-dung-moi-container .challenge-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-tan-dung-moi-container .challenge-title h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.chat-tan-dung-moi-container .difficulty-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chat-tan-dung-moi-container .difficulty-badge.easy {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  color: #166534;
+}
+
+.chat-tan-dung-moi-container .difficulty-badge.medium {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+}
+
+.chat-tan-dung-moi-container .difficulty-badge.hard {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #991b1b;
+}
+
+.chat-tan-dung-moi-container .challenge-points {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ============================================
+   Instruction Box
+   ============================================ */
+.chat-tan-dung-moi-container .instruction-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-left: 4px solid #3b82f6;
+  padding: 12px 16px;
+  border-radius: 0 12px 12px 0;
+}
+
+.chat-tan-dung-moi-container .instruction-icon {
+  font-size: 22px;
+}
+
+.chat-tan-dung-moi-container .instruction-content {
+  flex: 1;
+  font-size: 14px;
+  color: #1e40af;
+  line-height: 1.4;
+}
+
+.chat-tan-dung-moi-container .instruction-content strong {
+  color: #1e3a8a;
+}
+
+.chat-tan-dung-moi-container .btn-hint-inline {
+  padding: 8px;
+  background: rgba(245, 158, 11, 0.2);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #92400e;
+  transition: all 0.2s;
+}
+
+.chat-tan-dung-moi-container .btn-hint-inline:hover {
+  background: rgba(245, 158, 11, 0.3);
+  transform: scale(1.1);
+}
+
+.chat-tan-dung-moi-container .hint-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #fef3c7, #fef9c3);
+  border: 2px solid #fde047;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #854d0e;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   Step Title
+   ============================================ */
+.chat-tan-dung-moi-container .step-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* ============================================
+   Solvent Tabs Section
+   ============================================ */
+.chat-tan-dung-moi-container .solvent-tabs-section {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chat-tan-dung-moi-container .solvent-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-tan-dung-moi-container .solvent-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #f1f5f9;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chat-tan-dung-moi-container .solvent-tab:hover:not(.disabled) {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+.chat-tan-dung-moi-container .solvent-tab.active {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.chat-tan-dung-moi-container .solvent-tab.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chat-tan-dung-moi-container .tab-icon {
+  font-size: 24px;
+}
+
+.chat-tan-dung-moi-container .tab-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.chat-tan-dung-moi-container .tab-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.chat-tan-dung-moi-container .tab-formula {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.chat-tan-dung-moi-container .tab-check {
+  color: #3b82f6;
+  margin-left: auto;
+}
+
+/* ============================================
+   Experiment Lab - Main Layout
+   ============================================ */
+.chat-tan-dung-moi-container .experiment-lab {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 16px;
+  min-height: 0;
+}
+
+/* ============================================
+   Beaker Section - Professional Lab Style
+   ============================================ */
+.chat-tan-dung-moi-container .beaker-section {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-radius: 16px;
+  padding: 20px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-tan-dung-moi-container .beaker-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.chat-tan-dung-moi-container .beaker {
+  position: relative;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+/* Beaker Glass Container */
+.chat-tan-dung-moi-container .beaker-container-glass {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Pour Spout */
+.chat-tan-dung-moi-container .beaker-spout {
+  width: 120px;
+  height: 8px;
+  background: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%);
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+.chat-tan-dung-moi-container .beaker-spout::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  right: -6px;
+  width: 20px;
+  height: 14px;
+  background: linear-gradient(135deg, rgba(203, 213, 225, 0.8), rgba(148, 163, 184, 0.8));
+  border-radius: 0 8px 0 0;
+  border-left: 2px solid #94a3b8;
+  border-top: 2px solid #94a3b8;
+  border-right: 2px solid #94a3b8;
+}
+
+/* Main Glass Body */
+.chat-tan-dung-moi-container .beaker-body {
+  width: 110px;
+  height: 180px;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0.4) 0%,
+    rgba(255,255,255,0.1) 10%,
+    rgba(203,213,225,0.3) 20%,
+    rgba(255,255,255,0.05) 30%,
+    rgba(203,213,225,0.15) 40%,
+    rgba(255,255,255,0.05) 60%,
+    rgba(203,213,225,0.2) 80%,
+    rgba(255,255,255,0.3) 90%,
+    rgba(255,255,255,0.5) 100%
+  );
+  border-left: 3px solid #94a3b8;
+  border-right: 3px solid #64748b;
+  border-bottom: 3px solid #94a3b8;
+  border-radius: 0 0 12px 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    inset 2px 0 8px rgba(255,255,255,0.5),
+    inset -2px 0 8px rgba(0,0,0,0.1),
+    inset 0 -2px 8px rgba(0,0,0,0.05);
+}
+
+/* Measurement Marks */
+.chat-tan-dung-moi-container .measurement-marks {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.chat-tan-dung-moi-container .mark {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #475569 8%, 
+    #475569 20%, 
+    transparent 20%
+  );
+  display: flex;
+  align-items: center;
+}
+
+.chat-tan-dung-moi-container .mark span {
+  position: absolute;
+  left: 24%;
+  font-size: 8px;
+  color: #475569;
+  font-weight: 600;
+  text-shadow: 0 0 2px rgba(255,255,255,0.8);
+}
+
+.chat-tan-dung-moi-container .mark-100 { top: 10%; }
+.chat-tan-dung-moi-container .mark-75 { top: 32.5%; }
+.chat-tan-dung-moi-container .mark-50 { top: 55%; }
+.chat-tan-dung-moi-container .mark-25 { top: 77.5%; }
+
+/* Glass Shine Effect */
+.chat-tan-dung-moi-container .glass-shine {
+  position: absolute;
+  left: -10px;
+  top: 10%;
+  width: 25px;
+  height: 70%;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.6) 0%,
+    rgba(255,255,255,0.3) 50%,
+    transparent 100%
+  );
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 3;
+  animation: glassShimmer 3s ease-in-out infinite;
+}
+
+@keyframes glassShimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+/* Liquid Content */
+.chat-tan-dung-moi-container .beaker-liquid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 65%;
+  border-radius: 0 0 9px 9px;
+  transition: all 0.5s ease;
+  z-index: 1;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.chat-tan-dung-moi-container .liquid-surface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.6) 0%,
+    rgba(255,255,255,0.2) 50%,
+    transparent 100%
+  );
+  border-radius: 50%;
+}
+
+.chat-tan-dung-moi-container .beaker-liquid.mixing {
+  animation: liquidMix 0.6s ease-in-out infinite;
+}
+
+@keyframes liquidMix {
+  0%, 100% { 
+    transform: translateX(0) scaleY(1); 
+  }
+  25% { 
+    transform: translateX(-2px) scaleY(0.98);
+  }
+  75% { 
+    transform: translateX(2px) scaleY(1.02);
+  }
+}
+
+/* Bubbles */
+.chat-tan-dung-moi-container .bubbles {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.chat-tan-dung-moi-container .bubble {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.4));
+  border-radius: 50%;
+  margin: 0 3px;
+  box-shadow: 
+    inset -1px -1px 2px rgba(0,0,0,0.1),
+    0 0 3px rgba(255,255,255,0.5);
+  animation: bubbleUp 1.2s ease-in infinite;
+}
+
+.chat-tan-dung-moi-container .bubble:nth-child(1) {
+  animation-delay: 0s;
+  margin-left: -8px;
+}
+
+.chat-tan-dung-moi-container .bubble:nth-child(2) {
+  animation-delay: 0.3s;
+  width: 6px;
+  height: 6px;
+}
+
+.chat-tan-dung-moi-container .bubble:nth-child(3) {
+  animation-delay: 0.6s;
+  width: 10px;
+  height: 10px;
+  margin-right: -8px;
+}
+
+@keyframes bubbleUp {
+  0% { 
+    transform: translateY(0) scale(1); 
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% { 
+    transform: translateY(-120px) scale(1.2); 
+    opacity: 0;
+  }
+}
+
+/* Sediment */
+.chat-tan-dung-moi-container .sediment {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  animation: sedimentSettle 0.6s ease-out;
+  z-index: 2;
+}
+
+@keyframes sedimentSettle {
+  0% { 
+    transform: translateX(-50%) translateY(-60px) rotate(0deg); 
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-50%) translateY(5px) rotate(10deg);
+  }
+  80% {
+    transform: translateX(-50%) translateY(-2px) rotate(-5deg);
+  }
+  100% { 
+    transform: translateX(-50%) translateY(0) rotate(0deg); 
+    opacity: 1;
+  }
+}
+
+/* Empty State */
+.chat-tan-dung-moi-container .beaker-empty {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 12px;
+  text-align: center;
+  gap: 8px;
+  z-index: 1;
+}
+
+/* Base Stand */
+.chat-tan-dung-moi-container .beaker-stand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -1px;
+}
+
+.chat-tan-dung-moi-container .stand-top {
+  width: 120px;
+  height: 6px;
+  background: linear-gradient(180deg, #64748b 0%, #475569 100%);
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.chat-tan-dung-moi-container .stand-base {
+  width: 140px;
+  height: 8px;
+  background: linear-gradient(180deg, #475569 0%, #334155 100%);
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  margin-top: 2px;
+}
+
+/* Beaker Label */
+.chat-tan-dung-moi-container .beaker-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  border: 2px solid #e2e8f0;
+  border-radius: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.chat-tan-dung-moi-container .beaker-label-icon {
+  font-size: 22px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+}
+
+.chat-tan-dung-moi-container .beaker-label-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.chat-tan-dung-moi-container .beaker-label-formula {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Particles Animation */
+.chat-tan-dung-moi-container .particles-container {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.chat-tan-dung-moi-container .particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 
+    0 0 4px rgba(255, 255, 255, 0.5),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: particleDrop 1.2s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+@keyframes particleDrop {
+  0% {
+    top: -30px;
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 70%;
+    opacity: 0;
+    transform: translateY(0) scale(0.3);
+  }
+}
+
+/* ============================================
+   Spoon Animation
+   ============================================ */
+.chat-tan-dung-moi-container .spoon-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 150;
+}
+
+.chat-tan-dung-moi-container .spoon {
+  position: absolute;
+  left: var(--start-x);
+  top: var(--start-y);
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.chat-tan-dung-moi-container .spoon-handle {
+  width: 70px;
+  height: 10px;
+  background: linear-gradient(180deg, #d1d5db, #9ca3af, #6b7280);
+  border-radius: 5px;
+  position: relative;
+}
+
+.chat-tan-dung-moi-container .spoon-handle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  right: 5px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  border-radius: 2px;
+}
+
+.chat-tan-dung-moi-container .spoon-head {
+  width: 35px;
+  height: 25px;
+  background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 50%, #6b7280 100%);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    inset 2px 2px 4px rgba(255,255,255,0.3),
+    inset -2px -2px 4px rgba(0,0,0,0.2);
+}
+
+.chat-tan-dung-moi-container .spoon-head::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), transparent);
+  border-radius: 50%;
+}
+
+.chat-tan-dung-moi-container .spoon-substance {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+@keyframes spoonMove {
+  0% {
+    left: var(--start-x);
+    top: var(--start-y);
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-15deg);
+  }
+  70% {
+    left: var(--end-x);
+    top: var(--end-y);
+    transform: rotate(-25deg);
+  }
+  100% {
+    left: var(--end-x);
+    top: var(--end-y);
+    transform: rotate(-70deg);
+  }
+}
+
+@keyframes substanceAppear {
+  0%, 70% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  80% { 
+    opacity: 1; 
+    transform: scale(0.8);
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(0);
+  }
+}
+
+/* ============================================
+   Chemical Section
+   ============================================ */
+.chat-tan-dung-moi-container .chemical-section {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-tan-dung-moi-container .section-hint {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.chat-tan-dung-moi-container .chemical-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  flex: 1;
+}
+
+.chat-tan-dung-moi-container .chemical-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.chat-tan-dung-moi-container .chemical-card:hover:not(.disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-color: #94a3b8;
+}
+
+.chat-tan-dung-moi-container .chemical-card.selected {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.chat-tan-dung-moi-container .chemical-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chat-tan-dung-moi-container .card-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.chat-tan-dung-moi-container .chemical-card:hover:not(.disabled) .card-icon-wrap {
+  transform: scale(1.1);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.chat-tan-dung-moi-container .card-icon {
+  font-size: 32px;
+  font-weight: bold;
+  opacity: 0.9;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.chat-tan-dung-moi-container .chemical-card:hover:not(.disabled) .card-icon {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.chat-tan-dung-moi-container .card-info {
+  text-align: center;
+}
+
+.chat-tan-dung-moi-container .card-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.chat-tan-dung-moi-container .card-formula {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.chat-tan-dung-moi-container .card-state {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #94a3b8;
+  background: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ============================================
+   Spoon Animation
+   ============================================ */
+.chat-tan-dung-moi-container .spoon-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 150;
+}
+
+.chat-tan-dung-moi-container .spoon {
+  position: absolute;
+  left: var(--start-x);
+  top: var(--start-y);
+  display: flex;
+  align-items: center;
+}
+
+.chat-tan-dung-moi-container .spoon-handle {
+  width: 60px;
+  height: 8px;
+  background: linear-gradient(180deg, #9ca3af, #6b7280);
+  border-radius: 4px;
+}
+
+.chat-tan-dung-moi-container .spoon-head {
+  width: 30px;
+  height: 20px;
+  background: linear-gradient(180deg, #9ca3af, #6b7280);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-tan-dung-moi-container .spoon-substance {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 50%;
+}
+
+@keyframes spoonMove {
+  0% {
+    left: var(--start-x);
+    top: var(--start-y);
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-20deg);
+  }
+  70% {
+    left: var(--end-x);
+    top: var(--end-y);
+    transform: rotate(-20deg);
+  }
+  100% {
+    left: var(--end-x);
+    top: var(--end-y);
+    transform: rotate(-60deg);
+  }
+}
+
+@keyframes substanceAppear {
+  0%, 70% { opacity: 1; }
+  80% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+/* ============================================
+   Experiment Result Overlay
+   ============================================ */
+.chat-tan-dung-moi-container .experiment-result-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.chat-tan-dung-moi-container .experiment-result {
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 480px;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.chat-tan-dung-moi-container .result-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.chat-tan-dung-moi-container .result-icon {
+  font-size: 28px;
+}
+
+.chat-tan-dung-moi-container .result-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.chat-tan-dung-moi-container .observation-box {
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.chat-tan-dung-moi-container .observation-label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.chat-tan-dung-moi-container .observation-box p {
+  margin: 0;
+}
+
+.chat-tan-dung-moi-container .observation-box.dissolves {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border: 2px solid #22c55e;
+  color: #166534;
+}
+
+.chat-tan-dung-moi-container .observation-box.not-dissolves {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+  color: #92400e;
+}
+
+.chat-tan-dung-moi-container .btn-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chat-tan-dung-moi-container .btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.chat-tan-dung-moi-container .wrong-selection {
+  text-align: center;
+}
+
+.chat-tan-dung-moi-container .wrong-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.chat-tan-dung-moi-container .btn-retry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0 auto;
+}
+
+.chat-tan-dung-moi-container .btn-retry:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+/* ============================================
+   Identify Section
+   ============================================ */
+.chat-tan-dung-moi-container .identify-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  animation: fadeIn 0.3s ease;
+}
+
+.chat-tan-dung-moi-container .identify-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.chat-tan-dung-moi-container .identify-header h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.chat-tan-dung-moi-container .identify-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.chat-tan-dung-moi-container .identify-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chat-tan-dung-moi-container .identify-card {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px;
+  transition: all 0.2s;
+}
+
+.chat-tan-dung-moi-container .identify-card.correct {
+  border-color: #22c55e;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+
+.chat-tan-dung-moi-container .identify-card.incorrect {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+}
+
+.chat-tan-dung-moi-container .identify-substance {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px dashed #e2e8f0;
+}
+
+.chat-tan-dung-moi-container .identify-icon {
+  font-size: 28px;
+}
+
+.chat-tan-dung-moi-container .identify-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.chat-tan-dung-moi-container .type-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-tan-dung-moi-container .type-btn {
+  flex: 1;
+  padding: 10px 12px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #475569;
+}
+
+.chat-tan-dung-moi-container .type-btn:hover:not(:disabled) {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.chat-tan-dung-moi-container .type-btn.active.solute {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.chat-tan-dung-moi-container .type-btn.active.solvent {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.chat-tan-dung-moi-container .type-btn.active.none {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.chat-tan-dung-moi-container .type-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.chat-tan-dung-moi-container .identify-card .feedback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chat-tan-dung-moi-container .identify-card.correct .feedback {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.chat-tan-dung-moi-container .identify-card.incorrect .feedback {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.chat-tan-dung-moi-container .explanation-box {
+  display: flex;
+  gap: 12px;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border: 2px solid #93c5fd;
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.chat-tan-dung-moi-container .explanation-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.chat-tan-dung-moi-container .explanation-content {
+  flex: 1;
+}
+
+.chat-tan-dung-moi-container .explanation-content strong {
+  display: block;
+  color: #1e40af;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.chat-tan-dung-moi-container .explanation-content p {
+  margin: 0;
+  color: #1e3a8a;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.chat-tan-dung-moi-container .identify-actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.chat-tan-dung-moi-container .btn-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chat-tan-dung-moi-container .btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.chat-tan-dung-moi-container .btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   Intro Section
+   ============================================ */
+.chat-tan-dung-moi-container .intro-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-tan-dung-moi-container .intro-section {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  width: 100%;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-tan-dung-moi-container .intro-hero {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.chat-tan-dung-moi-container .hero-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.chat-tan-dung-moi-container .intro-hero h2 {
+  font-size: 28px;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+
+.chat-tan-dung-moi-container .hero-subtitle {
+  color: #64748b;
+  font-size: 16px;
+  margin: 0;
+}
+
+.chat-tan-dung-moi-container .intro-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.chat-tan-dung-moi-container .intro-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 24px;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.chat-tan-dung-moi-container .intro-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.chat-tan-dung-moi-container .intro-card.knowledge {
+  background: linear-gradient(135deg, #ecfeff, #f0fdfa);
+  border-color: #99f6e4;
+}
+
+.chat-tan-dung-moi-container .intro-card.challenge {
+  background: linear-gradient(135deg, #fef3c7, #fef9c3);
+  border-color: #fde047;
+}
+
+.chat-tan-dung-moi-container .card-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.chat-tan-dung-moi-container .intro-card h3 {
+  margin: 0 0 16px;
+  color: #0f172a;
+  font-size: 18px;
+}
+
+.chat-tan-dung-moi-container .knowledge-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.chat-tan-dung-moi-container .knowledge-list li {
+  margin-bottom: 8px;
+  padding-left: 8px;
+  position: relative;
+}
+
+.chat-tan-dung-moi-container .knowledge-list li::before {
+  content: '•';
+  color: #0891b2;
+  font-weight: bold;
+  position: absolute;
+  left: -8px;
+}
+
+.chat-tan-dung-moi-container .knowledge-list .highlight {
+  color: #0891b2;
+  font-weight: 600;
+}
+
+.chat-tan-dung-moi-container .challenge-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.chat-tan-dung-moi-container .challenge-stats .stat {
+  text-align: center;
+}
+
+.chat-tan-dung-moi-container .challenge-stats .stat-number {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0891b2;
+}
+
+.chat-tan-dung-moi-container .challenge-stats .stat-label {
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chat-tan-dung-moi-container .steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chat-tan-dung-moi-container .step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: white;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.chat-tan-dung-moi-container .step-num {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0891b2;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chat-tan-dung-moi-container .btn-start {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 18px 36px;
+  background: linear-gradient(135deg, #0891b2, #0369a1);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+}
+
+.chat-tan-dung-moi-container .btn-start:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(8, 145, 178, 0.4);
+}
+
+/* ============================================
+   Results Section
+   ============================================ */
+.chat-tan-dung-moi-container .results-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-tan-dung-moi-container .results-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.chat-tan-dung-moi-container .results-card {
+  background: white;
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  animation: fadeInUp 0.5s ease;
+}
+
+.chat-tan-dung-moi-container .trophy-icon {
+  font-size: 72px;
+  margin-bottom: 16px;
+}
+
+.chat-tan-dung-moi-container .results-card h2 {
+  font-size: 28px;
+  color: #0f172a;
+  margin: 0 0 24px;
+}
+
+.chat-tan-dung-moi-container .score-display {
+  margin-bottom: 32px;
+}
+
+.chat-tan-dung-moi-container .score-circle {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #0891b2, #0369a1);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+}
+
+.chat-tan-dung-moi-container .score-circle .score-number {
+  font-size: 36px;
+  font-weight: 700;
+  color: white;
+}
+
+.chat-tan-dung-moi-container .score-circle .score-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.chat-tan-dung-moi-container .stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.chat-tan-dung-moi-container .stat-item {
+  text-align: center;
+  padding: 12px 20px;
+  background: #f1f5f9;
+  border-radius: 12px;
+}
+
+.chat-tan-dung-moi-container .stat-item.correct {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+}
+
+.chat-tan-dung-moi-container .stat-item.percentage {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+}
+
+.chat-tan-dung-moi-container .stat-item .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.chat-tan-dung-moi-container .stat-item .stat-label {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chat-tan-dung-moi-container .result-message {
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.chat-tan-dung-moi-container .result-message.success {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  color: #166534;
+}
+
+.chat-tan-dung-moi-container .result-message.encourage {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+}
+
+.chat-tan-dung-moi-container .result-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.chat-tan-dung-moi-container .btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.chat-tan-dung-moi-container .btn-secondary:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.chat-tan-dung-moi-container .btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #0891b2, #0369a1);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chat-tan-dung-moi-container .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(8, 145, 178, 0.3);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 900px) {
+  .chat-tan-dung-moi-container .experiment-lab {
+    grid-template-columns: 1fr;
+  }
+  
+  .chat-tan-dung-moi-container .beaker-section {
+    order: 2;
+    padding: 16px 12px;
+  }
+  
+  .chat-tan-dung-moi-container .chemical-section {
+    order: 1;
+  }
+  
+  .chat-tan-dung-moi-container .beaker-body {
+    width: 90px;
+    height: 140px;
+  }
+  
+  .chat-tan-dung-moi-container .beaker-spout {
+    width: 100px;
+  }
+  
+  .chat-tan-dung-moi-container .stand-top {
+    width: 100px;
+  }
+  
+  .chat-tan-dung-moi-container .stand-base {
+    width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-tan-dung-moi-container .game-header {
+    padding: 8px 12px;
+  }
+  
+  .chat-tan-dung-moi-container .game-header h1 {
+    font-size: 14px;
+  }
+  
+  .chat-tan-dung-moi-container .game-content {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  
+  .chat-tan-dung-moi-container .solvent-tabs {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .chat-tan-dung-moi-container .solvent-tab {
+    padding: 10px 14px;
+  }
+  
+  .chat-tan-dung-moi-container .chemical-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .chat-tan-dung-moi-container .identify-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chat-tan-dung-moi-container .intro-section {
+    padding: 24px;
+  }
+  
+  .chat-tan-dung-moi-container .intro-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .chat-tan-dung-moi-container .results-card {
+    padding: 24px 20px;
+  }
+  
+  .chat-tan-dung-moi-container .result-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-tan-dung-moi-container .back-button span {
+    display: none;
+  }
+  
+  .chat-tan-dung-moi-container .chemical-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .chat-tan-dung-moi-container .chemical-card {
+    padding: 10px 8px;
+  }
+  
+  .chat-tan-dung-moi-container .card-icon {
+    font-size: 24px;
+  }
+  
+  .chat-tan-dung-moi-container .card-name {
+    font-size: 12px;
+  }
+  
+  .chat-tan-dung-moi-container .type-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .chat-tan-dung-moi-container .type-btn {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}
+
+/* Height-constrained screens */
+@media (max-height: 700px) {
+  .chat-tan-dung-moi-container .game-content {
+    padding: 6px 12px;
+    gap: 6px;
+  }
+  
+  .chat-tan-dung-moi-container .challenge-header {
+    padding: 8px 12px;
+  }
+  
+  .chat-tan-dung-moi-container .instruction-box {
+    padding: 8px 12px;
+  }
+  
+  .chat-tan-dung-moi-container .solvent-tabs-section {
+    padding: 8px 12px;
+  }
+  
+  .chat-tan-dung-moi-container .solvent-tab {
+    padding: 8px 12px;
+  }
+  
+  .chat-tan-dung-moi-container .beaker-body {
+    width: 90px;
+    height: 130px;
+  }
+  
+  .chat-tan-dung-moi-container .beaker-spout {
+    width: 95px;
+    height: 6px;
+  }
+  
+  .chat-tan-dung-moi-container .stand-top {
+    width: 95px;
+    height: 5px;
+  }
+  
+  .chat-tan-dung-moi-container .stand-base {
+    width: 110px;
+    height: 6px;
+  }
+  
+  .chat-tan-dung-moi-container .chemical-card {
+    padding: 10px 8px;
+  }
+  
+  .chat-tan-dung-moi-container .card-icon-wrap {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .chat-tan-dung-moi-container .card-icon {
+    font-size: 22px;
+  }
+}
