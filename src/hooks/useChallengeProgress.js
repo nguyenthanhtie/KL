@@ -1,74 +1,237 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 /**
- * Custom hook để lưu và khôi phục tiến trình thử thách
- * @param {string} challengeId - ID của thử thách (ví dụ: 'duoi-hinh-bat-chu')
- * @param {object} initialState - State ban đầu của thử thách
- * @returns {object} - { progress, saveProgress, clearProgress, hasProgress }
+ * Hook để quản lý tiến trình challenge
+ * @param {string} challengeSlug - Unique identifier cho challenge
+ * @param {object} options - { challengeId, programId, grade }
  */
-const useChallengeProgress = (challengeId, initialState = {}) => {
-  const STORAGE_KEY = `challenge_progress_${challengeId}`;
+const useChallengeProgress = (challengeSlug, options = {}) => {
+  const { user } = useAuth();
+  const [hasProgress, setHasProgress] = useState(false);
+  const [savedProgress, setSavedProgress] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const isMounted = useRef(true);
   
-  // Kiểm tra xem có tiến trình đã lưu không
-  const getSavedProgress = () => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        // Kiểm tra xem tiến trình có quá hạn không (24 giờ)
-        const savedTime = new Date(parsed.timestamp);
-        const now = new Date();
-        const hoursDiff = (now - savedTime) / (1000 * 60 * 60);
+  const { challengeId, programId = 'chemistry', grade = 8 } = options;
+
+  // Kiểm tra tiến trình đã lưu khi mount
+  useEffect(() => {
+    isMounted.current = true;
+    
+    const checkProgress = async () => {
+      if (!user?.id) {
+        setIsLoading(false);
+        return;
+      }
+      
+      try {
+        const response = await fetch(
+          `${API_BASE}/challenges/attempts/active/${user.id}/${challengeSlug}`
+        );
+        const data = await response.json();
         
-        if (hoursDiff < 24) {
-          return parsed.data;
-        } else {
-          // Xóa tiến trình cũ nếu quá 24 giờ
-          localStorage.removeItem(STORAGE_KEY);
+        if (isMounted.current) {
+          setHasProgress(data.hasProgress);
+          setSavedProgress(data.progressData || null);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('Error checking challenge progress:', error);
+        if (isMounted.current) {
+          setIsLoading(false);
         }
       }
-    } catch (error) {
-      console.error('Error loading challenge progress:', error);
+    };
+
+    checkProgress();
+    
+    return () => {
+      isMounted.current = false;
+    };
+  }, [user?.id, challengeSlug]);
+
+  // Lưu tiến trình (auto-save)
+  const saveProgress = useCallback(async (progressData) => {
+    if (!user?.id) {
+      console.warn('Cannot save progress: No user logged in');
+      return false;
     }
-    return null;
-  };
-
-  const [hasProgress, setHasProgress] = useState(!!getSavedProgress());
-
-  // Lưu tiến trình
-  const saveProgress = (progressData) => {
+    
     try {
-      const dataToSave = {
-        data: progressData,
-        timestamp: new Date().toISOString()
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
-      setHasProgress(true);
+      console.log('💾 Saving progress:', { challengeSlug, progressData });
+      
+      const response = await fetch(`${API_BASE}/challenges/attempts/save`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          challengeId,
+          challengeSlug,
+          programId,
+          grade,
+          progressData
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setHasProgress(true);
+        setSavedProgress(progressData);
+        console.log('✅ Progress saved successfully');
+        return true;
+      } else {
+        console.error('❌ Failed to save progress:', data.message);
+        return false;
+      }
     } catch (error) {
-      console.error('Error saving challenge progress:', error);
+      console.error('❌ Error saving progress:', error);
+      return false;
     }
-  };
+  }, [user?.id, challengeSlug, challengeId, programId, grade]);
 
   // Xóa tiến trình
-  const clearProgress = () => {
+  const clearProgress = useCallback(async () => {
+    if (!user?.id) return false;
+    
     try {
-      localStorage.removeItem(STORAGE_KEY);
-      setHasProgress(false);
+      console.log('🗑️ Clearing progress:', challengeSlug);
+      
+      const response = await fetch(
+        `${API_BASE}/challenges/attempts/${user.id}/${challengeSlug}`,
+        { method: 'DELETE' }
+      );
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setHasProgress(false);
+        setSavedProgress(null);
+        console.log('✅ Progress cleared');
+        return true;
+      }
+      return false;
     } catch (error) {
-      console.error('Error clearing challenge progress:', error);
+      console.error('❌ Error clearing progress:', error);
+      return false;
     }
-  };
+  }, [user?.id, challengeSlug]);
 
   // Lấy tiến trình đã lưu
-  const getProgress = () => {
-    return getSavedProgress();
-  };
+  const getProgress = useCallback(() => {
+    return savedProgress;
+  }, [savedProgress]);
+
+  // Hoàn thành challenge
+  const completeChallenge = useCallback(async (result) => {
+    if (!user?.id) {
+      console.warn('Cannot complete challenge: No user logged in');
+      return null;
+    }
+    
+    const {
+      score = 0,
+      maxScore = 100,
+      percentage,
+      stars,
+      timeSpent = 0,
+      correctAnswers,
+      totalQuestions
+    } = result;
+    
+    console.log('🏆 Completing challenge:', { 
+      challengeSlug, 
+      score, 
+      maxScore, 
+      stars,
+      percentage,
+      userId: user.id 
+    });
+    
+    try {
+      const response = await fetch(`${API_BASE}/challenges/attempts/complete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          challengeId,
+          challengeSlug,
+          programId,
+          grade,
+          score,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent,
+          correctAnswers,
+          totalQuestions
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Clear local progress state after completion
+        setHasProgress(false);
+        setSavedProgress(null);
+        
+        console.log('✅ Challenge completed:', {
+          stars: data.stars,
+          xpReward: data.xpReward,
+          completedChallenges: data.completedChallenges
+        });
+        
+        return {
+          success: true,
+          stars: data.stars,
+          xpReward: data.xpReward,
+          percentage: data.percentage
+        };
+      } else {
+        console.error('❌ Failed to complete challenge:', data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error('❌ Error completing challenge:', error);
+      return null;
+    }
+  }, [user?.id, challengeSlug, challengeId, programId, grade]);
+
+  // Lấy kết quả tốt nhất
+  const getBestAttempt = useCallback(async () => {
+    if (!user?.id) return null;
+    
+    try {
+      const response = await fetch(
+        `${API_BASE}/challenges/attempts/best/${user.id}/${challengeSlug}`
+      );
+      const data = await response.json();
+      
+      if (data.hasBestAttempt) {
+        return {
+          ...data.bestAttempt,
+          stars: data.stars
+        };
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting best attempt:', error);
+      return null;
+    }
+  }, [user?.id, challengeSlug]);
 
   return {
     hasProgress,
+    savedProgress,
+    isLoading,
     saveProgress,
     clearProgress,
-    getProgress
+    getProgress,
+    completeChallenge,
+    getBestAttempt
   };
 };
 

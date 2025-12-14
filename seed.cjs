@@ -525,6 +525,52 @@ const challenges = [
       lessonId: 20
     }
   },
+
+ 
+
+  // CÂN BẰNG PHẢN ỨNG NÂNG CAO - Grade 11
+  {
+    id: 26,
+    name: 'Cân Bằng Phản Ứng Nâng Cao',
+    description: 'Game cân bằng phương trình hóa học nâng cao với 4 loại phản ứng: Oxi hóa-khử, Axit-bazơ, Hữu cơ và Phức tạp. Phù hợp với kiến thức lớp 11.',
+    icon: '⚖️',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-500',
+    category: 'game',
+    grade: 11,
+    time: '20-30 phút',
+    points: 400,
+    status: 'available',
+    link: '/advanced-challenge/can-bang-phan-ung-nang-cao',
+    features: ['20+ phản ứng từ dễ đến khó', '4 loại phản ứng (Oxi hóa-khử, Axit-bazơ, Hữu cơ, Phức tạp)', 'Hệ thống điểm & combo streak', 'So sánh số nguyên tử trực quan', 'Gợi ý cho từng phản ứng'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 1
+    }
+  },
+
+  // NITƠ - LƯU HUỲNH - Grade 11
+  {
+    id: 27,
+    name: 'Nitơ - Lưu huỳnh',
+    description: 'Thử thách tổng hợp về Nitơ và Lưu huỳnh: N₂, NH₃, HNO₃, S, H₂S, SO₂, H₂SO₄. Gồm 30 câu hỏi đa dạng từ lý thuyết đến tính toán.',
+    icon: '⚗️',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-yellow-500',
+    category: 'game',
+    grade: 11,
+    time: '25-35 phút',
+    points: 350,
+    status: 'available',
+    link: '/advanced-challenge/nito-luu-huynh',
+    features: ['30 câu hỏi tổng hợp', '4 chủ đề (N₂ & hợp chất, S & hợp chất, Phản ứng đặc trưng, Ứng dụng)', 'Chế độ thử thách có giới hạn thời gian', 'Nhiều dạng câu hỏi (trắc nghiệm, đúng/sai, điền từ, sắp xếp, ghép đôi)', 'Bài tập tính toán nâng cao'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 2
+    }
+  },
   
     
   

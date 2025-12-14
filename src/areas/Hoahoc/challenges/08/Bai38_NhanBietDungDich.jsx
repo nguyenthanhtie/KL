@@ -179,7 +179,9 @@ const experimentQuestions = [
 ];
 
 const NhanBietDungDich = () => {
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('nhan-biet-dung-dich');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('nhan-biet-dung-dich');
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -353,6 +355,25 @@ const NhanBietDungDich = () => {
     } else {
       setGameCompleted(true);
       clearProgress();
+      
+      // Lưu kết quả hoàn thành vào database
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const maxScore = experimentQuestions.reduce((sum, q) => {
+          return sum + (q.difficulty === 'easy' ? 10 : q.difficulty === 'medium' ? 15 : 20);
+        }, 0);
+        const percentage = Math.round((score / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers,
+          totalQuestions: experimentQuestions.length
+        });
+      }
     }
   };
 

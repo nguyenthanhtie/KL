@@ -34,6 +34,14 @@ class ErrorBoundary extends React.Component {
 }
 
 const QuanSatPhanUngInner = () => {
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('quan-sat-phan-ung', {
+    challengeId: 12,
+    programId: 'chemistry',
+    grade: 8
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
+  
   // Dữ liệu các phản ứng hóa học với hiện tượng
   const cacPhanUng = [
     {
@@ -126,8 +134,6 @@ const QuanSatPhanUngInner = () => {
     }
   ];
 
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('quan-sat-phan-ung');
-  
   const [currentReaction, setCurrentReaction] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedPhenomena, setSelectedPhenomena] = useState([]);
@@ -141,6 +147,29 @@ const QuanSatPhanUngInner = () => {
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [reviewQueue, setReviewQueue] = useState([]);
   const [reviewIndex, setReviewIndex] = useState(0);
+
+  // Hàm hoàn thành challenge
+  const handleCompleteGame = (finalScore, finalHistory) => {
+    setGameCompleted(true);
+    clearProgress();
+    
+    if (!isCompleted) {
+      setIsCompleted(true);
+      const correctCount = (finalHistory || history).filter(h => h.points > 0).length;
+      const maxScore = cacPhanUng.length * 10;
+      const percentage = Math.round(((finalScore || score) / maxScore) * 100);
+      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      completeChallenge({
+        score: finalScore || score,
+        maxScore,
+        percentage,
+        stars,
+        timeSpent: Math.floor((Date.now() - startTime) / 1000),
+        correctAnswers: correctCount,
+        totalQuestions: cacPhanUng.length
+      });
+    }
+  };
 
   // Kiểm tra tiến trình khi component mount
   useEffect(() => {
@@ -229,8 +258,7 @@ const QuanSatPhanUngInner = () => {
       setReviewQueue(prev => prev.filter(id => id !== reaction.id));
       // if no more failed left, finish
       if (failedChallenges.length <= 1 && reviewQueue.length <= 1) {
-        setGameCompleted(true);
-        clearProgress();
+        handleCompleteGame(newScore, newHistory);
       }
     }
 
@@ -266,15 +294,13 @@ const QuanSatPhanUngInner = () => {
           setIsSubmitted(false);
           setShowExplanation(false);
         } else {
-          setGameCompleted(true);
-          clearProgress();
+          handleCompleteGame();
         }
       }
     } else {
       // Review mode: move to next failed item in reviewQueue
       if (reviewQueue.length === 0) {
-        setGameCompleted(true);
-        clearProgress();
+        handleCompleteGame();
         return;
       }
 
@@ -301,8 +327,7 @@ const QuanSatPhanUngInner = () => {
           setIsSubmitted(false);
           setShowExplanation(false);
         } else {
-          setGameCompleted(true);
-          clearProgress();
+          handleCompleteGame();
         }
       }
     }

@@ -41,6 +41,8 @@ import Bai20_PHI_KIM_HALOGEN from './areas/Hoahoc/challenges/09/Bai20_PHI_KIM_HA
 import Bai26_HIDROCACBON from './areas/Hoahoc/challenges/09/Bai26_HIDROCACBON';
 import Bai34_HIDROCACBON_POLIME from './areas/Hoahoc/challenges/09/Bai34_HIDROCACBON_POLIME';
 import Baitonghop from './areas/Hoahoc/challenges/09/Baitonghop';
+import CanBangPhanUngNangCao from './areas/Hoahoc/challenges/11/Bai02_CanBangPhanUngNangCao';
+import NitoLuuHuynh from './areas/Hoahoc/challenges/11/Bai03_Nito_LuuHuynh';
 
 
 
@@ -84,6 +86,8 @@ const AppContent = () => {
         <Route path="/advanced-challenge/bai06-chat-tan-dung-moi" element={<Bai06_ChatTan_DungMoi />} />
         <Route path="/advanced-challenge/tong-ket-lop-8" element={<TongKetLop8 />} />
         <Route path="/advanced-challenge/tong-hop-lop-9" element={<Baitonghop />} />
+        <Route path="/advanced-challenge/can-bang-phan-ung-nang-cao" element={<CanBangPhanUngNangCao />} />
+        <Route path="/advanced-challenge/nito-luu-huynh" element={<NitoLuuHuynh />} />
         <Route 
           path="/program/chemistry/dashboard" 
           element={

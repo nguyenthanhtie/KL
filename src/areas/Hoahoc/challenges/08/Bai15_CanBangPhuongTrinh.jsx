@@ -52,7 +52,13 @@ function CoefficientControl({ value, onChange, disabled }) {
 }
 
 export default function TroChoiCanBang(){
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('tro-choi-can-bang');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('tro-choi-can-bang', {
+    challengeId: 15,
+    programId: 'chemistry',
+    grade: 8
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(0);
@@ -164,6 +170,21 @@ export default function TroChoiCanBang(){
         setGameCompleted(true);
         clearProgress();
         setMessage('🎉 Chúc mừng! Bạn đã hoàn thành tất cả 8 phản ứng!');
+        
+        // Lưu kết quả hoàn thành vào database
+        if (!isCompleted) {
+          setIsCompleted(true);
+          const stars = 3; // Hoàn thành tất cả = 3 sao
+          completeChallenge({
+            score: REACTIONS.length * 10,
+            maxScore: REACTIONS.length * 10,
+            percentage: 100,
+            stars,
+            timeSpent: Math.floor((Date.now() - startTime) / 1000),
+            correctAnswers: REACTIONS.length,
+            totalQuestions: REACTIONS.length
+          });
+        }
       }
     } else {
       setMessage('❌ Chưa cân bằng. Kiểm tra lại số lượng nguyên tử mỗi loại!');
