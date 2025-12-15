@@ -9,13 +9,71 @@ module.exports = {
   level: 'Beginner',
   order: 16,
   theory: `
-    <h2>🌍 Vỏ Trái Đất và tài nguyên</h2>
-    <ul>
-      <li><strong>Thành phần chính:</strong> SiO2, Al2O3, Fe2O3, CaCO3, MgCO3, các silicat.</li>
-      <li><strong>Quặng và khoáng sản:</strong> quặng là khoáng sản có ích; ví dụ: bôxit (Al2O3·nH2O), hematit (Fe2O3), đá vôi (CaCO3).</li>
-      <li><strong>Khai thác hợp lí:</strong> các giai đoạn khai thác, tuyển, chế biến; cần hạn chế ô nhiễm, tận thu tài nguyên.</li>
-      <li><strong>Bảo vệ môi trường:</strong> phục hồi mỏ, cây xanh; xử lí khí thải, bụi; sử dụng tiết kiệm tài nguyên.</li>
-    </ul>
+    <h2>🌍 Vỏ Trái Đất &amp; tài nguyên</h2>
+    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận diện thành phần chính vỏ Trái Đất, khái niệm quặng/khoáng sản và khai thác bền vững.</p>
+
+    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
+        <h4 style="margin:0 0 8px; color:#0f172a;">Thành phần chính</h4>
+        <ul style="margin:0; padding-left:18px; color:#475569;">
+          <li>Khoáng vật phổ biến: SiO₂ (thạch anh, cát), Al₂O₃ (bôxit), Fe₂O₃ (hematit).</li>
+          <li>Đá vôi CaCO₃, dolomit CaMg(CO₃)₂, các silicat (felspat, mica).</li>
+          <li>Nguồn vật liệu xây dựng, kim loại, thủy tinh từ các khoáng này.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+        <h4 style="margin:0 0 8px; color:#9a3412;">Quặng &amp; khoáng sản</h4>
+        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+          <li>Khoáng sản: tích tụ tự nhiên khoáng vật; quặng: khoáng sản có giá trị khai thác.</li>
+          <li>Ví dụ: bôxit (Al), hematit (Fe), pirit (FeS₂), đá vôi (CaCO₃).</li>
+          <li>Chất lượng quặng quyết định chi phí khai thác, luyện kim.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
+        <h4 style="margin:0 0 8px; color:#0e7490;">Khai thác &amp; chế biến</h4>
+        <ul style="margin:0; padding-left:18px; color:#0f172a;">
+          <li>Các bước: khảo sát → khai thác (lộ thiên/hầm lò) → tuyển → chế biến/luyện kim.</li>
+          <li>Ví dụ: bôxit → Al₂O₃ (quy trình Bayer) → điện phân nhôm.</li>
+          <li>Đá vôi → nung vôi/xi măng; cát thạch anh → thuỷ tinh.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
+        <h4 style="margin:0 0 8px; color:#0f172a;">Khai thác bền vững</h4>
+        <ul style="margin:0; padding-left:18px; color:#334155;">
+          <li>Giảm bụi/khí thải, xử lí nước thải; tái sử dụng chất thải rắn.</li>
+          <li>Phục hồi mỏ: phủ đất, trồng cây; giám sát sụt lún, xói mòn.</li>
+          <li>Tiết kiệm tài nguyên: tái chế kim loại, dùng vật liệu thay thế.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
+      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#334155;">
+        <li>Thành phần vỏ: chủ yếu oxit/silicat của Si, Al, Fe, Ca, Mg.</li>
+        <li>Quặng = khoáng sản có giá trị kinh tế; ví dụ bôxit, hematit, đá vôi.</li>
+        <li>Khai thác bền vững: xử lí ô nhiễm, phục hồi mỏ, tái chế tài nguyên.</li>
+      </ul>
+    </div>
+
+    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
+      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
+      <p style="margin:0 0 4px;">Bản đồ thành phần khoáng sản phổ biến: <em>/images/hoahoc9/lesson33-minerals.png</em></p>
+      <p style="margin:0;">Chu trình khai thác → tuyển → luyện kim: <em>/images/hoahoc9/lesson33-extraction.png</em></p>
+    </div>
+
+    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+        <li>Khoáng sản nào là quặng chính của Al? Cần bước chế biến gì?</li>
+        <li>Vì sao khai thác lộ thiên gây bụi và biến đổi cảnh quan?</li>
+        <li>Nêu một biện pháp phục hồi môi trường sau khai thác.</li>
+      </ul>
+      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Tự trả lời trước khi làm trắc nghiệm.</p>
+    </div>
   `,
   game: [
     {

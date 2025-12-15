@@ -10,14 +10,69 @@ module.exports = {
   order: 1,
   theory: `
     <h2>⚙️ Tính chất chung của kim loại</h2>
-    <p>Kim loại có mạng tinh thể đối xứng, liên kết kim loại giúp dẫn điện, dẫn nhiệt tốt và dễ dát mỏng.</p>
-    <ul>
-      <li><strong>Tính chất vật lí:</strong> ánh kim, dẫn điện/nhệt tốt, dẻo, nhiều kim loại có nhiệt độ nóng chảy cao (trừ Hg).</li>
-      <li><strong>Tính chất hoá học:</strong> tác dụng với phi kim (O2, S, Cl2), với dung dịch axit, với muối của kim loại yếu hơn.</li>
-      <li><strong>Ứng dụng:</strong> thép trong xây dựng, Cu/Al làm dây dẫn, Au/Ag làm trang sức, Ti dùng trong y học.</li>
-    </ul>
-    <div style="background:#f8fafc;padding:12px;border:1px solid #e2e8f0;border-radius:8px;">
-      <p><strong>Ví dụ nhanh:</strong> 2Mg + O2 → 2MgO; Fe + CuSO4 → FeSO4 + Cu; 2Al + 6HCl → 2AlCl3 + 3H2↑</p>
+    <p style="margin:10px 0; color:#334155;">Mục tiêu: ôn cấu trúc, tính chất vật lí/hoá học đặc trưng của kim loại và liên hệ ứng dụng.</p>
+
+    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
+        <h4 style="margin:0 0 8px; color:#0f172a;">Cấu trúc &amp; vật lí</h4>
+        <ul style="margin:0; padding-left:18px; color:#475569;">
+          <li>Mạng tinh thể kim loại, electron tự do → dẫn điện, dẫn nhiệt tốt.</li>
+          <li>Ánh kim, dẻo (kéo sợi, dát mỏng); đa số có tnc cao trừ Hg lỏng.</li>
+          <li>Khối lượng riêng thay đổi: Al nhẹ, Fe trung bình, Pb nặng.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+        <h4 style="margin:0 0 8px; color:#9a3412;">Hoá học chung</h4>
+        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+          <li>Phản ứng với phi kim: 2Mg + O₂ → 2MgO; 2Al + 3Cl₂ → 2AlCl₃.</li>
+          <li>Phản ứng với axit loãng (trước H): Zn + 2HCl → ZnCl₂ + H₂.</li>
+          <li>Thay thế kim loại yếu hơn trong muối: Fe + CuSO₄ → FeSO₄ + Cu.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
+        <h4 style="margin:0 0 8px; color:#0e7490;">Hoạt động hoá học</h4>
+        <ul style="margin:0; padding-left:18px; color:#0f172a;">
+          <li>Dựa vào dãy hoạt động: K, Na, Ca rất mạnh; Cu, Ag yếu.</li>
+          <li>Dạng bột phản ứng nhanh hơn dạng khối do tăng diện tích tiếp xúc.</li>
+          <li>Al, Fe tạo màng oxit mỏng bảo vệ, giảm phản ứng bề mặt.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
+        <h4 style="margin:0 0 8px; color:#0f172a;">Ứng dụng &amp; an toàn</h4>
+        <ul style="margin:0; padding-left:18px; color:#334155;">
+          <li>Fe/thép: xây dựng, máy móc; Cu/Al: dây dẫn; Ti: y sinh.</li>
+          <li>Bảo quản: tránh ẩm để hạn chế ăn mòn; phủ sơn/mạ kẽm.</li>
+          <li>An toàn: kim loại kiềm phản ứng mạnh với nước → bảo quản trong dầu.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
+      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#334155;">
+        <li>Vật lí: ánh kim, dẫn điện/nhiệt, dẻo; Hg lỏng là ngoại lệ.</li>
+        <li>Hoá học: phản ứng với phi kim, axit, và thay thế kim loại yếu hơn.</li>
+        <li>Hoạt động phụ thuộc vị trí trong dãy; màng oxit có thể bảo vệ.</li>
+      </ul>
+    </div>
+
+    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
+      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
+      <p style="margin:0 0 4px;">Thí nghiệm Mg cháy và Fe đẩy Cu: <em>/images/hoahoc9/lesson18-reactions.png</em></p>
+      <p style="margin:0;">So sánh dây Cu vs Al dẫn điện: <em>/images/hoahoc9/lesson18-conductivity.png</em></p>
+    </div>
+
+    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+        <li>Vì sao Al ít bị gỉ trong không khí ẩm?</li>
+        <li>Viết PTHH Fe phản ứng với HCl loãng.</li>
+        <li>Kim loại nào cần bảo quản trong dầu hỏa? Giải thích.</li>
+      </ul>
+      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Ôn nhanh trước khi làm bộ trắc nghiệm.</p>
     </div>
   `,
   game: [

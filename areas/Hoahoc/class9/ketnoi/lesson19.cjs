@@ -9,15 +9,57 @@ module.exports = {
   level: 'Intermediate',
   order: 2,
   theory: `
-    <h2>📈 Dãy hoạt động hoá học</h2>
-    <p>Thứ tự giảm dần: K - Na - Ca - Mg - Al - Zn - Fe - Ni - Sn - Pb - (H) - Cu - Ag - Au.</p>
-    <ul>
-      <li>Kim loại đứng trước đẩy được kim loại đứng sau khỏi dung dịch muối của nó.</li>
-      <li>Kim loại đứng trước H đẩy được H2 khỏi axit loãng.</li>
-      <li>Kim loại hoạt động mạnh phản ứng với nước lạnh (K, Na, Ca); yếu hơn cần đun nóng (Zn, Fe).</li>
-    </ul>
-    <div style="background:#eef2ff;padding:12px;border-radius:8px;border:1px solid #e2e8f0;">
-      <p><strong>Ví dụ:</strong> Fe + CuSO4 → FeSO4 + Cu; Zn + 2HCl → ZnCl2 + H2; Cu không tác dụng với HCl loãng.</p>
+    <h2>📈 Dãy hoạt động hoá học của kim loại</h2>
+    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhớ thứ tự hoạt động, quy tắc dự đoán phản ứng với nước, axit, muối và vận dụng thay thế.</p>
+
+    <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; margin:12px 0;">
+      <h4 style="margin:0 0 8px; color:#0f172a;">Thứ tự dãy giảm dần</h4>
+      <p style="margin:0; color:#475569;">K - Na - Ca - Mg - Al - Zn - Fe - Ni - Sn - Pb - (H) - Cu - Ag - Au.</p>
+      <p style="margin:6px 0 0; color:#475569; font-size:13px;">Kim loại càng đứng trái càng dễ nhường electron → hoạt động mạnh.</p>
+    </div>
+
+    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+        <h4 style="margin:0 0 8px; color:#9a3412;">Quy tắc phản ứng</h4>
+        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+          <li>Đẩy kim loại yếu hơn khỏi muối: Fe + CuSO₄ → FeSO₄ + Cu.</li>
+          <li>Đứng trước H → đẩy H₂ khỏi axit loãng: Zn + 2HCl → ZnCl₂ + H₂.</li>
+          <li>Phản ứng với nước lạnh: K, Na, Ca; với hơi nước nóng: Mg, Zn, Fe.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
+        <h4 style="margin:0 0 8px; color:#0e7490;">Ứng dụng dự đoán</h4>
+        <ul style="margin:0; padding-left:18px; color:#0f172a;">
+          <li>Chọn kim loại thu từ dung dịch muối: dùng kim loại đứng trước.</li>
+          <li>Chọn axit để giải phóng H₂: dùng axit loãng với kim loại đứng trước H.</li>
+          <li>Nhận biết kim loại yếu (Cu, Ag, Au) không phản ứng HCl loãng.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
+      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#334155;">
+        <li>Dãy hoạt động xếp theo độ dễ oxi hoá (nhường e).</li>
+        <li>Đứng trước H: phản ứng axit loãng giải phóng H₂; sau H thì không.</li>
+        <li>Đứng trước kim loại khác → có thể đẩy khỏi dung dịch muối của nó.</li>
+      </ul>
+    </div>
+
+    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
+      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
+      <p style="margin:0 0 4px;">Biểu đồ dãy hoạt động và vùng phản ứng với nước/axit: <em>/images/hoahoc9/lesson19-series.png</em></p>
+      <p style="margin:0;">Thí nghiệm Fe + CuSO₄ (đổi màu, xuất hiện Cu): <em>/images/hoahoc9/lesson19-displacement.png</em></p>
+    </div>
+
+    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+        <li>Kim loại nào đầu tiên không đẩy được H₂ khỏi axit loãng?</li>
+        <li>Viết PTHH Mg tác dụng với hơi nước.</li>
+        <li>Chọn kim loại phù hợp để thu Cu từ CuSO₄, vì sao?</li>
+      </ul>
+      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Tự thử sức rồi làm bộ trắc nghiệm.</p>
     </div>
   `,
   game: [
