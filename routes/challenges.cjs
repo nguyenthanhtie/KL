@@ -251,12 +251,8 @@ router.get('/attempts/active/:userId/:challengeSlug', async (req, res) => {
     console.log('✅ Found active progress:', challengeSlug);
 
     res.json({ 
-      hasProgress: true, 
-      attempt: {
-        challengeSlug,
-        ...savedProgress
-      },
-      progressData: savedProgress.progressData 
+      hasProgress: true,
+      progressData: savedProgress.progressData || savedProgress
     });
   } catch (error) {
     console.error('❌ Error fetching challenge progress:', error);

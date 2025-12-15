@@ -1,0 +1,214 @@
+/* Hidrocacbon - Lớp 11 */
+
+/* ============= BACKGROUND ============= */
+.hidrocacbon-bg {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+  min-height: 100vh;
+  color: #e0e7ff;
+}
+
+/* ============= STATS BAR ============= */
+.stats-bar-hidro {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-item-hidro {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #c7d2fe;
+}
+
+.stat-item-hidro strong {
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+/* ============= CATEGORY GRID ============= */
+.category-grid-hidro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.category-card-hidro {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card-hidro:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #818cf8;
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
+}
+
+.category-card-hidro.active {
+  background: rgba(79, 70, 229, 0.2);
+  border-color: #818cf8;
+  box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.3);
+}
+
+.category-icon-wrapper-hidro {
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #a5b4fc;
+  transition: all 0.3s ease;
+}
+
+.category-card-hidro:hover .category-icon-wrapper-hidro,
+.category-card-hidro.active .category-icon-wrapper-hidro {
+  background: #4f46e5;
+  color: white;
+  transform: scale(1.1) rotate(-5deg);
+}
+
+/* ============= QUESTION CARD ============= */
+.question-card-hidro {
+  background: rgba(30, 27, 75, 0.8);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  animation: slideUp 0.4s ease-out;
+}
+
+.question-header-hidro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.difficulty-badge-hidro {
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.difficulty-easy { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+.difficulty-medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.difficulty-hard { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+/* ============= OPTIONS ============= */
+.options-grid-hidro {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.option-btn-hidro {
+  width: 100%;
+  padding: 1.25rem;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-size: 1.05rem;
+  color: #e0e7ff;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-btn-hidro:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #818cf8;
+  transform: translateX(4px);
+}
+
+.option-btn-hidro.selected {
+  background: rgba(79, 70, 229, 0.2);
+  border-color: #818cf8;
+  color: #ffffff;
+}
+
+.option-btn-hidro.correct {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #34d399;
+  color: #34d399;
+}
+
+.option-btn-hidro.wrong {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #f87171;
+  color: #f87171;
+}
+
+/* ============= FEEDBACK ============= */
+.feedback-container-hidro {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+.feedback-correct {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.feedback-wrong {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+/* ============= PROGRESS BAR ============= */
+.progress-track-hidro {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.progress-fill-hidro {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #818cf8);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+/* ============= RESPONSIVE ============= */
+@media (max-width: 768px) {
+  .category-grid-hidro {
+    grid-template-columns: 1fr;
+  }
+  
+  .question-card-hidro {
+    padding: 1.5rem;
+  }
+  
+  .stats-bar-hidro {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

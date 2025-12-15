@@ -1,0 +1,348 @@
+/* ==================== POLIME CHALLENGE CSS ==================== */
+
+/* Background & Base */
+.polime-bg {
+  background: linear-gradient(135deg, #312e81 0%, #4f46e5 50%, #6366f1 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.polime-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(129, 140, 248, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(165, 180, 252, 0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Stats Bar */
+.stats-bar-polime {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-item-polime {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c7d2fe;
+  font-size: 0.9rem;
+}
+
+.stat-item-polime strong {
+  color: white;
+}
+
+/* Category Grid */
+.category-grid-polime {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.category-card-polime {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card-polime::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.category-card-polime:hover::before {
+  opacity: 1;
+}
+
+.category-card-polime:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(99, 102, 241, 0.3);
+}
+
+.category-icon-wrapper-polime {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  color: #818cf8;
+  flex-shrink: 0;
+}
+
+/* Progress Track */
+.progress-track-polime {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill-polime {
+  height: 100%;
+  background: linear-gradient(90deg, #818cf8, #6366f1);
+  border-radius: 9999px;
+  transition: width 0.5s ease-out;
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+}
+
+/* Question Card */
+.question-card-polime {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+.question-header-polime {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.difficulty-badge-polime {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.difficulty-easy {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.difficulty-medium {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fde047;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.difficulty-hard {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Options Grid */
+.options-grid-polime {
+  display: grid;
+  gap: 1rem;
+}
+
+.option-btn-polime {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  color: white;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option-btn-polime:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateX(4px);
+}
+
+.option-btn-polime:disabled {
+  cursor: default;
+}
+
+.option-btn-polime.correct {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: #22c55e;
+  color: #86efac;
+}
+
+.option-btn-polime.wrong {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+/* Feedback Container */
+.feedback-container-polime {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-top: 1.5rem;
+  animation: slideUp 0.4s ease-out;
+}
+
+.feedback-correct {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+}
+
+.feedback-wrong {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .polime-bg {
+    padding: 1rem;
+  }
+
+  .question-card-polime {
+    padding: 1.5rem;
+  }
+
+  .category-grid-polime {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-bar-polime {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+/* Glassmorphism effects */
+.backdrop-blur {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Polymer Chain Animation Background */
+.polime-bg::after {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  right: 5%;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(129, 140, 248, 0.3) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.2) 0%, transparent 25%),
+    radial-gradient(circle at 70% 70%, rgba(129, 140, 248, 0.3) 0%, transparent 20%);
+  border-radius: 50%;
+  animation: polymerFloat 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes polymerFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg) scale(1.05);
+  }
+  66% {
+    transform: translateY(-10px) rotate(240deg) scale(0.95);
+  }
+}
+
+/* Additional decorative element */
+.polime-bg .max-w-6xl::before {
+  content: '';
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  bottom: 10%;
+  left: 5%;
+  background: 
+    radial-gradient(circle at 40% 40%, rgba(165, 180, 252, 0.2) 0%, transparent 30%),
+    radial-gradient(circle at 60% 60%, rgba(99, 102, 241, 0.15) 0%, transparent 35%);
+  border-radius: 50%;
+  animation: polymerFloat2 8s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes polymerFloat2 {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(180deg);
+  }
+}
+
+/* Molecular structure hint in background */
+.category-card-polime::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 80px;
+  height: 80px;
+  background: 
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.category-card-polime:hover::after {
+  transform: scale(1.5);
+  opacity: 0.5;
+}

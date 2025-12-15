@@ -1,0 +1,215 @@
+/* Đại Cương Hóa Hữu Cơ - Lớp 11 */
+
+/* ============= BACKGROUND ============= */
+.huuco-bg {
+  background: linear-gradient(135deg, #065f46 0%, #059669 50%, #d97706 100%);
+  min-height: 100vh;
+}
+
+/* ============= STATS BAR ============= */
+.stats-bar-huuco {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 12px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.stat-item-huuco {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.stat-item-huuco strong {
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+/* ============= CATEGORY GRID ============= */
+.category-grid-huuco {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.category-card-huuco {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card-huuco:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+  border-color: #10b981;
+}
+
+.category-card-huuco.active {
+  background: #ecfdf5;
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.category-icon-wrapper-huuco {
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: #f1f5f9;
+  color: #64748b;
+  transition: all 0.3s ease;
+}
+
+.category-card-huuco:hover .category-icon-wrapper-huuco,
+.category-card-huuco.active .category-icon-wrapper-huuco {
+  background: #10b981;
+  color: white;
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* ============= QUESTION CARD ============= */
+.question-card-huuco {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.question-header-huuco {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.difficulty-badge-huuco {
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.difficulty-easy { background: #dcfce7; color: #166534; }
+.difficulty-medium { background: #fef9c3; color: #854d0e; }
+.difficulty-hard { background: #fee2e2; color: #991b1b; }
+
+/* ============= OPTIONS ============= */
+.options-grid-huuco {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.option-btn-huuco {
+  width: 100%;
+  padding: 1.25rem;
+  text-align: left;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  color: #334155;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-btn-huuco:hover:not(:disabled) {
+  background: white;
+  border-color: #10b981;
+  transform: translateX(4px);
+}
+
+.option-btn-huuco.selected {
+  background: #f0fdf4;
+  border-color: #10b981;
+  color: #166534;
+}
+
+.option-btn-huuco.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #15803d;
+}
+
+.option-btn-huuco.wrong {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+/* ============= FEEDBACK ============= */
+.feedback-container-huuco {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+.feedback-correct {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.feedback-wrong {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+/* ============= PROGRESS BAR ============= */
+.progress-track-huuco {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.progress-fill-huuco {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #34d399);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============= RESPONSIVE ============= */
+@media (max-width: 768px) {
+  .category-grid-huuco {
+    grid-template-columns: 1fr;
+  }
+  
+  .question-card-huuco {
+    padding: 1.5rem;
+  }
+  
+  .stats-bar-huuco {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

@@ -1,0 +1,313 @@
+/* ==================== CACBOHIDRAT CHALLENGE CSS ==================== */
+
+/* Background & Base */
+.carbo-bg {
+  background: linear-gradient(135deg, #78350f 0%, #b45309 50%, #92400e 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.carbo-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(251, 191, 36, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(252, 211, 77, 0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Stats Bar */
+.stats-bar-carbo {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-item-carbo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fef3c7;
+  font-size: 0.9rem;
+}
+
+.stat-item-carbo strong {
+  color: white;
+}
+
+/* Category Grid */
+.category-grid-carbo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.category-card-carbo {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card-carbo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.category-card-carbo:hover::before {
+  opacity: 1;
+}
+
+.category-card-carbo:hover {
+  transform: translateY(-4px);
+  border-color: rgba(251, 191, 36, 0.5);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(251, 191, 36, 0.3);
+}
+
+.category-icon-wrapper-carbo {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  color: #fbbf24;
+  flex-shrink: 0;
+}
+
+/* Progress Track */
+.progress-track-carbo {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill-carbo {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+  border-radius: 9999px;
+  transition: width 0.5s ease-out;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+}
+
+/* Question Card */
+.question-card-carbo {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+.question-header-carbo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.difficulty-badge-carbo {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.difficulty-easy {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.difficulty-medium {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fde047;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.difficulty-hard {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Options Grid */
+.options-grid-carbo {
+  display: grid;
+  gap: 1rem;
+}
+
+.option-btn-carbo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  color: white;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option-btn-carbo:hover:not(:disabled) {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.4);
+  transform: translateX(4px);
+}
+
+.option-btn-carbo:disabled {
+  cursor: default;
+}
+
+.option-btn-carbo.correct {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: #22c55e;
+  color: #86efac;
+}
+
+.option-btn-carbo.wrong {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+/* Feedback Container */
+.feedback-container-carbo {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-top: 1.5rem;
+  animation: slideUp 0.4s ease-out;
+}
+
+.feedback-correct {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+}
+
+.feedback-wrong {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .carbo-bg {
+    padding: 1rem;
+  }
+
+  .question-card-carbo {
+    padding: 1.5rem;
+  }
+
+  .category-grid-carbo {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-bar-carbo {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+/* Glassmorphism effects */
+.backdrop-blur {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Sugar Crystal Animation Background */
+.carbo-bg::after {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  top: 15%;
+  right: 10%;
+  background: 
+    linear-gradient(45deg, rgba(251, 191, 36, 0.3) 0%, transparent 50%),
+    linear-gradient(-45deg, rgba(245, 158, 11, 0.2) 0%, transparent 50%);
+  border-radius: 20% 80% 70% 30% / 30% 30% 70% 70%;
+  animation: crystalFloat 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes crystalFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+    opacity: 0.8;
+  }
+}
+
+/* Additional decorative elements */
+.carbo-bg .category-card-carbo::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}

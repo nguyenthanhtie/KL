@@ -572,6 +572,269 @@ const challenges = [
     }
   },
   
+  // ĐẠI CƯƠNG HÓA HỮU CƠ - Grade 11
+  {
+    id: 28,
+    name: 'Đại Cương Hóa Hữu Cơ',
+    description: 'Khám phá thế giới hợp chất hữu cơ! Tìm hiểu về khái niệm, phân loại, cấu trúc phân tử và các loại phản ứng hữu cơ cơ bản.',
+    icon: '🌿',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-green-500',
+    category: 'structure',
+    grade: 11,
+    time: '15-20 phút',
+    points: 250,
+    status: 'available',
+    link: '/advanced-challenge/dai-cuong-hoa-huu-co',
+    features: ['Khái niệm & Phân loại', 'Cấu trúc phân tử', 'Phản ứng hữu cơ', 'Phân tích nguyên tố'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 3
+    }
+  },
+
+  // HIDROCACBON - Grade 11
+  {
+    id: 29,
+    name: 'Hidrocacbon',
+    description: 'Khám phá thế giới hidrocacbon: Ankan, Anken, Ankin và Hidrocacbon thơm. Tìm hiểu tính chất, phản ứng và ứng dụng thực tế.',
+    icon: '🔥',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-indigo-500',
+    category: 'structure',
+    grade: 11,
+    time: '20-25 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/hidrocacbon-11',
+    features: ['Ankan & Anken', 'Ankin & HC Thơm', 'Phản ứng đặc trưng', 'Nguồn hidrocacbon'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 4
+    }
+  },
+
+  // DẪN XUẤT HALOGEN - ANCOL - PHENOL - Grade 11
+  {
+    id: 30,
+    name: 'Dẫn xuất Halogen - Ancol - Phenol',
+    description: 'Tìm hiểu về các hợp chất hữu cơ có nhóm chức: Dẫn xuất halogen, Ancol và Phenol. Tính chất, điều chế và ứng dụng.',
+    icon: '🧪',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-cyan-500',
+    category: 'structure',
+    grade: 11,
+    time: '20-25 phút',
+    points: 320,
+    status: 'available',
+    link: '/advanced-challenge/dan-xuat-halogen-ancol-phenol',
+    features: ['Dẫn xuất Halogen', 'Ancol (Rượu)', 'Phenol', 'Phản ứng & Nhận biết'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 5
+    }
+  },
+
+  // HỢP CHẤT CARBONYL - CARBOXYLIC - Grade 11
+  {
+    id: 31,
+    name: 'Hợp chất Carbonyl - Carboxylic',
+    description: 'Khám phá Aldehit, Xeton và Axit Cacboxylic. Tìm hiểu cấu trúc, tính chất hóa học đặc trưng và ứng dụng trong đời sống.',
+    icon: '⚗️',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-rose-500',
+    category: 'structure',
+    grade: 11,
+    time: '25-30 phút',
+    points: 350,
+    status: 'available',
+    link: '/advanced-challenge/hop-chat-carbonyl-carboxylic',
+    features: ['Aldehit & Xeton', 'Axit Cacboxylic', 'Phản ứng tráng bạc', 'Phản ứng este hóa'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 6
+    }
+  },
+
+  // HÓA HỌC VỚI CUỘC SỐNG - Grade 11
+  {
+    id: 32,
+    name: 'Hóa học với Cuộc sống',
+    description: 'Tìm hiểu vai trò của hóa học trong đời sống: Môi trường, Năng lượng, Vật liệu mới và Sức khỏe con người.',
+    icon: '🌍',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-orange-500',
+    category: 'structure',
+    grade: 11,
+    time: '20-25 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/hoa-hoc-voi-cuoc-song',
+    features: ['Hóa học & Môi trường', 'Năng lượng & Nhiên liệu', 'Vật liệu mới', 'Hóa học & Sức khỏe'],
+    prerequisite: {
+      classId: 11,
+      lessonId: 7
+    }
+  },
+
+  // ESTE - LIPIT - Grade 12
+  {
+    id: 33,
+    name: 'Este - Lipit',
+    description: 'Khám phá thế giới hương thơm của Este và chất béo Lipit. Tìm hiểu cấu tạo, tính chất, phản ứng xà phòng hóa và ứng dụng.',
+    icon: '🧪',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-pink-500',
+    category: 'structure',
+    grade: 12,
+    time: '20-25 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/este-lipit',
+    features: ['Este & Mùi hương', 'Lipit & Chất béo', 'Phản ứng xà phòng hóa', 'Chất giặt rửa'],
+    prerequisite: {
+      classId: 12,
+      lessonId: 1
+    }
+  },
+
+  // CACBOHIDRAT - Grade 12
+  {
+    id: 34,
+    name: 'Cacbohidrat',
+    description: 'Tìm hiểu về Glucozơ, Fructozơ, Saccarozơ, Tinh bột và Xenlulozơ. Cấu trúc phân tử, tính chất hóa học và vai trò sinh học.',
+    icon: '🍬',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-orange-500',
+    category: 'structure',
+    grade: 12,
+    time: '20-25 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/cacbohidrat',
+    features: ['Monosaccarit', 'Disaccarit', 'Polisaccarit', 'Phản ứng tráng bạc'],
+    prerequisite: {
+      classId: 12,
+      lessonId: 2
+    }
+  },
+
+  // AMIN - AMINOAXIT - PROTEIN - Grade 12
+  {
+    id: 35,
+    name: 'Amin - Aminoaxit - Protein',
+    description: 'Nghiên cứu cơ sở của sự sống! Amin, Amino axit, Peptit và Protein. Tính chất lưỡng tính, phản ứng màu biure và cấu trúc protein.',
+    icon: '🧬',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-purple-500',
+    category: 'structure',
+    grade: 12,
+    time: '25-30 phút',
+    points: 350,
+    status: 'available',
+    link: '/advanced-challenge/amin-aminoaxit-protein',
+    features: ['Amin & Tính bazơ', 'Amino axit lưỡng tính', 'Peptit & Protein', 'Phản ứng màu đặc trưng'],
+    prerequisite: {
+      classId: 12,
+      lessonId: 3
+    }
+  },
+
+  // POLIME - Grade 12
+  {
+    id: 36,
+    name: 'Polime & Vật liệu Polime',
+    description: 'Thế giới vật liệu hiện đại: Chất dẻo, Tơ, Cao su và Keo dán. Phân loại, điều chế và ứng dụng của các loại polime.',
+    icon: '🧶',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-blue-500',
+    category: 'structure',
+    grade: 12,
+    time: '15-20 phút',
+    points: 280,
+    status: 'available',
+    link: '/advanced-challenge/polime',
+    features: ['Đại cương Polime', 'Chất dẻo & Compozit', 'Tơ & Cao su', 'Keo dán'],
+    prerequisite: {
+      classId: 12,
+      lessonId: 4
+    }
+  },
+
+  // ĐẠI CƯƠNG KIM LOẠI - Grade 12
+  {
+    id: 37,
+    name: 'Đại cương Kim loại',
+    description: 'Tổng quan về kim loại: Vị trí, cấu tạo, tính chất vật lý, tính chất hóa học, dãy điện hóa và sự ăn mòn kim loại.',
+    icon: '🔩',
+    difficulty: 'Trung bình',
+    difficultyLevel: 'medium',
+    difficultyColor: 'bg-gray-500',
+    category: 'structure',
+    grade: 12,
+    time: '20-25 phút',
+    points: 300,
+    status: 'available',
+    link: '/advanced-challenge/dai-cuong-kim-loai',
+    features: ['Cấu tạo & Tính chất', 'Dãy điện hóa', 'Ăn mòn kim loại', 'Điều chế kim loại'],
+    prerequisite: {
+      classId: 12,
+      lessonId: 5
+    }
+  },
+
+  // SẮT - ĐỒNG - HỢP KIM - Grade 12
+  {
+    id: 38,
+    name: 'Sắt - Đồng - Hợp kim',
+    description: 'Tìm hiểu chi tiết về hai kim loại quan trọng nhất: Sắt (Fe) và Đồng (Cu), cùng các hợp kim của chúng như Gang, Thép.',
+    icon: '🏗️',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-red-600',
+    category: 'structure',
+    grade: 12,
+    time: '25-30 phút',
+    points: 350,
+    status: 'available',
+    link: '/advanced-challenge/dai-cuong-sat-dong-hop-kim',
+    features: ['Sắt & Hợp chất', 'Đồng & Hợp chất', 'Hợp kim (Gang, Thép)', 'Nhận biết ion'],
+    prerequisite: {
+      classId: 12,
+      lessonId: 6
+    }
+  },
+
+  // KIM LOẠI KIỀM - KIỀM THỔ - NHÔM - Grade 12
+  {
+    id: 39,
+    name: 'Kim loại Kiềm - Kiềm thổ - Nhôm',
+    description: 'Khám phá nhóm kim loại mạnh: Kiềm (IA), Kiềm thổ (IIA) và Nhôm (IIIA). Tính chất, ứng dụng và nước cứng.',
+    icon: '⚡',
+    difficulty: 'Khó',
+    difficultyLevel: 'hard',
+    difficultyColor: 'bg-indigo-600',
+    category: 'structure',
+    grade: 12,
+    time: '25-30 phút',
+    points: 350,
+    status: 'available',
+    link: '/advanced-challenge/kim-loai-kiem-kiem-tho-nhom',
+    features: ['Kim loại Kiềm', 'Kim loại Kiềm thổ', 'Nhôm & Hợp chất', 'Nước cứng'],
+    prerequisite: {
+      classId: 12,
+      lessonId: 7
+    }
+  },
     
   
 ];

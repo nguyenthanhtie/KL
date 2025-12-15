@@ -24,6 +24,8 @@ const useChallengeProgress = (challengeSlug, options = {}) => {
     const checkProgress = async () => {
       if (!user?.id) {
         setIsLoading(false);
+        setHasProgress(false);
+        setSavedProgress(null);
         return;
       }
       
@@ -31,16 +33,29 @@ const useChallengeProgress = (challengeSlug, options = {}) => {
         const response = await fetch(
           `${API_BASE}/challenges/attempts/active/${user.id}/${challengeSlug}`
         );
+        
+        if (!response.ok) {
+          console.error(`Failed to fetch progress: ${response.status} ${response.statusText}`);
+          if (isMounted.current) {
+            setHasProgress(false);
+            setSavedProgress(null);
+            setIsLoading(false);
+          }
+          return;
+        }
+        
         const data = await response.json();
         
         if (isMounted.current) {
-          setHasProgress(data.hasProgress);
+          setHasProgress(data.hasProgress || false);
           setSavedProgress(data.progressData || null);
           setIsLoading(false);
         }
       } catch (error) {
         console.error('Error checking challenge progress:', error);
         if (isMounted.current) {
+          setHasProgress(false);
+          setSavedProgress(null);
           setIsLoading(false);
         }
       }

@@ -43,6 +43,18 @@ import Bai34_HIDROCACBON_POLIME from './areas/Hoahoc/challenges/09/Bai34_HIDROCA
 import Baitonghop from './areas/Hoahoc/challenges/09/Baitonghop';
 import CanBangPhanUngNangCao from './areas/Hoahoc/challenges/11/Bai02_CanBangPhanUngNangCao';
 import NitoLuuHuynh from './areas/Hoahoc/challenges/11/Bai03_Nito_LuuHuynh';
+import DaiCuongHoaHuuCo from './areas/Hoahoc/challenges/11/Bai04_DaiCuongHoaHuuCo';
+import Hidrocacbon11 from './areas/Hoahoc/challenges/11/Bai05_Hidrocacbon';
+import DanXuatHalogenAncolPhenol from './areas/Hoahoc/challenges/11/Bai06_DanXuatHalogen_Ancol_Phenol';
+import HopChatCarbonylCarboxylic from './areas/Hoahoc/challenges/11/Bai07_HopChatCarbonyl_Carboxylic';
+import HoaHocVoiCuocSong from './areas/Hoahoc/challenges/11/Bai08_HoaHocVoiCuocSong';
+import Bai05_DaiCuongKimLoai from './areas/Hoahoc/challenges/12/Bai05_DaiCuongKimLoai';
+import Bai06_DaiCuongSatDong_HopKim from './areas/Hoahoc/challenges/12/Bai06_DaiCuongSatDong_HopKim';
+import Bai07_KimLoaiKiem_KiemTho_Nhom from './areas/Hoahoc/challenges/12/Bai07_KimLoaiKiem_KiemTho_Nhom';
+import Bai01_Este_Lipit from './areas/Hoahoc/challenges/12/Bai01_Este_Lipit';
+import Bai02_Cacbohidrat from './areas/Hoahoc/challenges/12/Bai02_Cacbohidrat';
+import Bai03_Amin_Aminoaxit_Protein from './areas/Hoahoc/challenges/12/Bai03_Amin_Aminoaxit_Protein';
+import Bai04_Polime from './areas/Hoahoc/challenges/12/Bai04_Polime';
 
 
 
@@ -88,6 +100,18 @@ const AppContent = () => {
         <Route path="/advanced-challenge/tong-hop-lop-9" element={<Baitonghop />} />
         <Route path="/advanced-challenge/can-bang-phan-ung-nang-cao" element={<CanBangPhanUngNangCao />} />
         <Route path="/advanced-challenge/nito-luu-huynh" element={<NitoLuuHuynh />} />
+        <Route path="/advanced-challenge/dai-cuong-hoa-huu-co" element={<DaiCuongHoaHuuCo />} />
+        <Route path="/advanced-challenge/hidrocacbon-11" element={<Hidrocacbon11 />} />
+        <Route path="/advanced-challenge/dan-xuat-halogen-ancol-phenol" element={<DanXuatHalogenAncolPhenol />} />
+        <Route path="/advanced-challenge/hop-chat-carbonyl-carboxylic" element={<HopChatCarbonylCarboxylic />} />
+        <Route path="/advanced-challenge/hoa-hoc-voi-cuoc-song" element={<HoaHocVoiCuocSong />} />
+        <Route path="/advanced-challenge/dai-cuong-kim-loai" element={<Bai05_DaiCuongKimLoai />} />
+        <Route path="/advanced-challenge/dai-cuong-sat-dong-hop-kim" element={<Bai06_DaiCuongSatDong_HopKim />} />
+        <Route path="/advanced-challenge/kim-loai-kiem-kiem-tho-nhom" element={<Bai07_KimLoaiKiem_KiemTho_Nhom />} />
+        <Route path="/advanced-challenge/este-lipit" element={<Bai01_Este_Lipit />} />
+        <Route path="/advanced-challenge/cacbohidrat" element={<Bai02_Cacbohidrat />} />
+        <Route path="/advanced-challenge/amin-aminoaxit-protein" element={<Bai03_Amin_Aminoaxit_Protein />} />
+        <Route path="/advanced-challenge/polime" element={<Bai04_Polime />} />
         <Route 
           path="/program/chemistry/dashboard" 
           element={
