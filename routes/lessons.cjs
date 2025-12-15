@@ -5,7 +5,7 @@ const router = express.Router();
 // Get all lessons
 router.get('/', async (req, res) => {
   try {
-    const lessons = await Lesson.find().sort({ pathId: 1, order: 1 });
+    const lessons = await Lesson.find().sort({ pathId: 1, order: 1 }).lean();
     res.json(lessons);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -23,7 +23,7 @@ router.get('/grouped', async (req, res) => {
       filter.curriculumType = curriculumType;
     }
     
-    const lessons = await Lesson.find(filter).sort({ classId: 1, chapterId: 1, order: 1 });
+    const lessons = await Lesson.find(filter).sort({ classId: 1, chapterId: 1, order: 1 }).lean();
 
     const grouped = {};
     lessons.forEach((l) => {
@@ -57,7 +57,7 @@ router.get('/grouped', async (req, res) => {
 // Get class statistics summary
 router.get('/statistics', async (req, res) => {
   try {
-    const lessons = await Lesson.find();
+    const lessons = await Lesson.find().lean();
     
     // Group lessons by classId
     const classStats = {};
@@ -107,7 +107,7 @@ router.get('/class/:classId/chapter/:chapterId', async (req, res) => {
       filter.curriculumType = curriculumType;
     }
     
-    const lessons = await Lesson.find(filter).sort({ order: 1 });
+    const lessons = await Lesson.find(filter).sort({ order: 1 }).lean();
 
     res.json(lessons);
   } catch (error) {
@@ -130,7 +130,7 @@ router.get('/class/:classId/chapter/:chapterId/lesson/:lessonId', async (req, re
       filter.curriculumType = curriculumType;
     }
     
-    const lesson = await Lesson.findOne(filter);
+    const lesson = await Lesson.findOne(filter).lean();
     
     if (!lesson) {
       return res.status(404).json({ message: 'Lesson not found' });
@@ -148,7 +148,7 @@ router.get('/:pathId/:lessonId', async (req, res) => {
     const lesson = await Lesson.findOne({ 
       pathId: parseInt(req.params.pathId),
       lessonId: parseInt(req.params.lessonId)
-    });
+    }).lean();
     
     if (!lesson) {
       return res.status(404).json({ message: 'Lesson not found' });

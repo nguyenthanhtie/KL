@@ -183,4 +183,9 @@ const lessonSchema = new mongoose.Schema({
   }
 });
 
+// Performance indexes for common query patterns
+lessonSchema.index({ classId: 1, curriculumType: 1, chapterId: 1, order: 1 });
+lessonSchema.index({ classId: 1, curriculumType: 1, lessonId: 1 });
+lessonSchema.index({ pathId: 1, lessonId: 1 });
+
 module.exports = mongoose.model('Lesson', lessonSchema);

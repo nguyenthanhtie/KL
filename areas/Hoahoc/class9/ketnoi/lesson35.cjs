@@ -9,13 +9,73 @@ module.exports = {
   level: 'Intermediate',
   order: 18,
   theory: `
-    <h2>🌡️ Nhiên liệu hoá thạch và chu trình carbon</h2>
-    <ul>
-      <li><strong>Khai thác và sử dụng:</strong> đốt than, dầu, khí → phát thải CO2, NOx, SO2.</li>
-      <li><strong>Chu trình carbon:</strong> CO2 ↔ sinh vật (quang hợp, hô hấp), biển, đất (tàn trữ, giải phóng). Cân bằng bị phá vỡ khi phát thải tăng.</li>
-      <li><strong>Hiệu ứng nhà kính:</strong> CO2, CH4, N2O giữ nhiệt → ấm lên toàn cầu, băng tan, nước biển dâng.</li>
-      <li><strong>Giải pháp:</strong> tiết giảm nhiên liệu hoá thạch, tăng năng lượng tái tạo, trồng rừng, công nghệ thu giữ CO2 (CCS), tiêu dùng bền vững.</li>
-    </ul>
+    <h2>🌡️ Nhiên liệu hoá thạch, chu trình carbon &amp; khí hậu</h2>
+    <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu liên hệ giữa đốt nhiên liệu, chu trình carbon và hiệu ứng nhà kính; gợi ý giải pháp giảm phát thải.</p>
+
+    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
+        <h4 style="margin:0 0 8px; color:#0f172a;">Khai thác &amp; phát thải</h4>
+        <ul style="margin:0; padding-left:18px; color:#475569;">
+          <li>Đốt than, dầu, khí → CO₂, NOₓ, SO₂, bụi mịn.</li>
+          <li>Sản xuất điện, giao thông, công nghiệp là nguồn phát thải lớn.</li>
+          <li>Rò rỉ CH₄ từ khai thác khí, bãi rác, chăn nuôi.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+        <h4 style="margin:0 0 8px; color:#9a3412;">Chu trình carbon</h4>
+        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+          <li>CO₂ luân chuyển giữa khí quyển ↔ sinh khối (quang hợp/hô hấp) ↔ đại dương ↔ đất/đá.</li>
+          <li>Đốt nhiên liệu + phá rừng → tăng CO₂, phá vỡ cân bằng.</li>
+          <li>Đại dương hấp thụ CO₂ gây axit hoá nước biển.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
+        <h4 style="margin:0 0 8px; color:#0e7490;">Hiệu ứng nhà kính</h4>
+        <ul style="margin:0; padding-left:18px; color:#0f172a;">
+          <li>Khí nhà kính: CO₂, CH₄, N₂O, hơi nước giữ nhiệt từ bức xạ hồng ngoại.</li>
+          <li>Hậu quả: ấm lên toàn cầu, băng tan, mực biển dâng, thời tiết cực đoan.</li>
+          <li>Mục tiêu toàn cầu: giảm phát thải để hạn chế tăng nhiệt độ trung bình.</li>
+        </ul>
+      </div>
+      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
+        <h4 style="margin:0 0 8px; color:#0f172a;">Giải pháp giảm phát thải</h4>
+        <ul style="margin:0; padding-left:18px; color:#334155;">
+          <li>Chuyển dịch năng lượng tái tạo (gió, mặt trời), tiết kiệm năng lượng.</li>
+          <li>CCS: thu giữ, nén, lưu trữ CO₂ từ nhà máy nhiệt điện.</li>
+          <li>Trồng rừng, bảo vệ rừng; giao thông xanh (xe điện, công cộng).</li>
+          <li>Tiêu dùng bền vững: giảm dùng nhựa, tiết kiệm điện, tái chế.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
+      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#334155;">
+        <li>Đốt nhiên liệu hoá thạch tăng CO₂/CH₄ → hiệu ứng nhà kính mạnh hơn.</li>
+        <li>Chu trình carbon bị mất cân bằng khi phát thải vượt hấp thụ.</li>
+        <li>Giải pháp: tái tạo năng lượng, CCS, trồng rừng, tiết kiệm, giao thông xanh.</li>
+      </ul>
+    </div>
+
+    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
+      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
+      <p style="margin:0 0 4px;">Sơ đồ chu trình carbon: <em>/images/hoahoc9/lesson35-carboncycle.png</em></p>
+      <p style="margin:0 0 4px;">Hiệu ứng nhà kính và bẫy nhiệt: <em>/images/hoahoc9/lesson35-greenhouse.png</em></p>
+      <p style="margin:0;">Quy trình CCS thu giữ CO₂: <em>/images/hoahoc9/lesson35-ccs.png</em></p>
+    </div>
+
+    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
+      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
+      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
+        <li>Khí nhà kính chính phát ra khi đốt than đá là gì?</li>
+        <li>CO₂ được hấp thụ vào sinh khối qua quá trình nào?</li>
+        <li>Nêu một biện pháp giảm phát thải trong giao thông.</li>
+      </ul>
+      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Trả lời nhanh rồi làm bộ trắc nghiệm.</p>
+    </div>
   `,
   game: [
     {

@@ -613,13 +613,37 @@ async function seedDatabase() {
           ...(lessons9.canhdieu || []),
           ...(lessons9.chantroicangtao || [])
         ];
+
+    const class10Lessons = Array.isArray(lessons10)
+      ? lessons10
+      : [
+          ...(lessons10.ketnoi || []),
+          ...(lessons10.canhdieu || []),
+          ...(lessons10.chantroicangtao || [])
+        ];
+
+    const class11Lessons = Array.isArray(lessons11)
+      ? lessons11
+      : [
+          ...(lessons11.ketnoi || []),
+          ...(lessons11.canhdieu || []),
+          ...(lessons11.chantroicangtao || [])
+        ];
+
+    const class12Lessons = Array.isArray(lessons12)
+      ? lessons12
+      : [
+          ...(lessons12.ketnoi || []),
+          ...(lessons12.canhdieu || []),
+          ...(lessons12.chantroicangtao || [])
+        ];
     
     const allLessons = [
       ...class8Lessons,
       ...class9Lessons,
-      ...lessons10,
-      ...lessons11,
-      ...lessons12
+      ...class10Lessons,
+      ...class11Lessons,
+      ...class12Lessons
     ];
 
     // Transform game structure from array to object with quizzes
@@ -677,9 +701,18 @@ async function seedDatabase() {
       (lessons9.ketnoi || []).length, 'Kết nối,',
       (lessons9.canhdieu || []).length, 'Cánh diều,',
       (lessons9.chantroicangtao || []).length, 'Chân trời)');
-    console.log('  - Lớp 10:', lessons10.length, 'bài');
-    console.log('  - Lớp 11:', lessons11.length, 'bài');
-    console.log('  - Lớp 12:', lessons12.length, 'bài');
+    console.log('  - Lớp 10:', class10Lessons.length, 'bài (',
+      (lessons10.ketnoi || []).length, 'Kết nối,',
+      (lessons10.canhdieu || []).length, 'Cánh diều,',
+      (lessons10.chantroicangtao || []).length, 'Chân trời)');
+    console.log('  - Lớp 11:', class11Lessons.length, 'bài (',
+      (lessons11.ketnoi || []).length, 'Kết nối,',
+      (lessons11.canhdieu || []).length, 'Cánh diều,',
+      (lessons11.chantroicangtao || []).length, 'Chân trời)');
+    console.log('  - Lớp 12:', class12Lessons.length, 'bài (',
+      (lessons12.ketnoi || []).length, 'Kết nối,',
+      (lessons12.canhdieu || []).length, 'Cánh diều,',
+      (lessons12.chantroicangtao || []).length, 'Chân trời)');
     console.log('✓ Tổng cộng:', allLessons.length, 'bài học');
 
     // Tạo index unique mới bao gồm curriculumType để ngăn chặn trùng lặp
