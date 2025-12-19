@@ -32,15 +32,108 @@ router.get('/user/:userId', async (req, res) => {
     // Find chemistry program progress
     const chemistryProgram = user.programs.find(p => p.programId === 'chemistry');
     const completedLessons = chemistryProgram?.progress?.completedLessons || [];
+    const completedChallenges = chemistryProgram?.progress?.completedChallenges || [];
+    const challengeHistory = chemistryProgram?.progress?.challengeHistory || [];
+    
+    // Handle challengeStars - could be Map, object, or undefined
+    let challengeStarsObj = {};
+    const rawChallengeStars = chemistryProgram?.progress?.challengeStars;
+    if (rawChallengeStars) {
+      if (rawChallengeStars instanceof Map) {
+        challengeStarsObj = Object.fromEntries(rawChallengeStars);
+      } else if (typeof rawChallengeStars === 'object') {
+        // Could be plain object or MongoDB Map stored as object
+        challengeStarsObj = rawChallengeStars;
+        // If it has toJSON method (Map-like), convert it
+        if (rawChallengeStars.toJSON) {
+          challengeStarsObj = rawChallengeStars.toJSON();
+        }
+      }
+    }
     
     // Debug log
     console.log('🔍 Checking unlock status for user:', userId);
     console.log('📚 Completed lessons:', completedLessons);
-    console.log('📊 Completed lessons types:', completedLessons.map(l => typeof l));
+    console.log('🏆 Completed challenges:', completedChallenges);
+    console.log('⭐ Challenge stars (raw):', rawChallengeStars);
+    console.log('⭐ Challenge stars (converted):', challengeStarsObj);
+    console.log('📜 Challenge history:', challengeHistory);
     
     // Check unlock status for each challenge
     const challengesWithStatus = challenges.map(challenge => {
       const challengeObj = challenge.toObject();
+      
+      // Derive slug from link (e.g., '/advanced-challenge/phong-thi-nghiem' -> 'phong-thi-nghiem')
+      let derivedSlug = challenge.slug;
+      if (!derivedSlug && challenge.link) {
+        const linkParts = challenge.link.split('/');
+        derivedSlug = linkParts[linkParts.length - 1];
+      }
+      if (!derivedSlug) {
+        derivedSlug = `challenge-${challenge.id}`;
+      }
+      
+      // Debug: log link and derived slug
+      console.log(`🔗 Challenge ${challenge.id}: link="${challenge.link}", derivedSlug="${derivedSlug}"`);
+      
+      // Check if challenge is completed - check multiple possible slugs
+      const challengeSlug = derivedSlug;
+      
+      // Look for completion in multiple forms - also check history and stars for matching slugs
+      const possibleSlugs = [
+        challengeSlug,
+        String(challenge.id),
+        `challenge-${challenge.id}`,
+        challenge.slug
+      ].filter(Boolean);
+      
+      // Also add any slug from challengeHistory that matches this challenge's id
+      challengeHistory.forEach(h => {
+        if (h.challengeId === challenge.id && !possibleSlugs.includes(h.challengeSlug)) {
+          possibleSlugs.push(h.challengeSlug);
+        }
+      });
+      
+      // Also check any keys in challengeStarsObj that might match
+      Object.keys(challengeStarsObj).forEach(key => {
+        // If this stars entry was stored with challengeId matching this challenge
+        if (!possibleSlugs.includes(key)) {
+          // Check if it's already a completed challenge that has same history ID
+          const historyMatch = challengeHistory.find(h => h.challengeSlug === key && h.challengeId === challenge.id);
+          if (historyMatch) {
+            possibleSlugs.push(key);
+          }
+        }
+      });
+      
+      const isCompleted = possibleSlugs.some(slug => completedChallenges.includes(slug));
+      
+      // Get stars for this challenge from the converted object - try multiple keys
+      let stars = 0;
+      for (const slug of possibleSlugs) {
+        if (challengeStarsObj[slug]) {
+          stars = challengeStarsObj[slug];
+          break;
+        }
+      }
+      
+      // Get best score from history
+      const historyEntry = challengeHistory.find(h => 
+        possibleSlugs.includes(h.challengeSlug) || h.challengeId === challenge.id
+      );
+      
+      // If we have history but no stars from Map, use history stars
+      if (stars === 0 && historyEntry?.stars) {
+        stars = historyEntry.stars;
+      }
+      
+      challengeObj.completed = isCompleted || stars > 0 || !!historyEntry;
+      challengeObj.stars = stars;
+      challengeObj.bestScore = historyEntry?.score || 0;
+      challengeObj.bestPercentage = historyEntry?.percentage || 0;
+      challengeObj.slug = challengeSlug; // Also return the derived slug
+      
+      console.log(`📊 Challenge ${challenge.id} (${challengeSlug}): completed=${challengeObj.completed}, stars=${stars}, possibleSlugs=${possibleSlugs.join(', ')}`);
       
       // If no prerequisite, challenge is unlocked
       if (!challenge.prerequisite || !challenge.prerequisite.classId || !challenge.prerequisite.lessonId) {
@@ -55,7 +148,7 @@ router.get('/user/:userId', async (req, res) => {
       const isUnlocked = completedLessons.some(lessonId => Number(lessonId) === Number(requiredLessonId));
       challengeObj.isUnlocked = isUnlocked;
       
-      console.log(`🎯 Challenge ${challenge.id} (${challenge.name}): requires ${requiredLessonId}, unlocked: ${isUnlocked}`);
+      console.log(`🎯 Challenge ${challenge.id} (${challenge.name}): requires ${requiredLessonId}, unlocked: ${isUnlocked}, completed: ${isCompleted}, stars: ${stars}`);
       challengeObj.prerequisiteInfo = {
         classId: challenge.prerequisite.classId,
         lessonId: challenge.prerequisite.lessonId,

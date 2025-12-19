@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Button from '../../../components/ui/Button';
 import Card from '../../../components/ui/Card';
 import ProgressBar from '../../../components/ui/ProgressBar';
-import { Trophy, Lock, Clock, Award, CheckCircle2 } from 'lucide-react';
+import { Trophy, Lock, Clock, Award, CheckCircle2, Star } from 'lucide-react';
 import api from '../../../config/api';
 import { useAuth } from '../../../contexts/AuthContext';
 
@@ -78,8 +78,10 @@ const AdvancedChallenge = () => {
     const gradeChallenges = getChallengesByGrade(grade);
     const total = gradeChallenges.length;
     const unlocked = gradeChallenges.filter(c => c.isUnlocked).length;
-    const completed = gradeChallenges.filter(c => c.completed).length;
-    return { total, unlocked, completed };
+    const completed = gradeChallenges.filter(c => c.completed || c.stars > 0).length;
+    const totalStars = gradeChallenges.reduce((sum, c) => sum + (c.stars || 0), 0);
+    const maxStars = total * 3;
+    return { total, unlocked, completed, totalStars, maxStars };
   };
 
   // Current grade challenges
@@ -190,16 +192,27 @@ const AdvancedChallenge = () => {
                   </div>
                 </div>
                 {currentStats.total > 0 && (
-                  <div className="mt-4">
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>{currentStats.unlocked} đã mở khóa</span>
-                      <span>{Math.round((currentStats.unlocked / currentStats.total) * 100)}%</span>
+                  <div className="mt-4 space-y-3">
+                    {/* Progress bar */}
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>{currentStats.completed}/{currentStats.total} hoàn thành</span>
+                        <span>{Math.round((currentStats.completed / currentStats.total) * 100)}%</span>
+                      </div>
+                      <ProgressBar 
+                        progress={(currentStats.completed / currentStats.total) * 100}
+                        className="bg-white/20"
+                        color="white"
+                      />
                     </div>
-                    <ProgressBar 
-                      progress={(currentStats.unlocked / currentStats.total) * 100}
-                      className="bg-white/20"
-                      color="white"
-                    />
+                    {/* Stars earned */}
+                    <div className="flex items-center justify-between bg-white/10 rounded-lg px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                        <span className="text-sm font-medium">Sao đã đạt</span>
+                      </div>
+                      <span className="font-bold">{currentStats.totalStars}/{currentStats.maxStars}</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -219,19 +232,47 @@ const AdvancedChallenge = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {currentGradeChallenges.map((challenge) => {
                     const isLocked = !challenge.isUnlocked && challenge.prerequisite?.classId;
+                    const isCompleted = challenge.completed || challenge.stars > 0;
+                    const stars = challenge.stars || 0;
                     
                     return (
                       <div
                         key={challenge.id}
-                        className={`bg-white rounded-xl shadow-md border transition-all duration-300 overflow-hidden ${
+                        className={`relative bg-white rounded-xl shadow-md border transition-all duration-300 overflow-hidden ${
                           isLocked 
                             ? 'opacity-75 cursor-not-allowed border-gray-200' 
-                            : 'hover:shadow-xl cursor-pointer border-gray-100 hover:border-primary-200'
+                            : isCompleted
+                              ? 'hover:shadow-xl cursor-pointer border-green-300 ring-2 ring-green-100'
+                              : 'hover:shadow-xl cursor-pointer border-gray-100 hover:border-primary-200'
                         }`}
                         onClick={() => !isLocked && setSelectedChallenge(challenge)}
                       >
+                        {/* Watermark for completed challenges */}
+                        {isCompleted && (
+                          <div className="absolute top-2 right-2 z-10">
+                            <div className="relative">
+                              {/* Stamp background */}
+                              <div className="w-16 h-16 rounded-full border-4 border-green-500 bg-white/95 flex flex-col items-center justify-center shadow-lg transform rotate-12">
+                                <div className="flex gap-0.5">
+                                  {[1, 2, 3].map((starNum) => (
+                                    <Star
+                                      key={starNum}
+                                      className={`w-4 h-4 ${
+                                        starNum <= stars
+                                          ? 'text-yellow-400 fill-yellow-400'
+                                          : 'text-gray-300'
+                                      }`}
+                                    />
+                                  ))}
+                                </div>
+                                <span className="text-[8px] font-bold text-green-600 mt-0.5">HOÀN THÀNH</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
                         {/* Card Header */}
-                        <div className={`p-4 ${isLocked ? 'bg-gray-100' : 'bg-gradient-to-r from-primary-50 to-purple-50'}`}>
+                        <div className={`p-4 ${isLocked ? 'bg-gray-100' : isCompleted ? 'bg-gradient-to-r from-green-50 to-emerald-50' : 'bg-gradient-to-r from-primary-50 to-purple-50'}`}>
                           <div className="flex items-start justify-between">
                             <div className="text-4xl mb-2">{challenge.icon}</div>
                             <div className="flex items-center gap-2">
@@ -344,9 +385,15 @@ const AdvancedChallenge = () => {
                           {stats.total} thử thách
                         </div>
                         {stats.total > 0 && (
-                          <div className={`text-xs mt-2 ${isSelected ? 'text-white/70' : 'text-gray-400'}`}>
-                            {stats.unlocked}/{stats.total} mở khóa
-                          </div>
+                          <>
+                            <div className={`text-xs mt-2 ${isSelected ? 'text-white/70' : 'text-gray-400'}`}>
+                              {stats.completed}/{stats.total} hoàn thành
+                            </div>
+                            <div className={`flex items-center justify-center gap-1 mt-1 ${isSelected ? 'text-yellow-200' : 'text-yellow-500'}`}>
+                              <Star className={`w-3 h-3 ${isSelected ? 'fill-yellow-200' : 'fill-yellow-500'}`} />
+                              <span className="text-xs font-medium">{stats.totalStars}/{stats.maxStars}</span>
+                            </div>
+                          </>
                         )}
                       </div>
                     </div>
@@ -395,6 +442,35 @@ const AdvancedChallenge = () => {
               
               <p className="text-gray-600 mb-6">{selectedChallenge.description}</p>
               
+              {/* Show completion status if completed */}
+              {(selectedChallenge.completed || selectedChallenge.stars > 0) && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle2 className="w-6 h-6 text-green-600" />
+                      <div>
+                        <h4 className="font-semibold text-green-800">Đã hoàn thành!</h4>
+                        <p className="text-sm text-green-600">
+                          Điểm cao nhất: {selectedChallenge.bestScore || selectedChallenge.score || 0} điểm
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      {[1, 2, 3].map((starNum) => (
+                        <Star
+                          key={starNum}
+                          className={`w-8 h-8 ${
+                            starNum <= (selectedChallenge.stars || 0)
+                              ? 'text-yellow-400 fill-yellow-400'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <div className="text-sm text-gray-500 mb-1">Thời gian</div>
