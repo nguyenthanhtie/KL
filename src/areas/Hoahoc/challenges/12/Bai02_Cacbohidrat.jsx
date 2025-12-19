@@ -285,11 +285,15 @@ const Bai02_Cacbohidrat = () => {
   const [highScore, setHighScore] = useState(0);
   const [hasStartedNewGame, setHasStartedNewGame] = useState(false);
 
-  const { hasProgress, savedProgress, saveProgress, clearProgress } = useChallengeProgress('cacbohidrat_12', {
-    challengeId: 'cacbohidrat_12',
+  const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('cacbohidrat_12', {
+    challengeId: 2,
     programId: 'chemistry',
     grade: 12
   });
+
+  // States for completion tracking
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
 
   // Filter questions by category
   const filteredQuestions = activeCategory 
@@ -430,7 +434,7 @@ const Bai02_Cacbohidrat = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = (score / maxScore) * 100;
+    const percentage = Math.round((score / maxScore) * 100);
     
     const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
       ? [...completedCategories, activeCategory]
@@ -448,6 +452,21 @@ const Bai02_Cacbohidrat = () => {
       savedCompletedCategories: newCompletedCategories,
       savedHighScore: newHighScore
     });
+
+    // Lưu kết quả khi hoàn thành category
+    if (!isCompleted) {
+      setIsCompleted(true);
+      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      completeChallenge({
+        score,
+        maxScore,
+        percentage,
+        stars,
+        timeSpent: Math.floor((Date.now() - startTime) / 1000),
+        correctAnswers: Math.round(score / 10),
+        totalQuestions: filteredQuestions.length
+      });
+    }
   };
 
   if (showResumeDialog) {

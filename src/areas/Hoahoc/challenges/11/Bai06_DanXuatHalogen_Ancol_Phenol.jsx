@@ -181,11 +181,15 @@ const Bai06_DanXuatHalogen_Ancol_Phenol = () => {
   const [completedCategories, setCompletedCategories] = useState([]);
   const [highScore, setHighScore] = useState(0);
 
-  const { hasProgress, savedProgress, saveProgress, clearProgress } = useChallengeProgress('dan_xuat_halogen_ancol_phenol_11', {
-    challengeId: 'dan_xuat_halogen_ancol_phenol_11',
+  const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('dan_xuat_halogen_ancol_phenol_11', {
+    challengeId: 6,
     programId: 'chemistry',
     grade: 11
   });
+
+  // States for completion tracking
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
 
   // Filter questions by category
   const filteredQuestions = activeCategory 
@@ -325,7 +329,7 @@ const Bai06_DanXuatHalogen_Ancol_Phenol = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = (score / maxScore) * 100;
+    const percentage = Math.round((score / maxScore) * 100);
     
     const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
       ? [...completedCategories, activeCategory]
@@ -343,6 +347,21 @@ const Bai06_DanXuatHalogen_Ancol_Phenol = () => {
       savedCompletedCategories: newCompletedCategories,
       savedHighScore: newHighScore
     });
+
+    // Lưu kết quả khi hoàn thành category
+    if (!isCompleted) {
+      setIsCompleted(true);
+      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      completeChallenge({
+        score,
+        maxScore,
+        percentage,
+        stars,
+        timeSpent: Math.floor((Date.now() - startTime) / 1000),
+        correctAnswers: Math.round(score / 10),
+        totalQuestions: filteredQuestions.length
+      });
+    }
   };
 
   if (showResumeDialog) {

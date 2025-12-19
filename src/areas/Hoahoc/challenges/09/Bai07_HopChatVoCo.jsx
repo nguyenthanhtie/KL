@@ -216,7 +216,15 @@ const TOTAL_POINTS = CHALLENGES.reduce((sum, c) => sum + c.points, 0);
 // ================== MAIN COMPONENT ==================
 const HopChatVoCo = () => {
   const navigate = useNavigate();
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('hop-chat-vo-co-9');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('hop-chat-vo-co-9', {
+    challengeId: 7,
+    programId: 'chemistry',
+    grade: 9
+  });
+
+  // States for completion tracking
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
 
   // Game states
   const [gameStarted, setGameStarted] = useState(false);
@@ -379,6 +387,21 @@ const HopChatVoCo = () => {
         setShowResults(true);
         setGameStarted(false);
         clearProgress();
+        // Lưu kết quả khi hoàn thành
+        if (!isCompleted) {
+          setIsCompleted(true);
+          const percentage = Math.round((score / TOTAL_POINTS) * 100);
+          const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+          completeChallenge({
+            score,
+            maxScore: TOTAL_POINTS,
+            percentage,
+            stars,
+            timeSpent: Math.floor((Date.now() - startTime) / 1000),
+            correctAnswers: answeredCorrectly.length,
+            totalQuestions: CHALLENGES.length
+          });
+        }
       } else {
         // Chuyển sang câu tiếp theo trong hàng đợi
         const nextRetryIdx = retryIndex >= retryQueue.length ? 0 : retryIndex;
@@ -404,6 +427,21 @@ const HopChatVoCo = () => {
           setShowResults(true);
           setGameStarted(false);
           clearProgress();
+          // Lưu kết quả khi hoàn thành
+          if (!isCompleted) {
+            setIsCompleted(true);
+            const percentage = Math.round((score / TOTAL_POINTS) * 100);
+            const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+            completeChallenge({
+              score,
+              maxScore: TOTAL_POINTS,
+              percentage,
+              stars,
+              timeSpent: Math.floor((Date.now() - startTime) / 1000),
+              correctAnswers: answeredCorrectly.length,
+              totalQuestions: CHALLENGES.length
+            });
+          }
         }
       }
     }
@@ -420,6 +458,7 @@ const HopChatVoCo = () => {
     setRetryQueue([]);
     setIsRetryMode(false);
     setRetryIndex(0);
+    setIsCompleted(false);
     resetQuestion();
   };
 

@@ -109,7 +109,11 @@ const Bai07_KimLoaiKiem_KiemTho_Nhom = () => {
   const [showBonusAnimation, setShowBonusAnimation] = useState(false);
   const [hasStartedNewGame, setHasStartedNewGame] = useState(false);
 
-  const { hasProgress, savedProgress, saveProgress, clearProgress } = useChallengeProgress('kiem_kiemtho_nhom_12', { challengeId: 'kiem_kiemtho_nhom_12', programId: 'chemistry', grade: 12 });
+  const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('kiem_kiemtho_nhom_12', { challengeId: 7, programId: 'chemistry', grade: 12 });
+
+  // States for completion tracking
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const filteredQuestions = activeCategory ? CHALLENGES.filter(q => q.category === activeCategory) : [];
   const currentQuestion = filteredQuestions[currentQuestionIndex];
@@ -209,7 +213,7 @@ const Bai07_KimLoaiKiem_KiemTho_Nhom = () => {
     } else { 
       setShowResult(true); 
       setIsTimerActive(false); 
-      const correctPercentage = (totalCorrect / filteredQuestions.length) * 100;
+      const correctPercentage = Math.round((totalCorrect / filteredQuestions.length) * 100);
       const newCompletedCategories = correctPercentage >= GAME_CONFIG.PASS_PERCENTAGE && !completedCategories.includes(activeCategory) 
         ? [...completedCategories, activeCategory] 
         : completedCategories; 
@@ -218,7 +222,23 @@ const Bai07_KimLoaiKiem_KiemTho_Nhom = () => {
         setCompletedCategories(newCompletedCategories);
       }
       if (score > highScore) setHighScore(newHighScore); 
-      saveProgress({ savedCompletedCategories: newCompletedCategories, savedHighScore: newHighScore, totalCorrect }); 
+      saveProgress({ savedCompletedCategories: newCompletedCategories, savedHighScore: newHighScore, totalCorrect });
+      // Lưu kết quả khi hoàn thành
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const maxScore = filteredQuestions.length * 20;
+        const percentage = Math.round((score / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers: totalCorrect,
+          totalQuestions: filteredQuestions.length
+        });
+      }
     } 
   };
 

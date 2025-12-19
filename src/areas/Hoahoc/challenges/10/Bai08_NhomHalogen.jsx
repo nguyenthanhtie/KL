@@ -447,9 +447,15 @@ const EquationDisplay = ({ equation }) => (
 
 // ==================== COMPONENT CHÍNH ====================
 const Bai08_NhomHalogen = () => {
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('halogen-10-v2');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('halogen-10-v2', {
+    challengeId: 8,
+    programId: 'chemistry',
+    grade: 10
+  });
   
   // States
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [completed, setCompleted] = useState([]);
@@ -834,6 +840,24 @@ const Bai08_NhomHalogen = () => {
       </main>
 
       {/* Completion Summary */}
+      {isQuizComplete && (() => {
+        // Lưu kết quả khi hoàn thành
+        if (!isCompleted) {
+          setIsCompleted(true);
+          const percentage = Math.round((score / totalPoints) * 100);
+          const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+          completeChallenge({
+            score,
+            maxScore: totalPoints,
+            percentage,
+            stars,
+            timeSpent: Math.floor((Date.now() - startTime) / 1000),
+            correctAnswers: completed.length,
+            totalQuestions: QUIZ_DATA.length
+          });
+        }
+        return null;
+      })()}
       {isQuizComplete && (
         <div className="completion-modal">
           <div className="completion-content">

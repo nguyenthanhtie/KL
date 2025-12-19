@@ -1085,8 +1085,14 @@ const BossChallenge = ({ level, onComplete }) => {
 
 // ==================== MAIN COMPONENT ====================
 const Bai09_Oxi_LuuHuynh = () => {
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('oxi-sulfur-interactive-v2');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('oxi-sulfur-interactive-v2', {
+    challengeId: 9,
+    programId: 'chemistry',
+    grade: 10
+  });
   
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const [completedLevels, setCompletedLevels] = useState([]);
@@ -1138,6 +1144,22 @@ const Bai09_Oxi_LuuHuynh = () => {
     } else {
       setGameComplete(true);
       clearProgress();
+      
+      // Lưu kết quả khi hoàn thành tất cả level
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const percentage = Math.round((newTotal / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score: newTotal,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers: newCompleted.length,
+          totalQuestions: GAME_LEVELS.length
+        });
+      }
     }
   };
 

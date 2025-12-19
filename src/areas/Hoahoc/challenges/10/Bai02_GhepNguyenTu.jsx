@@ -36,7 +36,13 @@ function getRequiredShells(Z) {
 }
 
 export default function GhepNguyenTu(){
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('ghep-nguyen-tu');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('ghep-nguyen-tu', {
+    challengeId: 2,
+    programId: 'chemistry',
+    grade: 10
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   
   const [completedCount, setCompletedCount] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
@@ -212,6 +218,24 @@ export default function GhepNguyenTu(){
         setGameCompleted(true);
         clearProgress();
         setStatus('🎉 Chúc mừng! Bạn đã hoàn thành tất cả 6 thử thách!');
+        
+        // Lưu kết quả hoàn thành vào database
+        if (!isCompleted) {
+          setIsCompleted(true);
+          const maxScore = maxCompletions * 10;
+          const score = (completedCount + 1) * 10;
+          const percentage = Math.round((score / maxScore) * 100);
+          const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+          completeChallenge({
+            score,
+            maxScore,
+            percentage,
+            stars,
+            timeSpent: Math.floor((Date.now() - startTime) / 1000),
+            correctAnswers: completedCount + 1,
+            totalQuestions: maxCompletions
+          });
+        }
       } else {
         setStatus(`✅ Chính xác! Cấu tạo nguyên tử ${selected.name} đúng. Chuyển sang chất tiếp theo...`);
         setTimeout(() => {

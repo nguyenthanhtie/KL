@@ -252,7 +252,13 @@ const ProductZone = ({ children }) => (
 );
 
 export default function SuyLuanPhanUng() {
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('suy-luan-phan-ung');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('suy-luan-phan-ung', {
+    challengeId: 5,
+    programId: 'chemistry',
+    grade: 10
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   const [renderError, setRenderError] = useState(null);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
@@ -451,6 +457,24 @@ export default function SuyLuanPhanUng() {
         setGameCompleted(true);
         clearProgress();
         setStatus('🎉 Chúc mừng! Bạn đã hoàn thành tất cả 8 màn chơi!');
+        
+        // Lưu kết quả hoàn thành vào database
+        if (!isCompleted) {
+          setIsCompleted(true);
+          const maxScore = levels.length * 10;
+          const score = (completedLevels + 1) * 10;
+          const percentage = Math.round((score / maxScore) * 100);
+          const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+          completeChallenge({
+            score,
+            maxScore,
+            percentage,
+            stars,
+            timeSpent: Math.floor((Date.now() - startTime) / 1000),
+            correctAnswers: completedLevels + 1,
+            totalQuestions: levels.length
+          });
+        }
       }
     } else {
       setStatus('❌ Chưa đúng. Thử điều chỉnh lại các chất phản ứng.');

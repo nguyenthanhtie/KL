@@ -192,11 +192,15 @@ const Bai07_HopChatCarbonyl_Carboxylic = () => {
   const [completedCategories, setCompletedCategories] = useState([]);
   const [highScore, setHighScore] = useState(0);
 
-  const { hasProgress, savedProgress, saveProgress, clearProgress } = useChallengeProgress('hop_chat_carbonyl_carboxylic_11', {
-    challengeId: 'hop_chat_carbonyl_carboxylic_11',
+  const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('hop_chat_carbonyl_carboxylic_11', {
+    challengeId: 7,
     programId: 'chemistry',
     grade: 11
   });
+
+  // States for completion tracking
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
 
   // Filter questions by category
   const filteredQuestions = activeCategory 
@@ -336,7 +340,7 @@ const Bai07_HopChatCarbonyl_Carboxylic = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = (score / maxScore) * 100;
+    const percentage = Math.round((score / maxScore) * 100);
     
     const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
       ? [...completedCategories, activeCategory]
@@ -354,6 +358,21 @@ const Bai07_HopChatCarbonyl_Carboxylic = () => {
       savedCompletedCategories: newCompletedCategories,
       savedHighScore: newHighScore
     });
+
+    // Lưu kết quả khi hoàn thành category
+    if (!isCompleted) {
+      setIsCompleted(true);
+      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      completeChallenge({
+        score,
+        maxScore,
+        percentage,
+        stars,
+        timeSpent: Math.floor((Date.now() - startTime) / 1000),
+        correctAnswers: Math.round(score / 10),
+        totalQuestions: filteredQuestions.length
+      });
+    }
   };
 
   if (showResumeDialog) {

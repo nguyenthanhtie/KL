@@ -254,7 +254,13 @@ const moleculesByLevel = {
 };
 
 const XayDungPhanTu = () => {
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('xay-dung-phan-tu');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('xay-dung-phan-tu', {
+    challengeId: 3,
+    programId: 'chemistry',
+    grade: 10
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(1);
@@ -476,6 +482,23 @@ const XayDungPhanTu = () => {
     } else {
       setGameCompleted(true);
       clearProgress();
+      
+      // Lưu kết quả hoàn thành vào database
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const maxScore = Object.values(moleculesByLevel).flat().reduce((sum, m) => sum + m.points, 0);
+        const percentage = Math.round((totalScore / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score: totalScore,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers: completedMolecules.length,
+          totalQuestions: Object.values(moleculesByLevel).flat().length
+        });
+      }
     }
   };
 

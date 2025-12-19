@@ -35,7 +35,15 @@ const CHALLENGES = [
 
 const Baitonghop = () => {
   const navigate = useNavigate();
-  const { updateProgress } = useChallengeProgress();
+  const { completeChallenge } = useChallengeProgress('tonghop-hoa-9', {
+    challengeId: 99,
+    programId: 'chemistry',
+    grade: 9
+  });
+  
+  // States for completion tracking
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   
   // Game State
   const [gameState, setGameState] = useState('start'); // start, playing, completed
@@ -148,23 +156,31 @@ const Baitonghop = () => {
     }
   };
 
-  const handleComplete = async () => {
+  const handleComplete = () => {
     setGameState('completed');
     localStorage.removeItem('chemistry_tonghop_9_progress');
     
     // Calculate stars (max 3)
     const maxScore = CHALLENGES.reduce((acc, curr) => acc + curr.points, 0);
-    const percentage = (score / maxScore) * 100;
+    const percentage = Math.round((score / maxScore) * 100);
     let stars = 0;
     if (percentage >= 90) stars = 3;
     else if (percentage >= 70) stars = 2;
     else if (percentage >= 50) stars = 1;
 
-    await updateProgress('chemistry-9-tonghop', {
-      score: score,
-      stars: stars,
-      completed: true
-    });
+    // Lưu kết quả khi hoàn thành
+    if (!isCompleted) {
+      setIsCompleted(true);
+      completeChallenge({
+        score,
+        maxScore,
+        percentage,
+        stars,
+        timeSpent: Math.floor((Date.now() - startTime) / 1000),
+        correctAnswers: Math.round(score / 10), // mỗi câu 10 điểm
+        totalQuestions: CHALLENGES.length
+      });
+    }
   };
 
   // Render Start Screen

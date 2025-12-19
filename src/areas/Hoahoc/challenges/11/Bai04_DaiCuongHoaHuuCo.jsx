@@ -196,11 +196,15 @@ const Bai04_DaiCuongHoaHuuCo = () => {
   const [completedCategories, setCompletedCategories] = useState([]);
   const [highScore, setHighScore] = useState(0);
 
-  const { hasProgress, savedProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('dai_cuong_hoa_huu_co_11', {
-    challengeId: 'dai_cuong_hoa_huu_co_11',
+  const { hasProgress, savedProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('dai_cuong_hoa_huu_co_11', {
+    challengeId: 4,
     programId: 'chemistry',
     grade: 11
   });
+
+  // States for completion tracking
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
 
   // Filter questions by category
   const filteredQuestions = activeCategory 
@@ -345,7 +349,7 @@ const Bai04_DaiCuongHoaHuuCo = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = (score / maxScore) * 100;
+    const percentage = Math.round((score / maxScore) * 100);
     
     const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
       ? [...completedCategories, activeCategory]
@@ -364,6 +368,21 @@ const Bai04_DaiCuongHoaHuuCo = () => {
       savedCompletedCategories: newCompletedCategories,
       savedHighScore: newHighScore
     });
+
+    // Lưu kết quả khi hoàn thành category
+    if (!isCompleted) {
+      setIsCompleted(true);
+      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      completeChallenge({
+        score,
+        maxScore,
+        percentage,
+        stars,
+        timeSpent: Math.floor((Date.now() - startTime) / 1000),
+        correctAnswers: Math.round(score / 10),
+        totalQuestions: filteredQuestions.length
+      });
+    }
   };
 
   if (showResumeDialog) {

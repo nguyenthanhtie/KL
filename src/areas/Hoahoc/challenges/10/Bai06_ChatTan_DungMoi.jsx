@@ -257,7 +257,13 @@ const IdentifyCard = ({ substance, type, onSelectType, isSubmitted, correctType 
 };
 
 const Bai06_ChatTan_DungMoi = () => {
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('chat-tan-dung-moi');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('chat-tan-dung-moi', {
+    challengeId: 6,
+    programId: 'chemistry',
+    grade: 10
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
 
   // Game states
   const [gameStarted, setGameStarted] = useState(false);
@@ -426,6 +432,23 @@ const Bai06_ChatTan_DungMoi = () => {
     } else {
       setShowResults(true);
       clearProgress();
+      
+      // Lưu kết quả hoàn thành vào database
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const maxScore = challenges.reduce((sum, c) => sum + c.points, 0);
+        const percentage = Math.round((score / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers,
+          totalQuestions: challenges.length
+        });
+      }
     }
   };
 

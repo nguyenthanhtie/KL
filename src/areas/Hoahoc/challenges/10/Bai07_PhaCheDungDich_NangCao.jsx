@@ -236,7 +236,13 @@ const CATEGORY_INFO = {
 };
 
 const PhaCheDungDichNangCao = () => {
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('pha-che-dung-dich-10');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('pha-che-dung-dich-10', {
+    challengeId: 7,
+    programId: 'chemistry',
+    grade: 10
+  });
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -344,6 +350,23 @@ const PhaCheDungDichNangCao = () => {
     } else {
       setGameCompleted(true);
       clearProgress();
+      
+      // Lưu kết quả hoàn thành vào database
+      if (!isCompleted) {
+        setIsCompleted(true);
+        const maxScore = CHALLENGES.reduce((sum, c) => sum + c.points, 0);
+        const percentage = Math.round((totalScore / maxScore) * 100);
+        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        completeChallenge({
+          score: totalScore,
+          maxScore,
+          percentage,
+          stars,
+          timeSpent: Math.floor((Date.now() - startTime) / 1000),
+          correctAnswers: completedIds.length,
+          totalQuestions: CHALLENGES.length
+        });
+      }
     }
   };
 

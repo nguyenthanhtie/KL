@@ -397,7 +397,15 @@ const ExperimentRenderer = ({ challenge, progress, isComplete }) => {
 // ================== MAIN COMPONENT ==================
 const Bai26_HIDROCACBON = () => {
   const navigate = useNavigate();
-  const { hasProgress, saveProgress, clearProgress, getProgress } = useChallengeProgress('hidrocacbon-9-bai26');
+  const { hasProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('hidrocacbon-9-bai26', {
+    challengeId: 26,
+    programId: 'chemistry',
+    grade: 9
+  });
+
+  // States for completion tracking
+  const [startTime] = useState(() => Date.now());
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const [gameStarted, setGameStarted] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -609,6 +617,21 @@ const Bai26_HIDROCACBON = () => {
       } else {
         setShowResults(true);
         clearProgress();
+        // Lưu kết quả khi hoàn thành
+        if (!isCompleted) {
+          setIsCompleted(true);
+          const percentage = Math.round((score / TOTAL_POINTS) * 100);
+          const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+          completeChallenge({
+            score,
+            maxScore: TOTAL_POINTS,
+            percentage,
+            stars,
+            timeSpent: Math.floor((Date.now() - startTime) / 1000),
+            correctAnswers: answeredCorrectly.length,
+            totalQuestions: CHALLENGES.length
+          });
+        }
       }
     } else {
       if (currentChallenge < CHALLENGES.length - 1) {
@@ -622,6 +645,21 @@ const Bai26_HIDROCACBON = () => {
       } else {
         setShowResults(true);
         clearProgress();
+        // Lưu kết quả khi hoàn thành
+        if (!isCompleted) {
+          setIsCompleted(true);
+          const percentage = Math.round((score / TOTAL_POINTS) * 100);
+          const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+          completeChallenge({
+            score,
+            maxScore: TOTAL_POINTS,
+            percentage,
+            stars,
+            timeSpent: Math.floor((Date.now() - startTime) / 1000),
+            correctAnswers: answeredCorrectly.length,
+            totalQuestions: CHALLENGES.length
+          });
+        }
       }
     }
   };
