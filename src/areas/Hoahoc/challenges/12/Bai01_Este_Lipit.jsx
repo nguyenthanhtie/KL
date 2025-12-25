@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Droplets, Beaker, Leaf, Apple,
-  Clock, Target, AlertTriangle, Flame
+  Clock, Target, AlertTriangle, Flame,
+  RefreshCw, Sparkles, Loader2, WifiOff
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../../components/ResumeDialog';
+import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import './CSS/Bai01_Este_Lipit.css';
 
 // ================== DATA - ESTE VÀ LIPIT ==================
@@ -46,8 +48,8 @@ const CATEGORIES = [
   }
 ];
 
-const CHALLENGES = [
-  // ========== ESTE ==========
+const FALLBACK_CHALLENGES = [
+  // ========== ESTE (1 câu fallback) ==========
   {
     id: 1,
     category: 'este',
@@ -59,54 +61,9 @@ const CHALLENGES = [
     explanation: 'Este no, đơn chức, mạch hở có công thức tổng quát CnH2nO2 với n ≥ 2. Este đơn giản nhất là HCOOCH3 (metyl fomat).',
     hint: 'Este có nhóm chức -COO-.'
   },
+  // ========== PHẢN ỨNG ESTE (1 câu fallback) ==========
   {
     id: 2,
-    category: 'este',
-    type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Este được tạo thành từ phản ứng giữa...',
-    options: ['Axit và ancol', 'Axit và bazơ', 'Ancol và bazơ', 'Anđehit và ancol'],
-    correctAnswer: 'Axit và ancol',
-    explanation: 'Este được tạo thành từ phản ứng este hóa giữa axit cacboxylic và ancol: R-COOH + R\'-OH ⇌ R-COO-R\' + H2O',
-    hint: 'Phản ứng este hóa.'
-  },
-  {
-    id: 3,
-    category: 'este',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Tên gọi của este CH3COOC2H5 là ___',
-    correctAnswer: 'etyl axetat',
-    acceptedAnswers: ['etyl axetat', 'ethyl acetate', 'etyl acetat'],
-    explanation: 'CH3COOC2H5: Gốc axit CH3COO- (axetat) + gốc ancol C2H5- (etyl) = etyl axetat.',
-    hint: 'Tên este = tên gốc ancol + tên gốc axit (đuôi -at).'
-  },
-  {
-    id: 4,
-    category: 'este',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Este nào sau đây có mùi thơm của hoa nhài?',
-    options: ['Etyl axetat', 'Benzyl axetat', 'Isoamyl axetat', 'Metyl salixylat'],
-    correctAnswer: 'Benzyl axetat',
-    explanation: 'Benzyl axetat (C6H5CH2OOCCH3) có mùi thơm của hoa nhài. Isoamyl axetat có mùi chuối chín, metyl salixylat có mùi dầu gió.',
-    hint: 'Benzyl liên quan đến vòng benzen.'
-  },
-  {
-    id: 5,
-    category: 'este',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Este X có công thức phân tử C4H8O2. Số đồng phân cấu tạo của X là...',
-    options: ['2', '3', '4', '5'],
-    correctAnswer: '4',
-    explanation: 'Các đồng phân: HCOOC3H7 (2 đồng phân: n-propyl fomat và iso-propyl fomat), CH3COOC2H5 (etyl axetat), C2H5COOCH3 (metyl propionat). Tổng: 4 đồng phân.',
-    hint: 'Xét cả đồng phân mạch cacbon của gốc ancol.'
-  },
-
-  // ========== PHẢN ỨNG ESTE ==========
-  {
-    id: 6,
     category: 'reactions',
     type: 'multiple-choice',
     difficulty: 1,
@@ -116,53 +73,9 @@ const CHALLENGES = [
     explanation: 'Phản ứng thủy phân este trong môi trường kiềm gọi là phản ứng xà phòng hóa vì sản phẩm là muối của axit béo (xà phòng).',
     hint: 'Sản phẩm dùng để tạo xà phòng.'
   },
+  // ========== LIPIT (1 câu fallback) ==========
   {
-    id: 7,
-    category: 'reactions',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Thủy phân hoàn toàn CH3COOC2H5 trong dung dịch NaOH thu được sản phẩm là...',
-    options: [
-      'CH3COONa và C2H5OH',
-      'CH3COOH và C2H5ONa',
-      'CH3COONa và C2H5ONa',
-      'CH3COOH và C2H5OH'
-    ],
-    correctAnswer: 'CH3COONa và C2H5OH',
-    explanation: 'CH3COOC2H5 + NaOH → CH3COONa + C2H5OH. Phản ứng xà phòng hóa tạo muối của axit và ancol.',
-    hint: 'Kiềm phản ứng với phần axit của este.'
-  },
-  {
-    id: 8,
-    category: 'reactions',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Phản ứng este hóa là phản ứng ___ (thuận nghịch/một chiều)',
-    correctAnswer: 'thuận nghịch',
-    acceptedAnswers: ['thuận nghịch', 'thuận-nghịch', 'thuận ngịch'],
-    explanation: 'Phản ứng este hóa là phản ứng thuận nghịch, cần xúc tác H2SO4 đặc và đun nóng. Để tăng hiệu suất cần dùng dư một trong hai chất đầu hoặc lấy este ra khỏi hỗn hợp.',
-    hint: 'Cần điều kiện đặc biệt để đạt hiệu suất cao.'
-  },
-  {
-    id: 9,
-    category: 'reactions',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Để điều chế este từ axit và ancol với hiệu suất cao, cần...',
-    options: [
-      'Dùng dư ancol hoặc axit, chưng cất este ra',
-      'Thêm nhiều nước',
-      'Dùng xúc tác NaOH',
-      'Phản ứng ở nhiệt độ thấp'
-    ],
-    correctAnswer: 'Dùng dư ancol hoặc axit, chưng cất este ra',
-    explanation: 'Vì phản ứng thuận nghịch, muốn tăng hiệu suất cần: dùng dư 1 chất (thường là ancol rẻ hơn), chưng cất este ra khỏi hỗn hợp phản ứng, dùng H2SO4 đặc làm xúc tác và hút nước.',
-    hint: 'Nguyên lý Le Chatelier - dịch chuyển cân bằng.'
-  },
-
-  // ========== LIPIT ==========
-  {
-    id: 10,
+    id: 3,
     category: 'lipid',
     type: 'multiple-choice',
     difficulty: 1,
@@ -177,43 +90,9 @@ const CHALLENGES = [
     explanation: 'Chất béo (triglixerit) là este của glixerol (ancol 3 chức) với các axit béo (axit cacboxylic có mạch cacbon dài).',
     hint: 'Glixerol có 3 nhóm -OH.'
   },
+  // ========== ỨNG DỤNG (1 câu fallback) ==========
   {
-    id: 11,
-    category: 'lipid',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Dầu thực vật có thể chuyển thành mỡ rắn bằng phản ứng...',
-    options: ['Thủy phân', 'Hidro hóa', 'Oxi hóa', 'Xà phòng hóa'],
-    correctAnswer: 'Hidro hóa',
-    explanation: 'Dầu thực vật chứa nhiều liên kết đôi C=C (không no). Khi hidro hóa (cộng H2, xúc tác Ni, đun nóng), các liên kết đôi bị bão hòa, chuyển thành mỡ rắn (bơ nhân tạo).',
-    hint: 'Làm no hóa các liên kết đôi.'
-  },
-  {
-    id: 12,
-    category: 'lipid',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Axit béo C17H35COOH có tên gọi là axit ___',
-    correctAnswer: 'stearic',
-    acceptedAnswers: ['stearic', 'stêaric'],
-    explanation: 'C17H35COOH (C18H36O2) là axit stearic - axit béo no phổ biến trong mỡ động vật. Axit oleic (C17H33COOH) là axit béo không no có 1 liên kết đôi.',
-    hint: 'Có 18 cacbon, no.'
-  },
-  {
-    id: 13,
-    category: 'lipid',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Xà phòng hóa hoàn toàn 17,8 gam chất béo X cần vừa đủ 60 ml dung dịch NaOH 1M. Khối lượng glixerol thu được là...',
-    options: ['1,84 gam', '0,92 gam', '2,76 gam', '3,68 gam'],
-    correctAnswer: '1,84 gam',
-    explanation: 'nNaOH = 0,06 mol. Chất béo + 3NaOH → muối + glixerol. nglixerol = nNaOH/3 = 0,02 mol. mglixerol = 0,02 × 92 = 1,84 gam.',
-    hint: 'Tỉ lệ mol NaOH : glixerol = 3 : 1.'
-  },
-
-  // ========== ỨNG DỤNG ==========
-  {
-    id: 14,
+    id: 4,
     category: 'applications',
     type: 'multiple-choice',
     difficulty: 1,
@@ -227,67 +106,60 @@ const CHALLENGES = [
     correctAnswer: 'Axit béo với natri hoặc kali',
     explanation: 'Xà phòng là muối natri hoặc kali của axit béo (ví dụ: C17H35COONa - natri stearat). Xà phòng natri cứng hơn xà phòng kali.',
     hint: 'Được tạo từ phản ứng xà phòng hóa.'
-  },
-  {
-    id: 15,
-    category: 'applications',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Tại sao xà phòng không dùng được trong nước cứng?',
-    options: [
-      'Tạo kết tủa với Ca2+, Mg2+',
-      'Bị thủy phân',
-      'Không tan trong nước',
-      'Mất tính tẩy rửa do pH thấp'
-    ],
-    correctAnswer: 'Tạo kết tủa với Ca2+, Mg2+',
-    explanation: 'Trong nước cứng, xà phòng tác dụng với Ca2+, Mg2+ tạo kết tủa: 2RCOONa + Ca2+ → (RCOO)2Ca↓ + 2Na+. Kết tủa này làm giảm khả năng tẩy rửa và tạo cặn bẩn.',
-    hint: 'Nước cứng chứa Ca2+, Mg2+.'
-  },
-  {
-    id: 16,
-    category: 'applications',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Chất tẩy rửa tổng hợp có ưu điểm so với xà phòng là...',
-    options: [
-      'Dùng được trong nước cứng',
-      'Có pH cao hơn',
-      'Rẻ tiền hơn',
-      'Tạo nhiều bọt hơn'
-    ],
-    correctAnswer: 'Dùng được trong nước cứng',
-    explanation: 'Chất tẩy rửa tổng hợp (như các muối ankyl sunfat, ankyl benzen sunfonat) không bị kết tủa với Ca2+, Mg2+ nên dùng được trong nước cứng.',
-    hint: 'Không tạo kết tủa.'
-  },
-  {
-    id: 17,
-    category: 'applications',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Este có mùi chuối chín là ___ axetat',
-    correctAnswer: 'isoamyl',
-    acceptedAnswers: ['isoamyl', 'iso-amyl', 'isopentyl'],
-    explanation: 'Isoamyl axetat (CH3COOCH2CH2CH(CH3)2) là este có mùi đặc trưng của chuối chín, thường được dùng làm hương liệu trong thực phẩm và mỹ phẩm.',
-    hint: 'Gốc ancol có 5 cacbon, mạch nhánh.'
-  },
-  {
-    id: 18,
-    category: 'applications',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Biodiesel được điều chế bằng cách...',
-    options: [
-      'Chuyển hóa este của axit béo với metanol',
-      'Crackinh dầu mỏ',
-      'Lên men đường glucose',
-      'Hidro hóa dầu thực vật'
-    ],
-    correctAnswer: 'Chuyển hóa este của axit béo với metanol',
-    explanation: 'Biodiesel là nhiên liệu sinh học được điều chế bằng phản ứng chuyển hóa este (transesterification): chất béo + metanol (xúc tác kiềm) → metyl este của axit béo (biodiesel) + glixerol.',
-    hint: 'Phản ứng trao đổi este.'
   }
 ];
+
+// ================== PROGRESS WATERMARK ==================
+function ProgressWatermark({ categoryProgress, challenges }) {
+  // categoryProgress is an object like { 'este': 75, 'phanung': 90, ... }
+  const completedCount = Object.values(categoryProgress).filter(p => p >= 80).length;
+  const totalProgress = Object.values(categoryProgress).reduce((sum, p) => sum + p, 0) / CATEGORIES.length;
+  
+  return (
+    <div className="progress-watermark">
+      <div className="watermark-title">
+        <Trophy className="w-5 h-5 text-yellow-500" />
+        <span>Tiến độ các giai đoạn</span>
+      </div>
+      <div className="watermark-grid">
+        {CATEGORIES.map(cat => {
+          const Icon = cat.icon;
+          const total = challenges.filter(c => c.category === cat.id).length;
+          const percentage = categoryProgress[cat.id] || 0;
+          const isComplete = percentage >= 80;
+          const correctCount = Math.round((percentage / 100) * total);
+          return (
+            <div key={cat.id} className={`watermark-item ${isComplete ? 'completed' : ''}`}>
+              <div className="watermark-icon" style={{ backgroundColor: isComplete ? '#10b981' : percentage > 0 ? cat.color : '#64748b' }}>
+                <Icon className="w-4 h-4 text-white" />
+                {isComplete && <div className="complete-badge">✓</div>}
+              </div>
+              <div className="watermark-info">
+                <div className="watermark-name">{cat.name}</div>
+                <div className="watermark-progress-bar">
+                  <div className="watermark-progress-fill" style={{ width: `${percentage}%`, backgroundColor: isComplete ? '#10b981' : cat.color }} />
+                </div>
+                <div className="watermark-stats">
+                  <span className="watermark-percentage">{percentage}%</span>
+                  <span className="watermark-count">{correctCount}/{total}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="watermark-total">
+        <div className="total-label">Tổng tiến độ:</div>
+        <div className="total-progress-bar">
+          <div className="total-progress-fill" style={{ width: `${Math.round(totalProgress)}%` }} />
+        </div>
+        <div className="total-stats">
+          {completedCount}/{CATEGORIES.length} chủ đề hoàn thành ({Math.round(totalProgress)}%)
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const Bai01_Este_Lipit = () => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -301,15 +173,34 @@ const Bai01_Este_Lipit = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
-  const [completedCategories, setCompletedCategories] = useState([]);
+  const [categoryProgress, setCategoryProgress] = useState({}); // { 'este': 75, 'phanung': 90, ... }
   const [highScore, setHighScore] = useState(0);
   const [hasStartedNewGame, setHasStartedNewGame] = useState(false);
+  const [gameInProgress, setGameInProgress] = useState(false);
+  const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
 
   const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('este_lipit_12', {
     challengeId: 1,
     programId: 'chemistry',
     grade: 12
   });
+
+  // AI Questions Hook
+  const { 
+    questions: aiQuestions, 
+    loading: aiLoading, 
+    error: aiError, 
+    refetch: refetchAI,
+    clearCache: clearAICache 
+  } = useAIQuestions('este_lipit_12', { autoFetch: true, useCache: true });
+
+  const CHALLENGES = useMemo(() => {
+    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
+    return FALLBACK_CHALLENGES;
+  }, [aiQuestions]);
+
+  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   // States for completion tracking
   const [startTime] = useState(() => Date.now());
@@ -324,31 +215,40 @@ const Bai01_Este_Lipit = () => {
 
   // Load saved progress
   useEffect(() => {
-    if (savedProgress && !hasStartedNewGame) {
-      if (savedProgress.savedCompletedCategories) {
-        setCompletedCategories(savedProgress.savedCompletedCategories);
+    if (savedProgress && !hasStartedNewGame && !gameInProgress) {
+      if (savedProgress.savedCategoryProgress) {
+        setCategoryProgress(savedProgress.savedCategoryProgress);
       }
       if (savedProgress.savedHighScore) {
         setHighScore(savedProgress.savedHighScore);
+      }
+      if (savedProgress.savedTotalCorrectAnswers) {
+        setTotalCorrectAnswers(savedProgress.savedTotalCorrectAnswers);
+      }
+      if (savedProgress.savedTotalScore) {
+        setTotalScore(savedProgress.savedTotalScore);
       }
       
       if (savedProgress.category && !showResult && !activeCategory) {
         setShowResumeDialog(true);
       }
     }
-  }, [savedProgress, showResult, activeCategory, hasStartedNewGame]);
+  }, [savedProgress, showResult, activeCategory, hasStartedNewGame, gameInProgress]);
 
   const handleResume = () => {
     if (savedProgress) {
-      const { category, index, currentScore, currentStreak, savedCompletedCategories, savedHighScore } = savedProgress;
+      const { category, index, currentScore, currentStreak, savedCategoryProgress, savedHighScore, savedTotalCorrectAnswers, savedTotalScore } = savedProgress;
       setActiveCategory(category);
       setCurrentQuestionIndex(index || 0);
       setScore(currentScore || 0);
       setStreak(currentStreak || 0);
-      setCompletedCategories(savedCompletedCategories || []);
+      setCategoryProgress(savedCategoryProgress || {});
       setHighScore(savedHighScore || 0);
+      setTotalCorrectAnswers(savedTotalCorrectAnswers || 0);
+      setTotalScore(savedTotalScore || 0);
       setShowResumeDialog(false);
       setIsTimerActive(true);
+      setGameInProgress(true);
     }
   };
 
@@ -371,6 +271,11 @@ const Bai01_Este_Lipit = () => {
     setTimeLeft(30);
     setIsTimerActive(false);
     setHasStartedNewGame(true);
+    setTotalCorrectAnswers(0);
+    setTotalScore(0);
+    setCategoryProgress({});
+    setIsCompleted(false);
+    setGameInProgress(false);
   };
 
   // Timer logic
@@ -405,6 +310,7 @@ const Bai01_Este_Lipit = () => {
     setStreak(0);
     setTimeLeft(30);
     setIsTimerActive(true);
+    setGameInProgress(true);
   };
 
   const handleAnswerSubmit = (answer) => {
@@ -419,7 +325,9 @@ const Bai01_Este_Lipit = () => {
     setIsTimerActive(false);
 
     if (isRight) {
-      const points = Math.round((10 + currentQuestion.difficulty * 5) * (1 + timeLeft / 60));
+      // Fixed scoring: 10 base + difficulty bonus, capped at 20 max per question
+      const basePoints = 10 + currentQuestion.difficulty * 3;
+      const points = Math.min(20, basePoints);
       setScore(prev => prev + points);
       setStreak(prev => prev + 1);
     } else {
@@ -431,8 +339,10 @@ const Bai01_Este_Lipit = () => {
       index: currentQuestionIndex,
       currentScore: score + (isRight ? 10 : 0),
       currentStreak: isRight ? streak + 1 : 0,
-      savedCompletedCategories: completedCategories,
-      savedHighScore: highScore
+      savedCategoryProgress: categoryProgress,
+      savedHighScore: highScore,
+      savedTotalCorrectAnswers: totalCorrectAnswers,
+      savedTotalScore: totalScore
     });
   };
 
@@ -454,37 +364,51 @@ const Bai01_Este_Lipit = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = Math.round((score / maxScore) * 100);
+    const percentage = Math.min(100, Math.round((score / maxScore) * 100));
+    const categoryCorrectAnswers = Math.round(score / 15);
     
-    const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
-      ? [...completedCategories, activeCategory]
-      : completedCategories;
+    // Chỉ cập nhật nếu điểm mới cao hơn điểm cũ
+    const oldPercentage = categoryProgress[activeCategory] || 0;
+    const newCategoryProgress = percentage > oldPercentage 
+      ? { ...categoryProgress, [activeCategory]: percentage }
+      : categoryProgress;
+    
     const newHighScore = Math.max(highScore, score);
+    const newTotalCorrectAnswers = totalCorrectAnswers + categoryCorrectAnswers;
+    const newTotalScore = totalScore + score;
     
-    if (percentage >= 80 && !completedCategories.includes(activeCategory)) {
-      setCompletedCategories(newCompletedCategories);
+    // Luôn cập nhật nếu điểm cao hơn
+    if (percentage > oldPercentage) {
+      setCategoryProgress(newCategoryProgress);
     }
     if (score > highScore) {
       setHighScore(newHighScore);
     }
+    setTotalCorrectAnswers(newTotalCorrectAnswers);
+    setTotalScore(newTotalScore);
     
     saveProgress({
-      savedCompletedCategories: newCompletedCategories,
-      savedHighScore: newHighScore
+      savedCategoryProgress: newCategoryProgress,
+      savedHighScore: newHighScore,
+      savedTotalCorrectAnswers: newTotalCorrectAnswers,
+      savedTotalScore: newTotalScore
     });
 
-    // Lưu kết quả khi hoàn thành category
-    if (!isCompleted) {
+    // Chỉ gọi completeChallenge khi hoàn thành TẤT CẢ categories (>=80%)
+    const completedCount = Object.values(newCategoryProgress).filter(p => p >= 80).length;
+    if (completedCount === CATEGORIES.length && !isCompleted) {
       setIsCompleted(true);
-      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      const totalMaxScore = CHALLENGES.length * 20;
+      const totalPercentage = Math.round((newTotalScore / totalMaxScore) * 100);
+      const stars = totalPercentage >= 80 ? 3 : totalPercentage >= 50 ? 2 : 1;
       completeChallenge({
-        score,
-        maxScore,
-        percentage,
+        score: newTotalScore,
+        maxScore: totalMaxScore,
+        percentage: totalPercentage,
         stars,
         timeSpent: Math.floor((Date.now() - startTime) / 1000),
-        correctAnswers: Math.round(score / 10),
-        totalQuestions: filteredQuestions.length
+        correctAnswers: newTotalCorrectAnswers,
+        totalQuestions: CHALLENGES.length
       });
     }
   };
@@ -528,7 +452,7 @@ const Bai01_Este_Lipit = () => {
             <div className="stats-bar-este mb-8">
               <div className="stat-item-este">
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
-                <span>Đã hoàn thành: <strong>{completedCategories.length || 0}/{CATEGORIES.length}</strong></span>
+                <span>Đã hoàn thành: <strong>{Object.values(categoryProgress).filter(p => p >= 80).length}/{CATEGORIES.length}</strong></span>
               </div>
               <div className="stat-item-este">
                 <Award className="w-5 h-5 text-yellow-400" />
@@ -536,15 +460,56 @@ const Bai01_Este_Lipit = () => {
               </div>
             </div>
 
+            {/* AI Status Banner */}
+            {aiLoading && (
+              <div className="mb-4 p-3 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center gap-3">
+                <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+                <span className="text-blue-200">Đang tải câu hỏi AI...</span>
+              </div>
+            )}
+            {aiError && !isUsingAI && (
+              <div className="mb-4 p-3 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <WifiOff className="w-5 h-5 text-amber-400" />
+                  <span className="text-amber-200">Đang dùng câu hỏi offline</span>
+                </div>
+                <button onClick={refetchAI} className="flex items-center gap-1 px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 rounded-lg text-amber-200 text-sm transition-colors">
+                  <RefreshCw className="w-4 h-4" />
+                  Thử lại
+                </button>
+              </div>
+            )}
+            {isUsingAI && (
+              <div className="mb-4 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Sparkles className="w-5 h-5 text-emerald-400" />
+                  <span className="text-emerald-200">Câu hỏi AI ({aiQuestions.length} câu)</span>
+                </div>
+                <button onClick={() => { clearAICache(); refetchAI(); }} className="flex items-center gap-1 px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 rounded-lg text-emerald-200 text-sm transition-colors">
+                  <RefreshCw className="w-4 h-4" />
+                  Làm mới
+                </button>
+              </div>
+            )}
+
+            {/* Progress Watermark */}
+            <ProgressWatermark categoryProgress={categoryProgress} challenges={CHALLENGES} />
+
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
               Chọn chủ đề thử thách
+              {isUsingAI && (
+                <span className="ml-2 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-xs rounded-full flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" /> AI
+                </span>
+              )}
             </h2>
 
             <div className="category-grid-este">
               {CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
-                const isCompleted = completedCategories.includes(cat.id);
+                const catPercentage = categoryProgress[cat.id] || 0;
+                const isCompleted = catPercentage >= 80;
                 
                 return (
                   <div 
@@ -552,7 +517,7 @@ const Bai01_Este_Lipit = () => {
                     onClick={() => handleCategorySelect(cat.id)}
                     className="category-card-este group"
                   >
-                    <div className={`category-icon-wrapper-este ${isCompleted ? 'bg-green-500/20 text-green-400' : ''}`}>
+                    <div className={`category-icon-wrapper-este ${isCompleted ? 'bg-green-500/20 text-green-400' : catPercentage > 0 ? 'bg-blue-500/20 text-blue-400' : ''}`}>
                       <Icon className="w-8 h-8" />
                     </div>
                     <div className="flex-1">
@@ -564,6 +529,11 @@ const Bai01_Este_Lipit = () => {
                         <span className="text-xs font-semibold px-2 py-1 rounded bg-white/10 text-blue-200">
                           {CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi
                         </span>
+                        {catPercentage > 0 && (
+                          <span className={`text-xs font-bold px-2 py-1 rounded ${isCompleted ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                            {catPercentage}%
+                          </span>
+                        )}
                         {isCompleted && <CheckCircle2 className="w-5 h-5 text-green-400" />}
                       </div>
                     </div>
@@ -707,7 +677,7 @@ const Bai01_Este_Lipit = () => {
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
                   <div className="text-sm text-blue-200 mb-1">Đúng</div>
                   <div className="text-2xl font-bold text-blue-400">
-                    {Math.round((score / (filteredQuestions.length * 20)) * 100)}%
+                    {Math.min(100, Math.round((score / (filteredQuestions.length * 20)) * 100))}%
                   </div>
                 </div>
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
@@ -727,7 +697,19 @@ const Bai01_Este_Lipit = () => {
                   Làm lại
                 </button>
                 <button
-                  onClick={() => setActiveCategory(null)}
+                  onClick={() => {
+                    setShowResult(false);
+                    setActiveCategory(null);
+                    setCurrentQuestionIndex(0);
+                    setScore(0);
+                    setSelectedAnswer('');
+                    setIsCorrect(null);
+                    setStreak(0);
+                    setShowExplanation(false);
+                    setTimeLeft(30);
+                    setIsTimerActive(false);
+                    setGameInProgress(false);
+                  }}
                   className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30"
                 >
                   Chủ đề khác

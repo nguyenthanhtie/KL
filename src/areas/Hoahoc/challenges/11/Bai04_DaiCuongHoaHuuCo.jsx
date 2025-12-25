@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, Play, RotateCcw, ChevronRight, ChevronLeft,
   CheckCircle2, XCircle, Lightbulb, HelpCircle, Zap, Award,
   FlaskConical, Beaker, Thermometer, Wind, Droplets, Flame,
-  AlertTriangle, Star, Target, Clock, Atom, BookOpen, Share2, Search, Microscope
+  AlertTriangle, Star, Target, Clock, Atom, BookOpen, Share2, Search, Microscope,
+  RefreshCw, Sparkles, Loader2, WifiOff
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai04_DaiCuongHoaHuuCo.css';
 
@@ -46,140 +48,161 @@ const CATEGORIES = [
   }
 ];
 
-const CHALLENGES = [
-  // ========== KHÁI NIỆM & PHÂN LOẠI ==========
+// ================== FALLBACK QUESTIONS ==================
+const FALLBACK_CHALLENGES = [
   {
     id: 1,
     category: 'concepts',
     type: 'multiple-choice',
     difficulty: 1,
-    question: 'Hóa học hữu cơ là ngành hóa học nghiên cứu về...',
-    options: [
-      'Các hợp chất của cacbon (trừ CO, CO2, muối cacbonat...)',
-      'Tất cả các hợp chất của cacbon',
-      'Các hợp chất của sinh vật sống',
-      'Các hợp chất chỉ chứa C và H'
-    ],
-    correctAnswer: 'Các hợp chất của cacbon (trừ CO, CO2, muối cacbonat...)',
-    explanation: 'Hóa học hữu cơ là ngành hóa học nghiên cứu các hợp chất của cacbon, trừ một số chất vô cơ như CO, CO2, muối cacbonat, xianua, cacbua...',
-    hint: 'Không phải tất cả hợp chất chứa cacbon đều là hữu cơ.'
+    question: 'Hợp chất hữu cơ là hợp chất của nguyên tố nào?',
+    options: ['Oxi', 'Nitơ', 'Cacbon', 'Hidro'],
+    correctAnswer: 'Cacbon',
+    explanation: 'Hợp chất hữu cơ là hợp chất của cacbon (trừ CO, CO2, muối cacbonat, xianua...).',
+    hint: 'Nguyên tố chính tạo nên mạch cacbon.'
   },
   {
     id: 2,
     category: 'concepts',
     type: 'multiple-choice',
     difficulty: 1,
-    question: 'Chất nào sau đây là hợp chất hữu cơ?',
-    options: ['CaCO3', 'CO2', 'CH4', 'NaCN'],
-    correctAnswer: 'CH4',
-    explanation: 'CH4 (metan) là hợp chất hữu cơ đơn giản nhất. CaCO3, CO2, NaCN là các hợp chất vô cơ.',
-    hint: 'Tìm hidrocacbon.'
+    question: 'Nhóm chức -OH là nhóm chức đặc trưng của loại hợp chất nào?',
+    options: ['Anđehit', 'Axit cacboxylic', 'Ancol', 'Este'],
+    correctAnswer: 'Ancol',
+    explanation: 'Ancol là hợp chất hữu cơ có nhóm -OH liên kết với gốc hidrocacbon (R-OH).',
+    hint: 'Rượu etylic là một ví dụ.'
   },
   {
     id: 3,
-    category: 'concepts',
+    category: 'structure',
     type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Nhóm chức là gì?',
-    options: [
-      'Nhóm nguyên tử gây ra phản ứng hóa học đặc trưng',
-      'Nhóm nguyên tử chứa cacbon',
-      'Nhóm nguyên tử liên kết với nhau',
-      'Phần còn lại của phân tử sau khi bỏ hydro'
-    ],
-    correctAnswer: 'Nhóm nguyên tử gây ra phản ứng hóa học đặc trưng',
-    explanation: 'Nhóm chức là nguyên tử hoặc nhóm nguyên tử gây ra những tính chất hóa học đặc trưng của hợp chất hữu cơ.',
-    hint: 'Ví dụ: nhóm -OH trong ancol.'
+    difficulty: 1,
+    question: 'Đồng đẳng là hiện tượng các chất có cùng công thức chung và hơn kém nhau bao nhiêu nhóm CH2?',
+    options: ['1 nhóm CH2', 'Một hay nhiều nhóm CH2', '2 nhóm CH2', '3 nhóm CH2'],
+    correctAnswer: 'Một hay nhiều nhóm CH2',
+    explanation: 'Các chất đồng đẳng có cùng công thức tổng quát, cùng tính chất hóa học tương tự, hơn kém nhau một hay nhiều nhóm CH2.',
+    hint: 'Không nhất thiết chỉ 1 nhóm.'
   },
-  
-  // ========== CẤU TRÚC PHÂN TỬ ==========
   {
     id: 4,
     category: 'structure',
-    type: 'fill-blank',
-    difficulty: 1,
-    question: 'Trong hợp chất hữu cơ, cacbon luôn có hóa trị ___',
-    correctAnswer: '4',
-    acceptedAnswers: ['4', 'IV', 'bốn'],
-    explanation: 'Trong các hợp chất hữu cơ, nguyên tử cacbon luôn có hóa trị IV.',
-    hint: 'Số liên kết tối đa mà một nguyên tử cacbon có thể tạo ra.'
-  },
-  {
-    id: 5,
-    category: 'structure',
     type: 'multiple-choice',
     difficulty: 2,
-    question: 'Hiện tượng các chất có cùng công thức phân tử nhưng cấu tạo khác nhau gọi là...',
-    options: ['Đồng đẳng', 'Đồng phân', 'Đồng vị', 'Đồng khối'],
-    correctAnswer: 'Đồng phân',
-    explanation: 'Đồng phân là hiện tượng các chất có cùng công thức phân tử nhưng cấu tạo hóa học khác nhau nên tính chất khác nhau.',
+    question: 'Đồng phân là hiện tượng các chất có cùng...',
+    options: ['Công thức cấu tạo', 'Công thức phân tử nhưng khác công thức cấu tạo', 'Tính chất hóa học', 'Tính chất vật lý'],
+    correctAnswer: 'Công thức phân tử nhưng khác công thức cấu tạo',
+    explanation: 'Đồng phân là các chất có cùng công thức phân tử nhưng khác nhau về công thức cấu tạo, do đó có tính chất khác nhau.',
     hint: 'Cùng CTPT, khác CTCT.'
   },
   {
+    id: 5,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Phản ứng thế là phản ứng trong đó...',
+    options: ['Nguyên tử này thay thế nguyên tử khác', 'Các phân tử kết hợp lại', 'Một chất tách thành nhiều chất', 'Không có sự thay đổi'],
+    correctAnswer: 'Nguyên tử này thay thế nguyên tử khác',
+    explanation: 'Phản ứng thế là phản ứng trong đó một nguyên tử hoặc nhóm nguyên tử trong phân tử bị thay thế bởi nguyên tử hoặc nhóm nguyên tử khác.',
+    hint: 'Thay thế = substitution.'
+  },
+  {
     id: 6,
-    category: 'structure',
+    category: 'reactions',
     type: 'multiple-choice',
     difficulty: 2,
-    question: 'Liên kết hóa học chủ yếu trong hợp chất hữu cơ là...',
-    options: ['Liên kết cộng hóa trị', 'Liên kết ion', 'Liên kết kim loại', 'Liên kết hydro'],
-    correctAnswer: 'Liên kết cộng hóa trị',
-    explanation: 'Liên kết trong phân tử hợp chất hữu cơ chủ yếu là liên kết cộng hóa trị.',
-    hint: 'Liên kết giữa các phi kim.'
+    question: 'Phản ứng cộng là phản ứng đặc trưng của hợp chất có...',
+    options: ['Liên kết đôi hoặc liên kết ba', 'Chỉ liên kết đơn', 'Nhóm -OH', 'Nhóm -COOH'],
+    correctAnswer: 'Liên kết đôi hoặc liên kết ba',
+    explanation: 'Phản ứng cộng xảy ra khi liên kết π trong liên kết đôi hoặc ba bị phá vỡ để cộng thêm các nguyên tử mới.',
+    hint: 'Liên kết không no.'
   },
-
-  // ========== PHẢN ỨNG HỮU CƠ ==========
   {
     id: 7,
-    category: 'reactions',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Phản ứng trong đó một nguyên tử hoặc nhóm nguyên tử trong phân tử hữu cơ bị thay thế bởi một nguyên tử hoặc nhóm nguyên tử khác gọi là...',
-    options: ['Phản ứng thế', 'Phản ứng cộng', 'Phản ứng tách', 'Phản ứng phân hủy'],
-    correctAnswer: 'Phản ứng thế',
-    explanation: 'Đây là định nghĩa của phản ứng thế.',
-    hint: 'Thay thế cái này bằng cái kia.'
-  },
-  {
-    id: 8,
-    category: 'reactions',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Phản ứng đặc trưng của liên kết đôi C=C là...',
-    options: ['Phản ứng thế', 'Phản ứng cộng', 'Phản ứng tách', 'Phản ứng cháy'],
-    correctAnswer: 'Phản ứng cộng',
-    explanation: 'Liên kết đôi (gồm 1 liên kết sigma bền và 1 liên kết pi kém bền) dễ tham gia phản ứng cộng để phá vỡ liên kết pi.',
-    hint: 'Làm no hóa liên kết.'
-  },
-
-  // ========== PHÂN TÍCH NGUYÊN TỐ ==========
-  {
-    id: 9,
     category: 'analysis',
     type: 'multiple-choice',
     difficulty: 2,
     question: 'Công thức đơn giản nhất cho biết...',
-    options: [
-      'Tỉ lệ tối giản về số nguyên tử của các nguyên tố',
-      'Số lượng nguyên tử chính xác của mỗi nguyên tố',
-      'Khối lượng phân tử',
-      'Cấu trúc phân tử'
-    ],
-    correctAnswer: 'Tỉ lệ tối giản về số nguyên tử của các nguyên tố',
-    explanation: 'Công thức đơn giản nhất biểu thị tỉ lệ tối giản về số nguyên tử của các nguyên tố trong phân tử.',
-    hint: 'Ví dụ: CH là CTĐGN của C2H2 và C6H6.'
+    options: ['Tỉ lệ tối giản số nguyên tử của các nguyên tố', 'Số nguyên tử thực tế', 'Khối lượng phân tử', 'Cấu trúc phân tử'],
+    correctAnswer: 'Tỉ lệ tối giản số nguyên tử của các nguyên tố',
+    explanation: 'Công thức đơn giản nhất (CTĐGN) biểu thị tỉ lệ tối giản về số nguyên tử của các nguyên tố trong phân tử.',
+    hint: 'Tỉ lệ đơn giản nhất.'
   },
   {
-    id: 10,
+    id: 8,
     category: 'analysis',
     type: 'fill-blank',
-    difficulty: 3,
-    question: 'Một hợp chất hữu cơ có CTĐGN là CH2O và khối lượng mol là 60 g/mol. Công thức phân tử là ___',
-    correctAnswer: 'C2H4O2',
-    acceptedAnswers: ['C2H4O2', 'c2h4o2'],
-    explanation: '(CH2O)n = 60 => (12 + 2 + 16)n = 60 => 30n = 60 => n = 2. CTPT là C2H4O2.',
-    hint: 'Tính n từ phương trình: M(CH2O) * n = 60.'
+    difficulty: 2,
+    question: 'Hợp chất hữu cơ có 40% C, 6,67% H, còn lại là O. CTĐGN của hợp chất là ___',
+    correctAnswer: 'CH2O',
+    acceptedAnswers: ['CH2O', 'ch2o'],
+    explanation: 'C: 40/12 = 3,33; H: 6,67/1 = 6,67; O: 53,33/16 = 3,33. Tỉ lệ C:H:O = 1:2:1 → CTĐGN: CH2O.',
+    hint: 'Tính số mol mỗi nguyên tố.'
   }
 ];
+
+// ================== PROGRESS WATERMARK ==================
+function ProgressWatermark({ categoryProgress, challenges }) {
+  const completedCount = Object.values(categoryProgress).filter(p => p >= 80).length;
+  const avgProgress = CATEGORIES.length > 0 
+    ? Math.round(Object.values(categoryProgress).reduce((sum, p) => sum + p, 0) / CATEGORIES.length) 
+    : 0;
+  
+  return (
+    <div className="progress-watermark">
+      <div className="watermark-title">
+        <Trophy className="w-5 h-5 text-yellow-500" />
+        <span>Tiến độ các giai đoạn</span>
+      </div>
+      <div className="watermark-grid">
+        {CATEGORIES.map(cat => {
+          const Icon = cat.icon;
+          const total = challenges.filter(c => c.category === cat.id).length;
+          const percentage = categoryProgress[cat.id] || 0;
+          const isComplete = percentage >= 80;
+          const hasProgress = percentage > 0 && !isComplete;
+          
+          return (
+            <div 
+              key={cat.id} 
+              className={`watermark-item ${isComplete ? 'completed' : ''}`}
+            >
+              <div className="watermark-icon" style={{ backgroundColor: isComplete ? '#10b981' : hasProgress ? '#3b82f6' : cat.color }}>
+                <Icon className="w-4 h-4 text-white" />
+                {isComplete && <div className="complete-badge">✓</div>}
+              </div>
+              <div className="watermark-info">
+                <div className="watermark-name">{cat.name}</div>
+                <div className="watermark-progress-bar">
+                  <div 
+                    className="watermark-progress-fill"
+                    style={{ width: `${percentage}%`, backgroundColor: isComplete ? '#10b981' : hasProgress ? '#3b82f6' : cat.color }}
+                  />
+                </div>
+                <div className="watermark-stats">
+                  <span className="watermark-percentage">{percentage}%</span>
+                  <span className="watermark-count">{Math.round(total * percentage / 100)}/{total}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="watermark-total">
+        <div className="total-label">Tổng tiến độ:</div>
+        <div className="total-progress-bar">
+          <div 
+            className="total-progress-fill"
+            style={{ width: `${avgProgress}%` }}
+          />
+        </div>
+        <div className="total-stats">
+          {completedCount}/{CATEGORIES.length} chủ đề
+          ({avgProgress}%)
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const Bai04_DaiCuongHoaHuuCo = () => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -193,8 +216,34 @@ const Bai04_DaiCuongHoaHuuCo = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
-  const [completedCategories, setCompletedCategories] = useState([]);
+  const [categoryProgress, setCategoryProgress] = useState({}); // { 'category_id': percentage, ... }
   const [highScore, setHighScore] = useState(0);
+  const [gameInProgress, setGameInProgress] = useState(false);
+  const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+
+  // ========== AI QUESTIONS HOOK ==========
+  const { 
+    questions: aiQuestions, 
+    loading: aiLoading, 
+    error: aiError, 
+    refetch: refetchAI,
+    clearCache: clearAICache 
+  } = useAIQuestions('dai_cuong_hoa_huu_co_11', {
+    autoFetch: true,
+    useCache: true,
+    cacheDuration: 24 * 60 * 60 * 1000 // 24 giờ
+  });
+
+  // Sử dụng AI questions nếu có, fallback về static questions
+  const CHALLENGES = useMemo(() => {
+    if (aiQuestions && aiQuestions.length > 0) {
+      return aiQuestions;
+    }
+    return FALLBACK_CHALLENGES;
+  }, [aiQuestions]);
+
+  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   const { hasProgress, savedProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('dai_cuong_hoa_huu_co_11', {
     challengeId: 4,
@@ -215,13 +264,19 @@ const Bai04_DaiCuongHoaHuuCo = () => {
 
   // Load saved progress
   useEffect(() => {
-    // Load persistent data (completedCategories, highScore)
-    if (savedProgress) {
-      if (savedProgress.savedCompletedCategories) {
-        setCompletedCategories(savedProgress.savedCompletedCategories);
+    // Load persistent data (categoryProgress, highScore)
+    if (savedProgress && !gameInProgress) {
+      if (savedProgress.savedCategoryProgress) {
+        setCategoryProgress(savedProgress.savedCategoryProgress);
       }
       if (savedProgress.savedHighScore) {
         setHighScore(savedProgress.savedHighScore);
+      }
+      if (savedProgress.savedTotalCorrectAnswers) {
+        setTotalCorrectAnswers(savedProgress.savedTotalCorrectAnswers);
+      }
+      if (savedProgress.savedTotalScore) {
+        setTotalScore(savedProgress.savedTotalScore);
       }
       
       // Only show resume dialog if there's an active category (not finished)
@@ -229,19 +284,22 @@ const Bai04_DaiCuongHoaHuuCo = () => {
         setShowResumeDialog(true);
       }
     }
-  }, [savedProgress, showResult]);
+  }, [savedProgress, showResult, gameInProgress]);
 
   const handleResume = () => {
     if (savedProgress) {
-      const { category, index, currentScore, currentStreak, savedCompletedCategories, savedHighScore } = savedProgress;
+      const { category, index, currentScore, currentStreak, savedCategoryProgress, savedHighScore, savedTotalCorrectAnswers, savedTotalScore } = savedProgress;
       setActiveCategory(category);
       setCurrentQuestionIndex(index || 0);
       setScore(currentScore || 0);
       setStreak(currentStreak || 0);
-      setCompletedCategories(savedCompletedCategories || []);
+      setCategoryProgress(savedCategoryProgress || {});
       setHighScore(savedHighScore || 0);
+      setTotalCorrectAnswers(savedTotalCorrectAnswers || 0);
+      setTotalScore(savedTotalScore || 0);
       setShowResumeDialog(false);
       setIsTimerActive(true);
+      setGameInProgress(true);
     }
   };
 
@@ -263,6 +321,11 @@ const Bai04_DaiCuongHoaHuuCo = () => {
     setShowExplanation(false);
     setTimeLeft(30);
     setIsTimerActive(false);
+    setTotalCorrectAnswers(0);
+    setTotalScore(0);
+    setCategoryProgress({});
+    setIsCompleted(false);
+    setGameInProgress(false);
   };
 
   // Timer logic
@@ -297,6 +360,7 @@ const Bai04_DaiCuongHoaHuuCo = () => {
     setStreak(0);
     setTimeLeft(30);
     setIsTimerActive(true);
+    setGameInProgress(true);
   };
 
   const handleAnswerSubmit = (answer) => {
@@ -311,7 +375,9 @@ const Bai04_DaiCuongHoaHuuCo = () => {
     setIsTimerActive(false);
 
     if (isRight) {
-      const points = Math.round((10 + currentQuestion.difficulty * 5) * (1 + timeLeft / 60));
+      // Fixed scoring: 10 base + difficulty bonus, capped at 20 max per question
+      const basePoints = 10 + currentQuestion.difficulty * 3;
+      const points = Math.min(20, basePoints);
       setScore(prev => prev + points);
       setStreak(prev => prev + 1);
       
@@ -326,8 +392,10 @@ const Bai04_DaiCuongHoaHuuCo = () => {
       index: currentQuestionIndex,
       currentScore: score + (isRight ? 10 : 0),
       currentStreak: isRight ? streak + 1 : 0,
-      savedCompletedCategories: completedCategories,
-      savedHighScore: highScore
+      savedCategoryProgress: categoryProgress,
+      savedHighScore: highScore,
+      savedTotalCorrectAnswers: totalCorrectAnswers,
+      savedTotalScore: totalScore
     });
   };
 
@@ -349,38 +417,50 @@ const Bai04_DaiCuongHoaHuuCo = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = Math.round((score / maxScore) * 100);
+    const percentage = Math.min(100, Math.round((score / maxScore) * 100));
+    const categoryCorrectAnswers = Math.round(score / 15); // Ước tính số câu đúng của category này
     
-    const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
-      ? [...completedCategories, activeCategory]
-      : completedCategories;
+    // Only update if new score is higher
+    const oldPercentage = categoryProgress[activeCategory] || 0;
+    const newCategoryProgress = percentage > oldPercentage 
+      ? { ...categoryProgress, [activeCategory]: percentage } 
+      : categoryProgress;
     const newHighScore = Math.max(highScore, score);
+    const newTotalCorrectAnswers = totalCorrectAnswers + categoryCorrectAnswers;
+    const newTotalScore = totalScore + score;
     
-    if (percentage >= 80 && !completedCategories.includes(activeCategory)) {
-      setCompletedCategories(newCompletedCategories);
+    if (percentage > oldPercentage) {
+      setCategoryProgress(newCategoryProgress);
     }
     if (score > highScore) {
       setHighScore(newHighScore);
     }
+    setTotalCorrectAnswers(newTotalCorrectAnswers);
+    setTotalScore(newTotalScore);
     
-    // Save only persistent data, clear active progress
+    // Save progress with accumulated data
     saveProgress({
-      savedCompletedCategories: newCompletedCategories,
-      savedHighScore: newHighScore
+      savedCategoryProgress: newCategoryProgress,
+      savedHighScore: newHighScore,
+      savedTotalCorrectAnswers: newTotalCorrectAnswers,
+      savedTotalScore: newTotalScore
     });
 
-    // Lưu kết quả khi hoàn thành category
-    if (!isCompleted) {
+    // Chỉ gọi completeChallenge khi hoàn thành TẤT CẢ categories
+    const completedCount = Object.values(newCategoryProgress).filter(p => p >= 80).length;
+    if (completedCount === CATEGORIES.length && !isCompleted) {
       setIsCompleted(true);
-      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      const totalMaxScore = CHALLENGES.length * 20;
+      const totalPercentage = Math.round((newTotalScore / totalMaxScore) * 100);
+      const stars = totalPercentage >= 80 ? 3 : totalPercentage >= 50 ? 2 : 1;
       completeChallenge({
-        score,
-        maxScore,
-        percentage,
+        score: newTotalScore,
+        maxScore: totalMaxScore,
+        percentage: totalPercentage,
         stars,
         timeSpent: Math.floor((Date.now() - startTime) / 1000),
-        correctAnswers: Math.round(score / 10),
-        totalQuestions: filteredQuestions.length
+        correctAnswers: newTotalCorrectAnswers,
+        totalQuestions: CHALLENGES.length
       });
     }
   };
@@ -424,13 +504,61 @@ const Bai04_DaiCuongHoaHuuCo = () => {
             <div className="stats-bar-huuco mb-8">
               <div className="stat-item-huuco">
                 <CheckCircle2 className="w-5 h-5 text-green-500" />
-                <span>Đã hoàn thành: <strong>{completedCategories.length || 0}/{CATEGORIES.length}</strong></span>
+                <span>Đã hoàn thành: <strong>{Object.values(categoryProgress).filter(p => p >= 80).length}/{CATEGORIES.length}</strong></span>
               </div>
               <div className="stat-item-huuco">
                 <Star className="w-5 h-5 text-yellow-500" />
                 <span>Điểm cao nhất: <strong>{highScore || 0}</strong></span>
               </div>
             </div>
+
+            {/* Progress Watermark */}
+            <ProgressWatermark categoryProgress={categoryProgress} challenges={CHALLENGES} />
+
+            {/* AI Status Banner */}
+            {aiLoading && (
+              <div className="ai-loading-banner mb-6 flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-blue-700">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Đang tạo câu hỏi bằng AI...</span>
+              </div>
+            )}
+            
+            {aiError && !isUsingAI && (
+              <div className="ai-error-banner mb-6 flex items-center justify-between bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-yellow-700">
+                <div className="flex items-center gap-3">
+                  <WifiOff className="w-5 h-5" />
+                  <span>Đang sử dụng câu hỏi mặc định (AI không khả dụng)</span>
+                </div>
+                <button 
+                  onClick={() => refetchAI(true)}
+                  className="flex items-center gap-2 px-3 py-1 bg-yellow-100 hover:bg-yellow-200 rounded-lg transition-colors"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  <span>Thử lại</span>
+                </button>
+              </div>
+            )}
+
+            {isUsingAI && (
+              <div className="ai-active-banner mb-6 flex items-center justify-between bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-4">
+                <div className="flex items-center gap-3 text-purple-700">
+                  <Sparkles className="w-5 h-5" />
+                  <span className="font-medium">Câu hỏi được tạo bởi AI</span>
+                  <span className="text-xs bg-purple-100 px-2 py-1 rounded-full">{CHALLENGES.length} câu</span>
+                </div>
+                <button 
+                  onClick={() => {
+                    clearAICache();
+                    refetchAI(true);
+                  }}
+                  disabled={aiLoading}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${aiLoading ? 'animate-spin' : ''}`} />
+                  <span>Tạo mới</span>
+                </button>
+              </div>
+            )}
 
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
@@ -440,7 +568,9 @@ const Bai04_DaiCuongHoaHuuCo = () => {
             <div className="category-grid-huuco">
               {CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
-                const isCompleted = completedCategories.includes(cat.id);
+                const catPercentage = categoryProgress[cat.id] || 0;
+                const isCompleted = catPercentage >= 80;
+                const hasProgress = catPercentage > 0 && !isCompleted;
                 
                 return (
                   <div 
@@ -448,7 +578,7 @@ const Bai04_DaiCuongHoaHuuCo = () => {
                     onClick={() => handleCategorySelect(cat.id)}
                     className="category-card-huuco group"
                   >
-                    <div className={`category-icon-wrapper-huuco ${isCompleted ? 'bg-green-100 text-green-600' : ''}`}>
+                    <div className={`category-icon-wrapper-huuco ${isCompleted ? 'bg-green-100 text-green-600' : hasProgress ? 'bg-blue-100 text-blue-600' : ''}`}>
                       <Icon className="w-8 h-8" />
                     </div>
                     <div className="flex-1">
@@ -457,9 +587,22 @@ const Bai04_DaiCuongHoaHuuCo = () => {
                       </h3>
                       <p className="text-sm text-slate-500 mb-3">{cat.description}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold px-2 py-1 rounded bg-slate-100 text-slate-600">
-                          {CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-semibold px-2 py-1 rounded bg-slate-100 text-slate-600">
+                            {CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi
+                          </span>
+                          {isUsingAI && (
+                            <span className="text-xs font-semibold px-2 py-1 rounded bg-purple-100 text-purple-600 flex items-center gap-1">
+                              <Sparkles className="w-3 h-3" />
+                              AI
+                            </span>
+                          )}
+                          {catPercentage > 0 && (
+                            <span className={`text-xs font-semibold px-2 py-1 rounded ${isCompleted ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'}`}>
+                              {catPercentage}%
+                            </span>
+                          )}
+                        </div>
                         {isCompleted && <CheckCircle2 className="w-5 h-5 text-green-500" />}
                       </div>
                     </div>
@@ -605,7 +748,7 @@ const Bai04_DaiCuongHoaHuuCo = () => {
                 <div className="p-4 bg-slate-50 rounded-2xl">
                   <div className="text-sm text-slate-500 mb-1">Đúng</div>
                   <div className="text-2xl font-bold text-blue-600">
-                    {Math.round((score / (filteredQuestions.length * 20)) * 100)}%
+                    {Math.min(100, Math.round((score / (filteredQuestions.length * 20)) * 100))}%
                   </div>
                 </div>
                 <div className="p-4 bg-slate-50 rounded-2xl">
@@ -625,7 +768,19 @@ const Bai04_DaiCuongHoaHuuCo = () => {
                   Làm lại
                 </button>
                 <button
-                  onClick={() => setActiveCategory(null)}
+                  onClick={() => {
+                    setShowResult(false);
+                    setActiveCategory(null);
+                    setCurrentQuestionIndex(0);
+                    setScore(0);
+                    setSelectedAnswer('');
+                    setIsCorrect(null);
+                    setStreak(0);
+                    setShowExplanation(false);
+                    setTimeLeft(30);
+                    setIsTimerActive(false);
+                    setGameInProgress(false);
+                  }}
                   className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors shadow-lg shadow-green-200"
                 >
                   Chủ đề khác

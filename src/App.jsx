@@ -56,7 +56,9 @@ import Bai02_Cacbohidrat from './areas/Hoahoc/challenges/12/Bai02_Cacbohidrat';
 import Bai03_Amin_Aminoaxit_Protein from './areas/Hoahoc/challenges/12/Bai03_Amin_Aminoaxit_Protein';
 import Bai04_Polime from './areas/Hoahoc/challenges/12/Bai04_Polime';
 
-
+// PK (Player vs Player)
+import PKSelection from './areas/Hoahoc/pages/PKSelection';
+import PKRoom from './areas/Hoahoc/pages/PKRoom';
 
 
 const AppContent = () => {
@@ -112,6 +114,11 @@ const AppContent = () => {
         <Route path="/advanced-challenge/cacbohidrat" element={<Bai02_Cacbohidrat />} />
         <Route path="/advanced-challenge/amin-aminoaxit-protein" element={<Bai03_Amin_Aminoaxit_Protein />} />
         <Route path="/advanced-challenge/polime" element={<Bai04_Polime />} />
+        
+        {/* PK Routes */}
+        <Route path="/chemistry/pk" element={<PKSelection />} />
+        <Route path="/chemistry/pk/room/:roomCode" element={<PKRoom />} />
+        
         <Route 
           path="/program/chemistry/dashboard" 
           element={

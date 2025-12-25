@@ -67,6 +67,8 @@ app.use('/api/auth', require('./routes/auth.cjs'));
 app.use('/api/users', require('./routes/users.cjs'));
 app.use('/api/lessons', require('./routes/lessons.cjs'));
 app.use('/api/challenges', require('./routes/challenges.cjs'));
+app.use('/api/pk', require('./routes/pk.cjs'));
+app.use('/api/ai-questions', require('./routes/ai-questions.cjs'));
 
 // Health check
 app.get('/api/health', (req, res) => {

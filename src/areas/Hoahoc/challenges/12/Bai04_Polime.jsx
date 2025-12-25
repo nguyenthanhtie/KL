@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Layers, Recycle, Factory, Shirt,
-  Clock, Target, AlertTriangle, Flame
+  Clock, Target, AlertTriangle, Flame,
+  RefreshCw, Sparkles, Loader2, WifiOff
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai04_Polime.css';
 
@@ -46,8 +48,9 @@ const CATEGORIES = [
   }
 ];
 
-const CHALLENGES = [
-  // ========== KHÁI NIỆM & CẤU TRÚC (12 câu) ==========
+// Fallback questions khi không có AI
+const FALLBACK_CHALLENGES = [
+  // ========== KHÁI NIỆM & CẤU TRÚC ==========
   {
     id: 1,
     category: 'khainiemcautruc',
@@ -63,127 +66,16 @@ const CHALLENGES = [
     id: 2,
     category: 'khainiemcautruc',
     type: 'fill-blank',
-    difficulty: 1,
+    difficulty: 2,
     question: 'Các phân tử nhỏ tạo nên polime gọi là ___',
     correctAnswer: 'monome',
     acceptedAnswers: ['monome', 'monomer', 'mô-nô-me'],
     explanation: 'Monome là các phân tử nhỏ (đơn phân tử) kết hợp với nhau tạo thành polime.',
     hint: 'Mono = một.'
   },
+  // ========== PHẢN ỨNG TỔNG HỢP ==========
   {
     id: 3,
-    category: 'khainiemcautruc',
-    type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Hệ số n trong công thức polime (-A-)n gọi là...',
-    options: ['Hệ số trùng hợp', 'Hệ số phân tử', 'Hệ số monome', 'Hệ số mắt xích'],
-    correctAnswer: 'Hệ số trùng hợp',
-    explanation: 'Hệ số n gọi là hệ số trùng hợp (hoặc độ polime hóa), cho biết số mắt xích trong một phân tử polime.',
-    hint: 'Liên quan đến quá trình tạo polime.'
-  },
-  {
-    id: 4,
-    category: 'khainiemcautruc',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Polime nào sau đây là polime thiên nhiên?',
-    options: ['Cao su thiên nhiên', 'Polietilen (PE)', 'Polivinyl clorua (PVC)', 'Polistiren (PS)'],
-    correctAnswer: 'Cao su thiên nhiên',
-    explanation: 'Cao su thiên nhiên được lấy từ mủ cây cao su, là polime thiên nhiên. PE, PVC, PS đều là polime tổng hợp.',
-    hint: 'Có nguồn gốc từ tự nhiên.'
-  },
-  {
-    id: 5,
-    category: 'khainiemcautruc',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Polime có cấu trúc mạch phân nhánh là...',
-    options: ['Amilopectin', 'Amilozơ', 'Xenlulozơ', 'Polietilen (PE)'],
-    correctAnswer: 'Amilopectin',
-    explanation: 'Amilopectin (thành phần của tinh bột) có cấu trúc mạch phân nhánh. Amilozơ có mạch không phân nhánh.',
-    hint: 'Thành phần của tinh bột.'
-  },
-  {
-    id: 6,
-    category: 'khainiemcautruc',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Polime có cấu trúc mạng không gian là...',
-    options: ['Nhựa bakelit', 'Polietilen', 'Cao su thiên nhiên', 'Nilon-6,6'],
-    correctAnswer: 'Nhựa bakelit',
-    explanation: 'Nhựa bakelit (phenol-fomanđehit) có cấu trúc mạng không gian ba chiều, không tan trong dung môi, không nóng chảy.',
-    hint: 'Không nóng chảy, rất cứng.'
-  },
-  {
-    id: 7,
-    category: 'khainiemcautruc',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Polime có khả năng biến dạng khi chịu lực và giữ nguyên biến dạng khi lực thôi tác dụng gọi là polime ___',
-    correctAnswer: 'nhiệt dẻo',
-    acceptedAnswers: ['nhiệt dẻo', 'thermoplastic'],
-    explanation: 'Polime nhiệt dẻo mềm khi đun nóng, cứng lại khi nguội, có thể tái chế. Polime nhiệt rắn thì không.',
-    hint: 'Liên quan đến nhiệt độ.'
-  },
-  {
-    id: 8,
-    category: 'khainiemcautruc',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Phân tử khối trung bình của polietilen là 420000 đvC. Hệ số trùng hợp n của PE là...',
-    options: ['15000', '14000', '16000', '12000'],
-    correctAnswer: '15000',
-    explanation: 'PE: (-CH2-CH2-)n có M mắt xích = 28. n = 420000/28 = 15000.',
-    hint: 'n = M polime / M mắt xích.'
-  },
-  {
-    id: 9,
-    category: 'khainiemcautruc',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Tính chất nào sau đây KHÔNG phải của polime?',
-    options: ['Có nhiệt độ nóng chảy xác định', 'Không bay hơi', 'Không tan trong nước', 'Một số tan trong dung môi hữu cơ'],
-    correctAnswer: 'Có nhiệt độ nóng chảy xác định',
-    explanation: 'Do polime là hỗn hợp nhiều phân tử có độ dài khác nhau nên không có nhiệt độ nóng chảy xác định (khoảng nhiệt độ).',
-    hint: 'Liên quan đến tính đồng nhất.'
-  },
-  {
-    id: 10,
-    category: 'khainiemcautruc',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Polime nào sau đây là polime bán tổng hợp?',
-    options: ['Tơ visco', 'Polietilen', 'Cao su thiên nhiên', 'Protein'],
-    correctAnswer: 'Tơ visco',
-    explanation: 'Tơ visco được điều chế từ xenlulozơ (thiên nhiên) qua xử lý hóa học nên là polime bán tổng hợp (nhân tạo).',
-    hint: 'Nguyên liệu thiên nhiên + xử lý hóa học.'
-  },
-  {
-    id: 11,
-    category: 'khainiemcautruc',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Mắt xích của polietilen (PE) là ___',
-    correctAnswer: '-CH2-CH2-',
-    acceptedAnswers: ['-CH2-CH2-', '-ch2-ch2-', 'CH2CH2', '-CH2CH2-'],
-    explanation: 'PE được tạo từ monome etilen CH2=CH2. Mắt xích sau trùng hợp là -CH2-CH2-.',
-    hint: 'Từ etilen CH2=CH2.'
-  },
-  {
-    id: 12,
-    category: 'khainiemcautruc',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Polime nào có tính đàn hồi tốt nhất?',
-    options: ['Cao su lưu hóa', 'Polietilen', 'PVC', 'Polistiren'],
-    correctAnswer: 'Cao su lưu hóa',
-    explanation: 'Cao su lưu hóa có các cầu nối -S-S- giữa các mạch polime tạo cấu trúc mạng không gian, cho tính đàn hồi tốt.',
-    hint: 'Xử lý cao su với lưu huỳnh.'
-  },
-
-  // ========== PHẢN ỨNG TỔNG HỢP (12 câu) ==========
-  {
-    id: 13,
     category: 'phanungtonghoip',
     type: 'multiple-choice',
     difficulty: 1,
@@ -194,130 +86,19 @@ const CHALLENGES = [
     hint: 'Không tạo sản phẩm phụ.'
   },
   {
-    id: 14,
+    id: 4,
     category: 'phanungtonghoip',
     type: 'multiple-choice',
-    difficulty: 1,
+    difficulty: 2,
     question: 'Monome để trùng hợp thành polietilen (PE) là...',
     options: ['Etilen CH2=CH2', 'Etan C2H6', 'Axetilen C2H2', 'Propilen CH3-CH=CH2'],
     correctAnswer: 'Etilen CH2=CH2',
     explanation: 'PE được trùng hợp từ etilen: nCH2=CH2 → (-CH2-CH2-)n',
     hint: 'Tên polime = poli + tên monome.'
   },
+  // ========== CHẤT DẺO ==========
   {
-    id: 15,
-    category: 'phanungtonghoip',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Điều kiện để monome tham gia phản ứng trùng hợp là...',
-    options: ['Có liên kết đôi hoặc vòng kém bền', 'Có nhóm -OH', 'Có nhóm -COOH', 'Có nhóm -NH2'],
-    correctAnswer: 'Có liên kết đôi hoặc vòng kém bền',
-    explanation: 'Để trùng hợp, monome cần có liên kết bội (C=C, C≡C) hoặc vòng kém bền để mở ra và nối với nhau.',
-    hint: 'Liên kết có thể mở ra.'
-  },
-  {
-    id: 16,
-    category: 'phanungtonghoip',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Phản ứng tạo polime kèm theo giải phóng phân tử nhỏ (H2O, NH3...) gọi là phản ứng ___',
-    correctAnswer: 'trùng ngưng',
-    acceptedAnswers: ['trùng ngưng', 'polycondensation', 'ngưng tụ'],
-    explanation: 'Phản ứng trùng ngưng: các monome kết hợp và giải phóng phân tử nhỏ như H2O, HCl...',
-    hint: 'Khác với trùng hợp.'
-  },
-  {
-    id: 17,
-    category: 'phanungtonghoip',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Điều kiện để monome tham gia phản ứng trùng ngưng là...',
-    options: ['Có ít nhất 2 nhóm chức có khả năng phản ứng', 'Chỉ cần 1 nhóm chức', 'Có liên kết đôi', 'Có vòng benzen'],
-    correctAnswer: 'Có ít nhất 2 nhóm chức có khả năng phản ứng',
-    explanation: 'Để trùng ngưng, monome phải có ít nhất 2 nhóm chức có thể phản ứng với nhau (như -OH và -COOH, -NH2 và -COOH...).',
-    hint: 'Cần phản ứng được ở 2 đầu.'
-  },
-  {
-    id: 18,
-    category: 'phanungtonghoip',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Polime nào sau đây được tổng hợp bằng phản ứng trùng ngưng?',
-    options: ['Nilon-6,6', 'Polietilen', 'Polivinyl clorua', 'Polipropilen'],
-    correctAnswer: 'Nilon-6,6',
-    explanation: 'Nilon-6,6 được trùng ngưng từ axit ađipic và hexametylenđiamin: nHOOC-(CH2)4-COOH + nH2N-(CH2)6-NH2 → Nilon-6,6 + 2nH2O',
-    hint: 'Tạo ra nước khi trùng hợp.'
-  },
-  {
-    id: 19,
-    category: 'phanungtonghoip',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Monome để trùng hợp tạo PVC (polivinyl clorua) là...',
-    options: ['CH2=CHCl', 'CH2=CH2', 'CH2=CHCH3', 'CH2=C(CH3)2'],
-    correctAnswer: 'CH2=CHCl',
-    explanation: 'PVC: nCH2=CHCl → (-CH2-CHCl-)n. Vinyl clorua CH2=CHCl là monome.',
-    hint: 'Vinyl clorua có chứa Cl.'
-  },
-  {
-    id: 20,
-    category: 'phanungtonghoip',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Trùng hợp 5,6 kg etilen với hiệu suất 80%, khối lượng PE thu được là...',
-    options: ['4,48 kg', '5,6 kg', '7 kg', '4 kg'],
-    correctAnswer: '4,48 kg',
-    explanation: 'Phản ứng trùng hợp không giảm khối lượng (M sản phẩm = M nguyên liệu). m PE = 5,6 × 80% = 4,48 kg.',
-    hint: 'Khối lượng bảo toàn theo hiệu suất.'
-  },
-  {
-    id: 21,
-    category: 'phanungtonghoip',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Cao su buna được trùng hợp từ monome ___',
-    correctAnswer: 'buta-1,3-đien',
-    acceptedAnswers: ['buta-1,3-đien', 'butadien', 'buta-1,3-dien', 'CH2=CH-CH=CH2'],
-    explanation: 'Cao su buna: nCH2=CH-CH=CH2 → (-CH2-CH=CH-CH2-)n (trùng hợp 1,4).',
-    hint: 'Có 4 cacbon và 2 liên kết đôi.'
-  },
-  {
-    id: 22,
-    category: 'phanungtonghoip',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Đồng trùng hợp buta-1,3-đien với stiren tạo thành...',
-    options: ['Cao su buna-S', 'Cao su buna', 'Cao su buna-N', 'Cao su isopren'],
-    correctAnswer: 'Cao su buna-S',
-    explanation: 'Cao su buna-S: Buta-1,3-đien + Stiren → Cao su buna-S (S = Styren). Có tính đàn hồi tốt, dùng làm lốp xe.',
-    hint: 'S = Stiren.'
-  },
-  {
-    id: 23,
-    category: 'phanungtonghoip',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Đồng trùng hợp buta-1,3-đien với acrilonitrin tạo thành...',
-    options: ['Cao su buna-N', 'Cao su buna-S', 'Cao su buna', 'PVC'],
-    correctAnswer: 'Cao su buna-N',
-    explanation: 'Cao su buna-N: Buta-1,3-đien + Acrilonitrin (CH2=CH-CN) → Cao su buna-N. Bền với dầu mỡ.',
-    hint: 'N = Nitril (CN).'
-  },
-  {
-    id: 24,
-    category: 'phanungtonghoip',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Tơ nilon-6 được tổng hợp bằng cách nào?',
-    options: ['Trùng ngưng axit ε-aminocaproic', 'Trùng hợp caprolactam', 'Cả A và B đều đúng', 'Trùng hợp etilen'],
-    correctAnswer: 'Cả A và B đều đúng',
-    explanation: 'Nilon-6 có thể điều chế bằng trùng ngưng axit ε-aminocaproic hoặc trùng hợp mở vòng caprolactam.',
-    hint: 'Có 2 cách điều chế.'
-  },
-
-  // ========== CHẤT DẺO (11 câu) ==========
-  {
-    id: 25,
+    id: 5,
     category: 'chatdeo',
     type: 'multiple-choice',
     difficulty: 1,
@@ -328,18 +109,7 @@ const CHALLENGES = [
     hint: 'Đặc tính chính là dẻo.'
   },
   {
-    id: 26,
-    category: 'chatdeo',
-    type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Polietilen (PE) được dùng để làm...',
-    options: ['Túi đựng, màng mỏng', 'Lốp xe', 'Vải may quần áo', 'Đệm mút'],
-    correctAnswer: 'Túi đựng, màng mỏng',
-    explanation: 'PE mềm dẻo, trong suốt, không thấm nước, dùng làm túi nilon, màng bọc thực phẩm...',
-    hint: 'Sản phẩm phổ biến hàng ngày.'
-  },
-  {
-    id: 27,
+    id: 6,
     category: 'chatdeo',
     type: 'multiple-choice',
     difficulty: 2,
@@ -349,98 +119,9 @@ const CHALLENGES = [
     explanation: 'PVC cách điện, cách nhiệt, bền hóa học với nhiều axit, kiềm. Dùng làm ống nước, vỏ dây điện...',
     hint: 'Ứng dụng trong điện.'
   },
+  // ========== TƠ VÀ CAO SU ==========
   {
-    id: 28,
-    category: 'chatdeo',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Polipropilen (PP) được trùng hợp từ monome ___',
-    correctAnswer: 'propilen',
-    acceptedAnswers: ['propilen', 'propen', 'CH2=CHCH3', 'CH3CH=CH2'],
-    explanation: 'PP: nCH2=CH-CH3 → (-CH2-CH(CH3)-)n. Propilen là monome.',
-    hint: 'Có 3 cacbon.'
-  },
-  {
-    id: 29,
-    category: 'chatdeo',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Polistiren (PS) được dùng để làm...',
-    options: ['Hộp xốp, đồ chơi, dụng cụ văn phòng', 'Túi nilon', 'Lốp xe', 'Vải may mặc'],
-    correctAnswer: 'Hộp xốp, đồ chơi, dụng cụ văn phòng',
-    explanation: 'PS cứng, trong suốt, dễ tạo hình. Xốp PS dùng làm hộp đựng thức ăn, đồ chơi, dụng cụ văn phòng...',
-    hint: 'Xốp trắng quen thuộc.'
-  },
-  {
-    id: 30,
-    category: 'chatdeo',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Teflon (PTFE) có đặc tính nổi bật là...',
-    options: ['Bền nhiệt, chống dính', 'Đàn hồi tốt', 'Dẫn điện', 'Tan trong nước'],
-    correctAnswer: 'Bền nhiệt, chống dính',
-    explanation: 'Teflon (-CF2-CF2-)n rất bền nhiệt (đến 300°C), chống dính tuyệt đối, dùng phủ chảo, nồi không dính.',
-    hint: 'Chảo không dính.'
-  },
-  {
-    id: 31,
-    category: 'chatdeo',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Nhựa bakelit được tổng hợp từ ___ và fomanđehit',
-    correctAnswer: 'phenol',
-    acceptedAnswers: ['phenol', 'C6H5OH'],
-    explanation: 'Nhựa bakelit = Phenol + Fomanđehit (trùng ngưng). Là nhựa nhiệt rắn, cứng, cách điện.',
-    hint: 'Hợp chất có vòng benzen và OH.'
-  },
-  {
-    id: 32,
-    category: 'chatdeo',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Nhựa nào sau đây là nhựa nhiệt rắn?',
-    options: ['Nhựa bakelit', 'PE', 'PP', 'PS'],
-    correctAnswer: 'Nhựa bakelit',
-    explanation: 'Nhựa bakelit có cấu trúc mạng không gian, khi đốt nóng không mềm mà phân hủy. PE, PP, PS là nhựa nhiệt dẻo.',
-    hint: 'Không thể tái chế bằng nấu chảy.'
-  },
-  {
-    id: 33,
-    category: 'chatdeo',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'PMMA (thủy tinh hữu cơ) được trùng hợp từ monome nào?',
-    options: ['Metyl metacrylat', 'Etilen', 'Vinyl clorua', 'Stiren'],
-    correctAnswer: 'Metyl metacrylat',
-    explanation: 'PMMA (Plexiglass): nCH2=C(CH3)COOCH3 → (-CH2-C(CH3)(COOCH3)-)n. Trong suốt, cứng, nhẹ.',
-    hint: 'Có nhóm este -COOCH3.'
-  },
-  {
-    id: 34,
-    category: 'chatdeo',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Nhựa PET (polyetylen terephthalat) được dùng chủ yếu để làm...',
-    options: ['Chai nước giải khát', 'Túi nilon', 'Ống nước', 'Vỏ dây điện'],
-    correctAnswer: 'Chai nước giải khát',
-    explanation: 'PET trong suốt, bền, an toàn thực phẩm. Dùng làm chai nước, hộp đựng thực phẩm. Có thể tái chế.',
-    hint: 'Chai nhựa trong suốt phổ biến.'
-  },
-  {
-    id: 35,
-    category: 'chatdeo',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Loại nhựa nào có thể phân hủy sinh học?',
-    options: ['PLA (axit polilactic)', 'PE', 'PVC', 'PS'],
-    correctAnswer: 'PLA (axit polilactic)',
-    explanation: 'PLA được tổng hợp từ axit lactic (từ ngô, sắn), có thể phân hủy sinh học. PE, PVC, PS khó phân hủy.',
-    hint: 'Thân thiện môi trường.'
-  },
-
-  // ========== TƠ VÀ CAO SU (10 câu) ==========
-  {
-    id: 36,
+    id: 7,
     category: 'tovaocaosu',
     type: 'multiple-choice',
     difficulty: 1,
@@ -451,40 +132,7 @@ const CHALLENGES = [
     hint: 'Dùng dệt vải.'
   },
   {
-    id: 37,
-    category: 'tovaocaosu',
-    type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Tơ nào sau đây là tơ thiên nhiên?',
-    options: ['Tơ tằm', 'Tơ nilon', 'Tơ capron', 'Tơ visco'],
-    correctAnswer: 'Tơ tằm',
-    explanation: 'Tơ tằm do tằm nhả ra, là protein (fibroin), thuộc loại tơ thiên nhiên. Nilon, capron là tơ tổng hợp.',
-    hint: 'Từ con tằm.'
-  },
-  {
-    id: 38,
-    category: 'tovaocaosu',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Tơ visco thuộc loại...',
-    options: ['Tơ bán tổng hợp (nhân tạo)', 'Tơ thiên nhiên', 'Tơ tổng hợp', 'Tơ hóa học'],
-    correctAnswer: 'Tơ bán tổng hợp (nhân tạo)',
-    explanation: 'Tơ visco được điều chế từ xenlulozơ (thiên nhiên) qua xử lý hóa học, nên là tơ bán tổng hợp.',
-    hint: 'Nguyên liệu từ gỗ.'
-  },
-  {
-    id: 39,
-    category: 'tovaocaosu',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Tơ nilon-6,6 được trùng ngưng từ hexametylenđiamin và axit ___',
-    correctAnswer: 'ađipic',
-    acceptedAnswers: ['ađipic', 'adipic', 'axit adipic', 'axit ađipic'],
-    explanation: 'Nilon-6,6: H2N-(CH2)6-NH2 + HOOC-(CH2)4-COOH → (-NH-(CH2)6-NH-CO-(CH2)4-CO-)n + 2nH2O',
-    hint: 'Axit 6 cacbon.'
-  },
-  {
-    id: 40,
+    id: 8,
     category: 'tovaocaosu',
     type: 'multiple-choice',
     difficulty: 2,
@@ -493,63 +141,57 @@ const CHALLENGES = [
     correctAnswer: 'Isopren',
     explanation: 'Cao su thiên nhiên: (-CH2-C(CH3)=CH-CH2-)n. Monome là isopren CH2=C(CH3)-CH=CH2.',
     hint: 'Có nhóm CH3 trong mắt xích.'
-  },
-  {
-    id: 41,
-    category: 'tovaocaosu',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Cao su lưu hóa có đặc điểm gì so với cao su thô?',
-    options: ['Đàn hồi tốt hơn, bền hơn', 'Mềm hơn', 'Dễ tan trong xăng', 'Kém bền nhiệt'],
-    correctAnswer: 'Đàn hồi tốt hơn, bền hơn',
-    explanation: 'Lưu hóa cao su (đun với S): tạo cầu nối -S-S- giữa các mạch, tăng tính đàn hồi, bền nhiệt, bền với dung môi.',
-    hint: 'Xử lý với lưu huỳnh.'
-  },
-  {
-    id: 42,
-    category: 'tovaocaosu',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Quá trình đun nóng cao su với lưu huỳnh gọi là quá trình ___',
-    correctAnswer: 'lưu hóa',
-    acceptedAnswers: ['lưu hóa', 'vulcanization', 'lưu hoá'],
-    explanation: 'Lưu hóa: Cao su + S (t°, p) → Cao su lưu hóa có cầu nối -S-S-.',
-    hint: 'Tên liên quan đến lưu huỳnh.'
-  },
-  {
-    id: 43,
-    category: 'tovaocaosu',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Tơ lapsan (PET fiber) thuộc loại...',
-    options: ['Tơ polieste', 'Tơ poliamit', 'Tơ vinylic', 'Tơ xenlulozơ'],
-    correctAnswer: 'Tơ polieste',
-    explanation: 'Tơ lapsan là dạng sợi của PET (polyetylen terephthalat), thuộc loại tơ polieste do có liên kết este.',
-    hint: 'Cùng loại với chai nhựa PET.'
-  },
-  {
-    id: 44,
-    category: 'tovaocaosu',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Tơ nitron (olon) được trùng hợp từ monome nào?',
-    options: ['Acrilonitrin', 'Caprolactam', 'Vinyl clorua', 'Metyl metacrylat'],
-    correctAnswer: 'Acrilonitrin',
-    explanation: 'Tơ nitron: nCH2=CH-CN → (-CH2-CH(CN)-)n. Bền, giữ nhiệt, dùng dệt áo len, chăn...',
-    hint: 'Có nhóm -CN (nitril).'
-  },
-  {
-    id: 45,
-    category: 'tovaocaosu',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Sợi cacbon (carbon fiber) có đặc tính nổi bật là...',
-    options: ['Nhẹ, cứng, chịu nhiệt cao', 'Mềm, đàn hồi', 'Dẫn điện kém', 'Tan trong nước'],
-    correctAnswer: 'Nhẹ, cứng, chịu nhiệt cao',
-    explanation: 'Sợi cacbon rất nhẹ nhưng cứng và bền, chịu nhiệt tốt. Dùng trong hàng không, xe đua, dụng cụ thể thao cao cấp.',
-    hint: 'Vật liệu cao cấp.'
   }
 ];
+
+// ================== PROGRESS WATERMARK ==================
+function ProgressWatermark({ categoryProgress }) {
+  const completedCount = Object.values(categoryProgress).filter(p => p >= 80).length;
+  return (
+    <div className="progress-watermark">
+      <div className="watermark-title">
+        <Trophy className="w-5 h-5 text-yellow-500" />
+        <span>Tiến độ các giai đoạn</span>
+      </div>
+      <div className="watermark-grid">
+        {CATEGORIES.map(cat => {
+          const Icon = cat.icon;
+          const total = FALLBACK_CHALLENGES.filter(c => c.category === cat.id).length;
+          const percentage = categoryProgress[cat.id] || 0;
+          const isComplete = percentage >= 80;
+          const questionsCompleted = Math.round((percentage / 100) * total);
+          return (
+            <div key={cat.id} className={`watermark-item ${isComplete ? 'completed' : ''}`}>
+              <div className="watermark-icon" style={{ backgroundColor: isComplete ? '#10b981' : cat.color }}>
+                <Icon className="w-4 h-4 text-white" />
+                {isComplete && <div className="complete-badge">✓</div>}
+              </div>
+              <div className="watermark-info">
+                <div className="watermark-name">{cat.name}</div>
+                <div className="watermark-progress-bar">
+                  <div className="watermark-progress-fill" style={{ width: `${percentage}%`, backgroundColor: isComplete ? '#10b981' : cat.color }} />
+                </div>
+                <div className="watermark-stats">
+                  <span className="watermark-percentage">{percentage}%</span>
+                  <span className="watermark-count">{questionsCompleted}/{total}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="watermark-total">
+        <div className="total-label">Tổng tiến độ:</div>
+        <div className="total-progress-bar">
+          <div className="total-progress-fill" style={{ width: `${Math.round((completedCount / CATEGORIES.length) * 100)}%` }} />
+        </div>
+        <div className="total-stats">
+          {completedCount}/{CATEGORIES.length} chủ đề ({Math.round((completedCount / CATEGORIES.length) * 100)}%)
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const Bai04_Polime = () => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -563,9 +205,28 @@ const Bai04_Polime = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
-  const [completedCategories, setCompletedCategories] = useState([]);
+  const [categoryProgress, setCategoryProgress] = useState({});
   const [highScore, setHighScore] = useState(0);
   const [hasStartedNewGame, setHasStartedNewGame] = useState(false);
+  const [gameInProgress, setGameInProgress] = useState(false);
+  const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+
+  // ========== AI QUESTIONS HOOK ==========
+  const { 
+    questions: aiQuestions, 
+    loading: aiLoading, 
+    error: aiError, 
+    refetch: refetchAI,
+    clearCache: clearAICache 
+  } = useAIQuestions('polime_12', { autoFetch: true, useCache: true });
+
+  const CHALLENGES = useMemo(() => {
+    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
+    return FALLBACK_CHALLENGES;
+  }, [aiQuestions]);
+
+  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('polime_12', {
     challengeId: 4,
@@ -586,31 +247,40 @@ const Bai04_Polime = () => {
 
   // Load saved progress
   useEffect(() => {
-    if (savedProgress && !hasStartedNewGame) {
-      if (savedProgress.savedCompletedCategories) {
-        setCompletedCategories(savedProgress.savedCompletedCategories);
+    if (savedProgress && !hasStartedNewGame && !gameInProgress) {
+      if (savedProgress.savedCategoryProgress) {
+        setCategoryProgress(savedProgress.savedCategoryProgress);
       }
       if (savedProgress.savedHighScore) {
         setHighScore(savedProgress.savedHighScore);
+      }
+      if (savedProgress.savedTotalCorrectAnswers) {
+        setTotalCorrectAnswers(savedProgress.savedTotalCorrectAnswers);
+      }
+      if (savedProgress.savedTotalScore) {
+        setTotalScore(savedProgress.savedTotalScore);
       }
       
       if (savedProgress.category && !showResult && !activeCategory) {
         setShowResumeDialog(true);
       }
     }
-  }, [savedProgress, showResult, activeCategory, hasStartedNewGame]);
+  }, [savedProgress, showResult, activeCategory, hasStartedNewGame, gameInProgress]);
 
   const handleResume = () => {
     if (savedProgress) {
-      const { category, index, currentScore, currentStreak, savedCompletedCategories, savedHighScore } = savedProgress;
+      const { category, index, currentScore, currentStreak, savedCategoryProgress, savedHighScore, savedTotalCorrectAnswers, savedTotalScore } = savedProgress;
       setActiveCategory(category);
       setCurrentQuestionIndex(index || 0);
       setScore(currentScore || 0);
       setStreak(currentStreak || 0);
-      setCompletedCategories(savedCompletedCategories || []);
+      setCategoryProgress(savedCategoryProgress || {});
       setHighScore(savedHighScore || 0);
+      setTotalCorrectAnswers(savedTotalCorrectAnswers || 0);
+      setTotalScore(savedTotalScore || 0);
       setShowResumeDialog(false);
       setIsTimerActive(true);
+      setGameInProgress(true);
     }
   };
 
@@ -633,6 +303,11 @@ const Bai04_Polime = () => {
     setTimeLeft(30);
     setIsTimerActive(false);
     setHasStartedNewGame(true);
+    setTotalCorrectAnswers(0);
+    setTotalScore(0);
+    setCategoryProgress({});
+    setIsCompleted(false);
+    setGameInProgress(false);
   };
 
   // Timer logic
@@ -667,6 +342,7 @@ const Bai04_Polime = () => {
     setStreak(0);
     setTimeLeft(30);
     setIsTimerActive(true);
+    setGameInProgress(true);
   };
 
   const handleAnswerSubmit = (answer) => {
@@ -681,7 +357,9 @@ const Bai04_Polime = () => {
     setIsTimerActive(false);
 
     if (isRight) {
-      const points = Math.round((10 + currentQuestion.difficulty * 5) * (1 + timeLeft / 60));
+      // Fixed scoring: 10 base + difficulty bonus, capped at 20 max per question
+      const basePoints = 10 + currentQuestion.difficulty * 3;
+      const points = Math.min(20, basePoints);
       setScore(prev => prev + points);
       setStreak(prev => prev + 1);
     } else {
@@ -693,8 +371,10 @@ const Bai04_Polime = () => {
       index: currentQuestionIndex,
       currentScore: score + (isRight ? 10 : 0),
       currentStreak: isRight ? streak + 1 : 0,
-      savedCompletedCategories: completedCategories,
-      savedHighScore: highScore
+      savedCategoryProgress: categoryProgress,
+      savedHighScore: highScore,
+      savedTotalCorrectAnswers: totalCorrectAnswers,
+      savedTotalScore: totalScore
     });
   };
 
@@ -716,37 +396,45 @@ const Bai04_Polime = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = Math.round((score / maxScore) * 100);
+    const percentage = Math.min(100, Math.round((score / maxScore) * 100));
+    const categoryCorrectAnswers = Math.round(score / 15);
     
-    const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
-      ? [...completedCategories, activeCategory]
-      : completedCategories;
+    const newCategoryProgress = {
+      ...categoryProgress,
+      [activeCategory]: Math.max(categoryProgress[activeCategory] || 0, percentage)
+    };
+    const completedCount = Object.values(newCategoryProgress).filter(p => p >= 80).length;
     const newHighScore = Math.max(highScore, score);
+    const newTotalCorrectAnswers = totalCorrectAnswers + categoryCorrectAnswers;
+    const newTotalScore = totalScore + score;
     
-    if (percentage >= 80 && !completedCategories.includes(activeCategory)) {
-      setCompletedCategories(newCompletedCategories);
-    }
+    setCategoryProgress(newCategoryProgress);
     if (score > highScore) {
       setHighScore(newHighScore);
     }
+    setTotalCorrectAnswers(newTotalCorrectAnswers);
+    setTotalScore(newTotalScore);
     
     saveProgress({
-      savedCompletedCategories: newCompletedCategories,
-      savedHighScore: newHighScore
+      savedCategoryProgress: newCategoryProgress,
+      savedHighScore: newHighScore,
+      savedTotalCorrectAnswers: newTotalCorrectAnswers,
+      savedTotalScore: newTotalScore
     });
 
-    // Lưu kết quả khi hoàn thành category
-    if (!isCompleted) {
+    if (completedCount === CATEGORIES.length && !isCompleted) {
       setIsCompleted(true);
-      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      const totalMaxScore = CHALLENGES.length * 20;
+      const totalPercentage = Math.round((newTotalScore / totalMaxScore) * 100);
+      const stars = totalPercentage >= 80 ? 3 : totalPercentage >= 50 ? 2 : 1;
       completeChallenge({
-        score,
-        maxScore,
-        percentage,
+        score: newTotalScore,
+        maxScore: totalMaxScore,
+        percentage: totalPercentage,
         stars,
         timeSpent: Math.floor((Date.now() - startTime) / 1000),
-        correctAnswers: Math.round(score / 10),
-        totalQuestions: filteredQuestions.length
+        correctAnswers: newTotalCorrectAnswers,
+        totalQuestions: CHALLENGES.length
       });
     }
   };
@@ -790,13 +478,16 @@ const Bai04_Polime = () => {
             <div className="stats-bar-polime mb-8">
               <div className="stat-item-polime">
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
-                <span>Đã hoàn thành: <strong>{completedCategories.length || 0}/{CATEGORIES.length}</strong></span>
+                <span>Đã hoàn thành: <strong>{Object.values(categoryProgress).filter(p => p >= 80).length}/{CATEGORIES.length}</strong></span>
               </div>
               <div className="stat-item-polime">
                 <Award className="w-5 h-5 text-yellow-400" />
                 <span>Điểm cao nhất: <strong>{highScore || 0}</strong></span>
               </div>
             </div>
+
+            {/* Progress Watermark */}
+            <ProgressWatermark categoryProgress={categoryProgress} />
 
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
@@ -806,7 +497,9 @@ const Bai04_Polime = () => {
             <div className="category-grid-polime">
               {CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
-                const isCompleted = completedCategories.includes(cat.id);
+                const catPercentage = categoryProgress[cat.id] || 0;
+                const isCompleted = catPercentage >= 80;
+                const hasProgress = catPercentage > 0 && catPercentage < 80;
                 
                 return (
                   <div 
@@ -828,6 +521,7 @@ const Bai04_Polime = () => {
                           {CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi
                         </span>
                         {isCompleted && <CheckCircle2 className="w-5 h-5 text-green-400" />}
+                        {hasProgress && <span className="text-xs font-semibold px-2 py-1 rounded bg-yellow-500/20 text-yellow-300">{catPercentage}%</span>}
                       </div>
                     </div>
                   </div>
@@ -970,7 +664,7 @@ const Bai04_Polime = () => {
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
                   <div className="text-sm text-indigo-200 mb-1">Đúng</div>
                   <div className="text-2xl font-bold text-indigo-400">
-                    {Math.round((score / (filteredQuestions.length * 20)) * 100)}%
+                    {Math.min(100, Math.round((score / (filteredQuestions.length * 20)) * 100))}%
                   </div>
                 </div>
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
@@ -990,7 +684,19 @@ const Bai04_Polime = () => {
                   Làm lại
                 </button>
                 <button
-                  onClick={() => setActiveCategory(null)}
+                  onClick={() => {
+                    setShowResult(false);
+                    setActiveCategory(null);
+                    setCurrentQuestionIndex(0);
+                    setScore(0);
+                    setSelectedAnswer('');
+                    setIsCorrect(null);
+                    setStreak(0);
+                    setShowExplanation(false);
+                    setTimeLeft(30);
+                    setIsTimerActive(false);
+                    setGameInProgress(false);
+                  }}
                   className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-500/30"
                 >
                   Chủ đề khác

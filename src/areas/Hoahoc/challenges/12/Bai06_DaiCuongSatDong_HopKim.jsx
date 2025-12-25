@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Hammer, Globe, Shield, Atom,
-  Clock, Target, AlertTriangle, Flame
+  Clock, Target, AlertTriangle, Flame,
+  RefreshCw, Sparkles, Loader2, WifiOff
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai06_DaiCuongSatDong_HopKim.css';
 
@@ -18,7 +20,8 @@ const CATEGORIES = [
   { id: 'phanung', name: '⚗️ Chuỗi phản ứng & Nhận biết', icon: FlaskConical, color: '#db2777', description: 'Nhận biết ion, chuỗi phản ứng hóa học của Sắt và Đồng', bgGradient: 'from-pink-600 to-rose-500', emoji: '🧪' }
 ];
 
-const CHALLENGES = [
+// Fallback questions khi không có AI
+const FALLBACK_CHALLENGES = [
   // ===== SẮT (12 câu) =====
   { id: 1, category: 'sat', type: 'multiple-choice', difficulty:1, question: 'Sắt nguyên chất gọi là gì trong công nghiệp?', options: ['Sắt tinh khiết', 'Sắt xốp', 'Fe tinh', 'Sắt bọt'], correctAnswer: 'Sắt tinh khiết', explanation: 'Sắt tinh khiết là sắt gần như không chứa cacbon; thép và gang là hợp kim chứa cacbon.', hint: 'Không chứa cacbon.'},
   { id: 2, category: 'sat', type: 'multiple-choice', difficulty:1, question: 'Thép khác gang ở điểm nào chính?', options: ['Hàm lượng cacbon thấp hơn', 'Hàm lượng cacbon cao hơn', 'Thép có nhiều tạp chất hơn', 'Gang có ít cacbon'], correctAnswer: 'Hàm lượng cacbon thấp hơn', explanation: 'Thép có hàm lượng C < 2%, gang có 2-5% C.', hint: 'So sánh %C.'},
@@ -129,6 +132,55 @@ const GAME_CONFIG = {
   PASS_PERCENTAGE: 70         // % để pass chủ đề
 };
 
+// ================== PROGRESS WATERMARK ==================
+function ProgressWatermark({ categoryProgress }) {
+  const completedCount = Object.values(categoryProgress).filter(p => p >= 80).length;
+  const totalProgress = CATEGORIES.length > 0 ? Math.round((Object.values(categoryProgress).reduce((sum, p) => sum + p, 0) / (CATEGORIES.length * 100)) * 100) : 0;
+  return (
+    <div className="progress-watermark">
+      <div className="watermark-title">
+        <Trophy className="w-5 h-5 text-yellow-500" />
+        <span>Tiến độ các giai đoạn</span>
+      </div>
+      <div className="watermark-grid">
+        {CATEGORIES.map(cat => {
+          const Icon = cat.icon;
+          const total = CHALLENGES.filter(c => c.category === cat.id).length;
+          const percentage = categoryProgress[cat.id] || 0;
+          const isComplete = percentage >= 80;
+          return (
+            <div key={cat.id} className={`watermark-item ${isComplete ? 'completed' : percentage > 0 ? 'in-progress' : ''}`}>
+              <div className="watermark-icon" style={{ backgroundColor: isComplete ? '#10b981' : percentage > 0 ? '#f59e0b' : cat.color }}>
+                <Icon className="w-4 h-4 text-white" />
+                {isComplete && <div className="complete-badge">✓</div>}
+              </div>
+              <div className="watermark-info">
+                <div className="watermark-name">{cat.name}</div>
+                <div className="watermark-progress-bar">
+                  <div className="watermark-progress-fill" style={{ width: `${percentage}%`, backgroundColor: isComplete ? '#10b981' : percentage > 0 ? '#f59e0b' : cat.color }} />
+                </div>
+                <div className="watermark-stats">
+                  <span className="watermark-percentage">{percentage}%</span>
+                  <span className="watermark-count">{Math.round(total * percentage / 100)}/{total}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="watermark-total">
+        <div className="total-label">Tổng tiến độ:</div>
+        <div className="total-progress-bar">
+          <div className="total-progress-fill" style={{ width: `${totalProgress}%` }} />
+        </div>
+        <div className="total-stats">
+          {completedCount}/{CATEGORIES.length} chủ đề ({totalProgress}%)
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const Bai06_DaiCuongSatDong_HopKim = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -141,12 +193,31 @@ const Bai06_DaiCuongSatDong_HopKim = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
-  const [completedCategories, setCompletedCategories] = useState([]);
+  const [categoryProgress, setCategoryProgress] = useState({});
   const [highScore, setHighScore] = useState(0);
   const [totalCorrect, setTotalCorrect] = useState(0);
   const [bonusPoints, setBonusPoints] = useState(0);
   const [showBonusAnimation, setShowBonusAnimation] = useState(false);
   const [hasStartedNewGame, setHasStartedNewGame] = useState(false);
+  const [gameInProgress, setGameInProgress] = useState(false);
+  const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+
+  // ========== AI QUESTIONS HOOK ==========
+  const { 
+    questions: aiQuestions, 
+    loading: aiLoading, 
+    error: aiError, 
+    refetch: refetchAI,
+    clearCache: clearAICache 
+  } = useAIQuestions('sat_dong_hop_kim_12', { autoFetch: true, useCache: true });
+
+  const CHALLENGES = useMemo(() => {
+    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
+    return FALLBACK_CHALLENGES;
+  }, [aiQuestions]);
+
+  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('sat_dong_hopkim_12', { challengeId: 6, programId: 'chemistry', grade: 12 });
 
@@ -158,29 +229,32 @@ const Bai06_DaiCuongSatDong_HopKim = () => {
   const currentQuestion = filteredQuestions[currentQuestionIndex];
 
   useEffect(() => {
-    if (savedProgress && !hasStartedNewGame) {
-      if (savedProgress.savedCompletedCategories) setCompletedCategories(savedProgress.savedCompletedCategories);
+    if (savedProgress && !hasStartedNewGame && !gameInProgress) {
+      if (savedProgress.savedCategoryProgress) setCategoryProgress(savedProgress.savedCategoryProgress);
       if (savedProgress.savedHighScore) setHighScore(savedProgress.savedHighScore);
+      if (savedProgress.savedTotalCorrectAnswers) setTotalCorrectAnswers(savedProgress.savedTotalCorrectAnswers);
+      if (savedProgress.savedTotalScore) setTotalScore(savedProgress.savedTotalScore);
       if (savedProgress.category && !showResult && !activeCategory) setShowResumeDialog(true);
     }
-  }, [savedProgress, showResult, activeCategory, hasStartedNewGame]);
+  }, [savedProgress, showResult, activeCategory, hasStartedNewGame, gameInProgress]);
 
   const handleResume = () => {
     if (savedProgress) {
-      const { category, index, currentScore, currentStreak, savedCompletedCategories, savedHighScore } = savedProgress;
-      setActiveCategory(category); setCurrentQuestionIndex(index || 0); setScore(currentScore || 0); setStreak(currentStreak || 0); setCompletedCategories(savedCompletedCategories || []); setHighScore(savedHighScore || 0); setShowResumeDialog(false); setIsTimerActive(true);
+      const { category, index, currentScore, currentStreak, savedCategoryProgress, savedHighScore, savedTotalCorrectAnswers, savedTotalScore, totalCorrect: savedTotalCorrect } = savedProgress;
+      setActiveCategory(category); setCurrentQuestionIndex(index || 0); setScore(currentScore || 0); setStreak(currentStreak || 0); setCategoryProgress(savedCategoryProgress || {}); setHighScore(savedHighScore || 0); setTotalCorrectAnswers(savedTotalCorrectAnswers || 0); setTotalScore(savedTotalScore || 0); setTotalCorrect(savedTotalCorrect || 0); setShowResumeDialog(false); setIsTimerActive(true); setGameInProgress(true);
     }
   };
 
-  const resetGame = () => { clearProgress(); setActiveCategory(null); setCurrentQuestionIndex(0); setScore(0); setShowResult(false); setSelectedAnswer(''); setIsCorrect(null); setStreak(0); setShowExplanation(false); setTimeLeft(30); setIsTimerActive(false); setTotalCorrect(0); setBonusPoints(0); setHasStartedNewGame(true); };
+  const resetGame = () => { clearProgress(); setActiveCategory(null); setCurrentQuestionIndex(0); setScore(0); setShowResult(false); setSelectedAnswer(''); setIsCorrect(null); setStreak(0); setShowExplanation(false); setTimeLeft(30); setIsTimerActive(false); setTotalCorrect(0); setBonusPoints(0); setHasStartedNewGame(true); setTotalCorrectAnswers(0); setTotalScore(0); setCategoryProgress({}); setIsCompleted(false); setGameInProgress(false); };
   const handleRestart = () => { setShowResumeDialog(false); clearProgress(); resetGame(); };
 
-  // Hàm tính điểm cải tiến
+  // Hàm tính điểm cải tiến - giới hạn tối đa 20 điểm/câu
   const calculatePoints = (difficulty, timeRemaining, currentStreak) => {
     const basePoints = GAME_CONFIG.BASE_POINTS + (difficulty * GAME_CONFIG.DIFFICULTY_MULTIPLIER);
     const timeBonus = Math.round(timeRemaining * GAME_CONFIG.TIME_BONUS_FACTOR);
     const streakBonus = Math.min(currentStreak * GAME_CONFIG.STREAK_BONUS, GAME_CONFIG.MAX_STREAK_BONUS);
-    return { basePoints, timeBonus, streakBonus, total: basePoints + timeBonus + streakBonus };
+    const total = Math.min(20, basePoints + timeBonus + streakBonus); // Cap at 20
+    return { basePoints, timeBonus, streakBonus, total };
   };
 
   // Lấy thời gian theo độ khó của câu hỏi
@@ -203,6 +277,7 @@ const Bai06_DaiCuongSatDong_HopKim = () => {
     setIsTimerActive(true); 
     setTotalCorrect(0);
     setBonusPoints(0);
+    setGameInProgress(true);
   };
 
   const handleAnswerSubmit = (answer) => {
@@ -233,9 +308,11 @@ const Bai06_DaiCuongSatDong_HopKim = () => {
       index: currentQuestionIndex, 
       currentScore: score + (isRight ? calculatePoints(currentQuestion.difficulty, timeLeft, streak).total : 0), 
       currentStreak: isRight ? streak + 1 : 0, 
-      savedCompletedCategories: completedCategories, 
+      savedCategoryProgress: categoryProgress, 
       savedHighScore: highScore,
-      totalCorrect: totalCorrect + (isRight ? 1 : 0)
+      totalCorrect: totalCorrect + (isRight ? 1 : 0),
+      savedTotalCorrectAnswers: totalCorrectAnswers,
+      savedTotalScore: totalScore
     });
   };
 
@@ -252,30 +329,34 @@ const Bai06_DaiCuongSatDong_HopKim = () => {
     } else { 
       setShowResult(true); 
       setIsTimerActive(false); 
-      const correctPercentage = Math.round((totalCorrect / filteredQuestions.length) * 100);
-      const newCompletedCategories = correctPercentage >= GAME_CONFIG.PASS_PERCENTAGE && !completedCategories.includes(activeCategory) 
-        ? [...completedCategories, activeCategory] 
-        : completedCategories; 
-      const newHighScore = Math.max(highScore, score); 
-      if (correctPercentage >= GAME_CONFIG.PASS_PERCENTAGE && !completedCategories.includes(activeCategory)) {
-        setCompletedCategories(newCompletedCategories);
-      }
-      if (score > highScore) setHighScore(newHighScore); 
-      saveProgress({ savedCompletedCategories: newCompletedCategories, savedHighScore: newHighScore, totalCorrect });
-      // Lưu kết quả khi hoàn thành
-      if (!isCompleted) {
+      const percentage = Math.round((totalCorrect / filteredQuestions.length) * 100);
+      const oldPercentage = categoryProgress[activeCategory] || 0;
+      const newCategoryProgress = { ...categoryProgress, [activeCategory]: Math.max(oldPercentage, percentage) };
+      const completedCount = Object.values(newCategoryProgress).filter(p => p >= 80).length;
+      const newHighScore = Math.max(highScore, score);
+      const newTotalCorrectAnswers = totalCorrectAnswers + totalCorrect;
+      const newTotalScore = totalScore + score;
+      
+      setCategoryProgress(newCategoryProgress);
+      if (score > highScore) setHighScore(newHighScore);
+      setTotalCorrectAnswers(newTotalCorrectAnswers);
+      setTotalScore(newTotalScore);
+      
+      saveProgress({ savedCategoryProgress: newCategoryProgress, savedHighScore: newHighScore, totalCorrect, savedTotalCorrectAnswers: newTotalCorrectAnswers, savedTotalScore: newTotalScore });
+      // Lưu kết quả khi hoàn thành tất cả categories
+      if (completedCount === CATEGORIES.length && !isCompleted) {
         setIsCompleted(true);
-        const maxScore = filteredQuestions.length * 20;
-        const percentage = Math.round((score / maxScore) * 100);
-        const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+        const totalMaxScore = CHALLENGES.length * 20;
+        const totalPercentage = Math.round((newTotalScore / totalMaxScore) * 100);
+        const stars = totalPercentage >= 80 ? 3 : totalPercentage >= 50 ? 2 : 1;
         completeChallenge({
-          score,
-          maxScore,
-          percentage,
+          score: newTotalScore,
+          maxScore: totalMaxScore,
+          percentage: totalPercentage,
           stars,
           timeSpent: Math.floor((Date.now() - startTime) / 1000),
-          correctAnswers: totalCorrect,
-          totalQuestions: filteredQuestions.length
+          correctAnswers: newTotalCorrectAnswers,
+          totalQuestions: CHALLENGES.length
         });
       }
     } 
@@ -303,20 +384,22 @@ const Bai06_DaiCuongSatDong_HopKim = () => {
         {!activeCategory ? (
           <div className="animate-fadeIn">
             <div className="stats-bar-kimloai mb-8">
-              <div className="stat-item-kimloai"><CheckCircle2 className="w-5 h-5 text-green-400" /><span>Đã hoàn thành: <strong>{completedCategories.length || 0}/{CATEGORIES.length}</strong></span></div>
+              <div className="stat-item-kimloai"><CheckCircle2 className="w-5 h-5 text-green-400" /><span>Đã hoàn thành: <strong>{Object.values(categoryProgress).filter(p => p >= 80).length}/{CATEGORIES.length}</strong></span></div>
               <div className="stat-item-kimloai"><Award className="w-5 h-5 text-yellow-400" /><span>Điểm cao nhất: <strong>{highScore || 0}</strong></span></div>
             </div>
+            {/* Progress Watermark */}
+            <ProgressWatermark categoryProgress={categoryProgress} />
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><Target className="w-6 h-6" />Chọn chủ đề thử thách</h2>
             <div className="category-grid-kimloai">
               {CATEGORIES.map(cat => {
-                const Icon = cat.icon; const isCompleted = completedCategories.includes(cat.id);
+                const Icon = cat.icon; const catPercentage = categoryProgress[cat.id] || 0; const isCompleted = catPercentage >= 80; const isInProgress = catPercentage > 0 && catPercentage < 80;
                 return (
                   <div key={cat.id} onClick={() => handleCategorySelect(cat.id)} className="category-card-kimloai group">
-                    <div className={`category-icon-wrapper-kimloai ${isCompleted ? 'bg-green-500/20 text-green-400' : ''}`} style={{ color: isCompleted ? undefined : cat.color }}><Icon className="w-8 h-8" /></div>
+                    <div className={`category-icon-wrapper-kimloai ${isCompleted ? 'bg-green-500/20 text-green-400' : isInProgress ? 'bg-yellow-500/20 text-yellow-400' : ''}`} style={{ color: isCompleted || isInProgress ? undefined : cat.color }}><Icon className="w-8 h-8" />{catPercentage > 0 && <span className={`absolute -top-1 -right-1 text-xs font-bold px-1.5 py-0.5 rounded-full ${isCompleted ? 'bg-green-500 text-white' : 'bg-yellow-500 text-black'}`}>{catPercentage}%</span>}</div>
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">{cat.name}</h3>
                       <p className="text-sm text-blue-200 mb-3">{cat.description}</p>
-                      <div className="flex items-center justify-between"><span className="text-xs font-semibold px-2 py-1 rounded bg-white/10 text-blue-200">{CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi</span>{isCompleted && <CheckCircle2 className="w-5 h-5 text-green-400" />}</div>
+                      <div className="flex items-center justify-between"><span className="text-xs font-semibold px-2 py-1 rounded bg-white/10 text-blue-200">{CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi</span>{isCompleted ? <CheckCircle2 className="w-5 h-5 text-green-400" /> : isInProgress && <span className="text-xs text-yellow-400">Đang học</span>}</div>
                     </div>
                   </div>
                 );
@@ -449,7 +532,19 @@ const Bai06_DaiCuongSatDong_HopKim = () => {
                 <button onClick={resetGame} className="flex items-center gap-2 px-6 py-3 bg-white/10 text-white rounded-xl font-bold hover:bg-white/20 transition-all hover:scale-105">
                   <RotateCcw className="w-5 h-5" />Làm lại
                 </button>
-                <button onClick={() => setActiveCategory(null)} className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 hover:scale-105">
+                <button onClick={() => {
+                    setShowResult(false);
+                    setActiveCategory(null);
+                    setCurrentQuestionIndex(0);
+                    setScore(0);
+                    setSelectedAnswer('');
+                    setIsCorrect(null);
+                    setStreak(0);
+                    setShowExplanation(false);
+                    setTimeLeft(30);
+                    setIsTimerActive(false);
+                    setGameInProgress(false);
+                  }} className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 hover:scale-105">
                   Chủ đề khác<ChevronRight className="w-5 h-5" />
                 </button>
               </div>

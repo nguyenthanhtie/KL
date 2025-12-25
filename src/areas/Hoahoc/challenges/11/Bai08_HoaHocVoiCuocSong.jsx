@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   Leaf, Battery, Layers, HeartPulse, Globe,
-  Clock, Target, AlertTriangle, Recycle
+  Clock, Target, AlertTriangle, Recycle,
+  RefreshCw, Sparkles, Loader2, WifiOff
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../../components/ResumeDialog';
+import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import './CSS/Bai08_HoaHocVoiCuocSong.css';
 
 // ================== DATA - HÓA HỌC VỚI CUỘC SỐNG ==================
@@ -46,7 +48,7 @@ const CATEGORIES = [
   }
 ];
 
-const CHALLENGES = [
+const FALLBACK_CHALLENGES = [
   // ========== HÓA HỌC & MÔI TRƯỜNG ==========
   {
     id: 1,
@@ -188,6 +190,55 @@ const CHALLENGES = [
   }
 ];
 
+// ================== PROGRESS WATERMARK ==================
+function ProgressWatermark({ categoryProgress, challenges }) {
+  const completedCount = Object.values(categoryProgress).filter(p => p >= 80).length;
+  return (
+    <div className="progress-watermark">
+      <div className="watermark-title">
+        <Trophy className="w-5 h-5 text-yellow-500" />
+        <span>Tiến độ các giai đoạn</span>
+      </div>
+      <div className="watermark-grid">
+        {CATEGORIES.map(cat => {
+          const Icon = cat.icon;
+          const total = challenges.filter(c => c.category === cat.id).length;
+          const percentage = categoryProgress[cat.id] || 0;
+          const isComplete = percentage >= 80;
+          const questionsCompleted = Math.round((percentage / 100) * total);
+          return (
+            <div key={cat.id} className={`watermark-item ${isComplete ? 'completed' : ''}`}>
+              <div className="watermark-icon" style={{ backgroundColor: isComplete ? '#10b981' : cat.color }}>
+                <Icon className="w-4 h-4 text-white" />
+                {isComplete && <div className="complete-badge">✓</div>}
+              </div>
+              <div className="watermark-info">
+                <div className="watermark-name">{cat.name}</div>
+                <div className="watermark-progress-bar">
+                  <div className="watermark-progress-fill" style={{ width: `${percentage}%`, backgroundColor: isComplete ? '#10b981' : cat.color }} />
+                </div>
+                <div className="watermark-stats">
+                  <span className="watermark-percentage">{percentage}%</span>
+                  <span className="watermark-count">{questionsCompleted}/{total}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="watermark-total">
+        <div className="total-label">Tổng tiến độ:</div>
+        <div className="total-progress-bar">
+          <div className="total-progress-fill" style={{ width: `${Math.round((completedCount / CATEGORIES.length) * 100)}%` }} />
+        </div>
+        <div className="total-stats">
+          {completedCount}/{CATEGORIES.length} chủ đề ({Math.round((completedCount / CATEGORIES.length) * 100)}%)
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const Bai08_HoaHocVoiCuocSong = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -200,14 +251,33 @@ const Bai08_HoaHocVoiCuocSong = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
-  const [completedCategories, setCompletedCategories] = useState([]);
+  const [categoryProgress, setCategoryProgress] = useState({});
   const [highScore, setHighScore] = useState(0);
+  const [gameInProgress, setGameInProgress] = useState(false);
+  const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
 
-  const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('hoa_hoc_voi_cuoc_song_11', {
+  const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('hoa_hoc_cuoc_song_11', {
     challengeId: 8,
     programId: 'chemistry',
     grade: 11
   });
+
+  // AI Questions Hook
+  const { 
+    questions: aiQuestions, 
+    loading: aiLoading, 
+    error: aiError, 
+    refetch: refetchAI,
+    clearCache: clearAICache 
+  } = useAIQuestions('hoa_hoc_cuoc_song_11', { autoFetch: true, useCache: true });
+
+  const CHALLENGES = useMemo(() => {
+    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
+    return FALLBACK_CHALLENGES;
+  }, [aiQuestions]);
+
+  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   // States for completion tracking
   const [startTime] = useState(() => Date.now());
@@ -222,31 +292,40 @@ const Bai08_HoaHocVoiCuocSong = () => {
 
   // Load saved progress
   useEffect(() => {
-    if (savedProgress) {
-      if (savedProgress.savedCompletedCategories) {
-        setCompletedCategories(savedProgress.savedCompletedCategories);
+    if (savedProgress && !gameInProgress) {
+      if (savedProgress.savedCategoryProgress) {
+        setCategoryProgress(savedProgress.savedCategoryProgress);
       }
       if (savedProgress.savedHighScore) {
         setHighScore(savedProgress.savedHighScore);
+      }
+      if (savedProgress.savedTotalCorrectAnswers) {
+        setTotalCorrectAnswers(savedProgress.savedTotalCorrectAnswers);
+      }
+      if (savedProgress.savedTotalScore) {
+        setTotalScore(savedProgress.savedTotalScore);
       }
       
       if (savedProgress.category && !showResult) {
         setShowResumeDialog(true);
       }
     }
-  }, [savedProgress, showResult]);
+  }, [savedProgress, showResult, gameInProgress]);
 
   const handleResume = () => {
     if (savedProgress) {
-      const { category, index, currentScore, currentStreak, savedCompletedCategories, savedHighScore } = savedProgress;
+      const { category, index, currentScore, currentStreak, savedCategoryProgress, savedHighScore, savedTotalCorrectAnswers, savedTotalScore } = savedProgress;
       setActiveCategory(category);
       setCurrentQuestionIndex(index || 0);
       setScore(currentScore || 0);
       setStreak(currentStreak || 0);
-      setCompletedCategories(savedCompletedCategories || []);
+      setCategoryProgress(savedCategoryProgress || {});
       setHighScore(savedHighScore || 0);
+      setTotalCorrectAnswers(savedTotalCorrectAnswers || 0);
+      setTotalScore(savedTotalScore || 0);
       setShowResumeDialog(false);
       setIsTimerActive(true);
+      setGameInProgress(true);
     }
   };
 
@@ -268,6 +347,11 @@ const Bai08_HoaHocVoiCuocSong = () => {
     setShowExplanation(false);
     setTimeLeft(30);
     setIsTimerActive(false);
+    setTotalCorrectAnswers(0);
+    setTotalScore(0);
+    setCategoryProgress({});
+    setIsCompleted(false);
+    setGameInProgress(false);
   };
 
   // Timer logic
@@ -302,6 +386,7 @@ const Bai08_HoaHocVoiCuocSong = () => {
     setStreak(0);
     setTimeLeft(30);
     setIsTimerActive(true);
+    setGameInProgress(true);
   };
 
   const handleAnswerSubmit = (answer) => {
@@ -316,7 +401,9 @@ const Bai08_HoaHocVoiCuocSong = () => {
     setIsTimerActive(false);
 
     if (isRight) {
-      const points = Math.round((10 + currentQuestion.difficulty * 5) * (1 + timeLeft / 60));
+      // Fixed scoring: 10 base + difficulty bonus, capped at 20 max per question
+      const basePoints = 10 + currentQuestion.difficulty * 3;
+      const points = Math.min(20, basePoints);
       setScore(prev => prev + points);
       setStreak(prev => prev + 1);
     } else {
@@ -328,8 +415,10 @@ const Bai08_HoaHocVoiCuocSong = () => {
       index: currentQuestionIndex,
       currentScore: score + (isRight ? 10 : 0),
       currentStreak: isRight ? streak + 1 : 0,
-      savedCompletedCategories: completedCategories,
-      savedHighScore: highScore
+      savedCategoryProgress: categoryProgress,
+      savedHighScore: highScore,
+      savedTotalCorrectAnswers: totalCorrectAnswers,
+      savedTotalScore: totalScore
     });
   };
 
@@ -351,37 +440,45 @@ const Bai08_HoaHocVoiCuocSong = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = Math.round((score / maxScore) * 100);
+    const percentage = Math.min(100, Math.round((score / maxScore) * 100));
+    const categoryCorrectAnswers = Math.round(score / 15);
     
-    const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
-      ? [...completedCategories, activeCategory]
-      : completedCategories;
+    const newCategoryProgress = {
+      ...categoryProgress,
+      [activeCategory]: Math.max(categoryProgress[activeCategory] || 0, percentage)
+    };
+    const completedCount = Object.values(newCategoryProgress).filter(p => p >= 80).length;
     const newHighScore = Math.max(highScore, score);
+    const newTotalCorrectAnswers = totalCorrectAnswers + categoryCorrectAnswers;
+    const newTotalScore = totalScore + score;
     
-    if (percentage >= 80 && !completedCategories.includes(activeCategory)) {
-      setCompletedCategories(newCompletedCategories);
-    }
+    setCategoryProgress(newCategoryProgress);
     if (score > highScore) {
       setHighScore(newHighScore);
     }
+    setTotalCorrectAnswers(newTotalCorrectAnswers);
+    setTotalScore(newTotalScore);
     
     saveProgress({
-      savedCompletedCategories: newCompletedCategories,
-      savedHighScore: newHighScore
+      savedCategoryProgress: newCategoryProgress,
+      savedHighScore: newHighScore,
+      savedTotalCorrectAnswers: newTotalCorrectAnswers,
+      savedTotalScore: newTotalScore
     });
 
-    // Lưu kết quả khi hoàn thành category
-    if (!isCompleted) {
+    if (completedCount === CATEGORIES.length && !isCompleted) {
       setIsCompleted(true);
-      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      const totalMaxScore = CHALLENGES.length * 20;
+      const totalPercentage = Math.round((newTotalScore / totalMaxScore) * 100);
+      const stars = totalPercentage >= 80 ? 3 : totalPercentage >= 50 ? 2 : 1;
       completeChallenge({
-        score,
-        maxScore,
-        percentage,
+        score: newTotalScore,
+        maxScore: totalMaxScore,
+        percentage: totalPercentage,
         stars,
         timeSpent: Math.floor((Date.now() - startTime) / 1000),
-        correctAnswers: Math.round(score / 10),
-        totalQuestions: filteredQuestions.length
+        correctAnswers: newTotalCorrectAnswers,
+        totalQuestions: CHALLENGES.length
       });
     }
   };
@@ -425,7 +522,7 @@ const Bai08_HoaHocVoiCuocSong = () => {
             <div className="stats-bar-life mb-8">
               <div className="stat-item-life">
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
-                <span>Đã hoàn thành: <strong>{completedCategories.length || 0}/{CATEGORIES.length}</strong></span>
+                <span>Đã hoàn thành: <strong>{Object.values(categoryProgress).filter(p => p >= 80).length}/{CATEGORIES.length}</strong></span>
               </div>
               <div className="stat-item-life">
                 <Award className="w-5 h-5 text-yellow-400" />
@@ -433,15 +530,51 @@ const Bai08_HoaHocVoiCuocSong = () => {
               </div>
             </div>
 
+            {/* Progress Watermark */}
+            <ProgressWatermark categoryProgress={categoryProgress} challenges={CHALLENGES} />
+
+            {/* AI Status Banner */}
+            {aiLoading && (
+              <div className="mb-6 p-4 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center gap-3">
+                <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+                <span className="text-blue-200">Đang tải câu hỏi AI...</span>
+              </div>
+            )}
+            {aiError && (
+              <div className="mb-6 p-4 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <WifiOff className="w-5 h-5 text-amber-400" />
+                  <span className="text-amber-200">Đang dùng câu hỏi dự phòng</span>
+                </div>
+                <button onClick={refetchAI} className="flex items-center gap-2 px-3 py-1 bg-amber-500/30 hover:bg-amber-500/40 rounded-lg text-amber-200 text-sm">
+                  <RefreshCw className="w-4 h-4" /> Thử lại
+                </button>
+              </div>
+            )}
+            {isUsingAI && !aiLoading && (
+              <div className="mb-6 p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Sparkles className="w-5 h-5 text-emerald-400" />
+                  <span className="text-emerald-200">Câu hỏi AI đã sẵn sàng ({aiQuestions.length} câu)</span>
+                </div>
+                <button onClick={() => { clearAICache(); refetchAI(); }} className="flex items-center gap-2 px-3 py-1 bg-emerald-500/30 hover:bg-emerald-500/40 rounded-lg text-emerald-200 text-sm">
+                  <RefreshCw className="w-4 h-4" /> Làm mới
+                </button>
+              </div>
+            )}
+
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Globe className="w-6 h-6" />
               Chọn chủ đề khám phá
+              {isUsingAI && <span className="ml-2 px-2 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-full flex items-center gap-1"><Sparkles className="w-3 h-3" /> AI</span>}
             </h2>
 
             <div className="category-grid-life">
               {CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
-                const isCompleted = completedCategories.includes(cat.id);
+                const catPercentage = categoryProgress[cat.id] || 0;
+                const isCompleted = catPercentage >= 80;
+                const hasProgress = catPercentage > 0 && catPercentage < 80;
                 
                 return (
                   <div 
@@ -462,6 +595,7 @@ const Bai08_HoaHocVoiCuocSong = () => {
                           {CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi
                         </span>
                         {isCompleted && <CheckCircle2 className="w-5 h-5 text-green-400" />}
+                        {hasProgress && <span className="text-xs font-semibold px-2 py-1 rounded bg-yellow-500/20 text-yellow-300">{catPercentage}%</span>}
                       </div>
                     </div>
                   </div>
@@ -604,7 +738,7 @@ const Bai08_HoaHocVoiCuocSong = () => {
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
                   <div className="text-sm text-orange-100 mb-1">Đúng</div>
                   <div className="text-2xl font-bold text-blue-400">
-                    {Math.round((score / (filteredQuestions.length * 20)) * 100)}%
+                    {Math.min(100, Math.round((score / (filteredQuestions.length * 20)) * 100))}%
                   </div>
                 </div>
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
@@ -624,7 +758,19 @@ const Bai08_HoaHocVoiCuocSong = () => {
                   Làm lại
                 </button>
                 <button
-                  onClick={() => setActiveCategory(null)}
+                  onClick={() => {
+                    setShowResult(false);
+                    setActiveCategory(null);
+                    setCurrentQuestionIndex(0);
+                    setScore(0);
+                    setSelectedAnswer('');
+                    setIsCorrect(null);
+                    setStreak(0);
+                    setShowExplanation(false);
+                    setTimeLeft(30);
+                    setIsTimerActive(false);
+                    setGameInProgress(false);
+                  }}
                   className="flex items-center gap-2 px-6 py-3 bg-orange-600 text-white rounded-xl font-bold hover:bg-orange-700 transition-colors shadow-lg shadow-orange-500/30"
                 >
                   Chủ đề khác

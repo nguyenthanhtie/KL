@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Button from '../../../components/ui/Button';
 import Card from '../../../components/ui/Card';
 import ProgressBar from '../../../components/ui/ProgressBar';
-import { Trophy, Lock, Clock, Award, CheckCircle2, Star } from 'lucide-react';
+import { Trophy, Lock, Clock, Award, CheckCircle2, Star, Sparkles, Loader2, Download, AlertCircle } from 'lucide-react';
 import api from '../../../config/api';
 import { useAuth } from '../../../contexts/AuthContext';
 
@@ -15,6 +15,93 @@ const AdvancedChallenge = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedGrade, setSelectedGrade] = useState(8);
+  const [aiDataLoading, setAiDataLoading] = useState({}); // Track AI data loading/generating state per challenge
+  const [aiDataReady, setAiDataReady] = useState({}); // Track which challenges have AI data ready
+  const [generatingProgress, setGeneratingProgress] = useState({}); // Track generating progress message
+
+  // Cache key prefix for localStorage (same as useAIQuestions hook)
+  const AI_CACHE_KEY_PREFIX = 'ai_questions_';
+  const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+  // Mapping từ challenge link slug sang AI lesson ID (defined early for use in checkLocalStorageCache)
+  const SLUG_TO_AI_LESSON = {
+    // Lớp 11
+    'can-bang-phan-ung': 'can_bang_phan_ung_11',
+    'nito-luu-huynh': 'nito_luu_huynh_11',
+    'dai-cuong-hoa-huu-co': 'dai_cuong_hoa_huu_co_11',
+    'hidrocacbon-11': 'hidrocacbon_11',
+    'dan-xuat-halogen-ancol-phenol': 'dan_xuat_halogen_ancol_phenol_11',
+    'hop-chat-carbonyl-carboxylic': 'hop_chat_carbonyl_carboxylic_11',
+    'hoa-hoc-voi-cuoc-song': 'hoa_hoc_cuoc_song_11',
+    'hoa-hoc-cuoc-song-11': 'hoa_hoc_cuoc_song_11',
+    // Lớp 12
+    'este-lipit': 'este_lipit_12',
+    'cacbohidrat': 'cacbohidrat_12',
+    'amin-aminoaxit-protein': 'amin_aminoaxit_protein_12',
+    'polime': 'polime_12',
+    'dai-cuong-kim-loai': 'dai_cuong_kim_loai_12',
+    'dai-cuong-sat-dong-hop-kim': 'sat_dong_hop_kim_12',
+    'sat-dong-hop-kim': 'sat_dong_hop_kim_12',
+    'kim-loai-kiem-kiem-tho-nhom': 'kim_loai_kiem_kiem_tho_nhom_12',
+  };
+
+  // Helper function to get AI lesson ID from challenge
+  const getAILessonId = (challenge) => {
+    // If challenge has explicit aiLessonId, use it
+    if (challenge.aiLessonId) return challenge.aiLessonId;
+    
+    // Extract slug from challenge link (e.g., '/advanced-challenge/nito-luu-huynh' -> 'nito-luu-huynh')
+    if (challenge.link) {
+      const slug = challenge.link.split('/').pop();
+      if (SLUG_TO_AI_LESSON[slug]) {
+        return SLUG_TO_AI_LESSON[slug];
+      }
+    }
+    
+    // Fallback: try to construct from challenge name
+    if (challenge.slug) {
+      return SLUG_TO_AI_LESSON[challenge.slug] || challenge.slug;
+    }
+    
+    return null; // No valid AI lesson ID found
+  };
+
+  // Check if AI data exists in localStorage cache
+  const checkLocalStorageCache = (aiLessonId) => {
+    if (!aiLessonId) return false;
+    
+    try {
+      const cached = localStorage.getItem(`${AI_CACHE_KEY_PREFIX}${aiLessonId}`);
+      if (!cached) return false;
+      
+      const { data, timestamp } = JSON.parse(cached);
+      
+      // Check if cache is still valid (not expired)
+      if (Date.now() - timestamp > CACHE_DURATION) {
+        return false;
+      }
+      
+      // Check if cache has questions
+      if (data && data.questions && data.questions.length > 0) {
+        return true;
+      }
+      
+      return false;
+    } catch {
+      return false;
+    }
+  };
+
+  // Check if a challenge has AI data ready (from state or localStorage)
+  const hasAIDataForChallenge = (challenge) => {
+    // First check state
+    if (aiDataReady[challenge.id]) return true;
+    if (challenge.hasAIData) return true;
+    
+    // Then check localStorage cache
+    const aiLessonId = getAILessonId(challenge);
+    return checkLocalStorageCache(aiLessonId);
+  };
 
   // Grade configuration - similar to Dashboard
   const gradeInfo = {
@@ -88,6 +175,76 @@ const AdvancedChallenge = () => {
   const currentGradeChallenges = getChallengesByGrade(selectedGrade);
   const currentGradeInfo = gradeInfo[selectedGrade];
   const currentStats = getGradeStats(selectedGrade);
+
+  // Handle AI challenge click - check if data exists, if not generate it
+  const handleAIChallengeStart = async (challenge) => {
+    const usesAI = challenge.usesAI || challenge.dataSource === 'ai' || challenge.grade >= 11;
+    const hasData = hasAIDataForChallenge(challenge);
+    
+    if (usesAI && !hasData) {
+      // Need to generate AI data first
+      setAiDataLoading(prev => ({ ...prev, [challenge.id]: true }));
+      setGeneratingProgress(prev => ({ ...prev, [challenge.id]: 'Đang khởi tạo...' }));
+      
+      try {
+        // Get the lesson/challenge ID for AI generation using mapping
+        const aiLessonId = getAILessonId(challenge);
+        
+        if (!aiLessonId) {
+          setGeneratingProgress(prev => ({ ...prev, [challenge.id]: 'Không tìm thấy cấu hình AI' }));
+          setError('Thử thách này chưa được cấu hình cho AI. Vui lòng thử lại sau.');
+          setAiDataLoading(prev => ({ ...prev, [challenge.id]: false }));
+          return;
+        }
+        
+        console.log(`🤖 Generating AI questions for: ${aiLessonId}`);
+        setGeneratingProgress(prev => ({ ...prev, [challenge.id]: 'Đang tạo câu hỏi từ AI...' }));
+        
+        // Call API to generate AI questions
+        const response = await api.get(`/ai-questions/generate/${aiLessonId}`, {
+          timeout: 60000 // 60 seconds timeout for AI generation
+        });
+        
+        if (response.data.success && response.data.questions?.length > 0) {
+          setGeneratingProgress(prev => ({ ...prev, [challenge.id]: 'Hoàn tất!' }));
+          setAiDataReady(prev => ({ ...prev, [challenge.id]: true }));
+          
+          // Wait a moment to show success, then navigate
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          if (challenge.link) {
+            navigate(challenge.link);
+          }
+        } else if (response.data.aiUnavailable) {
+          setGeneratingProgress(prev => ({ ...prev, [challenge.id]: 'AI tạm thời không khả dụng' }));
+          setError('Dịch vụ AI tạm thời không khả dụng. Vui lòng thử lại sau.');
+        } else {
+          setGeneratingProgress(prev => ({ ...prev, [challenge.id]: 'Không thể tạo dữ liệu' }));
+          setError('Không thể tạo dữ liệu câu hỏi. Vui lòng thử lại.');
+        }
+      } catch (error) {
+        console.error('Error generating AI data:', error);
+        setGeneratingProgress(prev => ({ ...prev, [challenge.id]: 'Lỗi khi tạo dữ liệu' }));
+        setError('Không thể tạo dữ liệu AI. Vui lòng thử lại sau.');
+      } finally {
+        setAiDataLoading(prev => ({ ...prev, [challenge.id]: false }));
+        // Clear progress after a delay
+        setTimeout(() => {
+          setGeneratingProgress(prev => ({ ...prev, [challenge.id]: null }));
+        }, 3000);
+      }
+    } else if (usesAI && hasData) {
+      // AI data already generated, can proceed
+      if (challenge.link) {
+        navigate(challenge.link);
+      }
+    } else {
+      // Non-AI challenge, navigate directly
+      if (challenge.link) {
+        navigate(challenge.link);
+      }
+    }
+  };
 
   const getDifficultyBadge = (difficulty, color) => {
     return (
@@ -234,6 +391,13 @@ const AdvancedChallenge = () => {
                     const isLocked = !challenge.isUnlocked && challenge.prerequisite?.classId;
                     const isCompleted = challenge.completed || challenge.stars > 0;
                     const stars = challenge.stars || 0;
+                    // Check if challenge uses AI (explicit flag or grade 11-12)
+                    const usesAI = challenge.usesAI || challenge.dataSource === 'ai' || challenge.grade >= 11;
+                    const isAiLoading = usesAI && aiDataLoading[challenge.id];
+                    // Use the helper function to check localStorage cache
+                    const hasAIData = hasAIDataForChallenge(challenge);
+                    const needsDataGeneration = usesAI && !hasAIData && !isCompleted;
+                    const progressMsg = generatingProgress[challenge.id];
                     
                     return (
                       <div
@@ -241,12 +405,45 @@ const AdvancedChallenge = () => {
                         className={`relative bg-white rounded-xl shadow-md border transition-all duration-300 overflow-hidden ${
                           isLocked 
                             ? 'opacity-75 cursor-not-allowed border-gray-200' 
-                            : isCompleted
-                              ? 'hover:shadow-xl cursor-pointer border-green-300 ring-2 ring-green-100'
-                              : 'hover:shadow-xl cursor-pointer border-gray-100 hover:border-primary-200'
+                            : isAiLoading
+                              ? 'cursor-wait border-purple-300 ring-2 ring-purple-200'
+                              : needsDataGeneration
+                                ? 'hover:shadow-xl cursor-pointer border-amber-300 hover:border-amber-400'
+                                : isCompleted
+                                  ? 'hover:shadow-xl cursor-pointer border-green-300 ring-2 ring-green-100'
+                                  : 'hover:shadow-xl cursor-pointer border-gray-100 hover:border-primary-200'
                         }`}
-                        onClick={() => !isLocked && setSelectedChallenge(challenge)}
+                        onClick={() => !isLocked && !isAiLoading && setSelectedChallenge(challenge)}
                       >
+                        {/* AI Watermark Badge - Need to generate data */}
+                        {needsDataGeneration && !isAiLoading && (
+                          <div className="absolute top-2 left-2 z-10">
+                            <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold shadow-md bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+                              <Download className="w-3 h-3" />
+                              <span>Cần tải dữ liệu</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* AI Loading/Generating Badge */}
+                        {isAiLoading && (
+                          <div className="absolute top-2 left-2 z-10">
+                            <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold shadow-md bg-gradient-to-r from-purple-500 to-pink-500 text-white animate-pulse">
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                              <span>{progressMsg || 'Đang tạo AI...'}</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* AI Ready Badge */}
+                        {usesAI && hasAIData && !isCompleted && !isAiLoading && (
+                          <div className="absolute top-2 left-2 z-10">
+                            <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold shadow-md bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                              <Sparkles className="w-3 h-3" />
+                              <span>AI Sẵn sàng</span>
+                            </div>
+                          </div>
+                        )}
                         {/* Watermark for completed challenges */}
                         {isCompleted && (
                           <div className="absolute top-2 right-2 z-10">
@@ -331,12 +528,47 @@ const AdvancedChallenge = () => {
                                 </p>
                               )}
                             </div>
+                          ) : isAiLoading ? (
+                            <div>
+                              <button
+                                disabled
+                                className="w-full bg-gradient-to-r from-purple-400 to-pink-400 text-white py-2 px-4 rounded-lg font-semibold cursor-wait flex items-center justify-center gap-2"
+                              >
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                {progressMsg || 'Đang tạo dữ liệu...'}
+                              </button>
+                              <p className="text-xs text-purple-600 text-center mt-2">
+                                Vui lòng chờ AI tạo câu hỏi...
+                              </p>
+                            </div>
                           ) : challenge.status === 'coming-soon' ? (
                             <button
                               disabled
                               className="w-full bg-gray-200 text-gray-500 py-2 px-4 rounded-lg font-semibold cursor-not-allowed"
                             >
                               Sắp ra mắt
+                            </button>
+                          ) : needsDataGeneration ? (
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAIChallengeStart(challenge);
+                              }}
+                              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-2 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                            >
+                              <Download className="w-4 h-4" />
+                              Tải dữ liệu AI
+                            </button>
+                          ) : usesAI && hasAIData ? (
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAIChallengeStart(challenge);
+                              }}
+                              className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-2 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                            >
+                              <Sparkles className="w-4 h-4" />
+                              Bắt đầu (AI)
                             </button>
                           ) : challenge.link ? (
                             <Link to={challenge.link} className="block">
@@ -430,7 +662,16 @@ const AdvancedChallenge = () => {
                   <h2 className="text-3xl font-bold text-gray-800 mb-2">
                     {selectedChallenge.name}
                   </h2>
-                  {getDifficultyBadge(selectedChallenge.difficulty, selectedChallenge.difficultyColor)}
+                  <div className="flex items-center gap-2">
+                    {getDifficultyBadge(selectedChallenge.difficulty, selectedChallenge.difficultyColor)}
+                    {/* AI Badge in Modal */}
+                    {(selectedChallenge.usesAI || selectedChallenge.dataSource === 'ai') && (
+                      <span className="bg-gradient-to-r from-violet-500 to-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        AI Powered
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <button 
                   onClick={() => setSelectedChallenge(null)}
@@ -509,33 +750,153 @@ const AdvancedChallenge = () => {
                 </div>
               )}
 
+              {/* AI Data Info */}
+              {(() => {
+                const modalUsesAI = selectedChallenge.usesAI || selectedChallenge.dataSource === 'ai' || selectedChallenge.grade >= 11;
+                // Use the helper function to check localStorage cache
+                const modalHasAIData = hasAIDataForChallenge(selectedChallenge);
+                const modalNeedsGeneration = modalUsesAI && !modalHasAIData && !(selectedChallenge.completed || selectedChallenge.stars > 0);
+                const modalIsLoading = aiDataLoading[selectedChallenge.id];
+                const modalProgress = generatingProgress[selectedChallenge.id];
+                
+                if (modalIsLoading) {
+                  return (
+                    <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <Loader2 className="w-5 h-5 text-purple-600 mt-0.5 animate-spin" />
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-purple-800 mb-1">Đang tạo dữ liệu AI...</h4>
+                          <p className="text-sm text-purple-700 mb-2">
+                            {modalProgress || 'Vui lòng chờ trong giây lát...'}
+                          </p>
+                          <div className="w-full bg-purple-200 rounded-full h-2">
+                            <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+                
+                if (modalNeedsGeneration) {
+                  return (
+                    <div className="mb-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <Download className="w-5 h-5 text-amber-600 mt-0.5" />
+                        <div>
+                          <h4 className="font-semibold text-amber-800 mb-1">Cần tải dữ liệu AI</h4>
+                          <p className="text-sm text-amber-700">
+                            Thử thách này sử dụng câu hỏi AI. Nhấn "Tải dữ liệu" để tạo câu hỏi trước khi chơi.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+                
+                if (modalUsesAI && modalHasAIData) {
+                  return (
+                    <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <Sparkles className="w-5 h-5 text-green-600 mt-0.5" />
+                        <div>
+                          <h4 className="font-semibold text-green-800 mb-1">AI Sẵn sàng!</h4>
+                          <p className="text-sm text-green-700">
+                            Dữ liệu AI đã được tạo. Bạn có thể bắt đầu thử thách ngay.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+                
+                return null;
+              })()}
+
               <div className="flex gap-3">
-                {!selectedChallenge.isUnlocked && selectedChallenge.prerequisite?.classId ? (
-                  <button
-                    disabled
-                    className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    <Lock className="w-4 h-4" />
-                    Đã khóa
-                  </button>
-                ) : selectedChallenge.status === 'coming-soon' ? (
-                  <button
-                    disabled
-                    className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold cursor-not-allowed"
-                  >
-                    Sắp ra mắt
-                  </button>
-                ) : selectedChallenge.link ? (
-                  <Link to={selectedChallenge.link} className="flex-1">
-                    <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
+                {(() => {
+                  const modalUsesAI = selectedChallenge.usesAI || selectedChallenge.dataSource === 'ai' || selectedChallenge.grade >= 11;
+                  // Use the helper function to check localStorage cache
+                  const modalHasAIData = hasAIDataForChallenge(selectedChallenge);
+                  const modalNeedsGeneration = modalUsesAI && !modalHasAIData && !(selectedChallenge.completed || selectedChallenge.stars > 0);
+                  const modalIsLoading = aiDataLoading[selectedChallenge.id];
+                  const modalProgress = generatingProgress[selectedChallenge.id];
+                  
+                  if (!selectedChallenge.isUnlocked && selectedChallenge.prerequisite?.classId) {
+                    return (
+                      <button
+                        disabled
+                        className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        <Lock className="w-4 h-4" />
+                        Đã khóa
+                      </button>
+                    );
+                  }
+                  
+                  if (modalIsLoading) {
+                    return (
+                      <button
+                        disabled
+                        className="flex-1 bg-gradient-to-r from-purple-400 to-pink-400 text-white py-3 px-6 rounded-lg font-semibold cursor-wait flex items-center justify-center gap-2"
+                      >
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        {modalProgress || 'Đang tạo dữ liệu...'}
+                      </button>
+                    );
+                  }
+                  
+                  if (selectedChallenge.status === 'coming-soon') {
+                    return (
+                      <button
+                        disabled
+                        className="flex-1 bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold cursor-not-allowed"
+                      >
+                        Sắp ra mắt
+                      </button>
+                    );
+                  }
+                  
+                  if (modalNeedsGeneration) {
+                    return (
+                      <button 
+                        onClick={() => handleAIChallengeStart(selectedChallenge)}
+                        className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        Tải dữ liệu AI
+                      </button>
+                    );
+                  }
+                  
+                  if (modalUsesAI && modalHasAIData) {
+                    return (
+                      <button 
+                        onClick={() => handleAIChallengeStart(selectedChallenge)}
+                        className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Sparkles className="w-4 h-4" />
+                        Bắt đầu ngay (AI)
+                      </button>
+                    );
+                  }
+                  
+                  if (selectedChallenge.link) {
+                    return (
+                      <Link to={selectedChallenge.link} className="flex-1">
+                        <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
+                          Bắt đầu ngay
+                        </button>
+                      </Link>
+                    );
+                  }
+                  
+                  return (
+                    <button className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
                       Bắt đầu ngay
                     </button>
-                  </Link>
-                ) : (
-                  <button className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
-                    Bắt đầu ngay
-                  </button>
-                )}
+                  );
+                })()}
                 <button 
                   onClick={() => setSelectedChallenge(null)}
                   className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"

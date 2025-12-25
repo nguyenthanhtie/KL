@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Hammer, Battery, Shield, Atom,
-  Clock, Target, AlertTriangle, Flame
+  Clock, Target, AlertTriangle, Flame,
+  RefreshCw, Sparkles, Loader2, WifiOff
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
+import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai05_DaiCuongKimLoai.css';
 
@@ -46,8 +48,9 @@ const CATEGORIES = [
   }
 ];
 
-const CHALLENGES = [
-  // ========== CẤU TẠO & TÍNH CHẤT VẬT LÝ (12 câu) ==========
+// Fallback questions khi không có AI
+const FALLBACK_CHALLENGES = [
+  // ========== CẤU TẠO & TÍNH CHẤT VẬT LÝ ==========
   {
     id: 1,
     category: 'cautao',
@@ -63,39 +66,6 @@ const CHALLENGES = [
     id: 2,
     category: 'cautao',
     type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Kim loại có tính dẫn điện tốt nhất là...',
-    options: ['Bạc (Ag)', 'Đồng (Cu)', 'Vàng (Au)', 'Nhôm (Al)'],
-    correctAnswer: 'Bạc (Ag)',
-    explanation: 'Thứ tự dẫn điện giảm dần: Ag > Cu > Au > Al > Fe.',
-    hint: 'Ag > Cu > Au.'
-  },
-  {
-    id: 3,
-    category: 'cautao',
-    type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Kim loại cứng nhất là...',
-    options: ['Crom (Cr)', 'Vonfram (W)', 'Sắt (Fe)', 'Kim cương'],
-    correctAnswer: 'Crom (Cr)',
-    explanation: 'Crom (Cr) là kim loại cứng nhất, có thể rạch được thủy tinh. Kim cương cứng nhất nhưng không phải kim loại.',
-    hint: 'Ký hiệu Cr.'
-  },
-  {
-    id: 4,
-    category: 'cautao',
-    type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Kim loại có nhiệt độ nóng chảy cao nhất là...',
-    options: ['Vonfram (W)', 'Sắt (Fe)', 'Crom (Cr)', 'Đồng (Cu)'],
-    correctAnswer: 'Vonfram (W)',
-    explanation: 'Vonfram (W) có nhiệt độ nóng chảy cao nhất (3410°C), dùng làm dây tóc bóng đèn.',
-    hint: 'Dùng làm dây tóc bóng đèn.'
-  },
-  {
-    id: 5,
-    category: 'cautao',
-    type: 'multiple-choice',
     difficulty: 2,
     question: 'Tính chất vật lý chung của kim loại (dẻo, dẫn điện, dẫn nhiệt, ánh kim) gây ra bởi...',
     options: ['Các electron tự do trong mạng tinh thể', 'Các ion dương', 'Các nguyên tử kim loại', 'Liên kết cộng hóa trị'],
@@ -103,232 +73,32 @@ const CHALLENGES = [
     explanation: 'Các electron tự do di chuyển tự do trong mạng tinh thể kim loại gây ra các tính chất vật lý chung.',
     hint: 'Electron tự do.'
   },
+  // ========== TÍNH CHẤT HÓA HỌC ==========
   {
-    id: 6,
-    category: 'cautao',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Kim loại nhẹ nhất là...',
-    options: ['Liti (Li)', 'Natri (Na)', 'Nhôm (Al)', 'Magie (Mg)'],
-    correctAnswer: 'Liti (Li)',
-    explanation: 'Liti (Li) có khối lượng riêng nhỏ nhất (0,53 g/cm3), là kim loại nhẹ nhất.',
-    hint: 'Kim loại kiềm đầu tiên.'
-  },
-  {
-    id: 7,
-    category: 'cautao',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Liên kết hóa học trong tinh thể kim loại là liên kết ___',
-    correctAnswer: 'kim loại',
-    acceptedAnswers: ['kim loại', 'metallic'],
-    explanation: 'Liên kết kim loại được hình thành do lực hút tĩnh điện giữa các ion dương kim loại và các electron tự do.',
-    hint: 'Tên gọi giống tên loại chất.'
-  },
-  {
-    id: 8,
-    category: 'cautao',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Kim loại dẻo nhất, có thể dát mỏng thành lá cực mỏng là...',
-    options: ['Vàng (Au)', 'Bạc (Ag)', 'Nhôm (Al)', 'Đồng (Cu)'],
-    correctAnswer: 'Vàng (Au)',
-    explanation: 'Vàng (Au) là kim loại dẻo nhất, có thể dát mỏng đến mức ánh sáng có thể xuyên qua.',
-    hint: 'Kim loại quý màu vàng.'
-  },
-  {
-    id: 9,
-    category: 'cautao',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Cấu hình electron lớp ngoài cùng của nguyên tử kim loại kiềm thổ là...',
-    options: ['ns2', 'ns1', 'ns2np1', 'ns2np2'],
-    correctAnswer: 'ns2',
-    explanation: 'Kim loại kiềm thổ (nhóm IIA) có 2 electron lớp ngoài cùng, cấu hình ns2.',
-    hint: 'Nhóm IIA.'
-  },
-  {
-    id: 10,
-    category: 'cautao',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Trong bảng tuần hoàn, các nguyên tố kim loại có mặt ở...',
-    options: ['Nhóm IA, IIA, IIIA và các nhóm B', 'Chỉ nhóm IA và IIA', 'Chỉ các nhóm B', 'Nhóm VA, VIA, VIIA'],
-    correctAnswer: 'Nhóm IA, IIA, IIIA và các nhóm B',
-    explanation: 'Kim loại bao gồm nhóm IA (trừ H), IIA, IIIA (trừ B), một phần nhóm IVA, VA, VIA và tất cả các nhóm B (kim loại chuyển tiếp).',
-    hint: 'Chiếm phần lớn bảng tuần hoàn.'
-  },
-  {
-    id: 11,
-    category: 'cautao',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Nguyên tử kim loại thường có ___ (ít/nhiều) electron lớp ngoài cùng',
-    correctAnswer: 'ít',
-    acceptedAnswers: ['ít', '1, 2 hoặc 3', '1,2,3'],
-    explanation: 'Nguyên tử kim loại thường có ít electron lớp ngoài cùng (1, 2 hoặc 3e).',
-    hint: 'Dễ nhường electron.'
-  },
-  {
-    id: 12,
-    category: 'cautao',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Mạng tinh thể lập phương tâm diện là cấu trúc của kim loại nào?',
-    options: ['Cu, Ag, Au, Al', 'Na, K, Ba', 'Mg, Zn', 'Cr, Fe'],
-    correctAnswer: 'Cu, Ag, Au, Al',
-    explanation: 'Cu, Ag, Au, Al, Pb, Ni... có mạng tinh thể lập phương tâm diện (độ đặc khít 74%).',
-    hint: 'Các kim loại dẻo.'
-  },
-
-  // ========== TÍNH CHẤT HÓA HỌC (12 câu) ==========
-  {
-    id: 13,
+    id: 3,
     category: 'tinhchathoahoc',
     type: 'multiple-choice',
     difficulty: 1,
     question: 'Tính chất hóa học đặc trưng của kim loại là tính...',
     options: ['Khử', 'Oxi hóa', 'Axit', 'Bazơ'],
     correctAnswer: 'Khử',
-    explanation: 'Kim loại dễ nhường electron để trở thành ion dương, nên tính chất đặc trưng là tính khử (bị oxi hóa). M → Mn+ + ne.',
+    explanation: 'Kim loại dễ nhường electron để trở thành ion dương, nên tính chất đặc trưng là tính khử.',
     hint: 'Dễ nhường electron.'
   },
   {
-    id: 14,
-    category: 'tinhchathoahoc',
-    type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Kim loại nào sau đây tác dụng với nước ở nhiệt độ thường?',
-    options: ['Natri (Na)', 'Sắt (Fe)', 'Đồng (Cu)', 'Nhôm (Al)'],
-    correctAnswer: 'Natri (Na)',
-    explanation: 'Các kim loại kiềm (Li, Na, K...) và kiềm thổ (Ca, Sr, Ba) tác dụng mạnh với nước ở nhiệt độ thường.',
-    hint: 'Kim loại kiềm.'
-  },
-  {
-    id: 15,
-    category: 'tinhchathoahoc',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Dung dịch HCl hòa tan được kim loại nào sau đây?',
-    options: ['Fe', 'Cu', 'Ag', 'Au'],
-    correctAnswer: 'Fe',
-    explanation: 'HCl chỉ hòa tan được các kim loại đứng trước H trong dãy hoạt động hóa học. Fe đứng trước H, còn Cu, Ag, Au đứng sau.',
-    hint: 'Đứng trước H.'
-  },
-  {
-    id: 16,
-    category: 'tinhchathoahoc',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Sắt tác dụng với khí Clo dư tạo thành muối sắt (___)',
-    correctAnswer: 'III',
-    acceptedAnswers: ['III', '3', 'ba'],
-    explanation: '2Fe + 3Cl2 → 2FeCl3. Clo là chất oxi hóa mạnh nên đưa sắt lên hóa trị cao nhất (III).',
-    hint: 'Hóa trị cao nhất của sắt.'
-  },
-  {
-    id: 17,
+    id: 4,
     category: 'tinhchathoahoc',
     type: 'multiple-choice',
     difficulty: 2,
     question: 'Kim loại nào bị thụ động hóa trong HNO3 đặc nguội và H2SO4 đặc nguội?',
     options: ['Al, Fe, Cr', 'Cu, Ag, Au', 'Zn, Mg, Pb', 'Na, K, Ca'],
     correctAnswer: 'Al, Fe, Cr',
-    explanation: 'Nhôm (Al), Sắt (Fe), Crom (Cr) bị thụ động hóa (tạo màng oxit bảo vệ) trong HNO3 đặc nguội và H2SO4 đặc nguội.',
+    explanation: 'Nhôm (Al), Sắt (Fe), Crom (Cr) bị thụ động hóa trong HNO3 đặc nguội và H2SO4 đặc nguội.',
     hint: 'Ba kim loại phổ biến.'
   },
+  // ========== DÃY ĐIỆN HÓA ==========
   {
-    id: 18,
-    category: 'tinhchathoahoc',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Cho Cu vào dung dịch AgNO3, hiện tượng xảy ra là...',
-    options: ['Dung dịch chuyển màu xanh, có chất rắn màu xám bám vào Cu', 'Không có hiện tượng', 'Có khí thoát ra', 'Kết tủa trắng'],
-    correctAnswer: 'Dung dịch chuyển màu xanh, có chất rắn màu xám bám vào Cu',
-    explanation: 'Cu + 2AgNO3 → Cu(NO3)2 + 2Ag. Cu tan tạo dung dịch màu xanh (Cu2+), Ag kết tủa màu xám bám vào thanh Cu.',
-    hint: 'Cu đẩy Ag.'
-  },
-  {
-    id: 19,
-    category: 'tinhchathoahoc',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Kim loại nào sau đây tác dụng được với dung dịch NaOH?',
-    options: ['Al', 'Fe', 'Cu', 'Mg'],
-    correctAnswer: 'Al',
-    explanation: 'Nhôm (Al) và Kẽm (Zn) có thể tan trong dung dịch kiềm mạnh: 2Al + 2NaOH + 2H2O → 2NaAlO2 + 3H2.',
-    hint: 'Kim loại lưỡng tính (theo nghĩa rộng).'
-  },
-  {
-    id: 20,
-    category: 'tinhchathoahoc',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Sản phẩm khử duy nhất của phản ứng kim loại với HNO3 loãng mà không tạo khí là ___',
-    correctAnswer: 'NH4NO3',
-    acceptedAnswers: ['NH4NO3', 'amoni nitrat'],
-    explanation: 'Với các kim loại mạnh (Mg, Al, Zn), HNO3 loãng có thể bị khử xuống mức thấp nhất là NH4NO3 (muối tan, không khí).',
-    hint: 'Muối amoni.'
-  },
-  {
-    id: 21,
-    category: 'tinhchathoahoc',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Hỗn hợp tecmit dùng để hàn đường ray gồm bột nhôm và...',
-    options: ['Fe2O3', 'CuO', 'Fe3O4', 'FeO'],
-    correctAnswer: 'Fe2O3',
-    explanation: 'Phản ứng nhiệt nhôm: 2Al + Fe2O3 → Al2O3 + 2Fe (tỏa nhiệt rất mạnh làm sắt nóng chảy).',
-    hint: 'Oxit sắt.'
-  },
-  {
-    id: 22,
-    category: 'tinhchathoahoc',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Để làm sạch dung dịch ZnSO4 có lẫn tạp chất CuSO4, ta dùng kim loại...',
-    options: ['Zn', 'Cu', 'Fe', 'Al'],
-    correctAnswer: 'Zn',
-    explanation: 'Dùng Zn dư: Zn + CuSO4 → ZnSO4 + Cu↓. Lọc bỏ Cu và Zn dư thu được ZnSO4 tinh khiết.',
-    hint: 'Dùng chính kim loại của muối cần làm sạch.'
-  },
-  {
-    id: 23,
-    category: 'tinhchathoahoc',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Cho Fe vào dung dịch AgNO3 dư, sau phản ứng thu được muối nào?',
-    options: ['Fe(NO3)3', 'Fe(NO3)2', 'Fe(NO3)2 và AgNO3', 'Fe(NO3)3 và Fe(NO3)2'],
-    correctAnswer: 'Fe(NO3)3',
-    explanation: 'Fe + 2AgNO3 → Fe(NO3)2 + 2Ag. Do AgNO3 dư: Fe(NO3)2 + AgNO3 → Fe(NO3)3 + Ag. Cuối cùng thu được Fe(NO3)3.',
-    hint: 'Ag+ dư oxi hóa Fe2+ lên Fe3+.'
-  },
-  {
-    id: 24,
-    category: 'tinhchathoahoc',
-    type: 'fill-blank',
-    difficulty: 3,
-    question: 'Kim loại M tác dụng với HCl sinh ra H2. M tác dụng với HNO3 đặc nguội không xảy ra phản ứng. M là ___',
-    correctAnswer: 'Fe',
-    acceptedAnswers: ['Fe', 'sắt', 'Al', 'nhôm', 'Cr', 'crom'],
-    explanation: 'M đứng trước H (tác dụng HCl) và bị thụ động trong HNO3 đặc nguội. Có thể là Al, Fe, Cr. (Đáp án Fe phổ biến nhất).',
-    hint: 'Bị thụ động hóa.'
-  },
-
-  // ========== DÃY ĐIỆN HÓA (10 câu) ==========
-  {
-    id: 25,
-    category: 'daydienhoa',
-    type: 'multiple-choice',
-    difficulty: 1,
-    question: 'Cặp oxi hóa - khử nào sau đây viết đúng?',
-    options: ['Fe2+/Fe', 'Fe/Fe2+', 'Cu/Cu2+', 'Ag/Ag+'],
-    correctAnswer: 'Fe2+/Fe',
-    explanation: 'Ký hiệu cặp oxi hóa - khử: Dạng oxi hóa / Dạng khử (Mn+/M).',
-    hint: 'Ion dương trên, kim loại dưới.'
-  },
-  {
-    id: 26,
+    id: 5,
     category: 'daydienhoa',
     type: 'multiple-choice',
     difficulty: 2,
@@ -339,40 +109,7 @@ const CHALLENGES = [
     hint: 'Mạnh + Mạnh → Yếu + Yếu.'
   },
   {
-    id: 27,
-    category: 'daydienhoa',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Ion nào sau đây có tính oxi hóa mạnh nhất?',
-    options: ['Ag+', 'Cu2+', 'Fe2+', 'Zn2+'],
-    correctAnswer: 'Ag+',
-    explanation: 'Trong dãy điện hóa, tính oxi hóa của ion kim loại tăng dần từ trái sang phải: Zn2+ < Fe2+ < Cu2+ < Ag+.',
-    hint: 'Cuối dãy điện hóa.'
-  },
-  {
-    id: 28,
-    category: 'daydienhoa',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Trong pin điện hóa Zn-Cu, cực dương (catot) là kim loại ___',
-    correctAnswer: 'Cu',
-    acceptedAnswers: ['Cu', 'đồng'],
-    explanation: 'Trong pin Zn-Cu, Zn là cực âm (anot) bị oxi hóa, Cu là cực dương (catot) nơi xảy ra sự khử.',
-    hint: 'Kim loại yếu hơn là cực dương.'
-  },
-  {
-    id: 29,
-    category: 'daydienhoa',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Cho các ion: Fe2+, Ag+, Cu2+. Thứ tự tính oxi hóa tăng dần là...',
-    options: ['Fe2+ < Cu2+ < Ag+', 'Ag+ < Cu2+ < Fe2+', 'Cu2+ < Fe2+ < Ag+', 'Fe2+ < Ag+ < Cu2+'],
-    correctAnswer: 'Fe2+ < Cu2+ < Ag+',
-    explanation: 'Dựa vào dãy điện hóa: Fe2+/Fe đứng trước Cu2+/Cu đứng trước Ag+/Ag.',
-    hint: 'Theo chiều dãy điện hóa.'
-  },
-  {
-    id: 30,
+    id: 6,
     category: 'daydienhoa',
     type: 'multiple-choice',
     difficulty: 3,
@@ -382,54 +119,9 @@ const CHALLENGES = [
     explanation: 'Cu đứng sau Fe trong dãy hoạt động hóa học nên không đẩy được Fe ra khỏi muối.',
     hint: 'Kim loại yếu không đẩy được kim loại mạnh.'
   },
+  // ========== ĂN MÒN & ĐIỀU CHẾ ==========
   {
-    id: 31,
-    category: 'daydienhoa',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Cho biết thứ tự cặp oxi hóa khử: Mg2+/Mg < Fe2+/Fe < Cu2+/Cu < Fe3+/Fe2+ < Ag+/Ag. Fe khử được ion nào?',
-    options: ['Cu2+, Fe3+, Ag+', 'Mg2+, Cu2+', 'Ag+ chỉ', 'Cu2+ chỉ'],
-    correctAnswer: 'Cu2+, Fe3+, Ag+',
-    explanation: 'Fe là chất khử mạnh hơn cặp Cu2+/Cu, Fe3+/Fe2+, Ag+/Ag nên khử được các ion Cu2+, Fe3+, Ag+.',
-    hint: 'Quy tắc alpha.'
-  },
-  {
-    id: 32,
-    category: 'daydienhoa',
-    type: 'fill-blank',
-    difficulty: 3,
-    question: 'Trong pin điện hóa, dòng electron di chuyển từ cực ___ sang cực ___',
-    correctAnswer: 'âm sang dương',
-    acceptedAnswers: ['âm sang dương', 'anot sang catot', 'âm qua dương'],
-    explanation: 'Electron di chuyển từ cực âm (anot - nơi nhường e) qua dây dẫn sang cực dương (catot - nơi nhận e).',
-    hint: 'Từ nơi thừa e sang nơi thiếu e.'
-  },
-  {
-    id: 33,
-    category: 'daydienhoa',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Suất điện động chuẩn của pin điện hóa được tính bằng công thức...',
-    options: ['E°pin = E°(+) - E°(-)', 'E°pin = E°(-) - E°(+)', 'E°pin = E°(+) + E°(-)', 'E°pin = E°oxh - E°khử'],
-    correctAnswer: 'E°pin = E°(+) - E°(-)',
-    explanation: 'Suất điện động chuẩn bằng thế điện cực chuẩn của cực dương (catot) trừ đi thế điện cực chuẩn của cực âm (anot).',
-    hint: 'Dương trừ Âm.'
-  },
-  {
-    id: 34,
-    category: 'daydienhoa',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Cặp chất nào sau đây phản ứng tạo khí H2?',
-    options: ['Na + H2O', 'Cu + HCl', 'Ag + H2SO4 loãng', 'Fe + HNO3 đặc nguội'],
-    correctAnswer: 'Na + H2O',
-    explanation: 'Na + H2O → NaOH + 1/2H2. Cu, Ag đứng sau H không tác dụng axit thường. Fe thụ động HNO3 đặc nguội.',
-    hint: 'Kim loại kiềm với nước.'
-  },
-
-  // ========== ĂN MÒN & ĐIỀU CHẾ (11 câu) ==========
-  {
-    id: 35,
+    id: 7,
     category: 'anmon',
     type: 'multiple-choice',
     difficulty: 1,
@@ -440,116 +132,66 @@ const CHALLENGES = [
     hint: 'Do môi trường.'
   },
   {
-    id: 36,
-    category: 'anmon',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Điều kiện để xảy ra ăn mòn điện hóa học là...',
-    options: ['2 điện cực khác nhau, tiếp xúc nhau, cùng nhúng trong dung dịch điện ly', 'Kim loại nguyên chất', 'Dung dịch không điện ly', 'Chỉ cần 2 kim loại tiếp xúc'],
-    correctAnswer: '2 điện cực khác nhau, tiếp xúc nhau, cùng nhúng trong dung dịch điện ly',
-    explanation: 'Cần 3 điều kiện: các điện cực khác chất, tiếp xúc trực tiếp hoặc gián tiếp, cùng tiếp xúc với dung dịch điện ly.',
-    hint: '3 điều kiện.'
-  },
-  {
-    id: 37,
-    category: 'anmon',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Trong ăn mòn điện hóa học, kim loại mạnh hơn đóng vai trò là...',
-    options: ['Anot (cực âm) và bị ăn mòn', 'Catot (cực dương) và được bảo vệ', 'Anot và được bảo vệ', 'Catot và bị ăn mòn'],
-    correctAnswer: 'Anot (cực âm) và bị ăn mòn',
-    explanation: 'Kim loại mạnh hơn đóng vai trò là Anot (cực âm), xảy ra quá trình oxi hóa (bị ăn mòn).',
-    hint: 'Mạnh hơn thì hy sinh.'
-  },
-  {
-    id: 38,
-    category: 'anmon',
-    type: 'fill-blank',
-    difficulty: 2,
-    question: 'Để bảo vệ vỏ tàu biển bằng thép, người ta gắn vào vỏ tàu các tấm kim loại ___',
-    correctAnswer: 'kẽm',
-    acceptedAnswers: ['kẽm', 'Zn', 'magie', 'Mg'],
-    explanation: 'Dùng phương pháp điện hóa: gắn Zn (hoặc Mg) là kim loại mạnh hơn Fe để Zn bị ăn mòn thay cho thép (Fe).',
-    hint: 'Kim loại mạnh hơn sắt.'
-  },
-  {
-    id: 39,
-    category: 'anmon',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Phương pháp chung để điều chế kim loại là...',
-    options: ['Khử ion kim loại thành nguyên tử', 'Oxi hóa ion kim loại', 'Điện phân dung dịch', 'Nhiệt luyện'],
-    correctAnswer: 'Khử ion kim loại thành nguyên tử',
-    explanation: 'Nguyên tắc chung: Mn+ + ne → M. Thực hiện quá trình khử ion kim loại.',
-    hint: 'Ngược với tính chất hóa học.'
-  },
-  {
-    id: 40,
+    id: 8,
     category: 'anmon',
     type: 'multiple-choice',
     difficulty: 2,
     question: 'Kim loại kiềm, kiềm thổ, nhôm được điều chế bằng phương pháp...',
     options: ['Điện phân nóng chảy', 'Điện phân dung dịch', 'Nhiệt luyện', 'Thủy luyện'],
     correctAnswer: 'Điện phân nóng chảy',
-    explanation: 'Các kim loại mạnh (K, Na, Ca, Mg, Al) chỉ có thể điều chế bằng cách điện phân nóng chảy muối hoặc oxit của chúng.',
+    explanation: 'Các kim loại mạnh (K, Na, Ca, Mg, Al) chỉ có thể điều chế bằng cách điện phân nóng chảy.',
     hint: 'Kim loại mạnh.'
-  },
-  {
-    id: 41,
-    category: 'anmon',
-    type: 'multiple-choice',
-    difficulty: 2,
-    question: 'Phương pháp nhiệt luyện thường dùng để điều chế kim loại...',
-    options: ['Sau Al trong dãy hoạt động', 'Trước Al', 'Kim loại kiềm', 'Tất cả kim loại'],
-    correctAnswer: 'Sau Al trong dãy hoạt động',
-    explanation: 'Nhiệt luyện (dùng C, CO, H2, Al khử oxit) dùng điều chế kim loại trung bình và yếu (sau Al): Fe, Cu, Pb...',
-    hint: 'Kim loại trung bình.'
-  },
-  {
-    id: 42,
-    category: 'anmon',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Điện phân dung dịch CuSO4 với anot bằng đồng thì...',
-    options: ['Nồng độ Cu2+ không đổi', 'Nồng độ Cu2+ giảm', 'Khối lượng catot giảm', 'Có khí O2 thoát ra ở anot'],
-    correctAnswer: 'Nồng độ Cu2+ không đổi',
-    explanation: 'Đây là hiện tượng dương cực tan. Anot Cu tan ra bù lại lượng Cu bám vào catot, nên nồng độ Cu2+ không đổi.',
-    hint: 'Dương cực tan.'
-  },
-  {
-    id: 43,
-    category: 'anmon',
-    type: 'fill-blank',
-    difficulty: 3,
-    question: 'Trong quá trình điện phân, cation di chuyển về cực ___',
-    correctAnswer: 'âm',
-    acceptedAnswers: ['âm', 'catot'],
-    explanation: 'Cation (ion dương) di chuyển về cực âm (catot) để nhận electron.',
-    hint: 'Trái dấu hút nhau.'
-  },
-  {
-    id: 44,
-    category: 'anmon',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Gang là hợp kim của sắt với cacbon, trong đó hàm lượng cacbon là...',
-    options: ['2-5%', '< 2%', '> 5%', '0.01-2%'],
-    correctAnswer: '2-5%',
-    explanation: 'Gang chứa 2-5% C. Thép chứa < 2% C.',
-    hint: 'Nhiều hơn thép.'
-  },
-  {
-    id: 45,
-    category: 'anmon',
-    type: 'multiple-choice',
-    difficulty: 3,
-    question: 'Thép không gỉ (inox) có chứa thành phần chính là Fe và...',
-    options: ['Cr, Ni', 'Cu, Zn', 'Al, Mg', 'Mn, Si'],
-    correctAnswer: 'Cr, Ni',
-    explanation: 'Thép không gỉ thường chứa Crom (Cr) và Niken (Ni) giúp chống ăn mòn.',
-    hint: 'Crôm và Niken.'
   }
 ];
+
+// ================== PROGRESS WATERMARK ==================
+function ProgressWatermark({ categoryProgress }) {
+  const completedCount = Object.values(categoryProgress).filter(p => p >= 80).length;
+  return (
+    <div className="progress-watermark">
+      <div className="watermark-title">
+        <Trophy className="w-5 h-5 text-yellow-500" />
+        <span>Tiến độ các giai đoạn</span>
+      </div>
+      <div className="watermark-grid">
+        {CATEGORIES.map(cat => {
+          const Icon = cat.icon;
+          const total = FALLBACK_CHALLENGES.filter(c => c.category === cat.id).length;
+          const percentage = categoryProgress[cat.id] || 0;
+          const isComplete = percentage >= 80;
+          const questionsCompleted = Math.round((percentage / 100) * total);
+          return (
+            <div key={cat.id} className={`watermark-item ${isComplete ? 'completed' : ''}`}>
+              <div className="watermark-icon" style={{ backgroundColor: isComplete ? '#10b981' : cat.color }}>
+                <Icon className="w-4 h-4 text-white" />
+                {isComplete && <div className="complete-badge">✓</div>}
+              </div>
+              <div className="watermark-info">
+                <div className="watermark-name">{cat.name}</div>
+                <div className="watermark-progress-bar">
+                  <div className="watermark-progress-fill" style={{ width: `${percentage}%`, backgroundColor: isComplete ? '#10b981' : cat.color }} />
+                </div>
+                <div className="watermark-stats">
+                  <span className="watermark-percentage">{percentage}%</span>
+                  <span className="watermark-count">{questionsCompleted}/{total}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="watermark-total">
+        <div className="total-label">Tổng tiến độ:</div>
+        <div className="total-progress-bar">
+          <div className="total-progress-fill" style={{ width: `${Math.round((completedCount / CATEGORIES.length) * 100)}%` }} />
+        </div>
+        <div className="total-stats">
+          {completedCount}/{CATEGORIES.length} chủ đề ({Math.round((completedCount / CATEGORIES.length) * 100)}%)
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const Bai05_DaiCuongKimLoai = () => {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -563,9 +205,28 @@ const Bai05_DaiCuongKimLoai = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [showResumeDialog, setShowResumeDialog] = useState(false);
-  const [completedCategories, setCompletedCategories] = useState([]);
+  const [categoryProgress, setCategoryProgress] = useState({});
   const [highScore, setHighScore] = useState(0);
   const [hasStartedNewGame, setHasStartedNewGame] = useState(false);
+  const [gameInProgress, setGameInProgress] = useState(false);
+  const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
+
+  // ========== AI QUESTIONS HOOK ==========
+  const { 
+    questions: aiQuestions, 
+    loading: aiLoading, 
+    error: aiError, 
+    refetch: refetchAI,
+    clearCache: clearAICache 
+  } = useAIQuestions('dai_cuong_kim_loai_12', { autoFetch: true, useCache: true });
+
+  const CHALLENGES = useMemo(() => {
+    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
+    return FALLBACK_CHALLENGES;
+  }, [aiQuestions]);
+
+  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('daicuongkimloai_12', {
     challengeId: 5,
@@ -586,31 +247,40 @@ const Bai05_DaiCuongKimLoai = () => {
 
   // Load saved progress
   useEffect(() => {
-    if (savedProgress && !hasStartedNewGame) {
-      if (savedProgress.savedCompletedCategories) {
-        setCompletedCategories(savedProgress.savedCompletedCategories);
+    if (savedProgress && !hasStartedNewGame && !gameInProgress) {
+      if (savedProgress.savedCategoryProgress) {
+        setCategoryProgress(savedProgress.savedCategoryProgress);
       }
       if (savedProgress.savedHighScore) {
         setHighScore(savedProgress.savedHighScore);
+      }
+      if (savedProgress.savedTotalCorrectAnswers) {
+        setTotalCorrectAnswers(savedProgress.savedTotalCorrectAnswers);
+      }
+      if (savedProgress.savedTotalScore) {
+        setTotalScore(savedProgress.savedTotalScore);
       }
       
       if (savedProgress.category && !showResult && !activeCategory) {
         setShowResumeDialog(true);
       }
     }
-  }, [savedProgress, showResult, activeCategory, hasStartedNewGame]);
+  }, [savedProgress, showResult, activeCategory, hasStartedNewGame, gameInProgress]);
 
   const handleResume = () => {
     if (savedProgress) {
-      const { category, index, currentScore, currentStreak, savedCompletedCategories, savedHighScore } = savedProgress;
+      const { category, index, currentScore, currentStreak, savedCategoryProgress, savedHighScore, savedTotalCorrectAnswers, savedTotalScore } = savedProgress;
       setActiveCategory(category);
       setCurrentQuestionIndex(index || 0);
       setScore(currentScore || 0);
       setStreak(currentStreak || 0);
-      setCompletedCategories(savedCompletedCategories || []);
+      setCategoryProgress(savedCategoryProgress || {});
       setHighScore(savedHighScore || 0);
+      setTotalCorrectAnswers(savedTotalCorrectAnswers || 0);
+      setTotalScore(savedTotalScore || 0);
       setShowResumeDialog(false);
       setIsTimerActive(true);
+      setGameInProgress(true);
     }
   };
 
@@ -633,6 +303,11 @@ const Bai05_DaiCuongKimLoai = () => {
     setTimeLeft(30);
     setIsTimerActive(false);
     setHasStartedNewGame(true);
+    setTotalCorrectAnswers(0);
+    setTotalScore(0);
+    setCategoryProgress({});
+    setIsCompleted(false);
+    setGameInProgress(false);
   };
 
   // Timer logic
@@ -667,6 +342,7 @@ const Bai05_DaiCuongKimLoai = () => {
     setStreak(0);
     setTimeLeft(30);
     setIsTimerActive(true);
+    setGameInProgress(true);
   };
 
   const handleAnswerSubmit = (answer) => {
@@ -681,7 +357,9 @@ const Bai05_DaiCuongKimLoai = () => {
     setIsTimerActive(false);
 
     if (isRight) {
-      const points = Math.round((10 + currentQuestion.difficulty * 5) * (1 + timeLeft / 60));
+      // Fixed scoring: 10 base + difficulty bonus, capped at 20 max per question
+      const basePoints = 10 + currentQuestion.difficulty * 3;
+      const points = Math.min(20, basePoints);
       setScore(prev => prev + points);
       setStreak(prev => prev + 1);
     } else {
@@ -693,8 +371,10 @@ const Bai05_DaiCuongKimLoai = () => {
       index: currentQuestionIndex,
       currentScore: score + (isRight ? 10 : 0),
       currentStreak: isRight ? streak + 1 : 0,
-      savedCompletedCategories: completedCategories,
-      savedHighScore: highScore
+      savedCategoryProgress: categoryProgress,
+      savedHighScore: highScore,
+      savedTotalCorrectAnswers: totalCorrectAnswers,
+      savedTotalScore: totalScore
     });
   };
 
@@ -716,37 +396,45 @@ const Bai05_DaiCuongKimLoai = () => {
     setIsTimerActive(false);
     
     const maxScore = filteredQuestions.length * 20;
-    const percentage = Math.round((score / maxScore) * 100);
+    const percentage = Math.min(100, Math.round((score / maxScore) * 100));
+    const categoryCorrectAnswers = Math.round(score / 15);
     
-    const newCompletedCategories = percentage >= 80 && !completedCategories.includes(activeCategory)
-      ? [...completedCategories, activeCategory]
-      : completedCategories;
+    const newCategoryProgress = {
+      ...categoryProgress,
+      [activeCategory]: Math.max(categoryProgress[activeCategory] || 0, percentage)
+    };
+    const completedCount = Object.values(newCategoryProgress).filter(p => p >= 80).length;
     const newHighScore = Math.max(highScore, score);
+    const newTotalCorrectAnswers = totalCorrectAnswers + categoryCorrectAnswers;
+    const newTotalScore = totalScore + score;
     
-    if (percentage >= 80 && !completedCategories.includes(activeCategory)) {
-      setCompletedCategories(newCompletedCategories);
-    }
+    setCategoryProgress(newCategoryProgress);
     if (score > highScore) {
       setHighScore(newHighScore);
     }
+    setTotalCorrectAnswers(newTotalCorrectAnswers);
+    setTotalScore(newTotalScore);
     
     saveProgress({
-      savedCompletedCategories: newCompletedCategories,
-      savedHighScore: newHighScore
+      savedCategoryProgress: newCategoryProgress,
+      savedHighScore: newHighScore,
+      savedTotalCorrectAnswers: newTotalCorrectAnswers,
+      savedTotalScore: newTotalScore
     });
 
-    // Lưu kết quả khi hoàn thành category
-    if (!isCompleted) {
+    if (completedCount === CATEGORIES.length && !isCompleted) {
       setIsCompleted(true);
-      const stars = percentage >= 80 ? 3 : percentage >= 50 ? 2 : 1;
+      const totalMaxScore = CHALLENGES.length * 20;
+      const totalPercentage = Math.round((newTotalScore / totalMaxScore) * 100);
+      const stars = totalPercentage >= 80 ? 3 : totalPercentage >= 50 ? 2 : 1;
       completeChallenge({
-        score,
-        maxScore,
-        percentage,
+        score: newTotalScore,
+        maxScore: totalMaxScore,
+        percentage: totalPercentage,
         stars,
         timeSpent: Math.floor((Date.now() - startTime) / 1000),
-        correctAnswers: Math.round(score / 10),
-        totalQuestions: filteredQuestions.length
+        correctAnswers: newTotalCorrectAnswers,
+        totalQuestions: CHALLENGES.length
       });
     }
   };
@@ -790,13 +478,16 @@ const Bai05_DaiCuongKimLoai = () => {
             <div className="stats-bar-kimloai mb-8">
               <div className="stat-item-kimloai">
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
-                <span>Đã hoàn thành: <strong>{completedCategories.length || 0}/{CATEGORIES.length}</strong></span>
+                <span>Đã hoàn thành: <strong>{Object.values(categoryProgress).filter(p => p >= 80).length}/{CATEGORIES.length}</strong></span>
               </div>
               <div className="stat-item-kimloai">
                 <Award className="w-5 h-5 text-yellow-400" />
                 <span>Điểm cao nhất: <strong>{highScore || 0}</strong></span>
               </div>
             </div>
+
+            {/* Progress Watermark */}
+            <ProgressWatermark categoryProgress={categoryProgress} />
 
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
@@ -970,7 +661,7 @@ const Bai05_DaiCuongKimLoai = () => {
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
                   <div className="text-sm text-blue-200 mb-1">Đúng</div>
                   <div className="text-2xl font-bold text-blue-400">
-                    {Math.round((score / (filteredQuestions.length * 20)) * 100)}%
+                    {Math.min(100, Math.round((score / (filteredQuestions.length * 20)) * 100))}%
                   </div>
                 </div>
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
@@ -990,7 +681,19 @@ const Bai05_DaiCuongKimLoai = () => {
                   Làm lại
                 </button>
                 <button
-                  onClick={() => setActiveCategory(null)}
+                  onClick={() => {
+                    setShowResult(false);
+                    setActiveCategory(null);
+                    setCurrentQuestionIndex(0);
+                    setScore(0);
+                    setSelectedAnswer('');
+                    setIsCorrect(null);
+                    setStreak(0);
+                    setShowExplanation(false);
+                    setTimeLeft(30);
+                    setIsTimerActive(false);
+                    setGameInProgress(false);
+                  }}
                   className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30"
                 >
                   Chủ đề khác

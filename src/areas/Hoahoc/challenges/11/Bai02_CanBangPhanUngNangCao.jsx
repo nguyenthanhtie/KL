@@ -414,6 +414,74 @@ function DifficultyStars({ level }) {
   );
 }
 
+// Watermark component hiển thị tiến độ các giai đoạn
+function ProgressWatermark({ completedByCategory }) {
+  return (
+    <div className="progress-watermark">
+      <div className="watermark-title">
+        <Trophy className="w-5 h-5 text-yellow-500" />
+        <span>Tiến độ các giai đoạn</span>
+      </div>
+      <div className="watermark-grid">
+        {REACTION_CATEGORIES.map(cat => {
+          const Icon = cat.icon;
+          const completed = completedByCategory[cat.id] || 0;
+          const total = REACTIONS.filter(r => r.category === cat.id).length;
+          const percentage = Math.round((completed / total) * 100);
+          const isComplete = percentage === 100;
+          
+          return (
+            <div 
+              key={cat.id} 
+              className={`watermark-item ${isComplete ? 'completed' : ''}`}
+              style={{ '--cat-color': cat.color }}
+            >
+              <div className="watermark-icon" style={{ backgroundColor: isComplete ? '#10b981' : cat.color }}>
+                <Icon className="w-4 h-4 text-white" />
+                {isComplete && (
+                  <div className="complete-badge">✓</div>
+                )}
+              </div>
+              <div className="watermark-info">
+                <div className="watermark-name">{cat.name}</div>
+                <div className="watermark-progress-bar">
+                  <div 
+                    className="watermark-progress-fill"
+                    style={{ 
+                      width: `${percentage}%`, 
+                      backgroundColor: isComplete ? '#10b981' : cat.color 
+                    }}
+                  />
+                </div>
+                <div className="watermark-stats">
+                  <span className="watermark-percentage">{percentage}%</span>
+                  <span className="watermark-count">{completed}/{total}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/* Tổng tiến độ */}
+      <div className="watermark-total">
+        <div className="total-label">Tổng tiến độ:</div>
+        <div className="total-progress-bar">
+          <div 
+            className="total-progress-fill"
+            style={{ 
+              width: `${Math.round((Object.values(completedByCategory).reduce((a, b) => a + b, 0) / REACTIONS.length) * 100)}%`
+            }}
+          />
+        </div>
+        <div className="total-stats">
+          {Object.values(completedByCategory).reduce((a, b) => a + b, 0)}/{REACTIONS.length} phản ứng
+          ({Math.round((Object.values(completedByCategory).reduce((a, b) => a + b, 0) / REACTIONS.length) * 100)}%)
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CategorySelector({ selectedCategory, onSelect, completedByCategory }) {
   return (
     <div className="category-selector">
@@ -423,14 +491,22 @@ function CategorySelector({ selectedCategory, onSelect, completedByCategory }) {
           const Icon = cat.icon;
           const completed = completedByCategory[cat.id] || 0;
           const total = REACTIONS.filter(r => r.category === cat.id).length;
+          const percentage = Math.round((completed / total) * 100);
+          const isComplete = percentage === 100;
           return (
             <button
               key={cat.id}
-              className={`category-card ${selectedCategory === cat.id ? 'selected' : ''}`}
+              className={`category-card ${selectedCategory === cat.id ? 'selected' : ''} ${isComplete ? 'category-complete' : ''}`}
               onClick={() => onSelect(cat.id)}
               style={{ '--category-color': cat.color }}
             >
-              <div className="category-icon" style={{ backgroundColor: cat.color }}>
+              {isComplete && (
+                <div className="category-complete-badge">
+                  <Star className="w-4 h-4 fill-current" />
+                  Hoàn thành!
+                </div>
+              )}
+              <div className="category-icon" style={{ backgroundColor: isComplete ? '#10b981' : cat.color }}>
                 <Icon className="w-6 h-6 text-white" />
               </div>
               <div className="category-info">
@@ -440,10 +516,10 @@ function CategorySelector({ selectedCategory, onSelect, completedByCategory }) {
                   <div className="progress-bar">
                     <div
                       className="progress-fill"
-                      style={{ width: `${(completed / total) * 100}%`, backgroundColor: cat.color }}
+                      style={{ width: `${percentage}%`, backgroundColor: isComplete ? '#10b981' : cat.color }}
                     />
                   </div>
-                  <span>{completed}/{total}</span>
+                  <span>{completed}/{total} ({percentage}%)</span>
                 </div>
               </div>
             </button>
@@ -778,6 +854,9 @@ export default function CanBangPhanUngNangCao() {
                 <span>Combo: <strong>x{streak}</strong></span>
               </div>
             </div>
+
+            {/* Progress Watermark */}
+            <ProgressWatermark completedByCategory={completedByCategory} />
 
             <CategorySelector
               selectedCategory={selectedCategory}

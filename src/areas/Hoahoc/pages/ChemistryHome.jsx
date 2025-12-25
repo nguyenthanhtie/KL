@@ -94,6 +94,10 @@ const ChemistryHome = () => {
         setLoading(true);
         const userUid = user?.firebaseUid || user?.uid;
         
+        if (!userUid) {
+          throw new Error('User UID not found');
+        }
+        
         // Fetch actual user progress
         const userResponse = await api.get(`/users/firebase/${userUid}`);
         const userData = userResponse.data;
@@ -177,6 +181,9 @@ const ChemistryHome = () => {
 
        } catch (error) {
          console.error('Error fetching grades data:', error);
+         if (error.code === 'ERR_NETWORK') {
+           console.warn('⚠️ Backend server is not running. Please start the server with: npm run server:dev');
+         }
          // Fallback to empty array if error
          setGrades([]);
          setComputedStats({ totalLessons: 0, completedLessons: 0, totalStars: 0, totalPoints: 0, averageScore: 0, totalTimeSpent: 0 });
@@ -468,6 +475,40 @@ const ChemistryHome = () => {
               </div>
               <h3 className="text-xl font-bold mb-2">Hồ sơ</h3>
               <p className="text-emerald-100 text-sm">Xem thành tích của bạn</p>
+            </button>
+          </div>
+
+          {/* PK Battle Section */}
+          <div className="mt-6">
+            <button
+              onClick={() => navigate('/chemistry/pk')}
+              className="w-full group bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:from-orange-600 hover:via-red-600 hover:to-pink-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1 relative overflow-hidden"
+            >
+              {/* Animated background */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute top-0 left-0 w-20 h-20 bg-white rounded-full blur-2xl animate-pulse"></div>
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-yellow-300 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
+              </div>
+              
+              <div className="relative flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <span className="text-4xl">⚔️</span>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-2xl font-bold mb-1">Đấu Trường PK</h3>
+                    <p className="text-white/80 text-sm">Thách đấu cùng bạn bè • 1v1 hoặc nhiều người</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full animate-bounce">
+                    HOT
+                  </span>
+                  <svg className="w-8 h-8 opacity-70 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+              </div>
             </button>
           </div>
         </div>

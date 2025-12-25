@@ -1,0 +1,776 @@
+.pkroom-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding: 20px;
+}
+
+/* Loading & Error States */
+.pkroom-loading,
+.pkroom-error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  gap: 20px;
+}
+
+.pkroom-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #f39c12;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.pkroom-error span {
+  font-size: 4rem;
+}
+
+.pkroom-error h2 {
+  color: #e74c3c;
+}
+
+.pkroom-error button {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #3498db, #9b59b6);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Waiting State */
+.pkroom-waiting {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.pkroom-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.pkroom-leave-btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pkroom-leave-btn:hover {
+  background: rgba(231, 76, 60, 0.3);
+  border-color: #e74c3c;
+}
+
+.pkroom-header h1 {
+  color: white;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.pkroom-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 25px;
+  background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), rgba(231, 76, 60, 0.2));
+  border: 2px solid #f39c12;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pkroom-code:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(243, 156, 18, 0.4);
+}
+
+.pkroom-code span {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.pkroom-code strong {
+  color: #f39c12;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+}
+
+.pkroom-copy-icon {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.pkroom-code:hover .pkroom-copy-icon {
+  opacity: 1;
+}
+
+.pkroom-info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.pkroom-info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pkroom-players {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.pkroom-players h3 {
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.pkroom-player-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.pkroom-player {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.pkroom-player.ready {
+  border-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.1);
+}
+
+.pkroom-player.empty {
+  opacity: 0.5;
+  border-style: dashed;
+}
+
+.pkroom-player-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db, #9b59b6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pkroom-player-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pkroom-player-avatar span {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.pkroom-player-avatar.empty {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pkroom-player-info {
+  flex: 1;
+}
+
+.pkroom-player-name {
+  display: block;
+  color: white;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.pkroom-host-badge {
+  font-size: 0.75rem;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
+  border-radius: 20px;
+}
+
+.pkroom-player-status {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pkroom-player-status.ready {
+  color: #2ecc71;
+}
+
+.pkroom-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pkroom-ready-btn {
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #2ecc71, #1abc9c);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pkroom-ready-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+}
+
+.pkroom-start-btn {
+  padding: 18px 40px;
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pkroom-start-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(243, 156, 18, 0.4);
+}
+
+.pkroom-start-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Playing State */
+.pkroom-playing {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pkroom-game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  margin-bottom: 25px;
+}
+
+.pkroom-progress {
+  flex: 1;
+}
+
+.pkroom-progress span {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.pkroom-progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pkroom-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.pkroom-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(52, 152, 219, 0.2);
+  border-radius: 10px;
+  color: #3498db;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 20px;
+}
+
+.pkroom-timer.warning {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.pkroom-score {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #f39c12;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.pkroom-question-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 25px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pkroom-question-text {
+  color: white;
+  font-size: 1.4rem;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.pkroom-options {
+  display: grid;
+  gap: 15px;
+}
+
+.pkroom-option {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.pkroom-option:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(5px);
+}
+
+.pkroom-option.selected {
+  border-color: #3498db;
+  background: rgba(52, 152, 219, 0.2);
+}
+
+.pkroom-option.correct {
+  border-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.2);
+}
+
+.pkroom-option.wrong {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.2);
+}
+
+.pkroom-option:disabled {
+  cursor: not-allowed;
+}
+
+.pkroom-option-letter {
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pkroom-option-text {
+  flex: 1;
+}
+
+.pkroom-result-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pkroom-result-overlay.correct {
+  background: rgba(46, 204, 113, 0.95);
+}
+
+.pkroom-result-overlay.wrong {
+  background: rgba(231, 76, 60, 0.95);
+}
+
+.pkroom-result-icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+}
+
+.pkroom-result-overlay h3 {
+  color: white;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.pkroom-result-overlay p {
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.pkroom-live-scores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pkroom-live-player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pkroom-live-player.me {
+  background: rgba(52, 152, 219, 0.2);
+  border-color: #3498db;
+}
+
+.pkroom-live-rank {
+  font-weight: 700;
+  color: #f39c12;
+}
+
+.pkroom-live-name {
+  font-weight: 500;
+}
+
+.pkroom-live-score {
+  color: #2ecc71;
+  font-weight: 600;
+}
+
+/* Finished State */
+.pkroom-finished {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pkroom-finish-header h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pkroom-podium {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.pkroom-podium-place {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.pkroom-podium-place.place-1 {
+  order: 2;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(243, 156, 18, 0.2));
+  border-color: #f39c12;
+  transform: scale(1.1);
+}
+
+.pkroom-podium-place.place-2 {
+  order: 1;
+  background: rgba(192, 192, 192, 0.1);
+  border-color: #bdc3c7;
+}
+
+.pkroom-podium-place.place-3 {
+  order: 3;
+  background: rgba(205, 127, 50, 0.1);
+  border-color: #cd7f32;
+}
+
+.pkroom-podium-crown {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.pkroom-podium-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db, #9b59b6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.pkroom-podium-avatar span {
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.pkroom-podium-name {
+  color: white;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.pkroom-podium-score {
+  color: #f39c12;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.pkroom-podium-correct {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+.pkroom-results-table {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.pkroom-results-table h3 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.pkroom-result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pkroom-result-row.me {
+  background: rgba(52, 152, 219, 0.2);
+  border: 1px solid #3498db;
+}
+
+.pkroom-result-rank {
+  color: #f39c12;
+  font-weight: 700;
+  min-width: 40px;
+}
+
+.pkroom-result-name {
+  flex: 1;
+  color: white;
+  text-align: left;
+  margin-left: 15px;
+}
+
+.pkroom-result-correct {
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 80px;
+}
+
+.pkroom-result-score {
+  color: #2ecc71;
+  font-weight: 700;
+  min-width: 80px;
+}
+
+.pkroom-my-stats {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.pkroom-my-stats h3 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.pkroom-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.pkroom-stat {
+  text-align: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.pkroom-stat-value {
+  display: block;
+  color: #f39c12;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.pkroom-stat-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+.pkroom-finish-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.pkroom-new-game-btn {
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pkroom-new-game-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(243, 156, 18, 0.4);
+}
+
+.pkroom-home-btn {
+  padding: 15px 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pkroom-home-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pkroom-game-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .pkroom-timer {
+    margin: 0;
+  }
+
+  .pkroom-podium {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pkroom-podium-place {
+    order: unset !important;
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .pkroom-podium-place.place-1 {
+    transform: none;
+  }
+
+  .pkroom-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pkroom-finish-actions {
+    flex-direction: column;
+  }
+
+  .pkroom-leave-btn {
+    position: relative;
+    margin-bottom: 20px;
+  }
+}

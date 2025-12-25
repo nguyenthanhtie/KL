@@ -18,7 +18,7 @@ export const saveChallengeProgress = async (userId, challengeSlug, progressData,
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/challenges/attempts/save`, {
+    const response = await fetch(`${API_BASE_URL}/challenges/attempts/save`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const loadChallengeProgress = async (userId, challengeSlug) => {
 
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/challenges/attempts/active/${userId}/${challengeSlug}`
+      `${API_BASE_URL}/challenges/attempts/active/${userId}/${challengeSlug}`
     );
     
     if (response.ok) {
@@ -85,7 +85,7 @@ export const completeChallenge = async (userId, challengeSlug, resultData, metad
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/challenges/attempts/complete`, {
+    const response = await fetch(`${API_BASE_URL}/challenges/attempts/complete`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ export const clearChallengeProgress = async (userId, challengeSlug) => {
 
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/challenges/attempts/${userId}/${challengeSlug}`,
+      `${API_BASE_URL}/challenges/attempts/${userId}/${challengeSlug}`,
       { method: 'DELETE' }
     );
     
@@ -160,7 +160,7 @@ export const getChallengeHistory = async (userId, filters = {}) => {
     if (filters.limit) queryParams.append('limit', filters.limit);
 
     const response = await fetch(
-      `${API_BASE_URL}/api/challenges/attempts/history/${userId}?${queryParams}`
+      `${API_BASE_URL}/challenges/attempts/history/${userId}?${queryParams}`
     );
     
     if (response.ok) {
@@ -185,7 +185,7 @@ export const getBestAttempt = async (userId, challengeSlug) => {
 
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/challenges/attempts/best/${userId}/${challengeSlug}`
+      `${API_BASE_URL}/challenges/attempts/best/${userId}/${challengeSlug}`
     );
     
     if (response.ok) {
