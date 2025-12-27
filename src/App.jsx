@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import ProgramSelection from './pages/ProgramSelection';
 import Profile from './pages/Profile';
@@ -63,12 +63,11 @@ import PKRoom from './areas/Hoahoc/pages/PKRoom';
 
 const AppContent = () => {
   const location = useLocation();
-  const showHeader = location.pathname === '/home' || location.pathname === '/';
 
   return (
-    <div className="min-h-screen">
-      {showHeader && <Header />}
-      <Routes>
+    <Sidebar>
+      <div className="min-h-screen">
+        <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<ProgramSelection />} />
@@ -148,7 +147,8 @@ const AppContent = () => {
           element={<PlacementTest />}
         />
       </Routes>
-    </div>
+      </div>
+    </Sidebar>
   )
 }
 

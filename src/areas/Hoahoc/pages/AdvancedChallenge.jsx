@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Button from '../../../components/ui/Button';
-import Card from '../../../components/ui/Card';
 import ProgressBar from '../../../components/ui/ProgressBar';
 import { Trophy, Lock, Clock, Award, CheckCircle2, Star, Sparkles, Loader2, Download, AlertCircle } from 'lucide-react';
 import api from '../../../config/api';
@@ -255,99 +254,108 @@ const AdvancedChallenge = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 px-4">
-      <div className="container mx-auto max-w-7xl">
-        {/* Header Section */}
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute top-40 -left-40 w-96 h-96 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-40 left-1/2 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="relative z-10 py-8 px-4">
+        <div className="container mx-auto max-w-7xl">
+          {/* Header Section */}
+          <div className="mb-8">
             <button
-              onClick={() => navigate('/program/chemistry/dashboard')}
-              className="text-gray-600 hover:text-gray-800 flex items-center"
+              onClick={() => navigate('/program/chemistry')}
+              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-xl hover:bg-white/80 transition-all"
             >
-              ← Quay lại Dashboard
+              ← Quay lại trang chủ
             </button>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Trophy className="w-8 h-8 text-white" />
+            <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-white/50">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Trophy className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-1">
+                    Thử Thách Nâng Cao
+                  </h1>
+                  <p className="text-gray-600">Kiểm tra và nâng cao kỹ năng Hóa học của bạn!</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-1">
-                Thử Thách Nâng Cao
-              </h1>
-              <p className="text-gray-600">Kiểm tra và nâng cao kỹ năng Hóa học của bạn!</p>
+          </div>
+
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-12 bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+              <p className="mt-4 text-gray-600">Đang tải thử thách...</p>
             </div>
-          </div>
-        </div>
+          )}
 
-        {/* Loading State */}
-        {loading && (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-            <p className="mt-4 text-gray-600">Đang tải thử thách...</p>
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-            {error}
-          </div>
-        )}
-
-        {/* Content */}
-        {!loading && !error && (
-          <>
-            {/* Grade Tabs */}
-            <div className="flex flex-wrap gap-3 mb-6">
-              {grades.map((grade) => {
-                const info = gradeInfo[grade];
-                const stats = getGradeStats(grade);
-                const isSelected = selectedGrade === grade;
-                
-                return (
-                  <button
-                    key={grade}
-                    onClick={() => setSelectedGrade(grade)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all ${
-                      isSelected
-                        ? `bg-gradient-to-r ${info.color} text-white shadow-lg scale-105`
-                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                    }`}
-                  >
-                    <span className="text-xl">{info.icon}</span>
-                    <span>Lớp {grade}</span>
-                    {stats.total > 0 && (
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        isSelected ? 'bg-white/20' : 'bg-gray-100'
-                      }`}>
-                        {stats.total}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+          {/* Error State */}
+          {error && (
+            <div className="bg-red-50/80 backdrop-blur-sm border border-red-200 text-red-700 px-4 py-3 rounded-2xl mb-6 flex items-center gap-3">
+              <AlertCircle className="w-5 h-5" />
+              {error}
             </div>
+          )}
 
-            {/* Current Grade Section */}
-            <Card className="overflow-hidden mb-6">
-              {/* Grade Header */}
-              <div className={`bg-gradient-to-r ${currentGradeInfo.color} text-white p-6 -m-6 mb-6`}>
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-4xl">{currentGradeInfo.icon}</span>
-                      <div>
-                        <h2 className="text-2xl font-bold">{currentGradeInfo.title} - Thử Thách</h2>
-                        <p className="text-sm opacity-90">{currentGradeInfo.description}</p>
+          {/* Content */}
+          {!loading && !error && (
+            <>
+              {/* Grade Tabs */}
+              <div className="flex flex-wrap gap-3 mb-6">
+                {grades.map((grade) => {
+                  const info = gradeInfo[grade];
+                  const stats = getGradeStats(grade);
+                  const isSelected = selectedGrade === grade;
+                  
+                  return (
+                    <button
+                      key={grade}
+                      onClick={() => setSelectedGrade(grade)}
+                      className={`flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold transition-all duration-300 ${
+                        isSelected
+                          ? `bg-gradient-to-r ${info.color} text-white shadow-lg shadow-${info.color.split('-')[1]}-500/30 scale-105`
+                          : 'bg-white/70 backdrop-blur-sm text-gray-700 hover:bg-white border border-white/50 hover:shadow-md'
+                      }`}
+                    >
+                      <span className="text-xl">{info.icon}</span>
+                      <span>Lớp {grade}</span>
+                      {stats.total > 0 && (
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          isSelected ? 'bg-white/20' : 'bg-gray-100'
+                        }`}>
+                          {stats.total}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Current Grade Section */}
+              <div className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 overflow-hidden mb-6">
+                {/* Grade Header */}
+                <div className={`bg-gradient-to-r ${currentGradeInfo.color} text-white p-6`}>
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-4xl">{currentGradeInfo.icon}</span>
+                        <div>
+                          <h2 className="text-2xl font-bold">{currentGradeInfo.title} - Thử Thách</h2>
+                          <p className="text-sm opacity-90">{currentGradeInfo.description}</p>
+                        </div>
                       </div>
                     </div>
+                    <div className="text-right">
+                      <div className="text-3xl font-bold">{currentStats.total}</div>
+                      <div className="text-sm opacity-90">thử thách</div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold">{currentStats.total}</div>
-                    <div className="text-sm opacity-90">thử thách</div>
-                  </div>
-                </div>
                 {currentStats.total > 0 && (
                   <div className="mt-4 space-y-3">
                     {/* Progress bar */}
@@ -376,7 +384,7 @@ const AdvancedChallenge = () => {
 
               {/* Challenges Grid */}
               {currentGradeChallenges.length === 0 ? (
-                <div className="text-center py-12">
+                <div className="text-center py-12 px-6">
                   <div className="text-6xl mb-4">🔍</div>
                   <h3 className="text-2xl font-bold text-gray-700 mb-2">
                     Chưa có thử thách nào
@@ -386,7 +394,7 @@ const AdvancedChallenge = () => {
                   </p>
                 </div>
               ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
                   {currentGradeChallenges.map((challenge) => {
                     const isLocked = !challenge.isUnlocked && challenge.prerequisite?.classId;
                     const isCompleted = challenge.completed || challenge.stars > 0;
@@ -402,16 +410,16 @@ const AdvancedChallenge = () => {
                     return (
                       <div
                         key={challenge.id}
-                        className={`relative bg-white rounded-xl shadow-md border transition-all duration-300 overflow-hidden ${
+                        className={`relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border transition-all duration-300 overflow-hidden ${
                           isLocked 
                             ? 'opacity-75 cursor-not-allowed border-gray-200' 
                             : isAiLoading
                               ? 'cursor-wait border-purple-300 ring-2 ring-purple-200'
                               : needsDataGeneration
-                                ? 'hover:shadow-xl cursor-pointer border-amber-300 hover:border-amber-400'
+                                ? 'hover:shadow-xl cursor-pointer border-amber-300 hover:border-amber-400 hover:-translate-y-1'
                                 : isCompleted
-                                  ? 'hover:shadow-xl cursor-pointer border-green-300 ring-2 ring-green-100'
-                                  : 'hover:shadow-xl cursor-pointer border-gray-100 hover:border-primary-200'
+                                  ? 'hover:shadow-xl cursor-pointer border-green-300 ring-2 ring-green-100 hover:-translate-y-1'
+                                  : 'hover:shadow-xl cursor-pointer border-gray-100 hover:border-primary-200 hover:-translate-y-1'
                         }`}
                         onClick={() => !isLocked && !isAiLoading && setSelectedChallenge(challenge)}
                       >
@@ -587,10 +595,10 @@ const AdvancedChallenge = () => {
                   })}
                 </div>
               )}
-            </Card>
+            </div>
 
             {/* All Grades Overview */}
-            <div className="mt-8">
+            <div className="mt-8 bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-4">Tổng quan các lớp</h3>
               <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
                 {grades.map((grade) => {
@@ -602,10 +610,10 @@ const AdvancedChallenge = () => {
                     <div
                       key={grade}
                       onClick={() => setSelectedGrade(grade)}
-                      className={`p-4 rounded-xl cursor-pointer transition-all ${
+                      className={`p-4 rounded-2xl cursor-pointer transition-all duration-300 ${
                         isSelected
                           ? `bg-gradient-to-r ${info.color} text-white shadow-lg`
-                          : 'bg-white hover:shadow-md border border-gray-200'
+                          : 'bg-white/80 hover:shadow-md border border-gray-200 hover:-translate-y-1'
                       }`}
                     >
                       <div className="text-center">
@@ -636,8 +644,8 @@ const AdvancedChallenge = () => {
 
             {/* Back Button */}
             <div className="text-center mt-8">
-              <Link to="/">
-                <Button variant="secondary" className="px-8 py-3">
+              <Link to="/program/chemistry">
+                <Button variant="secondary" className="px-8 py-3 bg-white/70 backdrop-blur-sm hover:bg-white rounded-2xl">
                   ← Quay về trang chủ
                 </Button>
               </Link>
@@ -645,6 +653,26 @@ const AdvancedChallenge = () => {
           </>
         )}
       </div>
+      </div>
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
 
       {/* Challenge Detail Modal (Optional - for future) */}
       {selectedChallenge && (

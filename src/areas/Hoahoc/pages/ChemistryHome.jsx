@@ -315,14 +315,7 @@ const ChemistryHome = () => {
               )}
             </div>
 
-            {/* Logout Button */}
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-red-50 text-gray-700 hover:text-red-600 rounded-xl font-medium transition-all shadow-md hover:shadow-lg border border-gray-200 hover:border-red-300"
-            >
-              <LogOut className="w-5 h-5" />
-              <span>Đăng xuất</span>
-            </button>
+            {/* Logout Button - removed, now in Sidebar */}
           </div>
 
           {/* Welcome Card */}
