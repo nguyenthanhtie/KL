@@ -1,9 +1,6 @@
-import Button from '../../../components/ui/Button';
-
-const QuizHeader = ({ onBack, currentIndex, totalQuizzes, score, totalPoints }) => {
+const QuizHeader = ({ currentIndex, totalQuizzes, score, totalPoints }) => {
   return (
-    <div className="mb-6 flex justify-between items-center">
-   
+    <div className="mb-6 flex justify-end items-center">
       <div className="text-right">
         <div className="text-sm text-gray-600">
           Câu {currentIndex + 1} / {totalQuizzes}

@@ -7,7 +7,6 @@ const ResultModal = ({
   score, 
   totalPoints, 
   onRestart, 
-  onBack,
   onNext,
   hasNextLesson = false
 }) => {
@@ -76,18 +75,12 @@ const ResultModal = ({
                 <Button onClick={onNext}>
                   ➡️ Bài học tiếp theo
                 </Button>
-                <Button onClick={onBack}>
-                  🏠 Trở về Dashboard
-                </Button>
             </>
           ) : (
-            // Nếu <60%, chỉ cho chơi lại hoặc về dashboard
+            // Nếu <60%, chỉ cho chơi lại
             <>
               <Button onClick={onRestart}>
                 🔄 Chơi lại
-              </Button>
-              <Button variant="outline" onClick={onBack}>
-                🏠 Trở về Dashboard
               </Button>
             </>
           )}

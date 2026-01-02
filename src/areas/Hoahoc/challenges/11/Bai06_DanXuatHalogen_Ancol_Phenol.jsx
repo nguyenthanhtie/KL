@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Droplets, Atom, TestTube, Beaker,
-  Clock, Target, AlertTriangle, Microscope, RefreshCw, Sparkles, Loader2, WifiOff
+  Clock, Target, AlertTriangle, Microscope
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../../components/ResumeDialog';
-import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import './CSS/Bai06_DanXuatHalogen_Ancol_Phenol.css';
 
 // ================== DATA - DẪN XUẤT HALOGEN - ANCOL - PHENOL ==================
@@ -47,8 +46,9 @@ const CATEGORIES = [
   }
 ];
 
-const FALLBACK_CHALLENGES = [
-  // ========== DẪN XUẤT HALOGEN ==========
+// Bộ câu hỏi tĩnh
+const CHALLENGES = [
+  // ========== DẪN XUẤT HALOGEN (10 câu) ==========
   {
     id: 1,
     category: 'halogen',
@@ -71,10 +71,98 @@ const FALLBACK_CHALLENGES = [
     explanation: 'Dẫn xuất halogen dễ tham gia phản ứng thế nguyên tử halogen bằng nhóm -OH khi đun nóng với dung dịch kiềm (NaOH, KOH).',
     hint: 'Thủy phân trong môi trường kiềm.'
   },
-
-  // ========== ANCOL ==========
   {
     id: 3,
+    category: 'halogen',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Khi đun nóng C2H5Br với dung dịch NaOH loãng, sản phẩm hữu cơ thu được là:',
+    options: ['C2H4', 'C2H5OH', 'CH3CHO', 'C2H5OC2H5'],
+    correctAnswer: 'C2H5OH',
+    explanation: 'C2H5Br + NaOH (loãng, đun nóng) → C2H5OH + NaBr. Đây là phản ứng thủy phân dẫn xuất halogen trong môi trường kiềm.',
+    hint: 'Phản ứng thủy phân tạo ancol.'
+  },
+  {
+    id: 4,
+    category: 'halogen',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phản ứng tách HX từ dẫn xuất halogen cần điều kiện:',
+    options: ['Dung dịch NaOH loãng, đun nóng', 'Dung dịch NaOH đặc trong ancol, đun nóng', 'H2SO4 loãng, nhiệt độ thường', 'Nước cất, đun sôi'],
+    correctAnswer: 'Dung dịch NaOH đặc trong ancol, đun nóng',
+    explanation: 'Để tách HX từ dẫn xuất halogen, cần dùng dung dịch kiềm đặc trong ancol (KOH/C2H5OH) và đun nóng.',
+    hint: 'Môi trường ancol ưu tiên phản ứng tách.'
+  },
+  {
+    id: 5,
+    category: 'halogen',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Sản phẩm chính khi tách HBr từ CH3-CHBr-CH3 theo quy tắc Zaitsev là ___',
+    correctAnswer: 'propen',
+    acceptedAnswers: ['propen', 'propilen', 'CH2=CH-CH3'],
+    explanation: 'Theo quy tắc Zaitsev, H ưu tiên tách ở C bậc cao hơn. CH3-CHBr-CH3 → CH3-CH=CH2 (propen).',
+    hint: 'Áp dụng quy tắc Zaitsev.'
+  },
+  {
+    id: 6,
+    category: 'halogen',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Chất nào sau đây khi thủy phân trong môi trường kiềm tạo ra phenol?',
+    options: ['C6H5CH2Cl', 'C6H5Cl', 'C6H5CH2OH', 'C6H5OCH3'],
+    correctAnswer: 'C6H5Cl',
+    explanation: 'C6H5Cl (clobenzen) khi thủy phân trong NaOH đặc, nhiệt độ cao, áp suất cao tạo C6H5OH (phenol).',
+    hint: 'Liên kết C-Cl gắn trực tiếp với vòng benzen.'
+  },
+  {
+    id: 7,
+    category: 'halogen',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'CHCl3 (clorofom) được sử dụng làm:',
+    options: ['Nhiên liệu', 'Dung môi hữu cơ', 'Phân bón', 'Thuốc nổ'],
+    correctAnswer: 'Dung môi hữu cơ',
+    explanation: 'CHCl3 là dung môi hữu cơ quan trọng, dùng để hòa tan các chất hữu cơ, trước đây còn dùng làm thuốc gây mê.',
+    hint: 'Ứng dụng phổ biến trong phòng thí nghiệm.'
+  },
+  {
+    id: 8,
+    category: 'halogen',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Khi cho 2-brombutan tác dụng với KOH/C2H5OH đun nóng, sản phẩm chính là:',
+    options: ['But-1-en', 'But-2-en', 'Butan-1-ol', 'Butan-2-ol'],
+    correctAnswer: 'But-2-en',
+    explanation: 'Theo quy tắc Zaitsev, sản phẩm chính là anken có nhiều nhóm thế hơn ở C=C. But-2-en bền hơn but-1-en.',
+    hint: 'KOH/ancol → phản ứng tách theo Zaitsev.'
+  },
+  {
+    id: 9,
+    category: 'halogen',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Công thức của freon-12 dùng trong công nghiệp làm lạnh là ___',
+    correctAnswer: 'CCl2F2',
+    acceptedAnswers: ['CCl2F2', 'CF2Cl2'],
+    explanation: 'Freon-12 (CCl2F2) là hợp chất CFC dùng làm chất làm lạnh, nhưng gây hại tầng ozon nên đang bị hạn chế sử dụng.',
+    hint: 'Chứa cả Cl và F trong phân tử.'
+  },
+  {
+    id: 10,
+    category: 'halogen',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Thứ tự giảm dần khả năng phản ứng thế với OH⁻ của các dẫn xuất halogen:',
+    options: ['R-I > R-Br > R-Cl > R-F', 'R-F > R-Cl > R-Br > R-I', 'R-Cl > R-Br > R-I > R-F', 'R-Br > R-I > R-Cl > R-F'],
+    correctAnswer: 'R-I > R-Br > R-Cl > R-F',
+    explanation: 'Liên kết C-X càng yếu thì càng dễ bị thế. Độ bền liên kết: C-F > C-Cl > C-Br > C-I, nên khả năng thế: R-I > R-Br > R-Cl > R-F.',
+    hint: 'Liên kết càng yếu càng dễ phản ứng.'
+  },
+
+  // ========== ANCOL (12 câu) ==========
+  {
+    id: 11,
     category: 'alcohol',
     type: 'multiple-choice',
     difficulty: 1,
@@ -85,7 +173,7 @@ const FALLBACK_CHALLENGES = [
     hint: 'Nhóm hiđroxyl.'
   },
   {
-    id: 4,
+    id: 12,
     category: 'alcohol',
     type: 'fill-blank',
     difficulty: 2,
@@ -96,7 +184,7 @@ const FALLBACK_CHALLENGES = [
     hint: 'Bỏ đuôi -an thêm đuôi -ol.'
   },
   {
-    id: 5,
+    id: 13,
     category: 'alcohol',
     type: 'multiple-choice',
     difficulty: 2,
@@ -106,10 +194,109 @@ const FALLBACK_CHALLENGES = [
     explanation: 'Glixerol (C3H5(OH)3) có 3 nhóm -OH nên là ancol đa chức (poliancol).',
     hint: 'Có nhiều hơn 1 nhóm -OH.'
   },
-
-  // ========== PHENOL ==========
   {
-    id: 6,
+    id: 14,
+    category: 'alcohol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Butan-2-ol là ancol bậc mấy?',
+    options: ['Bậc 1', 'Bậc 2', 'Bậc 3', 'Bậc 4'],
+    correctAnswer: 'Bậc 2',
+    explanation: 'Bậc ancol = bậc của C liên kết với -OH. Trong butan-2-ol (CH3-CHOH-CH2-CH3), C mang -OH liên kết với 2 C khác → ancol bậc 2.',
+    hint: 'Xem C mang -OH liên kết với mấy C khác.'
+  },
+  {
+    id: 15,
+    category: 'alcohol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Khi cho natri tác dụng với ancol etylic, hiện tượng quan sát được là:',
+    options: ['Có kết tủa trắng', 'Có khí thoát ra', 'Có màu xanh xuất hiện', 'Không có hiện tượng'],
+    correctAnswer: 'Có khí thoát ra',
+    explanation: '2C2H5OH + 2Na → 2C2H5ONa + H2↑. Khí H2 thoát ra làm sủi bọt.',
+    hint: 'Na phản ứng với H linh động trong -OH.'
+  },
+  {
+    id: 16,
+    category: 'alcohol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Đun ancol etylic với H2SO4 đặc ở 140°C thu được sản phẩm chính là:',
+    options: ['Etilen', 'Đietyl ete', 'Etyl hidrosunfat', 'Axetilen'],
+    correctAnswer: 'Đietyl ete',
+    explanation: '2C2H5OH → C2H5-O-C2H5 + H2O (140°C, H2SO4 đặc). Đây là phản ứng tách nước liên phân tử tạo ete.',
+    hint: '140°C → tách nước liên phân tử.'
+  },
+  {
+    id: 17,
+    category: 'alcohol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Đun ancol etylic với H2SO4 đặc ở 170°C thu được sản phẩm chính là:',
+    options: ['Etilen', 'Đietyl ete', 'Etyl hidrosunfat', 'Axetilen'],
+    correctAnswer: 'Etilen',
+    explanation: 'C2H5OH → C2H4 + H2O (170°C, H2SO4 đặc). Đây là phản ứng tách nước nội phân tử tạo anken.',
+    hint: '170°C → tách nước nội phân tử.'
+  },
+  {
+    id: 18,
+    category: 'alcohol',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Số đồng phân ancol có công thức C3H8O là ___',
+    correctAnswer: '2',
+    acceptedAnswers: ['2', 'hai'],
+    explanation: 'C3H8O có 2 đồng phân ancol: propan-1-ol (CH3-CH2-CH2OH) và propan-2-ol (CH3-CHOH-CH3).',
+    hint: 'Vị trí của nhóm -OH thay đổi.'
+  },
+  {
+    id: 19,
+    category: 'alcohol',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Oxi hóa không hoàn toàn ancol bậc 1 bằng CuO, đun nóng thu được:',
+    options: ['Anđehit', 'Xeton', 'Axit cacboxylic', 'Anken'],
+    correctAnswer: 'Anđehit',
+    explanation: 'RCH2OH + CuO → RCHO + Cu + H2O. Ancol bậc 1 bị oxi hóa thành anđehit.',
+    hint: 'Ancol bậc 1 → anđehit, ancol bậc 2 → xeton.'
+  },
+  {
+    id: 20,
+    category: 'alcohol',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Oxi hóa không hoàn toàn ancol bậc 2 bằng CuO, đun nóng thu được:',
+    options: ['Anđehit', 'Xeton', 'Axit cacboxylic', 'Anken'],
+    correctAnswer: 'Xeton',
+    explanation: 'R-CHOH-R\' + CuO → R-CO-R\' + Cu + H2O. Ancol bậc 2 bị oxi hóa thành xeton.',
+    hint: 'Ancol bậc 2 có nhóm -CHOH-.'
+  },
+  {
+    id: 21,
+    category: 'alcohol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Ancol nào có nhiệt độ sôi cao nhất?',
+    options: ['Metanol', 'Etanol', 'Propan-1-ol', 'Glixerol'],
+    correctAnswer: 'Glixerol',
+    explanation: 'Glixerol có 3 nhóm -OH nên có nhiều liên kết hiđro liên phân tử hơn, dẫn đến nhiệt độ sôi cao nhất.',
+    hint: 'Liên kết hiđro càng nhiều, nhiệt độ sôi càng cao.'
+  },
+  {
+    id: 22,
+    category: 'alcohol',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Metanol (CH3OH) rất độc vì khi vào cơ thể bị oxi hóa thành:',
+    options: ['Axit axetic', 'Axit fomic và fomanđehit', 'CO2 và H2O', 'Metan'],
+    correctAnswer: 'Axit fomic và fomanđehit',
+    explanation: 'Metanol bị oxi hóa thành fomanđehit (HCHO) và axit fomic (HCOOH), gây tổn thương hệ thần kinh và mù mắt.',
+    hint: 'Sản phẩm oxi hóa của ancol bậc 1.'
+  },
+
+  // ========== PHENOL (10 câu) ==========
+  {
+    id: 23,
     category: 'phenol',
     type: 'multiple-choice',
     difficulty: 2,
@@ -117,10 +304,10 @@ const FALLBACK_CHALLENGES = [
     options: ['Tính bazơ', 'Tính axit yếu', 'Tính oxi hóa', 'Tính khử mạnh'],
     correctAnswer: 'Tính axit yếu',
     explanation: 'Do ảnh hưởng của vòng benzen, liên kết O-H trong phenol phân cực mạnh hơn ancol, làm cho phenol có tính axit yếu (tác dụng được với NaOH).',
-    hint: 'Phenol làm quỳ tím hóa đỏ không?'
+    hint: 'Phenol có thể tác dụng với NaOH.'
   },
   {
-    id: 7,
+    id: 24,
     category: 'phenol',
     type: 'multiple-choice',
     difficulty: 2,
@@ -130,10 +317,98 @@ const FALLBACK_CHALLENGES = [
     explanation: 'Phenol phản ứng thế với dung dịch brom tạo thành 2,4,6-tribromphenol kết tủa trắng.',
     hint: 'Phản ứng dùng để nhận biết phenol.'
   },
-
-  // ========== PHẢN ỨNG & NHẬN BIẾT ==========
   {
-    id: 8,
+    id: 25,
+    category: 'phenol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phenol phản ứng được với dung dịch NaOH vì:',
+    options: ['Phenol có tính bazơ', 'Phenol có tính axit yếu', 'Phenol có tính oxi hóa', 'Phenol có tính khử'],
+    correctAnswer: 'Phenol có tính axit yếu',
+    explanation: 'C6H5OH + NaOH → C6H5ONa + H2O. Phenol có tính axit yếu nên tác dụng được với bazơ mạnh.',
+    hint: 'Axit + bazơ → muối + nước.'
+  },
+  {
+    id: 26,
+    category: 'phenol',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Sản phẩm khi cho phenol tác dụng với NaOH là ___',
+    correctAnswer: 'natri phenolat',
+    acceptedAnswers: ['natri phenolat', 'C6H5ONa', 'phenolat natri'],
+    explanation: 'C6H5OH + NaOH → C6H5ONa (natri phenolat) + H2O.',
+    hint: 'Muối của phenol với natri.'
+  },
+  {
+    id: 27,
+    category: 'phenol',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'So sánh tính axit của phenol và axit cacbonic:',
+    options: ['Phenol mạnh hơn H2CO3', 'Phenol yếu hơn H2CO3', 'Phenol bằng H2CO3', 'Không so sánh được'],
+    correctAnswer: 'Phenol yếu hơn H2CO3',
+    explanation: 'Phenol có tính axit yếu hơn H2CO3. Vì vậy, khi sục CO2 vào dung dịch C6H5ONa sẽ tạo lại phenol.',
+    hint: 'CO2 + H2O + C6H5ONa → ?'
+  },
+  {
+    id: 28,
+    category: 'phenol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phenol KHÔNG tác dụng được với:',
+    options: ['Na', 'NaOH', 'HCl', 'Br2'],
+    correctAnswer: 'HCl',
+    explanation: 'Phenol có tính axit yếu nên không tác dụng với axit mạnh như HCl. Phenol tác dụng được với Na, NaOH, Br2.',
+    hint: 'Axit yếu không phản ứng với axit mạnh.'
+  },
+  {
+    id: 29,
+    category: 'phenol',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Số nguyên tử brom trong sản phẩm khi phenol phản ứng với nước brom dư là:',
+    options: ['1', '2', '3', '4'],
+    correctAnswer: '3',
+    explanation: 'C6H5OH + 3Br2 → C6H2Br3OH↓ + 3HBr. Sản phẩm 2,4,6-tribromphenol có 3 nguyên tử Br.',
+    hint: 'Các vị trí ortho và para đều bị thế.'
+  },
+  {
+    id: 30,
+    category: 'phenol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phenol được ứng dụng chủ yếu để sản xuất:',
+    options: ['Xà phòng', 'Nhựa phenol-fomanđehit', 'Thuốc nổ TNT', 'Cao su'],
+    correctAnswer: 'Nhựa phenol-fomanđehit',
+    explanation: 'Phenol phản ứng với fomanđehit tạo nhựa phenol-fomanđehit (bakelit), dùng làm vỏ công tắc điện, ổ cắm...',
+    hint: 'Nhựa nhiệt rắn phổ biến.'
+  },
+  {
+    id: 31,
+    category: 'phenol',
+    type: 'fill-blank',
+    difficulty: 3,
+    question: 'Công thức của 2,4,6-trinitrophenol (axit picric) là ___',
+    correctAnswer: 'C6H2(NO2)3OH',
+    acceptedAnswers: ['C6H2(NO2)3OH', 'HOC6H2(NO2)3'],
+    explanation: 'Phenol tác dụng với HNO3 đặc tạo 2,4,6-trinitrophenol (axit picric), một chất nổ mạnh.',
+    hint: 'Thay 3H bằng 3 nhóm -NO2.'
+  },
+  {
+    id: 32,
+    category: 'phenol',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Nhóm -OH trong phenol ảnh hưởng đến vòng benzen như thế nào?',
+    options: ['Hút electron, giảm hoạt tính', 'Đẩy electron, tăng hoạt tính', 'Không ảnh hưởng', 'Làm đứt vòng benzen'],
+    correctAnswer: 'Đẩy electron, tăng hoạt tính',
+    explanation: 'Nhóm -OH đẩy electron vào vòng benzen làm tăng mật độ electron, khiến phenol dễ phản ứng thế hơn benzen.',
+    hint: 'Phenol phản ứng với Br2 ở điều kiện thường.'
+  },
+
+  // ========== PHẢN ỨNG & NHẬN BIẾT (12 câu) ==========
+  {
+    id: 33,
     category: 'reactions',
     type: 'multiple-choice',
     difficulty: 3,
@@ -144,7 +419,7 @@ const FALLBACK_CHALLENGES = [
     hint: 'Phản ứng tạo phức màu xanh lam.'
   },
   {
-    id: 9,
+    id: 34,
     category: 'reactions',
     type: 'fill-blank',
     difficulty: 2,
@@ -155,7 +430,7 @@ const FALLBACK_CHALLENGES = [
     hint: 'Quy tắc Zaitsev.'
   },
   {
-    id: 10,
+    id: 35,
     category: 'reactions',
     type: 'multiple-choice',
     difficulty: 2,
@@ -164,6 +439,105 @@ const FALLBACK_CHALLENGES = [
     correctAnswer: 'Etilen',
     explanation: 'C2H4 + H2O (xúc tác axit) → C2H5OH. Đây là phương pháp hidrat hóa anken.',
     hint: 'Cộng nước vào anken.'
+  },
+  {
+    id: 36,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Để nhận biết phenol và etanol, ta dùng thuốc thử nào?',
+    options: ['Na kim loại', 'Dung dịch NaOH', 'Dung dịch Brom', 'CuO, đun nóng'],
+    correctAnswer: 'Dung dịch Brom',
+    explanation: 'Phenol tạo kết tủa trắng với dung dịch brom (2,4,6-tribromphenol), còn etanol không phản ứng.',
+    hint: 'Chỉ phenol tạo kết tủa trắng.'
+  },
+  {
+    id: 37,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Điều chế phenol trong công nghiệp theo phương pháp cumen, nguyên liệu ban đầu là:',
+    options: ['Benzen và etilen', 'Benzen và propilen', 'Toluen và clo', 'Naphtalen và oxi'],
+    correctAnswer: 'Benzen và propilen',
+    explanation: 'C6H6 + C3H6 → C6H5CH(CH3)2 (cumen), sau đó oxi hóa cumen bằng O2 rồi phân hủy thu được phenol và axeton.',
+    hint: 'Cumen là isopropylbenzen.'
+  },
+  {
+    id: 38,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Để điều chế ancol từ dẫn xuất halogen, cần dùng:',
+    options: ['NaOH loãng, đun nóng', 'NaOH đặc trong ancol, đun nóng', 'H2SO4 đặc', 'HCl đặc'],
+    correctAnswer: 'NaOH loãng, đun nóng',
+    explanation: 'R-X + NaOH (loãng, t°) → R-OH + NaX. Đây là phản ứng thủy phân dẫn xuất halogen tạo ancol.',
+    hint: 'Môi trường nước ưu tiên tạo ancol.'
+  },
+  {
+    id: 39,
+    category: 'reactions',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Sản phẩm phụ khi điều chế phenol theo phương pháp cumen là ___',
+    correctAnswer: 'axeton',
+    acceptedAnswers: ['axeton', 'propanon', 'CH3COCH3'],
+    explanation: 'Oxi hóa cumen thu được phenol (C6H5OH) và axeton (CH3COCH3) với tỉ lệ 1:1.',
+    hint: 'Một xeton 3 carbon.'
+  },
+  {
+    id: 40,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Ancol etylic được điều chế trong công nghiệp bằng cách lên men chất nào?',
+    options: ['Dầu mỏ', 'Tinh bột hoặc đường', 'Khí thiên nhiên', 'Than đá'],
+    correctAnswer: 'Tinh bột hoặc đường',
+    explanation: 'C6H12O6 (enzim) → 2C2H5OH + 2CO2. Đây là phương pháp lên men rượu từ đường hoặc tinh bột.',
+    hint: 'Quá trình sinh học tạo rượu.'
+  },
+  {
+    id: 41,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Cho các chất: etanol, glixerol, phenol. Số chất tác dụng được với Na là:',
+    options: ['1', '2', '3', '0'],
+    correctAnswer: '3',
+    explanation: 'Cả 3 chất đều có nhóm -OH nên đều tác dụng được với Na giải phóng H2.',
+    hint: 'Na phản ứng với H linh động trong -OH.'
+  },
+  {
+    id: 42,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Cho các chất: etanol, glixerol, phenol. Số chất tác dụng được với NaOH là:',
+    options: ['1', '2', '3', '0'],
+    correctAnswer: '1',
+    explanation: 'Chỉ phenol có tính axit yếu nên tác dụng được với NaOH. Etanol và glixerol không tác dụng.',
+    hint: 'NaOH chỉ phản ứng với chất có tính axit.'
+  },
+  {
+    id: 43,
+    category: 'reactions',
+    type: 'fill-blank',
+    difficulty: 3,
+    question: 'Khi đốt cháy hoàn toàn 1 mol ancol no, đơn chức, mạch hở cần ___ mol O2 (tổng quát)',
+    correctAnswer: '3n/2',
+    acceptedAnswers: ['3n/2', '1.5n', '3/2n'],
+    explanation: 'CnH2n+2O + (3n/2)O2 → nCO2 + (n+1)H2O. Ancol no, đơn chức cần 3n/2 mol O2.',
+    hint: 'Dựa vào phương trình đốt cháy ancol no, đơn chức.'
+  },
+  {
+    id: 44,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Để phân biệt 3 lọ mất nhãn chứa: etanol, glixerol, phenol, cần dùng tối thiểu mấy thuốc thử?',
+    options: ['1', '2', '3', '4'],
+    correctAnswer: '2',
+    explanation: 'Dùng Br2: phenol tạo kết tủa trắng. Dùng Cu(OH)2: glixerol tạo dung dịch xanh lam, etanol không phản ứng.',
+    hint: 'Br2 nhận biết phenol, Cu(OH)2 phân biệt 2 chất còn lại.'
   }
 ];
 
@@ -244,22 +618,6 @@ const Bai06_DanXuatHalogen_Ancol_Phenol = () => {
     programId: 'chemistry',
     grade: 11
   });
-
-  // AI Questions Hook
-  const { 
-    questions: aiQuestions, 
-    loading: aiLoading, 
-    error: aiError, 
-    refetch: refetchAI,
-    clearCache: clearAICache 
-  } = useAIQuestions('dan_xuat_halogen_ancol_phenol_11', { autoFetch: true, useCache: true });
-
-  const CHALLENGES = useMemo(() => {
-    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
-    return FALLBACK_CHALLENGES;
-  }, [aiQuestions]);
-
-  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   // States for completion tracking
   const [startTime] = useState(() => Date.now());
@@ -515,49 +873,12 @@ const Bai06_DanXuatHalogen_Ancol_Phenol = () => {
               </div>
             </div>
 
-            {/* AI Status Banner */}
-            {aiLoading && (
-              <div className="mb-4 p-3 bg-cyan-500/20 border border-cyan-500/30 rounded-xl flex items-center gap-3">
-                <Loader2 className="w-5 h-5 text-cyan-400 animate-spin" />
-                <span className="text-cyan-200">Đang tải câu hỏi AI...</span>
-              </div>
-            )}
-            {aiError && !isUsingAI && (
-              <div className="mb-4 p-3 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <WifiOff className="w-5 h-5 text-amber-400" />
-                  <span className="text-amber-200">Đang dùng câu hỏi offline</span>
-                </div>
-                <button onClick={refetchAI} className="flex items-center gap-1 px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 rounded-lg text-amber-200 text-sm transition-colors">
-                  <RefreshCw className="w-4 h-4" />
-                  Thử lại
-                </button>
-              </div>
-            )}
-            {isUsingAI && (
-              <div className="mb-4 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5 text-emerald-400" />
-                  <span className="text-emerald-200">Câu hỏi AI ({aiQuestions.length} câu)</span>
-                </div>
-                <button onClick={() => { clearAICache(); refetchAI(); }} className="flex items-center gap-1 px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 rounded-lg text-emerald-200 text-sm transition-colors">
-                  <RefreshCw className="w-4 h-4" />
-                  Làm mới
-                </button>
-              </div>
-            )}
-
             {/* Progress Watermark */}
             <ProgressWatermark categoryProgress={categoryProgress} challenges={CHALLENGES} />
 
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
               Chọn chủ đề thử thách
-              {isUsingAI && (
-                <span className="ml-2 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-xs rounded-full flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" /> AI
-                </span>
-              )}
             </h2>
 
             <div className="category-grid-ancol">

@@ -242,7 +242,7 @@ const ChemistryHome = () => {
 
       {/* Hero Section */}
       <section className="relative py-8 px-4">
-        <div className="container mx-auto max-w-7xl">
+        <div className="mx-auto w-[90%]">
           {/* Navigation Bar */}
           <div className="flex items-center justify-between mb-6">
             {/* Program Selector Dropdown */}
@@ -421,7 +421,7 @@ const ChemistryHome = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <div className="grid md:grid-cols-4 gap-4 mb-6">
             <button
               onClick={() => navigate('/program/chemistry/dashboard')}
               className="group bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
@@ -509,7 +509,7 @@ const ChemistryHome = () => {
 
       {/* Learning Path */}
       <section className="py-8 px-4">
-        <div className="container mx-auto max-w-7xl">
+        <div className="mx-auto w-[90%]">
           <div className="mb-6">
             <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
               <span className="text-4xl">🎯</span>
@@ -654,7 +654,7 @@ const ChemistryHome = () => {
 
       {/* Features Section */}
       <section className="py-12 px-4 bg-gradient-to-b from-transparent to-blue-50/50">
-        <div className="container mx-auto max-w-7xl">
+        <div className="mx-auto w-[90%]">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-3">
               Tại sao chọn chương trình Hóa học của chúng tôi?

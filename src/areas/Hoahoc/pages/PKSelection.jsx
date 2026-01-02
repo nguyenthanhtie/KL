@@ -157,16 +157,10 @@ const PKSelection = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-emerald-500/15 to-teal-500/15 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-4000"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-4xl">
+      <div className="relative z-10 mx-auto px-4 py-8 w-[90%]">
         {/* Header */}
         <div className="text-center mb-10">
-          <button 
-            onClick={() => navigate('/program/chemistry')}
-            className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-xl text-white/80 hover:text-white transition-all hover:-translate-x-1"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Quay lại</span>
-          </button>
+        
           
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
             <span className="bg-gradient-to-r from-orange-400 via-red-500 to-pink-500 bg-clip-text text-transparent animate-pulse">

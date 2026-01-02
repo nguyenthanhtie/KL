@@ -85,7 +85,7 @@ const ProgramSelection = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
       <section className="py-16 px-4 text-center bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
-        <div className="container mx-auto">
+        <div className="mx-auto w-[90%]">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
             Chọn chương trình học của bạn
           </h1>
@@ -103,8 +103,8 @@ const ProgramSelection = () => {
       </section>
 
       {/* Programs Grid */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <section className="mx-auto px-4 py-16 w-[90%]">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mx-auto">
           {programs.map((program) => {
             const isEnrolled = user?.programs?.some(p => p.programId === program.id && p.isActive);
             

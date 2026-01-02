@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Hammer, Battery, Shield, Atom,
-  Clock, Target, AlertTriangle, Flame,
-  RefreshCw, Sparkles, Loader2, WifiOff
+  Clock, Target, AlertTriangle, Flame
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
-import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai05_DaiCuongKimLoai.css';
 
@@ -49,8 +47,8 @@ const CATEGORIES = [
 ];
 
 // Fallback questions khi không có AI
-const FALLBACK_CHALLENGES = [
-  // ========== CẤU TẠO & TÍNH CHẤT VẬT LÝ ==========
+const CHALLENGES = [
+  // ========== CẤU TẠO & TÍNH CHẤT VẬT LÝ (12 câu) ==========
   {
     id: 1,
     category: 'cautao',
@@ -59,7 +57,7 @@ const FALLBACK_CHALLENGES = [
     question: 'Ở nhiệt độ thường, kim loại nào sau đây ở trạng thái lỏng?',
     options: ['Thủy ngân (Hg)', 'Sắt (Fe)', 'Đồng (Cu)', 'Nhôm (Al)'],
     correctAnswer: 'Thủy ngân (Hg)',
-    explanation: 'Thủy ngân (Hg) là kim loại duy nhất ở trạng thái lỏng ở điều kiện thường.',
+    explanation: 'Thủy ngân (Hg) là kim loại duy nhất ở trạng thái lỏng ở điều kiện thường (nhiệt độ nóng chảy -39°C).',
     hint: 'Dùng trong nhiệt kế.'
   },
   {
@@ -73,32 +71,254 @@ const FALLBACK_CHALLENGES = [
     explanation: 'Các electron tự do di chuyển tự do trong mạng tinh thể kim loại gây ra các tính chất vật lý chung.',
     hint: 'Electron tự do.'
   },
-  // ========== TÍNH CHẤT HÓA HỌC ==========
   {
     id: 3,
+    category: 'cautao',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Kim loại nào có tính dẫn điện tốt nhất?',
+    options: ['Bạc (Ag)', 'Đồng (Cu)', 'Vàng (Au)', 'Nhôm (Al)'],
+    correctAnswer: 'Bạc (Ag)',
+    explanation: 'Bạc (Ag) có tính dẫn điện tốt nhất trong các kim loại. Thứ tự: Ag > Cu > Au > Al.',
+    hint: 'Kim loại quý.'
+  },
+  {
+    id: 4,
+    category: 'cautao',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Kim loại nào có khối lượng riêng nhỏ nhất?',
+    options: ['Liti (Li)', 'Natri (Na)', 'Kali (K)', 'Magie (Mg)'],
+    correctAnswer: 'Liti (Li)',
+    explanation: 'Liti (Li) có khối lượng riêng 0,53 g/cm³, nhỏ nhất trong các kim loại, nhẹ hơn cả nước.',
+    hint: 'Kim loại kiềm đầu tiên.'
+  },
+  {
+    id: 5,
+    category: 'cautao',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Kim loại có nhiệt độ nóng chảy cao nhất là:',
+    options: ['Vonfram (W)', 'Sắt (Fe)', 'Crom (Cr)', 'Titan (Ti)'],
+    correctAnswer: 'Vonfram (W)',
+    explanation: 'Vonfram (W) có nhiệt độ nóng chảy cao nhất (3422°C), nên được dùng làm dây tóc bóng đèn.',
+    hint: 'Dùng trong bóng đèn sợi đốt.'
+  },
+  {
+    id: 6,
+    category: 'cautao',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Kim loại có độ cứng lớn nhất là:',
+    options: ['Crom (Cr)', 'Sắt (Fe)', 'Vonfram (W)', 'Titan (Ti)'],
+    correctAnswer: 'Crom (Cr)',
+    explanation: 'Crom (Cr) là kim loại cứng nhất, có thể cắt được kính. Độ cứng của Cr = 9 theo thang Mohs.',
+    hint: 'Dùng để mạ bảo vệ.'
+  },
+  {
+    id: 7,
+    category: 'cautao',
+    type: 'fill-blank',
+    difficulty: 1,
+    question: 'Kim loại có tính dẻo cao nhất là ___.',
+    correctAnswer: 'vàng',
+    acceptedAnswers: ['vàng', 'Au', 'gold'],
+    explanation: 'Vàng (Au) là kim loại dẻo nhất, có thể dát mỏng thành lá vàng 0,0001 mm.',
+    hint: 'Kim loại quý màu vàng.'
+  },
+  {
+    id: 8,
+    category: 'cautao',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Liên kết kim loại được hình thành do:',
+    options: ['Lực hút giữa các ion dương và các electron tự do', 'Sự góp chung electron', 'Lực hút tĩnh điện giữa ion dương và ion âm', 'Lực Van der Waals'],
+    correctAnswer: 'Lực hút giữa các ion dương và các electron tự do',
+    explanation: 'Liên kết kim loại là liên kết được hình thành do lực hút tĩnh điện giữa các ion dương kim loại và các electron tự do.',
+    hint: 'Đặc trưng cho kim loại.'
+  },
+  {
+    id: 9,
+    category: 'cautao',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Trong mạng tinh thể kim loại, các nguyên tử kim loại:',
+    options: ['Nhường electron hóa trị thành ion dương', 'Nhận electron để thành ion âm', 'Góp chung electron', 'Giữ nguyên electron'],
+    correctAnswer: 'Nhường electron hóa trị thành ion dương',
+    explanation: 'Trong tinh thể kim loại, các nguyên tử kim loại nhường electron hóa trị để tạo thành ion dương và các electron tự do.',
+    hint: 'Kim loại dễ mất electron.'
+  },
+  {
+    id: 10,
+    category: 'cautao',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Kim loại dẫn nhiệt tốt nhất là ___.',
+    correctAnswer: 'bạc',
+    acceptedAnswers: ['bạc', 'Ag', 'silver'],
+    explanation: 'Bạc (Ag) có khả năng dẫn nhiệt tốt nhất trong các kim loại, tiếp theo là đồng (Cu).',
+    hint: 'Cùng kim loại dẫn điện tốt nhất.'
+  },
+  {
+    id: 11,
+    category: 'cautao',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Tính ánh kim của kim loại do:',
+    options: ['Electron tự do hấp thụ và phát lại ánh sáng', 'Bề mặt nhẵn bóng', 'Ion dương phản xạ ánh sáng', 'Mật độ cao của kim loại'],
+    correctAnswer: 'Electron tự do hấp thụ và phát lại ánh sáng',
+    explanation: 'Các electron tự do trong kim loại hấp thụ năng lượng ánh sáng rồi bức xạ lại, tạo nên ánh kim đặc trưng.',
+    hint: 'Liên quan đến electron.'
+  },
+  {
+    id: 12,
+    category: 'cautao',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Các mạng tinh thể kim loại phổ biến gồm:',
+    options: ['Lập phương tâm khối, lập phương tâm diện, lục phương', 'Lập phương đơn giản, tứ diện, bát diện', 'Hình thoi, hình hộp, hình cầu', 'Lục giác, tam giác, ngũ giác'],
+    correctAnswer: 'Lập phương tâm khối, lập phương tâm diện, lục phương',
+    explanation: 'Ba kiểu mạng tinh thể kim loại phổ biến: lập phương tâm khối (Na, K, Fe-α), lập phương tâm diện (Cu, Ag, Au, Al), lục phương (Mg, Zn).',
+    hint: 'Ba kiểu cấu trúc.'
+  },
+
+  // ========== TÍNH CHẤT HÓA HỌC (12 câu) ==========
+  {
+    id: 13,
     category: 'tinhchathoahoc',
     type: 'multiple-choice',
     difficulty: 1,
     question: 'Tính chất hóa học đặc trưng của kim loại là tính...',
     options: ['Khử', 'Oxi hóa', 'Axit', 'Bazơ'],
     correctAnswer: 'Khử',
-    explanation: 'Kim loại dễ nhường electron để trở thành ion dương, nên tính chất đặc trưng là tính khử.',
+    explanation: 'Kim loại dễ nhường electron để trở thành ion dương, nên tính chất đặc trưng là tính khử: M → M^n+ + ne.',
     hint: 'Dễ nhường electron.'
   },
   {
-    id: 4,
+    id: 14,
     category: 'tinhchathoahoc',
     type: 'multiple-choice',
     difficulty: 2,
-    question: 'Kim loại nào bị thụ động hóa trong HNO3 đặc nguội và H2SO4 đặc nguội?',
+    question: 'Kim loại nào bị thụ động hóa trong HNO₃ đặc nguội và H₂SO₄ đặc nguội?',
     options: ['Al, Fe, Cr', 'Cu, Ag, Au', 'Zn, Mg, Pb', 'Na, K, Ca'],
     correctAnswer: 'Al, Fe, Cr',
-    explanation: 'Nhôm (Al), Sắt (Fe), Crom (Cr) bị thụ động hóa trong HNO3 đặc nguội và H2SO4 đặc nguội.',
+    explanation: 'Nhôm (Al), Sắt (Fe), Crom (Cr) bị thụ động hóa trong HNO₃ đặc nguội và H₂SO₄ đặc nguội do tạo màng oxit bảo vệ.',
     hint: 'Ba kim loại phổ biến.'
   },
-  // ========== DÃY ĐIỆN HÓA ==========
   {
-    id: 5,
+    id: 15,
+    category: 'tinhchathoahoc',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Kim loại nào KHÔNG tác dụng với nước ở điều kiện thường?',
+    options: ['Đồng (Cu)', 'Natri (Na)', 'Kali (K)', 'Canxi (Ca)'],
+    correctAnswer: 'Đồng (Cu)',
+    explanation: 'Cu đứng sau H trong dãy điện hóa nên không tác dụng với nước. Các kim loại kiềm, kiềm thổ phản ứng mãnh liệt với nước.',
+    hint: 'Kim loại yếu.'
+  },
+  {
+    id: 16,
+    category: 'tinhchathoahoc',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Khi cho Na vào dung dịch CuSO₄, hiện tượng quan sát được là:',
+    options: ['Có khí thoát ra và kết tủa xanh lam', 'Có kim loại Cu màu đỏ bám vào Na', 'Dung dịch chuyển sang màu xanh đậm hơn', 'Không có hiện tượng gì'],
+    correctAnswer: 'Có khí thoát ra và kết tủa xanh lam',
+    explanation: 'Na phản ứng với H₂O trước tạo NaOH và H₂↑, sau đó NaOH phản ứng với CuSO₄ tạo Cu(OH)₂ kết tủa xanh lam.',
+    hint: 'Na tác dụng với nước trước.'
+  },
+  {
+    id: 17,
+    category: 'tinhchathoahoc',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Sản phẩm khi Fe tác dụng với Cl₂ là:',
+    options: ['FeCl₃', 'FeCl₂', 'Fe₂O₃', 'FeO'],
+    correctAnswer: 'FeCl₃',
+    explanation: 'Cl₂ là chất oxi hóa mạnh nên oxi hóa Fe lên số oxi hóa cao nhất (+3): 2Fe + 3Cl₂ → 2FeCl₃.',
+    hint: 'Cl₂ là chất oxi hóa mạnh.'
+  },
+  {
+    id: 18,
+    category: 'tinhchathoahoc',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Khi cho Fe vào dung dịch HNO₃ loãng dư, sản phẩm muối thu được là:',
+    options: ['Fe(NO₃)₃', 'Fe(NO₃)₂', 'Fe₂O₃', 'FeO'],
+    correctAnswer: 'Fe(NO₃)₃',
+    explanation: 'HNO₃ dư nên Fe bị oxi hóa lên Fe³⁺: Fe + 4HNO₃ loãng → Fe(NO₃)₃ + NO↑ + 2H₂O.',
+    hint: 'HNO₃ dư.'
+  },
+  {
+    id: 19,
+    category: 'tinhchathoahoc',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Khi đốt cháy sắt trong khí oxi, sản phẩm tạo thành là ___.',
+    correctAnswer: 'Fe₃O₄',
+    acceptedAnswers: ['Fe3O4', 'Fe₃O₄', 'oxit sắt từ'],
+    explanation: 'Khi đốt Fe trong O₂: 3Fe + 2O₂ → Fe₃O₄ (oxit sắt từ, có tính từ).',
+    hint: 'Oxit sắt từ.'
+  },
+  {
+    id: 20,
+    category: 'tinhchathoahoc',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Kim loại nào tác dụng với HCl giải phóng khí H₂?',
+    options: ['Kẽm (Zn)', 'Đồng (Cu)', 'Bạc (Ag)', 'Vàng (Au)'],
+    correctAnswer: 'Kẽm (Zn)',
+    explanation: 'Zn đứng trước H trong dãy điện hóa nên tác dụng với HCl: Zn + 2HCl → ZnCl₂ + H₂↑.',
+    hint: 'Kim loại đứng trước H.'
+  },
+  {
+    id: 21,
+    category: 'tinhchathoahoc',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Kim loại nào sau đây tác dụng được với dung dịch NaOH?',
+    options: ['Al', 'Fe', 'Cu', 'Ag'],
+    correctAnswer: 'Al',
+    explanation: 'Al là kim loại lưỡng tính, tác dụng với dung dịch kiềm: 2Al + 2NaOH + 2H₂O → 2NaAlO₂ + 3H₂↑.',
+    hint: 'Kim loại lưỡng tính.'
+  },
+  {
+    id: 22,
+    category: 'tinhchathoahoc',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Phản ứng giữa kim loại và axit là phản ứng ___.',
+    correctAnswer: 'oxi hóa - khử',
+    acceptedAnswers: ['oxi hóa - khử', 'oxi hóa khử', 'oxi hoá khử', 'oxi hoá - khử', 'redox'],
+    explanation: 'Trong phản ứng kim loại + axit, kim loại bị oxi hóa (nhường e) và H⁺ bị khử (nhận e) thành H₂.',
+    hint: 'Có sự thay đổi số oxi hóa.'
+  },
+  {
+    id: 23,
+    category: 'tinhchathoahoc',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Kim loại nào KHÔNG tan trong dung dịch H₂SO₄ loãng?',
+    options: ['Cu', 'Fe', 'Zn', 'Mg'],
+    correctAnswer: 'Cu',
+    explanation: 'Cu đứng sau H trong dãy điện hóa nên không tác dụng với H₂SO₄ loãng. Chỉ tan trong H₂SO₄ đặc nóng.',
+    hint: 'Kim loại đứng sau H.'
+  },
+  {
+    id: 24,
+    category: 'tinhchathoahoc',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Khi cho Fe dư tác dụng với dung dịch HNO₃ loãng, sản phẩm muối thu được là:',
+    options: ['Fe(NO₃)₂', 'Fe(NO₃)₃', 'Hỗn hợp Fe(NO₃)₂ và Fe(NO₃)₃', 'Không phản ứng'],
+    correctAnswer: 'Fe(NO₃)₂',
+    explanation: 'Fe dư nên Fe³⁺ bị khử về Fe²⁺: Fe + 2Fe(NO₃)₃ → 3Fe(NO₃)₂.',
+    hint: 'Fe dư khử Fe³⁺.'
+  },
+
+  // ========== DÃY ĐIỆN HÓA (12 câu) ==========
+  {
+    id: 25,
     category: 'daydienhoa',
     type: 'multiple-choice',
     difficulty: 2,
@@ -109,19 +329,130 @@ const FALLBACK_CHALLENGES = [
     hint: 'Mạnh + Mạnh → Yếu + Yếu.'
   },
   {
-    id: 6,
+    id: 26,
     category: 'daydienhoa',
     type: 'multiple-choice',
     difficulty: 3,
     question: 'Phản ứng nào sau đây KHÔNG xảy ra?',
-    options: ['Cu + FeSO4', 'Fe + CuSO4', 'Zn + CuSO4', 'Cu + 2AgNO3'],
-    correctAnswer: 'Cu + FeSO4',
-    explanation: 'Cu đứng sau Fe trong dãy hoạt động hóa học nên không đẩy được Fe ra khỏi muối.',
+    options: ['Cu + FeSO₄', 'Fe + CuSO₄', 'Zn + CuSO₄', 'Cu + 2AgNO₃'],
+    correctAnswer: 'Cu + FeSO₄',
+    explanation: 'Cu đứng sau Fe trong dãy điện hóa nên không đẩy được Fe ra khỏi muối (tính khử Cu < Fe).',
     hint: 'Kim loại yếu không đẩy được kim loại mạnh.'
   },
-  // ========== ĂN MÒN & ĐIỀU CHẾ ==========
   {
-    id: 7,
+    id: 27,
+    category: 'daydienhoa',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Trong dãy điện hóa, kim loại có tính khử mạnh nhất là:',
+    options: ['K', 'Na', 'Ca', 'Mg'],
+    correctAnswer: 'K',
+    explanation: 'Trong dãy điện hóa, K đứng đầu tiên nên có tính khử mạnh nhất. Dãy: K, Na, Ca, Mg, Al, Zn, Fe...',
+    hint: 'Đứng đầu dãy điện hóa.'
+  },
+  {
+    id: 28,
+    category: 'daydienhoa',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Trong pin điện hóa Zn-Cu, cực âm là:',
+    options: ['Kẽm (Zn)', 'Đồng (Cu)', 'Cả hai', 'Không xác định'],
+    correctAnswer: 'Kẽm (Zn)',
+    explanation: 'Zn có tính khử mạnh hơn Cu nên Zn là cực âm (anot), bị oxi hóa: Zn → Zn²⁺ + 2e.',
+    hint: 'Kim loại mạnh hơn là cực âm.'
+  },
+  {
+    id: 29,
+    category: 'daydienhoa',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Trong pin điện hóa, cực dương còn gọi là ___.',
+    correctAnswer: 'catot',
+    acceptedAnswers: ['catot', 'cathode', 'catốt', 'cực dương'],
+    explanation: 'Cực dương (catot) là nơi xảy ra quá trình khử: M^n+ + ne → M.',
+    hint: 'Nơi xảy ra quá trình khử.'
+  },
+  {
+    id: 30,
+    category: 'daydienhoa',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Cho các kim loại: Fe, Cu, Ag, Al. Sắp xếp theo thứ tự tính khử giảm dần:',
+    options: ['Al > Fe > Cu > Ag', 'Fe > Al > Cu > Ag', 'Ag > Cu > Fe > Al', 'Al > Cu > Fe > Ag'],
+    correctAnswer: 'Al > Fe > Cu > Ag',
+    explanation: 'Theo dãy điện hóa: K Na Ca Mg Al Zn Fe Ni Sn Pb H Cu Ag Au. Tính khử: Al > Fe > Cu > Ag.',
+    hint: 'Theo thứ tự trong dãy điện hóa.'
+  },
+  {
+    id: 31,
+    category: 'daydienhoa',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Cho Fe vào dung dịch chứa AgNO₃ và Cu(NO₃)₂. Kim loại nào bị đẩy ra trước?',
+    options: ['Ag', 'Cu', 'Cả hai cùng lúc', 'Không kim loại nào'],
+    correctAnswer: 'Ag',
+    explanation: 'Ag⁺ có tính oxi hóa mạnh hơn Cu²⁺ nên bị khử trước: Fe + 2Ag⁺ → Fe²⁺ + 2Ag.',
+    hint: 'Ion nào có tính oxi hóa mạnh hơn.'
+  },
+  {
+    id: 32,
+    category: 'daydienhoa',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Cặp oxi hóa - khử của kim loại là:',
+    options: ['M^n+/M', 'M/M^n+', 'M^n+/M^(n-1)+', 'M/M^(n+1)+'],
+    correctAnswer: 'M^n+/M',
+    explanation: 'Cặp oxi hóa - khử gồm dạng oxi hóa (M^n+) và dạng khử (M): M^n+ + ne ⇌ M.',
+    hint: 'Dạng oxi hóa viết trước.'
+  },
+  {
+    id: 33,
+    category: 'daydienhoa',
+    type: 'fill-blank',
+    difficulty: 3,
+    question: 'Suất điện động của pin Zn-Cu có giá trị khoảng ___ V.',
+    correctAnswer: '1,1',
+    acceptedAnswers: ['1,1', '1.1', '1,10', '1.10'],
+    explanation: 'E°(pin) = E°(catot) - E°(anot) = E°(Cu²⁺/Cu) - E°(Zn²⁺/Zn) = 0,34 - (-0,76) = 1,10 V.',
+    hint: 'Hiệu của hai thế điện cực chuẩn.'
+  },
+  {
+    id: 34,
+    category: 'daydienhoa',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phản ứng nào sau đây xảy ra?',
+    options: ['Fe + CuSO₄ → FeSO₄ + Cu', 'Cu + FeSO₄ → CuSO₄ + Fe', 'Ag + CuSO₄ → Ag₂SO₄ + Cu', 'Au + HCl → AuCl₃ + H₂'],
+    correctAnswer: 'Fe + CuSO₄ → FeSO₄ + Cu',
+    explanation: 'Fe đứng trước Cu trong dãy điện hóa nên đẩy được Cu ra khỏi dung dịch muối.',
+    hint: 'Kim loại mạnh đẩy kim loại yếu.'
+  },
+  {
+    id: 35,
+    category: 'daydienhoa',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Trong cầu muối của pin điện hóa, vai trò chính là:',
+    options: ['Dẫn ion, hoàn thành mạch điện', 'Dẫn electron', 'Cung cấp chất phản ứng', 'Làm tăng tốc độ phản ứng'],
+    correctAnswer: 'Dẫn ion, hoàn thành mạch điện',
+    explanation: 'Cầu muối cho phép ion di chuyển giữa hai nửa pin, trung hòa điện tích và hoàn thành mạch điện.',
+    hint: 'Liên quan đến ion.'
+  },
+  {
+    id: 36,
+    category: 'daydienhoa',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Thế điện cực chuẩn của cặp Cu²⁺/Cu là +0,34V. Điều này có nghĩa:',
+    options: ['Cu²⁺ có tính oxi hóa mạnh hơn H⁺', 'Cu có tính khử mạnh hơn H₂', 'Cu tan được trong HCl loãng', 'Cu²⁺ dễ bị khử hơn H⁺'],
+    correctAnswer: 'Cu²⁺ có tính oxi hóa mạnh hơn H⁺',
+    explanation: 'E° > 0 nghĩa là Cu²⁺ có tính oxi hóa mạnh hơn H⁺, Cu có tính khử yếu hơn H₂.',
+    hint: 'So sánh với điện cực hydro chuẩn.'
+  },
+
+  // ========== ĂN MÒN & ĐIỀU CHẾ (12 câu) ==========
+  {
+    id: 37,
     category: 'anmon',
     type: 'multiple-choice',
     difficulty: 1,
@@ -132,15 +463,125 @@ const FALLBACK_CHALLENGES = [
     hint: 'Do môi trường.'
   },
   {
-    id: 8,
+    id: 38,
     category: 'anmon',
     type: 'multiple-choice',
     difficulty: 2,
     question: 'Kim loại kiềm, kiềm thổ, nhôm được điều chế bằng phương pháp...',
     options: ['Điện phân nóng chảy', 'Điện phân dung dịch', 'Nhiệt luyện', 'Thủy luyện'],
     correctAnswer: 'Điện phân nóng chảy',
-    explanation: 'Các kim loại mạnh (K, Na, Ca, Mg, Al) chỉ có thể điều chế bằng cách điện phân nóng chảy.',
+    explanation: 'Các kim loại mạnh (K, Na, Ca, Mg, Al) chỉ có thể điều chế bằng cách điện phân nóng chảy muối hoặc oxit.',
     hint: 'Kim loại mạnh.'
+  },
+  {
+    id: 39,
+    category: 'anmon',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Ăn mòn hóa học là:',
+    options: ['Quá trình oxi hóa - khử trực tiếp', 'Quá trình điện hóa', 'Quá trình cơ học', 'Quá trình vật lý'],
+    correctAnswer: 'Quá trình oxi hóa - khử trực tiếp',
+    explanation: 'Ăn mòn hóa học là quá trình oxi hóa - khử, trong đó kim loại phản ứng trực tiếp với chất oxi hóa trong môi trường.',
+    hint: 'Phản ứng trực tiếp.'
+  },
+  {
+    id: 40,
+    category: 'anmon',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Trong ăn mòn điện hóa, kim loại có tính khử mạnh hơn đóng vai trò:',
+    options: ['Cực âm, bị ăn mòn', 'Cực dương, được bảo vệ', 'Không tham gia phản ứng', 'Xúc tác cho phản ứng'],
+    correctAnswer: 'Cực âm, bị ăn mòn',
+    explanation: 'Kim loại có tính khử mạnh hơn là anot (cực âm), bị oxi hóa và ăn mòn: M → M^n+ + ne.',
+    hint: 'Anot bị oxi hóa.'
+  },
+  {
+    id: 41,
+    category: 'anmon',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Phương pháp điều chế kim loại bằng cách dùng kim loại mạnh khử ion kim loại yếu gọi là phương pháp ___.',
+    correctAnswer: 'thủy luyện',
+    acceptedAnswers: ['thủy luyện', 'thuy luyen', 'thuỷ luyện'],
+    explanation: 'Thủy luyện: dùng kim loại có tính khử mạnh đẩy kim loại yếu ra khỏi dung dịch muối.',
+    hint: 'Liên quan đến dung dịch nước.'
+  },
+  {
+    id: 42,
+    category: 'anmon',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Để bảo vệ vỏ tàu biển bằng thép, người ta gắn vào vỏ tàu:',
+    options: ['Các tấm kẽm', 'Các tấm đồng', 'Các tấm thiếc', 'Các tấm chì'],
+    correctAnswer: 'Các tấm kẽm',
+    explanation: 'Zn có tính khử mạnh hơn Fe nên Zn sẽ bị ăn mòn thay cho Fe (bảo vệ điện hóa).',
+    hint: 'Kim loại mạnh hơn Fe.'
+  },
+  {
+    id: 43,
+    category: 'anmon',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Điều chế Cu từ CuSO₄ bằng phương pháp:',
+    options: ['Điện phân dung dịch hoặc thủy luyện', 'Chỉ điện phân nóng chảy', 'Chỉ nhiệt luyện', 'Chỉ thủy luyện'],
+    correctAnswer: 'Điện phân dung dịch hoặc thủy luyện',
+    explanation: 'Cu có thể điều chế bằng điện phân dung dịch CuSO₄ hoặc dùng Fe đẩy Cu ra khỏi dung dịch (thủy luyện).',
+    hint: 'Cu là kim loại trung bình.'
+  },
+  {
+    id: 44,
+    category: 'anmon',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Phản ứng nhiệt nhôm dùng để điều chế:',
+    options: ['Kim loại có nhiệt độ nóng chảy cao như Fe, Cr', 'Kim loại kiềm như Na, K', 'Kim loại kiềm thổ như Ca, Mg', 'Kim loại quý như Au, Pt'],
+    correctAnswer: 'Kim loại có nhiệt độ nóng chảy cao như Fe, Cr',
+    explanation: 'Phản ứng nhiệt nhôm: 2Al + Fe₂O₃ → 2Fe + Al₂O₃, dùng điều chế kim loại có t°nc cao và hàn đường ray.',
+    hint: 'Phản ứng tỏa nhiệt mạnh.'
+  },
+  {
+    id: 45,
+    category: 'anmon',
+    type: 'fill-blank',
+    difficulty: 1,
+    question: 'Sắt tráng kẽm còn gọi là tôn ___.',
+    correctAnswer: 'tráng kẽm',
+    acceptedAnswers: ['tráng kẽm', 'mạ kẽm', 'kẽm'],
+    explanation: 'Tôn tráng kẽm (tôn mạ kẽm) là sắt được phủ lớp kẽm bảo vệ khỏi ăn mòn.',
+    hint: 'Phủ kim loại nào?'
+  },
+  {
+    id: 46,
+    category: 'anmon',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Khi điện phân dung dịch NaCl có màng ngăn, sản phẩm thu được là:',
+    options: ['NaOH, H₂, Cl₂', 'Na, Cl₂', 'NaCl, O₂, H₂', 'Na, O₂, Cl₂'],
+    correctAnswer: 'NaOH, H₂, Cl₂',
+    explanation: 'Điện phân dung dịch NaCl có màng ngăn: 2NaCl + 2H₂O → 2NaOH + H₂↑ + Cl₂↑.',
+    hint: 'Sản xuất xút.'
+  },
+  {
+    id: 47,
+    category: 'anmon',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Trong điện phân dung dịch CuSO₄ với điện cực trơ, ở catot xảy ra:',
+    options: ['Cu²⁺ + 2e → Cu', '2H₂O → O₂ + 4H⁺ + 4e', 'SO₄²⁻ → SO₂ + O₂ + 2e', '2H₂O + 2e → H₂ + 2OH⁻'],
+    correctAnswer: 'Cu²⁺ + 2e → Cu',
+    explanation: 'Ở catot (cực âm) xảy ra quá trình khử: Cu²⁺ + 2e → Cu (kim loại Cu bám vào catot).',
+    hint: 'Catot là nơi xảy ra khử.'
+  },
+  {
+    id: 48,
+    category: 'anmon',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Hợp kim là:',
+    options: ['Chất rắn thu được khi nấu chảy kim loại với nguyên tố khác', 'Kim loại nguyên chất', 'Hỗn hợp các kim loại ở dạng bột', 'Dung dịch kim loại trong nước'],
+    correctAnswer: 'Chất rắn thu được khi nấu chảy kim loại với nguyên tố khác',
+    explanation: 'Hợp kim là chất rắn thu được sau khi làm nguội hỗn hợp nóng chảy của kim loại với kim loại hoặc phi kim khác.',
+    hint: 'Kết hợp nhiều nguyên tố.'
   }
 ];
 
@@ -156,7 +597,7 @@ function ProgressWatermark({ categoryProgress }) {
       <div className="watermark-grid">
         {CATEGORIES.map(cat => {
           const Icon = cat.icon;
-          const total = FALLBACK_CHALLENGES.filter(c => c.category === cat.id).length;
+          const total = CHALLENGES.filter(c => c.category === cat.id).length;
           const percentage = categoryProgress[cat.id] || 0;
           const isComplete = percentage >= 80;
           const questionsCompleted = Math.round((percentage / 100) * total);
@@ -212,22 +653,7 @@ const Bai05_DaiCuongKimLoai = () => {
   const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
 
-  // ========== AI QUESTIONS HOOK ==========
-  const { 
-    questions: aiQuestions, 
-    loading: aiLoading, 
-    error: aiError, 
-    refetch: refetchAI,
-    clearCache: clearAICache 
-  } = useAIQuestions('dai_cuong_kim_loai_12', { autoFetch: true, useCache: true });
-
-  const CHALLENGES = useMemo(() => {
-    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
-    return FALLBACK_CHALLENGES;
-  }, [aiQuestions]);
-
-  const isUsingAI = aiQuestions && aiQuestions.length > 0;
-
+  // ========== CHALLENGE PROGRESS ==========
   const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('daicuongkimloai_12', {
     challengeId: 5,
     programId: 'chemistry',
@@ -497,7 +923,9 @@ const Bai05_DaiCuongKimLoai = () => {
             <div className="category-grid-kimloai">
               {CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
-                const isCompleted = completedCategories.includes(cat.id);
+                const catPercentage = categoryProgress[cat.id] || 0;
+                const isCompleted = catPercentage >= 80;
+                const hasProgress = catPercentage > 0 && catPercentage < 80;
                 
                 return (
                   <div 
@@ -519,6 +947,7 @@ const Bai05_DaiCuongKimLoai = () => {
                           {CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi
                         </span>
                         {isCompleted && <CheckCircle2 className="w-5 h-5 text-green-400" />}
+                        {hasProgress && <span className="text-xs font-semibold px-2 py-1 rounded bg-yellow-500/20 text-yellow-300">{catPercentage}%</span>}
                       </div>
                     </div>
                   </div>

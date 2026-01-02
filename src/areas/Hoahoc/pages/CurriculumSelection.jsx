@@ -114,8 +114,8 @@ const CurriculumSelection = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       {/* Compact Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-6xl mx-auto text-center">
+        <div className="mx-auto px-4 py-8 w-[90%]">
+          <div className="mx-auto text-center">
             <div className="flex items-center justify-center gap-4 mb-3">
               <span className="text-5xl">📚</span>
               <h1 className="text-4xl font-bold text-gray-800">
@@ -134,8 +134,8 @@ const CurriculumSelection = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-10">
-        <div className="max-w-6xl mx-auto">
+      <div className="mx-auto px-4 py-10 w-[90%]">
+        <div className="mx-auto">
           
           {/* Compact Info Banner */}
           <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl p-5 mb-8 shadow-lg">
@@ -226,12 +226,7 @@ const CurriculumSelection = () => {
                 )}
               </div>
               
-              <Button
-                onClick={() => navigate(-1)}
-                className="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-medium text-base transition-colors"
-              >
-                ← Quay lại
-              </Button>
+
             </div>
           </div>
         </div>

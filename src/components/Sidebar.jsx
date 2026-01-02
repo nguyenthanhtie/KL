@@ -168,7 +168,7 @@ const Sidebar = ({ children }) => {
         fixed lg:sticky top-0 left-0 h-screen z-50
         bg-white/80 backdrop-blur-xl border-r border-gray-200/50
         transition-all duration-300 ease-in-out
-        ${isCollapsed ? 'w-20' : 'w-72'}
+        ${isCollapsed ? 'w-16' : 'w-[230px]'}
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         flex flex-col
         shadow-xl lg:shadow-none

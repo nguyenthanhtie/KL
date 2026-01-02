@@ -622,6 +622,60 @@ router.post('/update-study-time', async (req, res) => {
   }
 });
 
+// Update stage progress for Journey mode
+router.put('/firebase/:firebaseUid/stage-progress', async (req, res) => {
+  try {
+    const { firebaseUid } = req.params;
+    const { stageKey, stars, programId } = req.body;
+
+    console.log('📝 Updating stage progress:', { firebaseUid, stageKey, stars, programId });
+
+    const user = await User.findOne({ firebaseUid });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find or create the program
+    let program = user.programs.find(p => p.programId === programId);
+    if (!program) {
+      return res.status(404).json({ message: 'Program not found' });
+    }
+
+    // Initialize stageStars if not exists
+    if (!program.progress) {
+      program.progress = {};
+    }
+    if (!program.progress.stageStars) {
+      program.progress.stageStars = {};
+    }
+
+    // Only update if new stars is higher than existing
+    const existingStars = program.progress.stageStars[stageKey] || 0;
+    if (stars > existingStars) {
+      program.progress.stageStars[stageKey] = stars;
+      
+      // Add XP: 20 XP per new star earned
+      const newStarsEarned = stars - existingStars;
+      user.xp = (user.xp || 0) + (newStarsEarned * 20);
+      console.log(`✨ Added ${newStarsEarned * 20} XP for ${newStarsEarned} new stars`);
+    }
+
+    user.markModified('programs');
+    await user.save();
+
+    console.log('✅ Stage progress updated:', { stageKey, stars });
+
+    res.json({
+      success: true,
+      message: 'Stage progress updated',
+      stageStars: program.progress.stageStars
+    });
+  } catch (error) {
+    console.error('❌ Error updating stage progress:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 // Select curriculum for a program
 router.post('/select-curriculum', async (req, res) => {
   try {

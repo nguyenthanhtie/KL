@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Droplets, Globe, Shield, Atom,
-  Clock, Target, AlertTriangle, Flame, Beaker,
-  RefreshCw, Sparkles, Loader2, WifiOff
+  Clock, Target, AlertTriangle, Flame, Beaker
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
-import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai07_KimLoaiKiem_KiemTho_Nhom.css';
 
@@ -19,8 +17,8 @@ const CATEGORIES = [
   { id: 'nuoc', name: '💧 Nước cứng & Nhận biết', icon: Droplets, color: '#10b981', description: 'Phân loại, làm mềm nước cứng và nhận biết ion kim loại', bgGradient: 'from-emerald-600 to-teal-500', emoji: '🚿' }
 ];
 
-// Fallback questions khi không có AI
-const FALLBACK_CHALLENGES = [
+// Bộ câu hỏi tĩnh
+const CHALLENGES = [
   // ===== KIM LOẠI KIỀM (12 câu) =====
   { id: 1, category: 'kiem', type: 'multiple-choice', difficulty:1, question: 'Kim loại kiềm thuộc nhóm nào trong bảng tuần hoàn?', options: ['Nhóm IA', 'Nhóm IIA', 'Nhóm IIIA', 'Nhóm VIIA'], correctAnswer: 'Nhóm IA', explanation: 'Kim loại kiềm gồm Li, Na, K, Rb, Cs, Fr thuộc nhóm IA.', hint: 'Nhóm 1'},
   { id: 2, category: 'kiem', type: 'multiple-choice', difficulty:1, question: 'Cấu hình electron lớp ngoài cùng của kim loại kiềm là?', options: ['ns1', 'ns2', 'ns2np1', 'ns2np5'], correctAnswer: 'ns1', explanation: 'Kim loại kiềm có 1 electron ở lớp ngoài cùng (ns1).', hint: '1 electron hóa trị'},
@@ -163,22 +161,6 @@ const Bai07_KimLoaiKiem_KiemTho_Nhom = () => {
   const [gameInProgress, setGameInProgress] = useState(false);
   const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
-
-  // ========== AI QUESTIONS HOOK ==========
-  const { 
-    questions: aiQuestions, 
-    loading: aiLoading, 
-    error: aiError, 
-    refetch: refetchAI,
-    clearCache: clearAICache 
-  } = useAIQuestions('kim_loai_kiem_kiem_tho_nhom_12', { autoFetch: true, useCache: true });
-
-  const CHALLENGES = useMemo(() => {
-    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
-    return FALLBACK_CHALLENGES;
-  }, [aiQuestions]);
-
-  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('kiem_kiemtho_nhom_12', { challengeId: 7, programId: 'chemistry', grade: 12 });
 

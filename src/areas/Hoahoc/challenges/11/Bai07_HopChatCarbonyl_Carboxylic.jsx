@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Beaker, TestTube, Flame, Atom,
-  Clock, Target, AlertTriangle, Droplets,
-  RefreshCw, Sparkles, Loader2, WifiOff
+  Clock, Target, AlertTriangle, Droplets
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../../components/ResumeDialog';
-import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import './CSS/Bai07_HopChatCarbonyl_Carboxylic.css';
 
 // ================== DATA - HỢP CHẤT CARBONYL - CARBOXYLIC ==================
@@ -48,54 +46,498 @@ const CATEGORIES = [
   }
 ];
 
-const FALLBACK_CHALLENGES = [
-  // ========== ALDEHIT & XETON ==========
+// Bộ câu hỏi tĩnh
+const CHALLENGES = [
+  // ========== ALDEHIT & XETON (12 câu) ==========
   {
     id: 1,
     category: 'carbonyl',
     type: 'multiple-choice',
     difficulty: 1,
-    question: 'Nhóm chức của aldehit là...',
+    question: 'Nhóm chức của anđehit là...',
     options: ['-COOH', '-CHO', '-OH', '-CO-'],
     correctAnswer: '-CHO',
-    explanation: 'Aldehit là hợp chất hữu cơ có nhóm chức -CHO liên kết trực tiếp với nguyên tử cacbon hoặc nguyên tử hidro.',
+    explanation: 'Anđehit là hợp chất hữu cơ có nhóm chức -CHO (nhóm formyl) liên kết trực tiếp với nguyên tử cacbon hoặc nguyên tử hidro.',
     hint: 'Nhóm formyl.'
   },
-  // ========== AXIT CACBOXYLIC ==========
   {
     id: 2,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Công thức phân tử của anđehit fomic (metanal) là...',
+    options: ['CH₃CHO', 'HCHO', 'C₂H₄O', 'CH₃OH'],
+    correctAnswer: 'HCHO',
+    explanation: 'Anđehit fomic (metanal) có công thức HCHO, là anđehit đơn giản nhất.',
+    hint: 'Anđehit đơn giản nhất.'
+  },
+  {
+    id: 3,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Tên gọi của CH₃CHO là...',
+    options: ['Metanal', 'Etanal', 'Propanal', 'Axeton'],
+    correctAnswer: 'Etanal',
+    explanation: 'CH₃CHO có tên IUPAC là etanal (tên thông thường là anđehit axetic hoặc axetanđehit).',
+    hint: 'Anđehit có 2 carbon.'
+  },
+  {
+    id: 4,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Nhóm chức của xeton là...',
+    options: ['-CHO', '-COOH', '>C=O', '-OH'],
+    correctAnswer: '>C=O',
+    explanation: 'Xeton có nhóm cacbonyl (>C=O) liên kết với hai gốc hidrocacbon.',
+    hint: 'Nhóm cacbonyl ở giữa mạch.'
+  },
+  {
+    id: 5,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Công thức của axeton (propan-2-on) là...',
+    options: ['CH₃CHO', 'CH₃COCH₃', 'C₂H₅CHO', 'HCOOH'],
+    correctAnswer: 'CH₃COCH₃',
+    explanation: 'Axeton có công thức CH₃COCH₃, là xeton đơn giản và phổ biến nhất.',
+    hint: 'Xeton có 3 carbon.'
+  },
+  {
+    id: 6,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Điểm khác biệt chính giữa anđehit và xeton là...',
+    options: ['Anđehit tan trong nước còn xeton không', 'Anđehit có nhóm -CHO còn xeton có nhóm >C=O', 'Xeton có tính axit còn anđehit không', 'Anđehit không phản ứng với H₂'],
+    correctAnswer: 'Anđehit có nhóm -CHO còn xeton có nhóm >C=O',
+    explanation: 'Anđehit có nhóm -CHO ở đầu mạch, còn xeton có nhóm >C=O ở giữa mạch carbon.',
+    hint: 'Vị trí nhóm cacbonyl.'
+  },
+  {
+    id: 7,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Anđehit no, đơn chức, mạch hở có công thức chung là...',
+    options: ['CₙH₂ₙO', 'CₙH₂ₙ₊₂O', 'CₙH₂ₙO₂', 'CₙH₂ₙ₋₂O'],
+    correctAnswer: 'CₙH₂ₙO',
+    explanation: 'Anđehit no, đơn chức, mạch hở có công thức chung CₙH₂ₙO (n ≥ 1).',
+    hint: 'Giống xeton no đơn chức.'
+  },
+  {
+    id: 8,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Chất nào sau đây KHÔNG tham gia phản ứng tráng bạc?',
+    options: ['HCHO', 'CH₃CHO', 'CH₃COCH₃', 'HCOOH'],
+    correctAnswer: 'CH₃COCH₃',
+    explanation: 'Xeton (CH₃COCH₃) không có nhóm -CHO nên không tham gia phản ứng tráng bạc. HCOOH có nhóm -CHO ẩn nên vẫn tráng bạc được.',
+    hint: 'Xeton không có nhóm -CHO.'
+  },
+  {
+    id: 9,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Số đồng phân anđehit có công thức C₄H₈O là...',
+    options: ['1', '2', '3', '4'],
+    correctAnswer: '2',
+    explanation: 'C₄H₈O có 2 đồng phân anđehit: butanal (CH₃CH₂CH₂CHO) và 2-metylpropanal ((CH₃)₂CHCHO).',
+    hint: 'Mạch thẳng và mạch nhánh.'
+  },
+  {
+    id: 10,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Anđehit có nhiệt độ sôi thấp hơn ancol tương ứng vì...',
+    options: ['Anđehit có khối lượng phân tử nhỏ hơn', 'Anđehit không tạo liên kết hidro giữa các phân tử', 'Anđehit có cấu trúc đối xứng hơn', 'Anđehit là chất không phân cực'],
+    correctAnswer: 'Anđehit không tạo liên kết hidro giữa các phân tử',
+    explanation: 'Anđehit không có H linh động gắn với O nên không tạo được liên kết hidro giữa các phân tử, dẫn đến nhiệt độ sôi thấp hơn ancol.',
+    hint: 'Liên quan đến liên kết hidro.'
+  },
+  {
+    id: 11,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Benzanđehit có công thức là...',
+    options: ['C₆H₅CHO', 'C₆H₅CH₃', 'C₆H₅COOH', 'C₆H₅OH'],
+    correctAnswer: 'C₆H₅CHO',
+    explanation: 'Benzanđehit (anđehit benzoic) có công thức C₆H₅CHO, là anđehit thơm đơn giản nhất.',
+    hint: 'Anđehit của vòng benzen.'
+  },
+  {
+    id: 12,
+    category: 'carbonyl',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Propanal và propan-2-on là cặp...',
+    options: ['Đồng đẳng', 'Đồng phân', 'Cùng dãy đồng đẳng', 'Không liên quan'],
+    correctAnswer: 'Đồng phân',
+    explanation: 'Propanal (CH₃CH₂CHO) và propan-2-on (CH₃COCH₃) cùng công thức C₃H₆O nhưng khác nhóm chức, là đồng phân nhóm chức.',
+    hint: 'Cùng công thức phân tử.'
+  },
+
+  // ========== AXIT CACBOXYLIC (12 câu) ==========
+  {
+    id: 13,
     category: 'carboxylic',
     type: 'multiple-choice',
     difficulty: 1,
     question: 'Công thức chung của axit cacboxylic no, đơn chức, mạch hở là...',
-    options: ['CnH2nO2', 'CnH2n+2O', 'CnH2nO', 'CnH2n-2O2'],
-    correctAnswer: 'CnH2nO2',
-    explanation: 'Axit cacboxylic no, đơn chức, mạch hở có công thức chung là CnH2nO2 (n ≥ 1).',
+    options: ['CₙH₂ₙO₂', 'CₙH₂ₙ₊₂O', 'CₙH₂ₙO', 'CₙH₂ₙ₋₂O₂'],
+    correctAnswer: 'CₙH₂ₙO₂',
+    explanation: 'Axit cacboxylic no, đơn chức, mạch hở có công thức chung là CₙH₂ₙO₂ (n ≥ 1).',
     hint: 'Giống este no đơn chức.'
   },
-  // ========== PHẢN ỨNG ĐẶC TRƯNG ==========
   {
-    id: 3,
+    id: 14,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Tên gọi của HCOOH là...',
+    options: ['Axit axetic', 'Axit fomic', 'Axit propionic', 'Axit butiric'],
+    correctAnswer: 'Axit fomic',
+    explanation: 'HCOOH có tên là axit fomic (axit metanoic), là axit cacboxylic đơn giản nhất.',
+    hint: 'Axit có trong nọc kiến.'
+  },
+  {
+    id: 15,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Công thức của axit axetic là...',
+    options: ['HCOOH', 'CH₃COOH', 'C₂H₅COOH', 'C₃H₇COOH'],
+    correctAnswer: 'CH₃COOH',
+    explanation: 'Axit axetic (axit etanoic) có công thức CH₃COOH, là thành phần chính của giấm ăn.',
+    hint: 'Thành phần của giấm.'
+  },
+  {
+    id: 16,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Axit cacboxylic có tính axit vì...',
+    options: ['Có nhóm -OH', 'Nguyên tử H trong nhóm -COOH linh động', 'Có liên kết đôi C=O', 'Phân tử phân cực'],
+    correctAnswer: 'Nguyên tử H trong nhóm -COOH linh động',
+    explanation: 'Do ảnh hưởng của nhóm C=O, nguyên tử H trong -COOH trở nên linh động và dễ phân ly thành H⁺.',
+    hint: 'Ảnh hưởng của nhóm C=O.'
+  },
+  {
+    id: 17,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'So sánh tính axit: CH₃COOH và C₂H₅OH...',
+    options: ['CH₃COOH < C₂H₅OH', 'CH₃COOH > C₂H₅OH', 'CH₃COOH = C₂H₅OH', 'Không so sánh được'],
+    correctAnswer: 'CH₃COOH > C₂H₅OH',
+    explanation: 'Axit axetic có tính axit mạnh hơn ancol do nhóm C=O rút electron làm H trong -COOH linh động hơn.',
+    hint: 'Axit luôn mạnh hơn ancol.'
+  },
+  {
+    id: 18,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Axit cacboxylic tác dụng được với chất nào sau đây?',
+    options: ['NaCl', 'Na₂SO₄', 'NaHCO₃', 'NaNO₃'],
+    correctAnswer: 'NaHCO₃',
+    explanation: 'Axit cacboxylic có tính axit nên tác dụng với muối của axit yếu hơn như NaHCO₃, tạo CO₂.',
+    hint: 'Phản ứng axit-bazơ.'
+  },
+  {
+    id: 19,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Nhiệt độ sôi của axit axetic cao hơn ancol etylic vì...',
+    options: ['Axit có khối lượng phân tử lớn hơn', 'Axit tạo liên kết hidro bền hơn', 'Axit có cấu trúc không đối xứng', 'Axit là chất điện li'],
+    correctAnswer: 'Axit tạo liên kết hidro bền hơn',
+    explanation: 'Axit cacboxylic tạo liên kết hidro liên phân tử bền hơn ancol (do có cả C=O và O-H), nên có nhiệt độ sôi cao hơn.',
+    hint: 'Liên kết hidro mạnh hơn.'
+  },
+  {
+    id: 20,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Số đồng phân axit cacboxylic của C₄H₈O₂ là...',
+    options: ['1', '2', '3', '4'],
+    correctAnswer: '2',
+    explanation: 'C₄H₈O₂ có 2 đồng phân axit: axit butanoic (CH₃CH₂CH₂COOH) và axit 2-metylpropanoic ((CH₃)₂CHCOOH).',
+    hint: 'Mạch thẳng và mạch nhánh.'
+  },
+  {
+    id: 21,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Sắp xếp tính axit tăng dần: HCOOH, CH₃COOH, CH₂ClCOOH...',
+    options: ['HCOOH < CH₃COOH < CH₂ClCOOH', 'CH₃COOH < HCOOH < CH₂ClCOOH', 'CH₂ClCOOH < HCOOH < CH₃COOH', 'CH₃COOH < CH₂ClCOOH < HCOOH'],
+    correctAnswer: 'CH₃COOH < HCOOH < CH₂ClCOOH',
+    explanation: 'Cl hút electron mạnh làm tăng tính axit. HCOOH > CH₃COOH vì CH₃ đẩy electron. Thứ tự: CH₃COOH < HCOOH < CH₂ClCOOH.',
+    hint: 'Ảnh hưởng của nhóm thế.'
+  },
+  {
+    id: 22,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Axit oleic có công thức C₁₇H₃₃COOH thuộc loại...',
+    options: ['Axit no', 'Axit không no có 1 nối đôi', 'Axit không no có 2 nối đôi', 'Axit thơm'],
+    correctAnswer: 'Axit không no có 1 nối đôi',
+    explanation: 'C₁₇H₃₃COOH có độ bất bão hòa k = 1 trong gốc hidrocacbon, là axit béo không no có 1 nối đôi.',
+    hint: 'Tính độ bất bão hòa.'
+  },
+  {
+    id: 23,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Axit benzoic có công thức là...',
+    options: ['C₆H₅OH', 'C₆H₅CHO', 'C₆H₅COOH', 'C₆H₅CH₃'],
+    correctAnswer: 'C₆H₅COOH',
+    explanation: 'Axit benzoic (C₆H₅COOH) là axit cacboxylic thơm đơn giản nhất, dùng làm chất bảo quản thực phẩm.',
+    hint: 'Axit thơm đơn giản nhất.'
+  },
+  {
+    id: 24,
+    category: 'carboxylic',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Axit cacboxylic nào tan vô hạn trong nước?',
+    options: ['Axit stearic', 'Axit palmitic', 'Axit axetic', 'Axit oleic'],
+    correctAnswer: 'Axit axetic',
+    explanation: 'Axit axetic (CH₃COOH) có mạch cacbon ngắn nên tan vô hạn trong nước. Các axit béo có mạch dài không tan trong nước.',
+    hint: 'Axit có mạch cacbon ngắn.'
+  },
+
+  // ========== PHẢN ỨNG ĐẶC TRƯNG (10 câu) ==========
+  {
+    id: 25,
     category: 'reactions',
     type: 'multiple-choice',
     difficulty: 2,
     question: 'Phản ứng tráng bạc dùng để nhận biết nhóm chức nào?',
     options: ['-OH', '-COOH', '-CHO', '-CO-'],
     correctAnswer: '-CHO',
-    explanation: 'Phản ứng tráng bạc (tác dụng với AgNO3/NH3) là phản ứng đặc trưng của nhóm anđehit (-CHO).',
+    explanation: 'Phản ứng tráng bạc (tác dụng với AgNO₃/NH₃) là phản ứng đặc trưng của nhóm anđehit (-CHO).',
     hint: 'Tạo lớp bạc sáng bóng.'
   },
-  // ========== ỨNG DỤNG & ĐIỀU CHẾ ==========
   {
-    id: 4,
+    id: 26,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Khi oxi hóa hoàn toàn 1 mol HCHO bằng AgNO₃/NH₃ thu được bao nhiêu mol Ag?',
+    options: ['1 mol', '2 mol', '3 mol', '4 mol'],
+    correctAnswer: '4 mol',
+    explanation: 'HCHO có 2 nguyên tử H gắn với C của nhóm CHO, nên oxi hóa 2 lần: HCHO → HCOOH → CO₂, tạo 4 mol Ag.',
+    hint: 'HCHO đặc biệt, cho gấp đôi Ag.'
+  },
+  {
+    id: 27,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Anđehit tác dụng với Cu(OH)₂/NaOH đun nóng tạo kết tủa màu gì?',
+    options: ['Trắng', 'Xanh', 'Vàng', 'Đỏ gạch'],
+    correctAnswer: 'Đỏ gạch',
+    explanation: 'Anđehit khử Cu(OH)₂ thành Cu₂O màu đỏ gạch khi đun nóng trong môi trường kiềm.',
+    hint: 'Phản ứng Fehling.'
+  },
+  {
+    id: 28,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phản ứng este hóa giữa axit và ancol cần điều kiện gì?',
+    options: ['Áp suất cao', 'Xúc tác axit, đun nóng', 'Ánh sáng', 'Nhiệt độ thấp'],
+    correctAnswer: 'Xúc tác axit, đun nóng',
+    explanation: 'Phản ứng este hóa cần xúc tác H₂SO₄ đặc và đun nóng. Phản ứng thuận nghịch.',
+    hint: 'H₂SO₄ đặc làm xúc tác.'
+  },
+  {
+    id: 29,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Sản phẩm của phản ứng CH₃COOH + C₂H₅OH → ?',
+    options: ['CH₃COOC₂H₅ + H₂O', 'C₂H₅COOCH₃ + H₂O', 'CH₃OC₂H₅ + H₂O', 'C₃H₆O + H₂O'],
+    correctAnswer: 'CH₃COOC₂H₅ + H₂O',
+    explanation: 'Axit axetic + ancol etylic → etyl axetat (CH₃COOC₂H₅) + nước. Este có mùi thơm đặc trưng.',
+    hint: 'Axit cho OH, ancol cho H.'
+  },
+  {
+    id: 30,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Anđehit cộng H₂ (Ni, t°) tạo thành...',
+    options: ['Axit cacboxylic', 'Ancol bậc 1', 'Xeton', 'Ete'],
+    correctAnswer: 'Ancol bậc 1',
+    explanation: 'Anđehit cộng H₂ (khử hóa) tạo ancol bậc 1: R-CHO + H₂ → R-CH₂OH.',
+    hint: 'Cộng H₂ vào C=O.'
+  },
+  {
+    id: 31,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Xeton cộng H₂ (Ni, t°) tạo thành...',
+    options: ['Axit cacboxylic', 'Ancol bậc 1', 'Ancol bậc 2', 'Anđehit'],
+    correctAnswer: 'Ancol bậc 2',
+    explanation: 'Xeton cộng H₂ (khử hóa) tạo ancol bậc 2: R-CO-R\' + H₂ → R-CHOH-R\'.',
+    hint: 'Nhóm OH gắn với C bậc 2.'
+  },
+  {
+    id: 32,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Để phân biệt anđehit và xeton, dùng phản ứng nào?',
+    options: ['Cộng H₂', 'Tráng bạc', 'Cộng HCN', 'Cháy'],
+    correctAnswer: 'Tráng bạc',
+    explanation: 'Phản ứng tráng bạc (hoặc phản ứng với Cu(OH)₂) dùng để phân biệt anđehit (có phản ứng) và xeton (không phản ứng).',
+    hint: 'Anđehit có nhóm -CHO.'
+  },
+  {
+    id: 33,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Axit cacboxylic KHÔNG phản ứng với chất nào?',
+    options: ['NaOH', 'Na₂CO₃', 'Cu', 'Mg'],
+    correctAnswer: 'Cu',
+    explanation: 'Cu đứng sau H trong dãy hoạt động, không phản ứng với axit cacboxylic (axit yếu). Axit chỉ tác dụng với kim loại đứng trước H.',
+    hint: 'Cu đứng sau H trong dãy hoạt động.'
+  },
+  {
+    id: 34,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Oxi hóa ancol bậc 1 bằng CuO, t° thu được...',
+    options: ['Xeton', 'Anđehit', 'Axit cacboxylic', 'Ete'],
+    correctAnswer: 'Anđehit',
+    explanation: 'Ancol bậc 1 bị oxi hóa không hoàn toàn bởi CuO tạo anđehit: R-CH₂OH + CuO → R-CHO + Cu + H₂O.',
+    hint: 'Oxi hóa nhẹ ancol bậc 1.'
+  },
+
+  // ========== ỨNG DỤNG & ĐIỀU CHẾ (10 câu) ==========
+  {
+    id: 35,
     category: 'applications',
     type: 'multiple-choice',
     difficulty: 2,
     question: 'Fomalin (hay fomon) là dung dịch bão hòa của chất nào?',
     options: ['Metanol', 'Etanol', 'Metanal', 'Etanal'],
     correctAnswer: 'Metanal',
-    explanation: 'Fomalin là dung dịch bão hòa của metanal (HCHO) trong nước (khoảng 37-40%), dùng để ngâm xác động vật.',
+    explanation: 'Fomalin là dung dịch bão hòa của metanal (HCHO) trong nước (khoảng 37-40%), dùng để ngâm xác động vật, sát trùng.',
     hint: 'Anđehit fomic.'
+  },
+  {
+    id: 36,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Giấm ăn chứa khoảng bao nhiêu % axit axetic?',
+    options: ['2-5%', '10-15%', '20-30%', '40-50%'],
+    correctAnswer: '2-5%',
+    explanation: 'Giấm ăn là dung dịch axit axetic loãng, thường chứa 2-5% CH₃COOH.',
+    hint: 'Nồng độ rất loãng.'
+  },
+  {
+    id: 37,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Axeton được dùng làm dung môi vì...',
+    options: ['Có giá rẻ', 'Hòa tan được nhiều chất hữu cơ', 'Có mùi thơm', 'Không độc'],
+    correctAnswer: 'Hòa tan được nhiều chất hữu cơ',
+    explanation: 'Axeton là dung môi tốt vì có khả năng hòa tan nhiều chất hữu cơ, dễ bay hơi và không để lại cặn.',
+    hint: 'Tính chất của dung môi tốt.'
+  },
+  {
+    id: 38,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Axit fomic có trong...',
+    options: ['Giấm', 'Nọc kiến', 'Sữa chua', 'Chanh'],
+    correctAnswer: 'Nọc kiến',
+    explanation: 'Axit fomic (HCOOH) có trong nọc kiến, ong. Tên "fomic" xuất phát từ tiếng Latin "formica" nghĩa là kiến.',
+    hint: 'Tên gọi liên quan đến kiến.'
+  },
+  {
+    id: 39,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Điều chế anđehit axetic trong công nghiệp từ...',
+    options: ['Oxi hóa metan', 'Oxi hóa etilen', 'Oxi hóa propan', 'Nhiệt phân etanol'],
+    correctAnswer: 'Oxi hóa etilen',
+    explanation: 'Trong công nghiệp, anđehit axetic được điều chế bằng cách oxi hóa etilen (phương pháp Wacker): 2CH₂=CH₂ + O₂ → 2CH₃CHO.',
+    hint: 'Phương pháp Wacker.'
+  },
+  {
+    id: 40,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Axit axetic được điều chế trong công nghiệp bằng cách nào?',
+    options: ['Oxi hóa butan', 'Lên men giấm', 'Cả A và B', 'Nhiệt phân CaCO₃'],
+    correctAnswer: 'Cả A và B',
+    explanation: 'Axit axetic được điều chế bằng lên men giấm (từ ancol etylic) hoặc oxi hóa butan/axetanđehit trong công nghiệp.',
+    hint: 'Nhiều phương pháp khác nhau.'
+  },
+  {
+    id: 41,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Trong phòng thí nghiệm, điều chế anđehit bằng cách...',
+    options: ['Oxi hóa ancol bậc 1 bằng CuO', 'Thủy phân este', 'Đun ancol với H₂SO₄ đặc', 'Cho axit tác dụng với Zn'],
+    correctAnswer: 'Oxi hóa ancol bậc 1 bằng CuO',
+    explanation: 'Trong phòng thí nghiệm, anđehit được điều chế bằng cách oxi hóa ancol bậc 1 bằng CuO đun nóng.',
+    hint: 'Oxi hóa nhẹ.'
+  },
+  {
+    id: 42,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Axit béo no trong dầu mỡ động vật chủ yếu là...',
+    options: ['Axit oleic', 'Axit stearic và palmitic', 'Axit axetic', 'Axit benzoic'],
+    correctAnswer: 'Axit stearic và palmitic',
+    explanation: 'Mỡ động vật chứa nhiều axit béo no như axit stearic (C₁₇H₃₅COOH) và palmitic (C₁₅H₃₁COOH).',
+    hint: 'Axit béo mạch dài.'
+  },
+  {
+    id: 43,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Nhựa phenol-fomandehit được tổng hợp từ...',
+    options: ['Phenol và metanal', 'Phenol và etanal', 'Benzen và metanal', 'Toluen và etanal'],
+    correctAnswer: 'Phenol và metanal',
+    explanation: 'Nhựa phenol-fomandehit (bakelit) được tổng hợp từ phenol và fomanđehit (metanal) qua phản ứng trùng ngưng.',
+    hint: 'Nhựa bakelit.'
+  },
+  {
+    id: 44,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Axit salicylic (nguyên liệu làm aspirin) có công thức...',
+    options: ['C₆H₅COOH', 'HOC₆H₄COOH', 'C₆H₅OH', 'CH₃COOH'],
+    correctAnswer: 'HOC₆H₄COOH',
+    explanation: 'Axit salicylic là axit o-hidroxibenzoic (HOC₆H₄COOH), là nguyên liệu để tổng hợp aspirin.',
+    hint: 'Axit có cả nhóm -OH và -COOH.'
   }
 ];
 
@@ -176,22 +618,6 @@ const Bai07_HopChatCarbonyl_Carboxylic = () => {
     programId: 'chemistry',
     grade: 11
   });
-
-  // AI Questions Hook
-  const { 
-    questions: aiQuestions, 
-    loading: aiLoading, 
-    error: aiError, 
-    refetch: refetchAI,
-    clearCache: clearAICache 
-  } = useAIQuestions('hop_chat_carbonyl_carboxylic_11', { autoFetch: true, useCache: true });
-
-  const CHALLENGES = useMemo(() => {
-    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
-    return FALLBACK_CHALLENGES;
-  }, [aiQuestions]);
-
-  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   // States for completion tracking
   const [startTime] = useState(() => Date.now());
@@ -450,40 +876,9 @@ const Bai07_HopChatCarbonyl_Carboxylic = () => {
             {/* Progress Watermark */}
             <ProgressWatermark categoryProgress={categoryProgress} challenges={CHALLENGES} />
 
-            {/* AI Status Banner */}
-            {aiLoading && (
-              <div className="mb-6 p-4 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center gap-3">
-                <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
-                <span className="text-blue-200">Đang tải câu hỏi AI...</span>
-              </div>
-            )}
-            {aiError && (
-              <div className="mb-6 p-4 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <WifiOff className="w-5 h-5 text-amber-400" />
-                  <span className="text-amber-200">Đang dùng câu hỏi dự phòng</span>
-                </div>
-                <button onClick={refetchAI} className="flex items-center gap-2 px-3 py-1 bg-amber-500/30 hover:bg-amber-500/40 rounded-lg text-amber-200 text-sm">
-                  <RefreshCw className="w-4 h-4" /> Thử lại
-                </button>
-              </div>
-            )}
-            {isUsingAI && !aiLoading && (
-              <div className="mb-6 p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5 text-emerald-400" />
-                  <span className="text-emerald-200">Câu hỏi AI đã sẵn sàng ({aiQuestions.length} câu)</span>
-                </div>
-                <button onClick={() => { clearAICache(); refetchAI(); }} className="flex items-center gap-2 px-3 py-1 bg-emerald-500/30 hover:bg-emerald-500/40 rounded-lg text-emerald-200 text-sm">
-                  <RefreshCw className="w-4 h-4" /> Làm mới
-                </button>
-              </div>
-            )}
-
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
               Chọn chủ đề thử thách
-              {isUsingAI && <span className="ml-2 px-2 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-full flex items-center gap-1"><Sparkles className="w-3 h-3" /> AI</span>}
             </h2>
 
             <div className="category-grid-carbonyl">

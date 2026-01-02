@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, Play, RotateCcw, ChevronRight, ChevronLeft,
   CheckCircle2, XCircle, Lightbulb, HelpCircle, Zap, Award,
   FlaskConical, Beaker, Thermometer, Wind, Droplets, Flame,
-  AlertTriangle, Star, Target, Clock, Atom, BookOpen, Share2, Search, Microscope,
-  RefreshCw, Sparkles, Loader2, WifiOff
+  AlertTriangle, Star, Target, Clock, Atom, BookOpen, Share2, Search, Microscope
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
-import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai04_DaiCuongHoaHuuCo.css';
 
@@ -48,8 +46,9 @@ const CATEGORIES = [
   }
 ];
 
-// ================== FALLBACK QUESTIONS ==================
-const FALLBACK_CHALLENGES = [
+// Bộ câu hỏi tĩnh - Đại cương Hóa học Hữu cơ (40+ câu)
+const CHALLENGES = [
+  // ========== CONCEPTS - Khái niệm & Phân loại (10 câu) ==========
   {
     id: 1,
     category: 'concepts',
@@ -58,7 +57,7 @@ const FALLBACK_CHALLENGES = [
     question: 'Hợp chất hữu cơ là hợp chất của nguyên tố nào?',
     options: ['Oxi', 'Nitơ', 'Cacbon', 'Hidro'],
     correctAnswer: 'Cacbon',
-    explanation: 'Hợp chất hữu cơ là hợp chất của cacbon (trừ CO, CO2, muối cacbonat, xianua...).',
+    explanation: 'Hợp chất hữu cơ là hợp chất của cacbon (trừ CO, CO₂, muối cacbonat, xianua...).',
     hint: 'Nguyên tố chính tạo nên mạch cacbon.'
   },
   {
@@ -74,17 +73,107 @@ const FALLBACK_CHALLENGES = [
   },
   {
     id: 3,
-    category: 'structure',
+    category: 'concepts',
     type: 'multiple-choice',
     difficulty: 1,
-    question: 'Đồng đẳng là hiện tượng các chất có cùng công thức chung và hơn kém nhau bao nhiêu nhóm CH2?',
-    options: ['1 nhóm CH2', 'Một hay nhiều nhóm CH2', '2 nhóm CH2', '3 nhóm CH2'],
-    correctAnswer: 'Một hay nhiều nhóm CH2',
-    explanation: 'Các chất đồng đẳng có cùng công thức tổng quát, cùng tính chất hóa học tương tự, hơn kém nhau một hay nhiều nhóm CH2.',
-    hint: 'Không nhất thiết chỉ 1 nhóm.'
+    question: 'Nhóm chức -CHO là nhóm chức đặc trưng của loại hợp chất nào?',
+    options: ['Ancol', 'Anđehit', 'Xeton', 'Este'],
+    correctAnswer: 'Anđehit',
+    explanation: 'Anđehit có nhóm -CHO (nhóm cacbanđehit) liên kết với gốc hidrocacbon hoặc H.',
+    hint: 'Fomanđehit HCHO là ví dụ điển hình.'
   },
   {
     id: 4,
+    category: 'concepts',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Nhóm chức -COOH là nhóm chức đặc trưng của loại hợp chất nào?',
+    options: ['Ancol', 'Anđehit', 'Axit cacboxylic', 'Este'],
+    correctAnswer: 'Axit cacboxylic',
+    explanation: 'Axit cacboxylic chứa nhóm -COOH (nhóm cacboxyl), ví dụ CH₃COOH (axit axetic).',
+    hint: 'Giấm ăn chứa axit này.'
+  },
+  {
+    id: 5,
+    category: 'concepts',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Chất nào sau đây KHÔNG phải là hợp chất hữu cơ?',
+    options: ['CH₄', 'C₂H₅OH', 'Na₂CO₃', 'CH₃COOH'],
+    correctAnswer: 'Na₂CO₃',
+    explanation: 'Na₂CO₃ (natri cacbonat) là muối cacbonat, thuộc hợp chất vô cơ dù chứa cacbon.',
+    hint: 'Muối cacbonat là ngoại lệ.'
+  },
+  {
+    id: 6,
+    category: 'concepts',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Công thức tổng quát của ankan (hidrocacbon no) là gì?',
+    options: ['CₙH₂ₙ', 'CₙH₂ₙ₊₂', 'CₙH₂ₙ₋₂', 'CₙH₂ₙ₋₆'],
+    correctAnswer: 'CₙH₂ₙ₊₂',
+    explanation: 'Ankan có công thức tổng quát CₙH₂ₙ₊₂ với n ≥ 1. Ví dụ: CH₄, C₂H₆, C₃H₈.',
+    hint: 'Metan CH₄: n=1, H=4=2×1+2.'
+  },
+  {
+    id: 7,
+    category: 'concepts',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Công thức tổng quát của anken là gì?',
+    options: ['CₙH₂ₙ (n≥2)', 'CₙH₂ₙ₊₂', 'CₙH₂ₙ₋₂', 'CₙH₂ₙ₋₆'],
+    correctAnswer: 'CₙH₂ₙ (n≥2)',
+    explanation: 'Anken có một liên kết đôi C=C, công thức tổng quát CₙH₂ₙ với n ≥ 2. Ví dụ: C₂H₄ (etilen).',
+    hint: 'Etilen C₂H₄: n=2, H=4=2×2.'
+  },
+  {
+    id: 8,
+    category: 'concepts',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Công thức tổng quát của ankin là gì?',
+    options: ['CₙH₂ₙ', 'CₙH₂ₙ₊₂', 'CₙH₂ₙ₋₂ (n≥2)', 'CₙH₂ₙ₋₆'],
+    correctAnswer: 'CₙH₂ₙ₋₂ (n≥2)',
+    explanation: 'Ankin có một liên kết ba C≡C, công thức tổng quát CₙH₂ₙ₋₂ với n ≥ 2. Ví dụ: C₂H₂ (axetilen).',
+    hint: 'Axetilen C₂H₂: n=2, H=2=2×2-2.'
+  },
+  {
+    id: 9,
+    category: 'concepts',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Nhóm chức -CO- nằm giữa 2 gốc hidrocacbon là nhóm chức của ___',
+    correctAnswer: 'xeton',
+    acceptedAnswers: ['xeton', 'Xeton', 'XETON', 'ketone'],
+    explanation: 'Xeton có nhóm >C=O (nhóm cacbonyl) nằm giữa 2 gốc R. Ví dụ: CH₃-CO-CH₃ (axeton).',
+    hint: 'Axeton là chất tẩy sơn móng tay.'
+  },
+  {
+    id: 10,
+    category: 'concepts',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Dãy đồng đẳng của metan gồm các chất nào?',
+    options: ['CH₄, C₂H₄, C₃H₆', 'CH₄, C₂H₆, C₃H₈', 'CH₄, C₂H₂, C₃H₄', 'C₂H₄, C₃H₆, C₄H₈'],
+    correctAnswer: 'CH₄, C₂H₆, C₃H₈',
+    explanation: 'Dãy đồng đẳng của metan (ankan) có công thức CₙH₂ₙ₊₂: CH₄, C₂H₆, C₃H₈, C₄H₁₀...',
+    hint: 'Các ankan hơn kém nhau nhóm CH₂.'
+  },
+
+  // ========== STRUCTURE - Cấu trúc phân tử & Đồng phân (12 câu) ==========
+  {
+    id: 11,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Đồng đẳng là hiện tượng các chất có cùng công thức chung và hơn kém nhau bao nhiêu nhóm CH₂?',
+    options: ['1 nhóm CH₂', 'Một hay nhiều nhóm CH₂', '2 nhóm CH₂', '3 nhóm CH₂'],
+    correctAnswer: 'Một hay nhiều nhóm CH₂',
+    explanation: 'Các chất đồng đẳng có cùng công thức tổng quát, cùng tính chất hóa học tương tự, hơn kém nhau một hay nhiều nhóm CH₂.',
+    hint: 'Không nhất thiết chỉ 1 nhóm.'
+  },
+  {
+    id: 12,
     category: 'structure',
     type: 'multiple-choice',
     difficulty: 2,
@@ -95,7 +184,119 @@ const FALLBACK_CHALLENGES = [
     hint: 'Cùng CTPT, khác CTCT.'
   },
   {
-    id: 5,
+    id: 13,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'C₄H₁₀ có bao nhiêu đồng phân cấu tạo?',
+    options: ['1', '2', '3', '4'],
+    correctAnswer: '2',
+    explanation: 'C₄H₁₀ có 2 đồng phân: n-butan (mạch thẳng) và isobutan (2-metylpropan, mạch nhánh).',
+    hint: 'Mạch thẳng và mạch nhánh.'
+  },
+  {
+    id: 14,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Nguyên tử cacbon trong metan (CH₄) ở trạng thái lai hóa nào?',
+    options: ['sp', 'sp²', 'sp³', 'Không lai hóa'],
+    correctAnswer: 'sp³',
+    explanation: 'Trong CH₄, C tạo 4 liên kết đơn với H, sử dụng 4 orbital lai hóa sp³, góc liên kết 109,5°.',
+    hint: 'Tứ diện đều.'
+  },
+  {
+    id: 15,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Nguyên tử cacbon trong etilen (C₂H₄) ở trạng thái lai hóa nào?',
+    options: ['sp', 'sp²', 'sp³', 'Không lai hóa'],
+    correctAnswer: 'sp²',
+    explanation: 'Trong C₂H₄, mỗi C tạo 3 liên kết σ (2 với H, 1 với C), dùng 3 orbital sp². Orbital p còn lại tạo liên kết π.',
+    hint: 'Phân tử phẳng, góc 120°.'
+  },
+  {
+    id: 16,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Nguyên tử cacbon trong axetilen (C₂H₂) ở trạng thái lai hóa nào?',
+    options: ['sp', 'sp²', 'sp³', 'Không lai hóa'],
+    correctAnswer: 'sp',
+    explanation: 'Trong C₂H₂, mỗi C tạo 2 liên kết σ (1 với H, 1 với C), dùng 2 orbital sp. 2 orbital p còn lại tạo 2 liên kết π.',
+    hint: 'Phân tử thẳng, góc 180°.'
+  },
+  {
+    id: 17,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Liên kết đôi C=C gồm những loại liên kết nào?',
+    options: ['2 liên kết σ', '2 liên kết π', '1 liên kết σ và 1 liên kết π', '1 liên kết σ và 2 liên kết π'],
+    correctAnswer: '1 liên kết σ và 1 liên kết π',
+    explanation: 'Liên kết đôi gồm 1 liên kết σ (xen phủ trục) và 1 liên kết π (xen phủ bên). Liên kết π yếu hơn nên dễ bị phá vỡ.',
+    hint: 'σ bền hơn π.'
+  },
+  {
+    id: 18,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Liên kết ba C≡C gồm những loại liên kết nào?',
+    options: ['3 liên kết σ', '3 liên kết π', '1 liên kết σ và 2 liên kết π', '2 liên kết σ và 1 liên kết π'],
+    correctAnswer: '1 liên kết σ và 2 liên kết π',
+    explanation: 'Liên kết ba gồm 1 liên kết σ và 2 liên kết π. Phân tử có liên kết ba thường có dạng thẳng.',
+    hint: 'Axetilen là phân tử thẳng.'
+  },
+  {
+    id: 19,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Đồng phân hình học (cis-trans) xuất hiện khi nào?',
+    options: ['Có liên kết đơn', 'Có liên kết đôi và 2 nhóm thế khác nhau ở mỗi C', 'Có vòng benzen', 'Có cacbon bất đối'],
+    correctAnswer: 'Có liên kết đôi và 2 nhóm thế khác nhau ở mỗi C',
+    explanation: 'Đồng phân hình học xuất hiện khi có liên kết đôi C=C và mỗi cacbon của liên kết đôi gắn với 2 nhóm thế khác nhau.',
+    hint: 'Cis = cùng phía, trans = khác phía.'
+  },
+  {
+    id: 20,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Đồng phân quang học xuất hiện khi phân tử có...',
+    options: ['Liên kết đôi', 'Cacbon bất đối (C*)', 'Vòng benzen', 'Liên kết ba'],
+    correctAnswer: 'Cacbon bất đối (C*)',
+    explanation: 'Cacbon bất đối là C liên kết với 4 nhóm thế khác nhau. Phân tử có C* sẽ có tính quang hoạt.',
+    hint: 'C gắn với 4 nhóm khác nhau.'
+  },
+  {
+    id: 21,
+    category: 'structure',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Góc liên kết H-C-H trong phân tử metan xấp xỉ ___°',
+    correctAnswer: '109,5',
+    acceptedAnswers: ['109,5', '109.5', '109'],
+    explanation: 'Metan có cấu trúc tứ diện đều với góc liên kết H-C-H = 109,5° (góc tứ diện).',
+    hint: 'Lai hóa sp³ → tứ diện.'
+  },
+  {
+    id: 22,
+    category: 'structure',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'C₅H₁₂ có bao nhiêu đồng phân cấu tạo?',
+    options: ['2', '3', '4', '5'],
+    correctAnswer: '3',
+    explanation: 'C₅H₁₂ có 3 đồng phân: n-pentan, isopentan (2-metylbutan), neopentan (2,2-đimetylpropan).',
+    hint: 'Mạch thẳng và các kiểu mạch nhánh.'
+  },
+
+  // ========== REACTIONS - Phản ứng hữu cơ (10 câu) ==========
+  {
+    id: 23,
     category: 'reactions',
     type: 'multiple-choice',
     difficulty: 1,
@@ -106,7 +307,7 @@ const FALLBACK_CHALLENGES = [
     hint: 'Thay thế = substitution.'
   },
   {
-    id: 6,
+    id: 24,
     category: 'reactions',
     type: 'multiple-choice',
     difficulty: 2,
@@ -117,7 +318,97 @@ const FALLBACK_CHALLENGES = [
     hint: 'Liên kết không no.'
   },
   {
-    id: 7,
+    id: 25,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phản ứng tách (elimination) thường tạo ra sản phẩm có...',
+    options: ['Liên kết đơn mới', 'Liên kết đôi hoặc ba mới', 'Vòng mới', 'Nhóm chức mới'],
+    correctAnswer: 'Liên kết đôi hoặc ba mới',
+    explanation: 'Phản ứng tách loại bỏ các nguyên tử/nhóm từ phân tử, tạo liên kết bội (đôi hoặc ba) mới.',
+    hint: 'Ngược với phản ứng cộng.'
+  },
+  {
+    id: 26,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Ankan chủ yếu tham gia loại phản ứng nào?',
+    options: ['Phản ứng cộng', 'Phản ứng thế', 'Phản ứng trùng hợp', 'Phản ứng oxi hóa-khử'],
+    correctAnswer: 'Phản ứng thế',
+    explanation: 'Ankan là hidrocacbon no, chỉ có liên kết đơn nên tham gia phản ứng thế (với halogen, khi chiếu sáng hoặc đun nóng).',
+    hint: 'Hidrocacbon no, bão hòa.'
+  },
+  {
+    id: 27,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Anken chủ yếu tham gia loại phản ứng nào?',
+    options: ['Phản ứng thế', 'Phản ứng cộng', 'Chỉ phản ứng cháy', 'Không phản ứng'],
+    correctAnswer: 'Phản ứng cộng',
+    explanation: 'Anken có liên kết đôi C=C, liên kết π dễ bị phá vỡ nên ưu tiên tham gia phản ứng cộng.',
+    hint: 'Liên kết π kém bền.'
+  },
+  {
+    id: 28,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Sản phẩm của phản ứng CH₄ + Cl₂ (as) → ... + HCl là gì?',
+    options: ['CH₃Cl', 'CH₂Cl₂', 'CCl₄', 'C₂H₆'],
+    correctAnswer: 'CH₃Cl',
+    explanation: 'Metan phản ứng thế với clo (ánh sáng): CH₄ + Cl₂ → CH₃Cl + HCl. Sản phẩm đầu tiên là clorua metan.',
+    hint: 'Thế 1 nguyên tử H bằng Cl.'
+  },
+  {
+    id: 29,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Sản phẩm chính của phản ứng C₂H₄ + HBr → ... là gì?',
+    options: ['CH₃-CH₂Br', 'CH₂Br-CH₂Br', 'CH₃-CHBr₂', 'CH₂=CHBr'],
+    correctAnswer: 'CH₃-CH₂Br',
+    explanation: 'Etilen cộng HBr: C₂H₄ + HBr → CH₃-CH₂Br (bromoetan). Đây là phản ứng cộng electrophin.',
+    hint: 'H cộng vào C này, Br cộng vào C kia.'
+  },
+  {
+    id: 30,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Quy tắc Markovnikov áp dụng cho phản ứng nào?',
+    options: ['Ankan + halogen', 'Anken + HX (X là halogen)', 'Ancol + axit', 'Ankin + H₂'],
+    correctAnswer: 'Anken + HX (X là halogen)',
+    explanation: 'Quy tắc Markovnikov: Khi cộng HX vào anken bất đối xứng, H cộng vào C có nhiều H hơn, X cộng vào C có ít H hơn.',
+    hint: 'Giàu càng giàu, nghèo càng nghèo.'
+  },
+  {
+    id: 31,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Phản ứng oxi hóa hoàn toàn hidrocacbon tạo ra sản phẩm gì?',
+    options: ['CO và H₂', 'CO₂ và H₂O', 'C và H₂O', 'CO₂ và H₂'],
+    correctAnswer: 'CO₂ và H₂O',
+    explanation: 'Hidrocacbon cháy hoàn toàn trong oxi tạo CO₂ và H₂O: CₓHᵧ + O₂ → CO₂ + H₂O.',
+    hint: 'Phản ứng cháy hoàn toàn.'
+  },
+  {
+    id: 32,
+    category: 'reactions',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Phản ứng cộng H₂ vào anken gọi là phản ứng ___',
+    correctAnswer: 'hidro hóa',
+    acceptedAnswers: ['hidro hóa', 'hidro hoa', 'hiđro hóa', 'hyđro hóa', 'hidrohoa', 'hydrogenation'],
+    explanation: 'Phản ứng cộng H₂ vào liên kết đôi gọi là phản ứng hidro hóa (hydrogenation), cần xúc tác Ni, Pt hoặc Pd.',
+    hint: 'Cộng hidro.'
+  },
+
+  // ========== ANALYSIS - Phân tích nguyên tố (10 câu) ==========
+  {
+    id: 33,
     category: 'analysis',
     type: 'multiple-choice',
     difficulty: 2,
@@ -128,15 +419,103 @@ const FALLBACK_CHALLENGES = [
     hint: 'Tỉ lệ đơn giản nhất.'
   },
   {
-    id: 8,
+    id: 34,
     category: 'analysis',
     type: 'fill-blank',
     difficulty: 2,
     question: 'Hợp chất hữu cơ có 40% C, 6,67% H, còn lại là O. CTĐGN của hợp chất là ___',
     correctAnswer: 'CH2O',
-    acceptedAnswers: ['CH2O', 'ch2o'],
-    explanation: 'C: 40/12 = 3,33; H: 6,67/1 = 6,67; O: 53,33/16 = 3,33. Tỉ lệ C:H:O = 1:2:1 → CTĐGN: CH2O.',
+    acceptedAnswers: ['CH2O', 'ch2o', 'CH₂O'],
+    explanation: 'C: 40/12 = 3,33; H: 6,67/1 = 6,67; O: 53,33/16 = 3,33. Tỉ lệ C:H:O = 1:2:1 → CTĐGN: CH₂O.',
     hint: 'Tính số mol mỗi nguyên tố.'
+  },
+  {
+    id: 35,
+    category: 'analysis',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Để xác định sự có mặt của C và H trong hợp chất hữu cơ, ta đốt cháy và dẫn sản phẩm qua...',
+    options: ['CuSO₄ khan và Ca(OH)₂', 'NaOH và H₂SO₄', 'HCl và NaCl', 'CaCO₃ và MgO'],
+    correctAnswer: 'CuSO₄ khan và Ca(OH)₂',
+    explanation: 'CuSO₄ khan hút nước (chuyển từ trắng sang xanh) → có H. Ca(OH)₂ tạo kết tủa trắng CaCO₃ → có C.',
+    hint: 'CuSO₄ khan màu trắng, ngậm nước màu xanh.'
+  },
+  {
+    id: 36,
+    category: 'analysis',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Đốt cháy hoàn toàn 0,1 mol hidrocacbon thu được 0,3 mol CO₂ và 0,4 mol H₂O. CTPT của hidrocacbon là?',
+    options: ['C₃H₆', 'C₃H₈', 'C₃H₄', 'C₂H₆'],
+    correctAnswer: 'C₃H₈',
+    explanation: 'nC = nCO₂ = 0,3 mol → C = 3. nH = 2×nH₂O = 0,8 mol → H = 8. CTPT: C₃H₈.',
+    hint: 'Số mol CO₂ = số nguyên tử C.'
+  },
+  {
+    id: 37,
+    category: 'analysis',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Hợp chất hữu cơ X có %C = 54,55%, %H = 9,09%, còn lại là O. CTĐGN của X là?',
+    options: ['CHO', 'C₂H₄O', 'CH₂O', 'C₃H₆O'],
+    correctAnswer: 'C₂H₄O',
+    explanation: 'C: 54,55/12 = 4,55; H: 9,09/1 = 9,09; O: 36,36/16 = 2,27. Tỉ lệ = 2:4:1 → CTĐGN: C₂H₄O.',
+    hint: 'Chia cho số nhỏ nhất rồi làm tròn.'
+  },
+  {
+    id: 38,
+    category: 'analysis',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Công thức phân tử cho biết điều gì?',
+    options: ['Chỉ loại nguyên tố', 'Số nguyên tử thực tế của mỗi nguyên tố', 'Cấu trúc không gian', 'Thứ tự liên kết'],
+    correctAnswer: 'Số nguyên tử thực tế của mỗi nguyên tố',
+    explanation: 'Công thức phân tử (CTPT) cho biết số nguyên tử thực tế của mỗi nguyên tố trong một phân tử.',
+    hint: 'CTPT = (CTĐGN)ₙ với n là hệ số.'
+  },
+  {
+    id: 39,
+    category: 'analysis',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'CTĐGN của glucozơ là CH₂O, M = 180. CTPT của glucozơ là?',
+    options: ['C₃H₆O₃', 'C₆H₁₂O₆', 'C₄H₈O₄', 'C₂H₄O₂'],
+    correctAnswer: 'C₆H₁₂O₆',
+    explanation: 'M(CH₂O) = 30. n = 180/30 = 6. CTPT = (CH₂O)₆ = C₆H₁₂O₆.',
+    hint: 'n = M(thực)/M(CTĐGN).'
+  },
+  {
+    id: 40,
+    category: 'analysis',
+    type: 'fill-blank',
+    difficulty: 3,
+    question: 'Độ bất bão hòa (k) của C₆H₆ là ___',
+    correctAnswer: '4',
+    acceptedAnswers: ['4', 'bốn'],
+    explanation: 'k = (2×6 + 2 - 6)/2 = (12 + 2 - 6)/2 = 8/2 = 4. C₆H₆ là benzen có 3 liên kết đôi + 1 vòng.',
+    hint: 'k = (2C + 2 - H)/2 cho CₓHᵧ.'
+  },
+  {
+    id: 41,
+    category: 'analysis',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Công thức tính độ bất bão hòa (k) cho hợp chất CₓHᵧOᵤNᵥ là?',
+    options: ['k = (2x + 2 - y + v)/2', 'k = (2x + 2 + y - v)/2', 'k = (2x - y)/2', 'k = x + y/2'],
+    correctAnswer: 'k = (2x + 2 - y + v)/2',
+    explanation: 'Độ bất bão hòa k = (2C + 2 - H + N)/2. Oxi không ảnh hưởng đến k. Mỗi k = 1 liên kết π hoặc 1 vòng.',
+    hint: 'O không tính, N cộng thêm.'
+  },
+  {
+    id: 42,
+    category: 'analysis',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Hợp chất X có CTĐGN là CH₃O và M = 62. CTPT của X là?',
+    options: ['CH₃O', 'C₂H₆O₂', 'C₃H₉O₃', 'C₄H₁₂O₄'],
+    correctAnswer: 'C₂H₆O₂',
+    explanation: 'M(CH₃O) = 12 + 3 + 16 = 31. n = 62/31 = 2. CTPT = (CH₃O)₂ = C₂H₆O₂ (etylen glycol).',
+    hint: 'Nhân đôi CTĐGN.'
   }
 ];
 
@@ -221,29 +600,6 @@ const Bai04_DaiCuongHoaHuuCo = () => {
   const [gameInProgress, setGameInProgress] = useState(false);
   const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
-
-  // ========== AI QUESTIONS HOOK ==========
-  const { 
-    questions: aiQuestions, 
-    loading: aiLoading, 
-    error: aiError, 
-    refetch: refetchAI,
-    clearCache: clearAICache 
-  } = useAIQuestions('dai_cuong_hoa_huu_co_11', {
-    autoFetch: true,
-    useCache: true,
-    cacheDuration: 24 * 60 * 60 * 1000 // 24 giờ
-  });
-
-  // Sử dụng AI questions nếu có, fallback về static questions
-  const CHALLENGES = useMemo(() => {
-    if (aiQuestions && aiQuestions.length > 0) {
-      return aiQuestions;
-    }
-    return FALLBACK_CHALLENGES;
-  }, [aiQuestions]);
-
-  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   const { hasProgress, savedProgress, saveProgress, clearProgress, getProgress, completeChallenge } = useChallengeProgress('dai_cuong_hoa_huu_co_11', {
     challengeId: 4,
@@ -515,51 +871,6 @@ const Bai04_DaiCuongHoaHuuCo = () => {
             {/* Progress Watermark */}
             <ProgressWatermark categoryProgress={categoryProgress} challenges={CHALLENGES} />
 
-            {/* AI Status Banner */}
-            {aiLoading && (
-              <div className="ai-loading-banner mb-6 flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-blue-700">
-                <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Đang tạo câu hỏi bằng AI...</span>
-              </div>
-            )}
-            
-            {aiError && !isUsingAI && (
-              <div className="ai-error-banner mb-6 flex items-center justify-between bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-yellow-700">
-                <div className="flex items-center gap-3">
-                  <WifiOff className="w-5 h-5" />
-                  <span>Đang sử dụng câu hỏi mặc định (AI không khả dụng)</span>
-                </div>
-                <button 
-                  onClick={() => refetchAI(true)}
-                  className="flex items-center gap-2 px-3 py-1 bg-yellow-100 hover:bg-yellow-200 rounded-lg transition-colors"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  <span>Thử lại</span>
-                </button>
-              </div>
-            )}
-
-            {isUsingAI && (
-              <div className="ai-active-banner mb-6 flex items-center justify-between bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-4">
-                <div className="flex items-center gap-3 text-purple-700">
-                  <Sparkles className="w-5 h-5" />
-                  <span className="font-medium">Câu hỏi được tạo bởi AI</span>
-                  <span className="text-xs bg-purple-100 px-2 py-1 rounded-full">{CHALLENGES.length} câu</span>
-                </div>
-                <button 
-                  onClick={() => {
-                    clearAICache();
-                    refetchAI(true);
-                  }}
-                  disabled={aiLoading}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-lg transition-colors disabled:opacity-50"
-                >
-                  <RefreshCw className={`w-4 h-4 ${aiLoading ? 'animate-spin' : ''}`} />
-                  <span>Tạo mới</span>
-                </button>
-              </div>
-            )}
-
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
               Chọn chủ đề thử thách
@@ -591,12 +902,6 @@ const Bai04_DaiCuongHoaHuuCo = () => {
                           <span className="text-xs font-semibold px-2 py-1 rounded bg-slate-100 text-slate-600">
                             {CHALLENGES.filter(c => c.category === cat.id).length} câu hỏi
                           </span>
-                          {isUsingAI && (
-                            <span className="text-xs font-semibold px-2 py-1 rounded bg-purple-100 text-purple-600 flex items-center gap-1">
-                              <Sparkles className="w-3 h-3" />
-                              AI
-                            </span>
-                          )}
                           {catPercentage > 0 && (
                             <span className={`text-xs font-semibold px-2 py-1 rounded ${isCompleted ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'}`}>
                               {catPercentage}%

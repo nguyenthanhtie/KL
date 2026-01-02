@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Droplets, Beaker, Leaf, Apple,
-  Clock, Target, AlertTriangle, Flame,
-  RefreshCw, Sparkles, Loader2, WifiOff
+  Clock, Target, AlertTriangle, Flame
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
 import ResumeDialog from '../../../../components/ResumeDialog';
-import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import './CSS/Bai01_Este_Lipit.css';
 
 // ================== DATA - ESTE VÀ LIPIT ==================
@@ -48,8 +46,8 @@ const CATEGORIES = [
   }
 ];
 
-const FALLBACK_CHALLENGES = [
-  // ========== ESTE (1 câu fallback) ==========
+const CHALLENGES = [
+  // ========== ESTE - 12 câu ==========
   {
     id: 1,
     category: 'este',
@@ -61,51 +59,540 @@ const FALLBACK_CHALLENGES = [
     explanation: 'Este no, đơn chức, mạch hở có công thức tổng quát CnH2nO2 với n ≥ 2. Este đơn giản nhất là HCOOCH3 (metyl fomat).',
     hint: 'Este có nhóm chức -COO-.'
   },
-  // ========== PHẢN ỨNG ESTE (1 câu fallback) ==========
   {
     id: 2,
+    category: 'este',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Este nào sau đây có mùi chuối chín?',
+    options: ['Isoamyl axetat', 'Etyl axetat', 'Metyl fomat', 'Benzyl axetat'],
+    correctAnswer: 'Isoamyl axetat',
+    explanation: 'Isoamyl axetat (CH3COOCH2CH2CH(CH3)2) có mùi thơm đặc trưng của chuối chín, được dùng làm hương liệu trong thực phẩm.',
+    hint: 'Tên thường gọi là "dầu chuối".'
+  },
+  {
+    id: 3,
+    category: 'este',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Nhóm chức đặc trưng của este là...',
+    options: ['-COO-', '-COOH', '-CHO', '-OH'],
+    correctAnswer: '-COO-',
+    explanation: 'Nhóm chức -COO- (nhóm este) là nhóm chức đặc trưng của este, được tạo thành từ nhóm -CO- của axit và -O- của ancol.',
+    hint: 'Là sự kết hợp giữa nhóm cacbonyl và oxi.'
+  },
+  {
+    id: 4,
+    category: 'este',
+    type: 'fill-blank',
+    difficulty: 1,
+    question: 'Este đơn giản nhất là HCOOCH3, có tên gọi là metyl ___',
+    options: [],
+    correctAnswer: 'fomat',
+    acceptedAnswers: ['fomat', 'formate', 'fomiat'],
+    explanation: 'HCOOCH3 là metyl fomat, este của axit fomic (HCOOH) với ancol metylic (CH3OH).',
+    hint: 'Tên este = tên gốc ancol + tên gốc axit (đuôi -at).'
+  },
+  {
+    id: 5,
+    category: 'este',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Số đồng phân este có công thức phân tử C4H8O2 là...',
+    options: ['4', '3', '2', '5'],
+    correctAnswer: '4',
+    explanation: 'C4H8O2 có 4 đồng phân este: HCOOC3H7 (2 đồng phân: n-propyl fomat, isopropyl fomat), CH3COOC2H5 (etyl axetat), C2H5COOCH3 (metyl propionat).',
+    hint: 'Xét các cách ghép gốc axit và gốc ancol khác nhau.'
+  },
+  {
+    id: 6,
+    category: 'este',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Este CH3COOC2H5 có tên gọi là...',
+    options: ['Etyl axetat', 'Metyl axetat', 'Etyl fomat', 'Metyl propionat'],
+    correctAnswer: 'Etyl axetat',
+    explanation: 'CH3COOC2H5 được tạo từ axit axetic (CH3COOH) và ancol etylic (C2H5OH), tên gọi là etyl axetat.',
+    hint: 'Tên este = tên gốc ancol + tên gốc axit (đuôi -at).'
+  },
+  {
+    id: 7,
+    category: 'este',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'So với axit và ancol có cùng số nguyên tử C, este có nhiệt độ sôi...',
+    options: ['Thấp hơn', 'Cao hơn', 'Bằng nhau', 'Không xác định'],
+    correctAnswer: 'Thấp hơn',
+    explanation: 'Este không có liên kết hidro giữa các phân tử (khác với axit và ancol), nên nhiệt độ sôi thấp hơn.',
+    hint: 'Xét khả năng tạo liên kết hidro.'
+  },
+  {
+    id: 8,
+    category: 'este',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Este có công thức HCOOCH3 được điều chế từ axit fomic và ancol ___',
+    options: [],
+    correctAnswer: 'metylic',
+    acceptedAnswers: ['metylic', 'metyl', 'CH3OH', 'methanol'],
+    explanation: 'HCOOCH3 (metyl fomat) được điều chế từ axit fomic HCOOH và ancol metylic CH3OH.',
+    hint: 'Xét gốc -CH3 trong công thức este.'
+  },
+  {
+    id: 9,
+    category: 'este',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Este nào sau đây có mùi táo?',
+    options: ['Etyl butirat', 'Isoamyl axetat', 'Geranyl axetat', 'Benzyl axetat'],
+    correctAnswer: 'Etyl butirat',
+    explanation: 'Etyl butirat (C3H7COOC2H5) có mùi thơm đặc trưng của táo, được dùng làm hương liệu.',
+    hint: 'Este của axit butiric.'
+  },
+  {
+    id: 10,
+    category: 'este',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Este X có công thức C4H6O2. Số đồng phân este mạch hở của X là...',
+    options: ['5', '4', '3', '6'],
+    correctAnswer: '5',
+    explanation: 'C4H6O2 (k=2) có 5 đồng phân este: HCOOCH=CHCH3 (cis, trans), HCOOCH2CH=CH2, CH2=CHCOOCH3, HCOOC(CH3)=CH2.',
+    hint: 'Este không no có thể có nối đôi C=C hoặc trong vòng.'
+  },
+  {
+    id: 11,
+    category: 'este',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Vinyl axetat có công thức cấu tạo là...',
+    options: ['CH3COOCH=CH2', 'CH2=CHCOOCH3', 'HCOOCH=CHCH3', 'CH3COOCH2CH=CH2'],
+    correctAnswer: 'CH3COOCH=CH2',
+    explanation: 'Vinyl axetat là este của axit axetic với ancol vinylic (CH2=CHOH - không bền). Công thức: CH3COOCH=CH2.',
+    hint: 'Vinyl là nhóm CH2=CH-.'
+  },
+  {
+    id: 12,
+    category: 'este',
+    type: 'fill-blank',
+    difficulty: 3,
+    question: 'Este phenyl axetat có công thức CH3COO___ (điền công thức gốc)',
+    options: [],
+    correctAnswer: 'C6H5',
+    acceptedAnswers: ['C6H5', 'phenyl', 'Ph'],
+    explanation: 'Phenyl axetat là este của axit axetic với phenol, công thức CH3COOC6H5.',
+    hint: 'Phenyl là gốc của benzen.'
+  },
+
+  // ========== PHẢN ỨNG ESTE - 12 câu ==========
+  {
+    id: 13,
     category: 'reactions',
     type: 'multiple-choice',
     difficulty: 1,
     question: 'Phản ứng thủy phân este trong môi trường kiềm còn gọi là phản ứng...',
-    options: ['Este hóa', 'Xà phòng hóa', 'Crackinh', 'Polime hóa'],
+    options: ['Xà phòng hóa', 'Este hóa', 'Crackinh', 'Polime hóa'],
     correctAnswer: 'Xà phòng hóa',
-    explanation: 'Phản ứng thủy phân este trong môi trường kiềm gọi là phản ứng xà phòng hóa vì sản phẩm là muối của axit béo (xà phòng).',
+    explanation: 'Phản ứng thủy phân este trong môi trường kiềm gọi là phản ứng xà phòng hóa vì sản phẩm là muối của axit (xà phòng nếu là axit béo).',
     hint: 'Sản phẩm dùng để tạo xà phòng.'
   },
-  // ========== LIPIT (1 câu fallback) ==========
   {
-    id: 3,
+    id: 14,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Phản ứng giữa axit cacboxylic và ancol tạo este gọi là phản ứng...',
+    options: ['Este hóa', 'Xà phòng hóa', 'Trùng hợp', 'Oxi hóa'],
+    correctAnswer: 'Este hóa',
+    explanation: 'Phản ứng este hóa là phản ứng giữa axit cacboxylic và ancol tạo este và nước, xúc tác H2SO4 đặc, đun nóng.',
+    hint: 'Phản ứng tạo este.'
+  },
+  {
+    id: 15,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Phản ứng thủy phân este trong môi trường axit là phản ứng...',
+    options: ['Thuận nghịch', 'Một chiều', 'Không xảy ra', 'Tỏa nhiệt'],
+    correctAnswer: 'Thuận nghịch',
+    explanation: 'Thủy phân este trong môi trường axit là phản ứng thuận nghịch, cần H2SO4 loãng làm xúc tác và đun nóng.',
+    hint: 'Ngược với phản ứng este hóa.'
+  },
+  {
+    id: 16,
+    category: 'reactions',
+    type: 'fill-blank',
+    difficulty: 1,
+    question: 'Thủy phân CH3COOC2H5 trong môi trường kiềm thu được muối CH3COONa và ancol ___',
+    options: [],
+    correctAnswer: 'etylic',
+    acceptedAnswers: ['etylic', 'etyl', 'C2H5OH', 'ethanol'],
+    explanation: 'CH3COOC2H5 + NaOH → CH3COONa + C2H5OH. Sản phẩm là muối natri axetat và ancol etylic.',
+    hint: 'Gốc C2H5- trong este.'
+  },
+  {
+    id: 17,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Để tăng hiệu suất phản ứng este hóa, cần...',
+    options: ['Tất cả các biện pháp trên', 'Dùng dư một trong hai chất đầu', 'Chưng cất este ra khỏi hỗn hợp', 'Dùng H2SO4 đặc hút nước'],
+    correctAnswer: 'Tất cả các biện pháp trên',
+    explanation: 'Phản ứng este hóa thuận nghịch, để tăng hiệu suất cần: dùng dư chất phản ứng, tách sản phẩm, dùng H2SO4 đặc làm xúc tác và hút nước.',
+    hint: 'Áp dụng nguyên lí Le Chatelier.'
+  },
+  {
+    id: 18,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Thủy phân este X trong môi trường kiềm thu được natri axetat và anđehit axetic. X là...',
+    options: ['Vinyl axetat', 'Etyl axetat', 'Metyl axetat', 'Anlyl axetat'],
+    correctAnswer: 'Vinyl axetat',
+    explanation: 'Vinyl axetat (CH3COOCH=CH2) thủy phân cho CH3COONa và ancol vinylic (CH2=CHOH) không bền, chuyển thành anđehit CH3CHO.',
+    hint: 'Ancol vinylic không bền, đồng phân hóa thành anđehit.'
+  },
+  {
+    id: 19,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Xà phòng hóa hoàn toàn 8,8 gam etyl axetat cần dùng bao nhiêu ml dung dịch NaOH 1M?',
+    options: ['100 ml', '200 ml', '50 ml', '150 ml'],
+    correctAnswer: '100 ml',
+    explanation: 'nCH3COOC2H5 = 8,8/88 = 0,1 mol. Phản ứng tỉ lệ 1:1 với NaOH nên cần 0,1 mol NaOH → V = 0,1/1 = 0,1 L = 100 ml.',
+    hint: 'M(CH3COOC2H5) = 88 g/mol.'
+  },
+  {
+    id: 20,
+    category: 'reactions',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Phản ứng xà phòng hóa là phản ứng ___ chiều',
+    options: [],
+    correctAnswer: 'một',
+    acceptedAnswers: ['một', '1', 'mot'],
+    explanation: 'Phản ứng xà phòng hóa (thủy phân trong kiềm) là phản ứng một chiều, khác với thủy phân trong axit (thuận nghịch).',
+    hint: 'Khác với thủy phân trong axit.'
+  },
+  {
+    id: 21,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Este nào sau đây khi thủy phân trong kiềm tạo ra 2 muối?',
+    options: ['Phenyl axetat', 'Etyl axetat', 'Vinyl axetat', 'Metyl fomat'],
+    correctAnswer: 'Phenyl axetat',
+    explanation: 'CH3COOC6H5 + 2NaOH → CH3COONa + C6H5ONa + H2O. Phenol có tính axit yếu nên tác dụng với NaOH tạo muối.',
+    hint: 'Este của phenol.'
+  },
+  {
+    id: 22,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Thủy phân este X trong môi trường kiềm thu được hỗn hợp 2 muối và không thu được ancol. X có thể là...',
+    options: ['Este của phenol với axit cacboxylic', 'Este no, đơn chức', 'Este của ancol với axit vô cơ', 'Este vòng'],
+    correctAnswer: 'Este của phenol với axit cacboxylic',
+    explanation: 'Este của phenol khi thủy phân trong kiềm cho 2 muối (muối của axit và muối phenolat), không tạo ancol vì phenol có tính axit.',
+    hint: 'Phenol phản ứng được với NaOH.'
+  },
+  {
+    id: 23,
+    category: 'reactions',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Cho 0,1 mol este X tác dụng vừa đủ với 0,2 mol NaOH, thu được 1 muối và 1 ancol. X là este...',
+    options: ['Hai chức', 'Đơn chức', 'Ba chức', 'Của phenol'],
+    correctAnswer: 'Hai chức',
+    explanation: 'Tỉ lệ neste : nNaOH = 1:2 chứng tỏ este có 2 nhóm -COO- (este hai chức).',
+    hint: 'Xét tỉ lệ mol.'
+  },
+  {
+    id: 24,
+    category: 'reactions',
+    type: 'fill-blank',
+    difficulty: 3,
+    question: 'Thủy phân este trong môi trường kiềm luôn tạo ra muối và ___ (hoặc phenol)',
+    options: [],
+    correctAnswer: 'ancol',
+    acceptedAnswers: ['ancol', 'rượu', 'alcohol'],
+    explanation: 'Thủy phân este trong kiềm: RCOOR\' + NaOH → RCOONa + R\'OH (ancol) hoặc R\'ONa (nếu R\'OH là phenol).',
+    hint: 'Sản phẩm từ phần -OR\' của este.'
+  },
+
+  // ========== LIPIT - 12 câu ==========
+  {
+    id: 25,
     category: 'lipid',
     type: 'multiple-choice',
     difficulty: 1,
     question: 'Chất béo là este của...',
-    options: [
-      'Glixerol và axit béo',
-      'Glixerol và axit vô cơ',
-      'Ancol etylic và axit béo',
-      'Ancol metylic và axit béo'
-    ],
+    options: ['Glixerol và axit béo', 'Glixerol và axit vô cơ', 'Ancol etylic và axit béo', 'Ancol metylic và axit béo'],
     correctAnswer: 'Glixerol và axit béo',
-    explanation: 'Chất béo (triglixerit) là este của glixerol (ancol 3 chức) với các axit béo (axit cacboxylic có mạch cacbon dài).',
+    explanation: 'Chất béo (triglixerit) là este của glixerol (ancol 3 chức C3H5(OH)3) với các axit béo (axit cacboxylic mạch dài).',
     hint: 'Glixerol có 3 nhóm -OH.'
   },
-  // ========== ỨNG DỤNG (1 câu fallback) ==========
   {
-    id: 4,
+    id: 26,
+    category: 'lipid',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Axit béo no phổ biến nhất trong mỡ động vật là...',
+    options: ['Axit stearic (C17H35COOH)', 'Axit oleic (C17H33COOH)', 'Axit linoleic', 'Axit fomic'],
+    correctAnswer: 'Axit stearic (C17H35COOH)',
+    explanation: 'Axit stearic C17H35COOH (C18H36O2) là axit béo no, có nhiều trong mỡ động vật, có nhiệt độ nóng chảy cao.',
+    hint: 'Axit béo no có công thức CnH2nO2.'
+  },
+  {
+    id: 27,
+    category: 'lipid',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Dầu thực vật ở thể lỏng vì chứa nhiều...',
+    options: ['Gốc axit béo không no', 'Gốc axit béo no', 'Glixerol', 'Nước'],
+    correctAnswer: 'Gốc axit béo không no',
+    explanation: 'Dầu thực vật chứa nhiều gốc axit béo không no (có nối đôi C=C) nên có nhiệt độ nóng chảy thấp, ở thể lỏng ở nhiệt độ thường.',
+    hint: 'Nối đôi làm giảm nhiệt độ nóng chảy.'
+  },
+  {
+    id: 28,
+    category: 'lipid',
+    type: 'fill-blank',
+    difficulty: 1,
+    question: 'Công thức tổng quát của glixerol là C3H5(OH)___ (điền số)',
+    options: [],
+    correctAnswer: '3',
+    acceptedAnswers: ['3', 'ba'],
+    explanation: 'Glixerol (propan-1,2,3-triol) có công thức C3H5(OH)3 với 3 nhóm -OH.',
+    hint: 'Glixerol là ancol 3 chức.'
+  },
+  {
+    id: 29,
+    category: 'lipid',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Tristearin có công thức là...',
+    options: ['(C17H35COO)3C3H5', '(C17H33COO)3C3H5', '(C15H31COO)3C3H5', '(C17H31COO)3C3H5'],
+    correctAnswer: '(C17H35COO)3C3H5',
+    explanation: 'Tristearin là trieste của glixerol với axit stearic (C17H35COOH), công thức (C17H35COO)3C3H5.',
+    hint: 'Stearin từ axit stearic (no, 18C).'
+  },
+  {
+    id: 30,
+    category: 'lipid',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Chỉ số xà phòng hóa của chất béo là...',
+    options: ['Số mg KOH cần để xà phòng hóa 1 gam chất béo', 'Số gam NaOH cần để xà phòng hóa 1 mol chất béo', 'Số ml NaOH 1M cần để xà phòng hóa 1 gam chất béo', 'Số mol KOH cần để xà phòng hóa 1 gam chất béo'],
+    correctAnswer: 'Số mg KOH cần để xà phòng hóa 1 gam chất béo',
+    explanation: 'Chỉ số xà phòng hóa là số mg KOH cần dùng để xà phòng hóa hoàn toàn 1 gam chất béo.',
+    hint: 'Đơn vị là mg KOH/g chất béo.'
+  },
+  {
+    id: 31,
+    category: 'lipid',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Chỉ số iot của chất béo dùng để...',
+    options: ['Xác định độ không no của chất béo', 'Xác định độ axit của chất béo', 'Xác định khối lượng phân tử', 'Xác định hàm lượng glixerol'],
+    correctAnswer: 'Xác định độ không no của chất béo',
+    explanation: 'Chỉ số iot là số gam I2 cộng vào 100 gam chất béo. Chỉ số càng cao, chất béo càng không no (nhiều nối đôi C=C).',
+    hint: 'I2 cộng vào nối đôi C=C.'
+  },
+  {
+    id: 32,
+    category: 'lipid',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Axit oleic có công thức C17H33COOH, có ___ nối đôi C=C',
+    options: [],
+    correctAnswer: '1',
+    acceptedAnswers: ['1', 'một', 'mot'],
+    explanation: 'C17H33COOH so với axit no C17H35COOH thiếu 2H, tương ứng với 1 nối đôi C=C.',
+    hint: 'So sánh với axit stearic C17H35COOH.'
+  },
+  {
+    id: 33,
+    category: 'lipid',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phản ứng hidro hóa dầu thực vật nhằm mục đích...',
+    options: ['Chuyển dầu thành mỡ rắn', 'Tăng độ không no', 'Giảm nhiệt độ nóng chảy', 'Tạo glixerol'],
+    correctAnswer: 'Chuyển dầu thành mỡ rắn',
+    explanation: 'Hidro hóa dầu (cộng H2 vào nối đôi C=C) làm tăng độ no, tăng nhiệt độ nóng chảy, chuyển dầu lỏng thành mỡ rắn.',
+    hint: 'H2 cộng vào nối đôi C=C.'
+  },
+  {
+    id: 34,
+    category: 'lipid',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Xà phòng hóa hoàn toàn 89 gam tristearin cần dùng bao nhiêu gam NaOH?',
+    options: ['12 gam', '10 gam', '15 gam', '8 gam'],
+    correctAnswer: '12 gam',
+    explanation: 'M(tristearin) = 890 g/mol. n = 89/890 = 0,1 mol. Cần 3×0,1 = 0,3 mol NaOH = 0,3×40 = 12 gam.',
+    hint: '1 mol triglixerit cần 3 mol NaOH.'
+  },
+  {
+    id: 35,
+    category: 'lipid',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Một chất béo có chỉ số axit bằng 7. Để trung hòa 10 gam chất béo cần bao nhiêu gam NaOH?',
+    options: ['0,05 gam', '0,07 gam', '0,5 gam', '0,7 gam'],
+    correctAnswer: '0,05 gam',
+    explanation: 'Chỉ số axit = 7 mg KOH/g chất béo. Với 10g cần 70 mg KOH. mNaOH = 70 × 40/56 = 50 mg = 0,05 gam.',
+    hint: 'Chỉ số axit tính theo KOH, cần quy đổi sang NaOH.'
+  },
+  {
+    id: 36,
+    category: 'lipid',
+    type: 'fill-blank',
+    difficulty: 3,
+    question: 'Triolein phản ứng với H2 (Ni, t°) theo tỉ lệ mol 1:___ tạo tristearin',
+    options: [],
+    correctAnswer: '3',
+    acceptedAnswers: ['3', 'ba'],
+    explanation: 'Triolein có 3 gốc oleic, mỗi gốc có 1 nối đôi C=C. Cần 3 mol H2 để hidro hóa hoàn toàn 1 mol triolein.',
+    hint: 'Mỗi nối đôi C=C cần 1 mol H2.'
+  },
+
+  // ========== ỨNG DỤNG - 12 câu ==========
+  {
+    id: 37,
     category: 'applications',
     type: 'multiple-choice',
     difficulty: 1,
     question: 'Xà phòng là muối của...',
-    options: [
-      'Axit béo với natri hoặc kali',
-      'Axit vô cơ với natri',
-      'Axit hữu cơ nhẹ với natri',
-      'Kim loại kiềm với axit clohidric'
-    ],
+    options: ['Axit béo với natri hoặc kali', 'Axit vô cơ với natri', 'Axit hữu cơ nhẹ với natri', 'Kim loại kiềm với axit clohidric'],
     correctAnswer: 'Axit béo với natri hoặc kali',
     explanation: 'Xà phòng là muối natri hoặc kali của axit béo (ví dụ: C17H35COONa - natri stearat). Xà phòng natri cứng hơn xà phòng kali.',
     hint: 'Được tạo từ phản ứng xà phòng hóa.'
+  },
+  {
+    id: 38,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Etyl axetat được dùng làm...',
+    options: ['Dung môi', 'Nhiên liệu', 'Chất bảo quản', 'Phân bón'],
+    correctAnswer: 'Dung môi',
+    explanation: 'Etyl axetat (CH3COOC2H5) là dung môi phổ biến trong công nghiệp sơn, vecni, keo dán, mỹ phẩm nhờ khả năng hòa tan tốt.',
+    hint: 'Este có khả năng hòa tan nhiều chất.'
+  },
+  {
+    id: 39,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Isoamyl axetat được dùng làm...',
+    options: ['Hương liệu (mùi chuối)', 'Nhiên liệu', 'Dung môi công nghiệp', 'Thuốc trừ sâu'],
+    correctAnswer: 'Hương liệu (mùi chuối)',
+    explanation: 'Isoamyl axetat có mùi thơm đặc trưng của chuối chín, được dùng làm hương liệu trong thực phẩm và mỹ phẩm.',
+    hint: 'Còn gọi là "dầu chuối".'
+  },
+  {
+    id: 40,
+    category: 'applications',
+    type: 'fill-blank',
+    difficulty: 1,
+    question: 'Xà phòng có tính chất giặt rửa nhờ cấu trúc có đầu ___ nước và đầu kị nước',
+    options: [],
+    correctAnswer: 'ưa',
+    acceptedAnswers: ['ưa', 'ua', 'thích'],
+    explanation: 'Xà phòng có cấu trúc lưỡng tính: đầu ưa nước (-COONa) và đuôi kị nước (mạch hidrocacbon dài), giúp hòa tan chất bẩn.',
+    hint: 'Một đầu tan trong nước, một đầu tan trong dầu mỡ.'
+  },
+  {
+    id: 41,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Nhược điểm của xà phòng so với chất tẩy rửa tổng hợp là...',
+    options: ['Không dùng được trong nước cứng', 'Độc hại với môi trường', 'Giá thành cao', 'Khó sản xuất'],
+    correctAnswer: 'Không dùng được trong nước cứng',
+    explanation: 'Trong nước cứng (có Ca2+, Mg2+), xà phòng tạo kết tủa (2RCOONa + Ca2+ → (RCOO)2Ca↓), mất khả năng tẩy rửa.',
+    hint: 'Xà phòng tạo kết tủa với ion Ca2+, Mg2+.'
+  },
+  {
+    id: 42,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Biodiesel được điều chế từ...',
+    options: ['Phản ứng của dầu thực vật với metanol', 'Chưng cất dầu mỏ', 'Lên men tinh bột', 'Nhiệt phân than đá'],
+    correctAnswer: 'Phản ứng của dầu thực vật với metanol',
+    explanation: 'Biodiesel (metyl este của axit béo) được điều chế bằng phản ứng chuyển este hóa dầu thực vật với metanol, xúc tác kiềm.',
+    hint: 'Là nhiên liệu sinh học từ dầu thực vật.'
+  },
+  {
+    id: 43,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Dầu ăn bị ôi do...',
+    options: ['Bị oxi hóa bởi oxi không khí', 'Bị thủy phân', 'Bị polime hóa', 'Bị khử'],
+    correctAnswer: 'Bị oxi hóa bởi oxi không khí',
+    explanation: 'Dầu ăn chứa axit béo không no, nối đôi C=C bị oxi hóa bởi O2 không khí tạo anđehit, xeton có mùi khó chịu (mùi ôi).',
+    hint: 'Nối đôi C=C dễ bị oxi hóa.'
+  },
+  {
+    id: 44,
+    category: 'applications',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Margarin (bơ thực vật) được sản xuất bằng phản ứng ___ hóa dầu thực vật',
+    options: [],
+    correctAnswer: 'hidro',
+    acceptedAnswers: ['hidro', 'hydrogen', 'H2', 'hyđro'],
+    explanation: 'Margarin được sản xuất bằng hidro hóa dầu thực vật (cộng H2 vào nối đôi) để chuyển dầu lỏng thành chất rắn.',
+    hint: 'Làm no hóa các nối đôi C=C.'
+  },
+  {
+    id: 45,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Chất tẩy rửa tổng hợp khác xà phòng ở điểm nào?',
+    options: ['Dùng được trong nước cứng', 'Có nguồn gốc tự nhiên', 'Không có tính tẩy rửa', 'Rẻ hơn xà phòng'],
+    correctAnswer: 'Dùng được trong nước cứng',
+    explanation: 'Chất tẩy rửa tổng hợp (như ankyl benzen sunfonat) không tạo kết tủa với Ca2+, Mg2+ nên dùng được trong nước cứng.',
+    hint: 'Không tạo kết tủa với ion Ca2+, Mg2+.'
+  },
+  {
+    id: 46,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Ưu điểm của biodiesel so với diesel từ dầu mỏ là...',
+    options: ['Phân hủy sinh học, ít ô nhiễm', 'Năng lượng cao hơn', 'Giá thành rẻ hơn', 'Dễ bảo quản hơn'],
+    correctAnswer: 'Phân hủy sinh học, ít ô nhiễm',
+    explanation: 'Biodiesel có nguồn gốc sinh học, có thể tái tạo, phân hủy sinh học được, cháy sạch hơn diesel từ dầu mỏ.',
+    hint: 'Nguồn gốc từ thực vật.'
+  },
+  {
+    id: 47,
+    category: 'applications',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Để bảo quản dầu ăn lâu ngày, cần...',
+    options: ['Đậy kín, tránh ánh sáng và không khí', 'Để nơi thoáng mát', 'Cho thêm nước', 'Đun sôi định kỳ'],
+    correctAnswer: 'Đậy kín, tránh ánh sáng và không khí',
+    explanation: 'Dầu ăn bị ôi do oxi hóa, cần bảo quản trong chai kín, tránh ánh sáng và tiếp xúc với không khí để kéo dài thời hạn sử dụng.',
+    hint: 'Hạn chế tiếp xúc với O2 và ánh sáng.'
+  },
+  {
+    id: 48,
+    category: 'applications',
+    type: 'fill-blank',
+    difficulty: 3,
+    question: 'Công thức tổng quát của chất tẩy rửa tổng hợp dạng ankyl sunfat là R-O-SO3___ (điền nguyên tố)',
+    options: [],
+    correctAnswer: 'Na',
+    acceptedAnswers: ['Na', 'natri', 'sodium'],
+    explanation: 'Ankyl sunfat natri (R-O-SO3Na) là chất tẩy rửa tổng hợp phổ biến, ví dụ: natri lauryl sunfat trong dầu gội.',
+    hint: 'Muối natri của axit ankyl sunfuric.'
   }
 ];
 
@@ -185,22 +672,6 @@ const Bai01_Este_Lipit = () => {
     programId: 'chemistry',
     grade: 12
   });
-
-  // AI Questions Hook
-  const { 
-    questions: aiQuestions, 
-    loading: aiLoading, 
-    error: aiError, 
-    refetch: refetchAI,
-    clearCache: clearAICache 
-  } = useAIQuestions('este_lipit_12', { autoFetch: true, useCache: true });
-
-  const CHALLENGES = useMemo(() => {
-    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
-    return FALLBACK_CHALLENGES;
-  }, [aiQuestions]);
-
-  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   // States for completion tracking
   const [startTime] = useState(() => Date.now());
@@ -460,49 +931,12 @@ const Bai01_Este_Lipit = () => {
               </div>
             </div>
 
-            {/* AI Status Banner */}
-            {aiLoading && (
-              <div className="mb-4 p-3 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center gap-3">
-                <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
-                <span className="text-blue-200">Đang tải câu hỏi AI...</span>
-              </div>
-            )}
-            {aiError && !isUsingAI && (
-              <div className="mb-4 p-3 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <WifiOff className="w-5 h-5 text-amber-400" />
-                  <span className="text-amber-200">Đang dùng câu hỏi offline</span>
-                </div>
-                <button onClick={refetchAI} className="flex items-center gap-1 px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 rounded-lg text-amber-200 text-sm transition-colors">
-                  <RefreshCw className="w-4 h-4" />
-                  Thử lại
-                </button>
-              </div>
-            )}
-            {isUsingAI && (
-              <div className="mb-4 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5 text-emerald-400" />
-                  <span className="text-emerald-200">Câu hỏi AI ({aiQuestions.length} câu)</span>
-                </div>
-                <button onClick={() => { clearAICache(); refetchAI(); }} className="flex items-center gap-1 px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 rounded-lg text-emerald-200 text-sm transition-colors">
-                  <RefreshCw className="w-4 h-4" />
-                  Làm mới
-                </button>
-              </div>
-            )}
-
             {/* Progress Watermark */}
             <ProgressWatermark categoryProgress={categoryProgress} challenges={CHALLENGES} />
 
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
               Chọn chủ đề thử thách
-              {isUsingAI && (
-                <span className="ml-2 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-xs rounded-full flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" /> AI
-                </span>
-              )}
             </h2>
 
             <div className="category-grid-este">

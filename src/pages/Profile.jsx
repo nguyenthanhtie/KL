@@ -231,12 +231,8 @@ const Profile = () => {
       </div>
 
       <div className="relative z-10 py-8 px-4">
-        <div className="container mx-auto max-w-6xl">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Hồ sơ của tôi</h1>
-            <p className="text-gray-600">Xem và quản lý thông tin tài khoản của bạn</p>
-          </div>
+        <div className="mx-auto w-[90%]">
+   
 
           {/* Program Selector */}
           {userData?.programs && userData.programs.length > 0 && (

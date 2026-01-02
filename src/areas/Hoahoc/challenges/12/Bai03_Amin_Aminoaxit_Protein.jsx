@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Egg, Drumstick, Leaf, Apple,
-  Clock, Target, AlertTriangle, Flame,
-  RefreshCw, Sparkles, Loader2, WifiOff
+  Clock, Target, AlertTriangle, Flame
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
-import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai03_Amin_Aminoaxit_Protein.css';
 
@@ -40,9 +38,9 @@ const CATEGORIES = [
   }
 ];
 
-// Fallback questions khi không có AI
-const FALLBACK_CHALLENGES = [
-  // ========== AMIN ==========
+// Static questions data
+const CHALLENGES = [
+  // ========== AMIN (15 câu) ==========
   {
     id: 1,
     category: 'amin',
@@ -58,16 +56,162 @@ const FALLBACK_CHALLENGES = [
     id: 2,
     category: 'amin',
     type: 'multiple-choice',
-    difficulty: 2,
+    difficulty: 1,
     question: 'Amin có tính bazơ vì...',
     options: ['Có cặp electron tự do trên N', 'Có nhóm -OH', 'Có nhóm -COOH', 'Có liên kết đôi'],
     correctAnswer: 'Có cặp electron tự do trên N',
     explanation: 'Nguyên tử N trong amin có cặp electron tự do, có thể nhận proton (H+), nên amin có tính bazơ.',
     hint: 'Liên quan đến cấu hình electron của N.'
   },
-  // ========== AMINO AXIT ==========
   {
     id: 3,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Metylamin (CH3NH2) thuộc loại amin bậc mấy?',
+    options: ['Bậc 1', 'Bậc 2', 'Bậc 3', 'Bậc 4'],
+    correctAnswer: 'Bậc 1',
+    explanation: 'Metylamin CH3NH2 có 1 nguyên tử H trong NH3 được thay thế bởi gốc metyl, nên là amin bậc 1.',
+    hint: 'Bậc amin = số nguyên tử H trong NH3 bị thay thế bởi gốc hiđrocacbon.'
+  },
+  {
+    id: 4,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Anilin có công thức phân tử là...',
+    options: ['C6H5NH2', 'CH3NH2', 'C2H5NH2', 'C6H5OH'],
+    correctAnswer: 'C6H5NH2',
+    explanation: 'Anilin là amin thơm đơn giản nhất, có công thức C6H5NH2 (phenylamin).',
+    hint: 'Amin thơm có vòng benzen.'
+  },
+  {
+    id: 5,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'So sánh tính bazơ: CH3NH2, (CH3)2NH, (CH3)3N trong dung dịch nước, thứ tự tăng dần là...',
+    options: ['(CH3)3N < CH3NH2 < (CH3)2NH', 'CH3NH2 < (CH3)2NH < (CH3)3N', '(CH3)2NH < CH3NH2 < (CH3)3N', 'CH3NH2 < (CH3)3N < (CH3)2NH'],
+    correctAnswer: '(CH3)3N < CH3NH2 < (CH3)2NH',
+    explanation: 'Trong nước: (CH3)2NH có tính bazơ mạnh nhất do cân bằng giữa hiệu ứng +I của nhóm CH3 và khả năng solvat hóa.',
+    hint: 'Amin bậc 2 có tính bazơ mạnh nhất trong nước.'
+  },
+  {
+    id: 6,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Anilin (C6H5NH2) có tính bazơ yếu hơn metylamin vì...',
+    options: ['Cặp electron của N liên hợp với vòng benzen', 'Anilin có khối lượng phân tử lớn hơn', 'Anilin không tan trong nước', 'Anilin có vòng thơm'],
+    correctAnswer: 'Cặp electron của N liên hợp với vòng benzen',
+    explanation: 'Cặp electron tự do trên N của anilin liên hợp với hệ π của vòng benzen, làm giảm mật độ electron trên N, nên tính bazơ yếu.',
+    hint: 'Hiệu ứng liên hợp p-π.'
+  },
+  {
+    id: 7,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Sản phẩm của phản ứng giữa metylamin với dung dịch HCl là...',
+    options: ['CH3NH3Cl', 'CH3Cl + NH3', 'CH3OH + NH4Cl', 'CH3COOH'],
+    correctAnswer: 'CH3NH3Cl',
+    explanation: 'CH3NH2 + HCl → CH3NH3Cl (metylamoni clorua). Amin phản ứng với axit tạo muối.',
+    hint: 'Amin là bazơ, phản ứng với axit tạo muối.'
+  },
+  {
+    id: 8,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Đimetylamin (CH3)2NH thuộc loại amin...',
+    options: ['Bậc 2, no, đơn chức', 'Bậc 1, no, đơn chức', 'Bậc 3, no, đơn chức', 'Bậc 2, thơm, đơn chức'],
+    correctAnswer: 'Bậc 2, no, đơn chức',
+    explanation: 'Đimetylamin có 2 nhóm CH3 gắn vào N, nên là amin bậc 2, no (không có liên kết bội), đơn chức (1 nhóm -NH-).',
+    hint: 'Đếm số gốc hiđrocacbon gắn vào N.'
+  },
+  {
+    id: 9,
+    category: 'amin',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Amin bậc 3 đơn giản nhất có công thức là (CH3)3N, tên gọi là...',
+    options: [],
+    correctAnswer: 'trimetylamin',
+    acceptedAnswers: ['trimetylamin', 'tri metyl amin', 'trimethylamine'],
+    explanation: 'Trimetylamin (CH3)3N là amin bậc 3 đơn giản nhất, có 3 nhóm metyl gắn vào nguyên tử N.',
+    hint: 'Tên = tiền tố "tri" + tên gốc + "amin".'
+  },
+  {
+    id: 10,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Cho các chất: NH3, CH3NH2, C6H5NH2, (CH3)2NH. Chất có tính bazơ mạnh nhất là...',
+    options: ['(CH3)2NH', 'CH3NH2', 'NH3', 'C6H5NH2'],
+    correctAnswer: '(CH3)2NH',
+    explanation: 'Trong dung dịch nước: (CH3)2NH > CH3NH2 > NH3 > C6H5NH2. Đimetylamin có tính bazơ mạnh nhất do hiệu ứng +I của 2 nhóm CH3.',
+    hint: 'So sánh hiệu ứng cảm ứng của các nhóm thế.'
+  },
+  {
+    id: 11,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Để phân biệt anilin và phenol, có thể dùng...',
+    options: ['Dung dịch HCl', 'Dung dịch NaOH', 'Nước brom', 'Kim loại Na'],
+    correctAnswer: 'Dung dịch HCl',
+    explanation: 'Anilin có tính bazơ yếu, tan trong dung dịch HCl tạo muối. Phenol không phản ứng với HCl loãng.',
+    hint: 'Anilin là amin (bazơ), phenol là axit yếu.'
+  },
+  {
+    id: 12,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Số đồng phân amin bậc 1 có công thức C3H9N là...',
+    options: ['2', '1', '3', '4'],
+    correctAnswer: '2',
+    explanation: 'Có 2 đồng phân amin bậc 1: CH3CH2CH2NH2 (propan-1-amin) và (CH3)2CHNH2 (propan-2-amin).',
+    hint: 'Viết các cách sắp xếp mạch cacbon với nhóm -NH2.'
+  },
+  {
+    id: 13,
+    category: 'amin',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Phản ứng của amin với axit tạo thành muối được gọi là phản ứng...',
+    options: [],
+    correctAnswer: 'trung hòa',
+    acceptedAnswers: ['trung hòa', 'trung hoà', 'tạo muối'],
+    explanation: 'Amin có tính bazơ, phản ứng với axit theo phản ứng trung hòa tạo muối amoni.',
+    hint: 'Bazơ + axit → ?'
+  },
+  {
+    id: 14,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Etylamin tác dụng với HNO2 ở nhiệt độ thường tạo ra...',
+    options: ['C2H5OH + N2 + H2O', 'C2H5NO2 + H2O', 'C2H5Cl + N2', 'C2H5ONO + H2'],
+    correctAnswer: 'C2H5OH + N2 + H2O',
+    explanation: 'Amin bậc 1 + HNO2 → ancol + N2 + H2O. C2H5NH2 + HNO2 → C2H5OH + N2 + H2O.',
+    hint: 'Amin bậc 1 với HNO2 giải phóng khí N2.'
+  },
+  {
+    id: 15,
+    category: 'amin',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Cho anilin tác dụng với nước brom dư thu được kết tủa có công thức là...',
+    options: ['C6H2Br3NH2', 'C6H5Br', 'C6H4BrNH2', 'C6H3Br2NH2'],
+    correctAnswer: 'C6H2Br3NH2',
+    explanation: 'Anilin + 3Br2 → C6H2Br3NH2↓ (2,4,6-tribromanilin) + 3HBr. Nhóm -NH2 hoạt hóa vòng benzen mạnh.',
+    hint: 'Nhóm -NH2 định hướng thế vào vị trí ortho và para.'
+  },
+
+  // ========== AMINO AXIT (15 câu) ==========
+  {
+    id: 16,
     category: 'aminoaxit',
     type: 'multiple-choice',
     difficulty: 1,
@@ -78,19 +222,165 @@ const FALLBACK_CHALLENGES = [
     hint: 'Hai nhóm chức quan trọng.'
   },
   {
-    id: 4,
+    id: 17,
     category: 'aminoaxit',
     type: 'multiple-choice',
-    difficulty: 2,
+    difficulty: 1,
     question: 'Amino axit có tính lưỡng tính vì...',
     options: ['Có cả nhóm -NH2 (bazơ) và -COOH (axit)', 'Có nhóm -OH', 'Có vòng benzen', 'Có nhóm -CHO'],
     correctAnswer: 'Có cả nhóm -NH2 (bazơ) và -COOH (axit)',
     explanation: 'Amino axit có tính lưỡng tính vì trong phân tử có cả nhóm -NH2 (tính bazơ) và -COOH (tính axit).',
     hint: 'Hai nhóm chức đối lập.'
   },
-  // ========== PROTEIN ==========
   {
-    id: 5,
+    id: 18,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Glyxin có công thức cấu tạo là...',
+    options: ['H2N-CH2-COOH', 'H2N-CH(CH3)-COOH', 'H2N-(CH2)2-COOH', 'CH3-NH-CH2-COOH'],
+    correctAnswer: 'H2N-CH2-COOH',
+    explanation: 'Glyxin (axit aminoaxetic) là amino axit đơn giản nhất với công thức H2N-CH2-COOH.',
+    hint: 'Amino axit đơn giản nhất.'
+  },
+  {
+    id: 19,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Alanin có công thức cấu tạo là...',
+    options: ['H2N-CH(CH3)-COOH', 'H2N-CH2-COOH', 'H2N-(CH2)2-COOH', 'HOOC-CH2-CH(NH2)-COOH'],
+    correctAnswer: 'H2N-CH(CH3)-COOH',
+    explanation: 'Alanin (axit α-aminopropionic) có công thức H2N-CH(CH3)-COOH, là amino axit có 3 carbon.',
+    hint: 'Alanin có thêm một nhóm -CH3 so với glyxin.'
+  },
+  {
+    id: 20,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Trong dung dịch, amino axit tồn tại chủ yếu ở dạng...',
+    options: ['Ion lưỡng cực', 'Phân tử trung hòa', 'Ion dương', 'Ion âm'],
+    correctAnswer: 'Ion lưỡng cực',
+    explanation: 'Trong dung dịch, amino axit tồn tại chủ yếu ở dạng ion lưỡng cực: H3N+-CHR-COO- do sự chuyển proton nội phân tử.',
+    hint: 'Nhóm -NH2 nhận H+, nhóm -COOH cho H+.'
+  },
+  {
+    id: 21,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Amino axit phản ứng với dung dịch NaOH tạo thành...',
+    options: ['Muối và nước', 'Ester', 'Amin', 'Axit'],
+    correctAnswer: 'Muối và nước',
+    explanation: 'Amino axit + NaOH → Muối + H2O. Ví dụ: H2N-CH2-COOH + NaOH → H2N-CH2-COONa + H2O.',
+    hint: 'Nhóm -COOH phản ứng với bazơ.'
+  },
+  {
+    id: 22,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Amino axit phản ứng với dung dịch HCl tạo thành...',
+    options: ['Muối', 'Ester', 'Ancol', 'Anđehit'],
+    correctAnswer: 'Muối',
+    explanation: 'Amino axit + HCl → Muối. Ví dụ: H2N-CH2-COOH + HCl → ClH3N-CH2-COOH.',
+    hint: 'Nhóm -NH2 phản ứng với axit.'
+  },
+  {
+    id: 23,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Liên kết peptit là liên kết...',
+    options: ['-CO-NH-', '-CO-O-', '-C-N-', '-NH-NH-'],
+    correctAnswer: '-CO-NH-',
+    explanation: 'Liên kết peptit là liên kết -CO-NH- được hình thành khi nhóm -COOH của amino axit này kết hợp với nhóm -NH2 của amino axit khác và loại đi một phân tử H2O.',
+    hint: 'Liên kết amit trong peptit.'
+  },
+  {
+    id: 24,
+    category: 'aminoaxit',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Phản ứng trùng ngưng các amino axit tạo thành hợp chất cao phân tử gọi là...',
+    options: [],
+    correctAnswer: 'polipeptit',
+    acceptedAnswers: ['polipeptit', 'polypeptit', 'polypeptide', 'peptit'],
+    explanation: 'Phản ứng trùng ngưng nhiều amino axit tạo thành polipeptit (chuỗi peptit dài).',
+    hint: 'Poly + peptit.'
+  },
+  {
+    id: 25,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Số liên kết peptit trong một tripeptit là...',
+    options: ['2', '1', '3', '4'],
+    correctAnswer: '2',
+    explanation: 'Tripeptit gồm 3 gốc amino axit liên kết với nhau qua 2 liên kết peptit.',
+    hint: 'Số liên kết peptit = số gốc amino axit - 1.'
+  },
+  {
+    id: 26,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Axit glutamic có công thức HOOC-CH2-CH2-CH(NH2)-COOH. Axit này có...',
+    options: ['2 nhóm -COOH, 1 nhóm -NH2', '1 nhóm -COOH, 2 nhóm -NH2', '1 nhóm -COOH, 1 nhóm -NH2', '2 nhóm -COOH, 2 nhóm -NH2'],
+    correctAnswer: '2 nhóm -COOH, 1 nhóm -NH2',
+    explanation: 'Axit glutamic có 2 nhóm cacboxyl (-COOH) và 1 nhóm amino (-NH2), nên có tính axit trội hơn.',
+    hint: 'Đếm số nhóm -COOH và -NH2 trong công thức.'
+  },
+  {
+    id: 27,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Lysin có công thức H2N-(CH2)4-CH(NH2)-COOH. Lysin có môi trường...',
+    options: ['Bazơ', 'Axit', 'Trung tính', 'Lưỡng tính'],
+    correctAnswer: 'Bazơ',
+    explanation: 'Lysin có 2 nhóm -NH2 và 1 nhóm -COOH, số nhóm bazơ nhiều hơn nên có môi trường bazơ.',
+    hint: 'So sánh số nhóm -NH2 và -COOH.'
+  },
+  {
+    id: 28,
+    category: 'aminoaxit',
+    type: 'fill-blank',
+    difficulty: 1,
+    question: 'Amino axit thiên nhiên quan trọng nhất là α-amino axit, trong đó nhóm -NH2 gắn vào carbon ở vị trí...',
+    options: [],
+    correctAnswer: 'alpha',
+    acceptedAnswers: ['alpha', 'α', 'anpha', 'số 2'],
+    explanation: 'Trong α-amino axit, nhóm -NH2 gắn vào carbon α (carbon liền kề nhóm -COOH).',
+    hint: 'Carbon liền kề nhóm -COOH.'
+  },
+  {
+    id: 29,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Khi đun nóng glyxin với alanin có thể thu được tối đa bao nhiêu đipeptit?',
+    options: ['4', '2', '3', '1'],
+    correctAnswer: '4',
+    explanation: 'Có 4 đipeptit: Gly-Gly, Ala-Ala, Gly-Ala, Ala-Gly. Mỗi amino axit có thể ở đầu N hoặc đầu C.',
+    hint: 'Xét cả đipeptit đồng loại và khác loại.'
+  },
+  {
+    id: 30,
+    category: 'aminoaxit',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Amino axit có khả năng tham gia phản ứng este hóa với ancol vì có nhóm...',
+    options: ['-COOH', '-NH2', '-OH', '-CHO'],
+    correctAnswer: '-COOH',
+    explanation: 'Nhóm -COOH trong amino axit có thể phản ứng este hóa với ancol (có xúc tác) tạo este.',
+    hint: 'Phản ứng đặc trưng của axit cacboxylic.'
+  },
+
+  // ========== PROTEIN (15 câu) ==========
+  {
+    id: 31,
     category: 'protein',
     type: 'multiple-choice',
     difficulty: 1,
@@ -101,15 +391,160 @@ const FALLBACK_CHALLENGES = [
     hint: 'Đơn phân là amino axit.'
   },
   {
-    id: 6,
+    id: 32,
     category: 'protein',
     type: 'multiple-choice',
-    difficulty: 2,
+    difficulty: 1,
     question: 'Thủy phân hoàn toàn protein thu được...',
     options: ['Hỗn hợp các amino axit', 'Amin', 'Ancol', 'Axit béo'],
     correctAnswer: 'Hỗn hợp các amino axit',
     explanation: 'Thủy phân hoàn toàn protein (trong môi trường axit hoặc bazơ hoặc enzim) thu được hỗn hợp các α-amino axit.',
     hint: 'Đơn phân của protein.'
+  },
+  {
+    id: 33,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 1,
+    question: 'Protein có trong thực phẩm nào sau đây?',
+    options: ['Thịt, trứng, sữa', 'Gạo, khoai', 'Dầu ăn, mỡ', 'Đường, mật ong'],
+    correctAnswer: 'Thịt, trứng, sữa',
+    explanation: 'Thịt, trứng, sữa là các nguồn protein động vật quan trọng trong chế độ ăn uống.',
+    hint: 'Thực phẩm giàu đạm.'
+  },
+  {
+    id: 34,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Phản ứng màu biure là phản ứng của protein với...',
+    options: ['Cu(OH)2 trong môi trường kiềm', 'HNO3 đặc', 'Dung dịch AgNO3', 'Dung dịch I2'],
+    correctAnswer: 'Cu(OH)2 trong môi trường kiềm',
+    explanation: 'Phản ứng màu biure: Protein + Cu(OH)2 → phức màu tím đặc trưng (do có ≥ 2 liên kết peptit).',
+    hint: 'Phản ứng đặc trưng với Cu(OH)2.'
+  },
+  {
+    id: 35,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Sản phẩm của phản ứng màu biure có màu...',
+    options: ['Tím', 'Xanh', 'Đỏ', 'Vàng'],
+    correctAnswer: 'Tím',
+    explanation: 'Phản ứng màu biure tạo phức màu tím đặc trưng, dùng để nhận biết protein và peptit có từ 2 liên kết peptit trở lên.',
+    hint: 'Màu đặc trưng của phức Cu.'
+  },
+  {
+    id: 36,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Cấu trúc bậc 1 của protein là...',
+    options: ['Trình tự sắp xếp các amino axit', 'Xoắn α hoặc gấp nếp β', 'Cấu trúc không gian 3 chiều', 'Tập hợp nhiều chuỗi polipeptit'],
+    correctAnswer: 'Trình tự sắp xếp các amino axit',
+    explanation: 'Cấu trúc bậc 1 là trình tự sắp xếp các gốc amino axit trong chuỗi polipeptit, quyết định cấu trúc bậc cao hơn.',
+    hint: 'Thứ tự các amino axit.'
+  },
+  {
+    id: 37,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Cấu trúc xoắn α và gấp nếp β thuộc cấu trúc bậc mấy của protein?',
+    options: ['Bậc 2', 'Bậc 1', 'Bậc 3', 'Bậc 4'],
+    correctAnswer: 'Bậc 2',
+    explanation: 'Cấu trúc bậc 2 của protein gồm xoắn α và gấp nếp β, được giữ vững bởi liên kết hiđro giữa các nhóm peptit.',
+    hint: 'Hình dạng cục bộ của chuỗi polipeptit.'
+  },
+  {
+    id: 38,
+    category: 'protein',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Hiện tượng protein bị đông tụ không thuận nghịch dưới tác dụng của nhiệt độ, axit, bazơ, muối kim loại nặng gọi là sự...',
+    options: [],
+    correctAnswer: 'biến tính',
+    acceptedAnswers: ['biến tính', 'bien tinh', 'đông tụ', 'denaturation'],
+    explanation: 'Sự biến tính protein là quá trình protein bị thay đổi cấu trúc không gian, mất hoạt tính sinh học.',
+    hint: 'Protein mất cấu trúc và hoạt tính.'
+  },
+  {
+    id: 39,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 2,
+    question: 'Enzim là chất xúc tác sinh học có bản chất là...',
+    options: ['Protein', 'Lipit', 'Cacbohiđrat', 'Axit nucleic'],
+    correctAnswer: 'Protein',
+    explanation: 'Enzim (enzyme) là các chất xúc tác sinh học có bản chất protein, xúc tác cho các phản ứng sinh hóa trong cơ thể.',
+    hint: 'Chất xúc tác trong cơ thể sống.'
+  },
+  {
+    id: 40,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Protein có phản ứng với HNO3 đặc tạo sản phẩm màu vàng, phản ứng này gọi là...',
+    options: ['Phản ứng xanthoprotein', 'Phản ứng biure', 'Phản ứng thủy phân', 'Phản ứng đông tụ'],
+    correctAnswer: 'Phản ứng xanthoprotein',
+    explanation: 'Phản ứng xanthoprotein: HNO3 đặc nitro hóa vòng benzen trong các amino axit thơm (Phe, Tyr, Trp) tạo màu vàng.',
+    hint: 'Phản ứng với HNO3 đặc.'
+  },
+  {
+    id: 41,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Cấu trúc bậc 3 của protein được giữ vững nhờ...',
+    options: ['Liên kết đisunfua, liên kết ion, tương tác kị nước', 'Chỉ liên kết peptit', 'Chỉ liên kết hiđro', 'Chỉ liên kết ion'],
+    correctAnswer: 'Liên kết đisunfua, liên kết ion, tương tác kị nước',
+    explanation: 'Cấu trúc bậc 3 được ổn định bởi nhiều loại liên kết: disunfua (-S-S-), liên kết ion, liên kết hiđro và tương tác kị nước.',
+    hint: 'Nhiều loại tương tác khác nhau.'
+  },
+  {
+    id: 42,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Hemoglobin là protein có cấu trúc bậc...',
+    options: ['Bậc 4', 'Bậc 1', 'Bậc 2', 'Bậc 3'],
+    correctAnswer: 'Bậc 4',
+    explanation: 'Hemoglobin gồm 4 chuỗi polipeptit (2α + 2β) kết hợp với nhau, nên có cấu trúc bậc 4.',
+    hint: 'Protein gồm nhiều chuỗi polipeptit.'
+  },
+  {
+    id: 43,
+    category: 'protein',
+    type: 'fill-blank',
+    difficulty: 2,
+    question: 'Protein có vai trò xúc tác các phản ứng sinh hóa được gọi là...',
+    options: [],
+    correctAnswer: 'enzim',
+    acceptedAnswers: ['enzim', 'enzyme', 'en zim', 'men'],
+    explanation: 'Enzim (enzyme) là protein có vai trò xúc tác sinh học, làm tăng tốc độ các phản ứng sinh hóa.',
+    hint: 'Chất xúc tác sinh học.'
+  },
+  {
+    id: 44,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Khi đun nóng lòng trắng trứng, protein bị đông tụ vì...',
+    options: ['Cấu trúc không gian bị phá hủy', 'Liên kết peptit bị đứt', 'Protein bị thủy phân', 'Protein bị oxi hóa'],
+    correctAnswer: 'Cấu trúc không gian bị phá hủy',
+    explanation: 'Nhiệt độ cao phá vỡ các liên kết yếu (liên kết hiđro, liên kết ion...) giữ cấu trúc không gian, protein bị biến tính.',
+    hint: 'Không phải đứt liên kết peptit.'
+  },
+  {
+    id: 45,
+    category: 'protein',
+    type: 'multiple-choice',
+    difficulty: 3,
+    question: 'Chất nào sau đây KHÔNG gây biến tính protein?',
+    options: ['Dung dịch NaCl loãng', 'Axit HNO3 đặc', 'Nhiệt độ cao', 'Muối kim loại nặng (Pb2+, Hg2+)'],
+    correctAnswer: 'Dung dịch NaCl loãng',
+    explanation: 'Dung dịch NaCl loãng không làm biến tính protein. Các tác nhân gây biến tính: nhiệt độ cao, axit/bazơ đặc, muối kim loại nặng, cồn...',
+    hint: 'Muối của kim loại kiềm ở nồng độ thấp.'
   }
 ];
 
@@ -186,24 +621,6 @@ const Bai03_Amin_Aminoaxit_Protein = () => {
     programId: 'chemistry',
     grade: 12
   });
-
-  // AI Questions hook
-  const { 
-    questions: aiQuestions, 
-    loading: aiLoading, 
-    error: aiError, 
-    refetch: refetchAI 
-  } = useAIQuestions('amin_aminoaxit_protein_12');
-
-  // Combine AI questions with fallback
-  const CHALLENGES = useMemo(() => {
-    if (aiQuestions && aiQuestions.length > 0) {
-      return aiQuestions;
-    }
-    return FALLBACK_CHALLENGES;
-  }, [aiQuestions]);
-
-  const isUsingAI = aiQuestions && aiQuestions.length > 0;
 
   // States for completion tracking
   const [startTime] = useState(() => Date.now());
@@ -446,38 +863,6 @@ const Bai03_Amin_Aminoaxit_Protein = () => {
         {!activeCategory ? (
           // CATEGORY SELECTION
           <div className="animate-fadeIn">
-            {/* AI Status Banners */}
-            {aiLoading && (
-              <div className="mb-4 p-3 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center gap-3 text-blue-200">
-                <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Đang tải câu hỏi AI...</span>
-              </div>
-            )}
-            {aiError && (
-              <div className="mb-4 p-3 bg-yellow-500/20 border border-yellow-500/30 rounded-xl flex items-center justify-between text-yellow-200">
-                <div className="flex items-center gap-3">
-                  <WifiOff className="w-5 h-5" />
-                  <span>Đang dùng câu hỏi dự phòng</span>
-                </div>
-                <button onClick={() => refetchAI(true)} className="flex items-center gap-1 px-3 py-1 bg-yellow-500/30 rounded-lg hover:bg-yellow-500/40 transition-colors">
-                  <RefreshCw className="w-4 h-4" />
-                  <span>Thử lại</span>
-                </button>
-              </div>
-            )}
-            {isUsingAI && !aiLoading && (
-              <div className="mb-4 p-3 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-between text-purple-200">
-                <div className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5" />
-                  <span>Câu hỏi được tạo bởi AI • {CHALLENGES.length} câu</span>
-                </div>
-                <button onClick={() => refetchAI(true)} className="flex items-center gap-1 px-3 py-1 bg-purple-500/30 rounded-lg hover:bg-purple-500/40 transition-colors">
-                  <RefreshCw className="w-4 h-4" />
-                  <span>Làm mới</span>
-                </button>
-              </div>
-            )}
-
             <div className="stats-bar-amin mb-8">
               <div className="stat-item-amin">
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
@@ -495,7 +880,6 @@ const Bai03_Amin_Aminoaxit_Protein = () => {
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Target className="w-6 h-6" />
               Chọn chủ đề thử thách
-              {isUsingAI && <Sparkles className="w-5 h-5 text-purple-400" />}
             </h2>
 
             <div className="category-grid-amin">

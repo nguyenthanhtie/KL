@@ -18,7 +18,7 @@ const Header = () => {
 
   return (
     <header className="w-full bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div className="mx-auto w-[90%] px-4 py-3 flex items-center justify-between">
         <div className="text-lg font-semibold">KL</div>
         {user && (
           <button

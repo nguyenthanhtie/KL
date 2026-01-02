@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, RotateCcw, ChevronRight,
   CheckCircle2, XCircle, Lightbulb, Zap, Award,
   FlaskConical, Hammer, Globe, Shield, Atom,
-  Clock, Target, AlertTriangle, Flame,
-  RefreshCw, Sparkles, Loader2, WifiOff
+  Clock, Target, AlertTriangle, Flame
 } from 'lucide-react';
 import useChallengeProgress from '../../../../hooks/useChallengeProgress';
-import { useAIQuestions } from '../../../../hooks/useAIQuestions';
 import ResumeDialog from '../../../../components/ResumeDialog';
 import './CSS/Bai06_DaiCuongSatDong_HopKim.css';
 
@@ -20,8 +18,8 @@ const CATEGORIES = [
   { id: 'phanung', name: '⚗️ Chuỗi phản ứng & Nhận biết', icon: FlaskConical, color: '#db2777', description: 'Nhận biết ion, chuỗi phản ứng hóa học của Sắt và Đồng', bgGradient: 'from-pink-600 to-rose-500', emoji: '🧪' }
 ];
 
-// Fallback questions khi không có AI
-const FALLBACK_CHALLENGES = [
+// Bộ câu hỏi tĩnh
+const CHALLENGES = [
   // ===== SẮT (12 câu) =====
   { id: 1, category: 'sat', type: 'multiple-choice', difficulty:1, question: 'Sắt nguyên chất gọi là gì trong công nghiệp?', options: ['Sắt tinh khiết', 'Sắt xốp', 'Fe tinh', 'Sắt bọt'], correctAnswer: 'Sắt tinh khiết', explanation: 'Sắt tinh khiết là sắt gần như không chứa cacbon; thép và gang là hợp kim chứa cacbon.', hint: 'Không chứa cacbon.'},
   { id: 2, category: 'sat', type: 'multiple-choice', difficulty:1, question: 'Thép khác gang ở điểm nào chính?', options: ['Hàm lượng cacbon thấp hơn', 'Hàm lượng cacbon cao hơn', 'Thép có nhiều tạp chất hơn', 'Gang có ít cacbon'], correctAnswer: 'Hàm lượng cacbon thấp hơn', explanation: 'Thép có hàm lượng C < 2%, gang có 2-5% C.', hint: 'So sánh %C.'},
@@ -202,23 +200,6 @@ const Bai06_DaiCuongSatDong_HopKim = () => {
   const [gameInProgress, setGameInProgress] = useState(false);
   const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
-
-  // ========== AI QUESTIONS HOOK ==========
-  const { 
-    questions: aiQuestions, 
-    loading: aiLoading, 
-    error: aiError, 
-    refetch: refetchAI,
-    clearCache: clearAICache 
-  } = useAIQuestions('sat_dong_hop_kim_12', { autoFetch: true, useCache: true });
-
-  const CHALLENGES = useMemo(() => {
-    if (aiQuestions && aiQuestions.length > 0) return aiQuestions;
-    return FALLBACK_CHALLENGES;
-  }, [aiQuestions]);
-
-  const isUsingAI = aiQuestions && aiQuestions.length > 0;
-
   const { hasProgress, savedProgress, saveProgress, clearProgress, completeChallenge } = useChallengeProgress('sat_dong_hopkim_12', { challengeId: 6, programId: 'chemistry', grade: 12 });
 
   // States for completion tracking

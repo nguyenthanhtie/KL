@@ -216,16 +216,10 @@ const ClassDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 px-4">
-      <div className="container mx-auto max-w-7xl">
+      <div className="mx-auto w-[90%]">
         {/* Header */}
         <div className="mb-8">
-          <button
-            onClick={() => navigate('/program/chemistry/dashboard')}
-            className="text-gray-600 hover:text-gray-800 mb-4 flex items-center"
-          >
-            ← Quay lại chọn lớp
-          </button>
-          
+
           <div className="flex items-center mb-4">
             <div className="text-5xl mr-4">{currentGrade.icon}</div>
             <div>
@@ -248,6 +242,7 @@ const ClassDashboard = () => {
               <ProgressBar progress={getTotalProgress()} />
             </Card>
           )}
+
         </div>
 
         {/* Chapters and Lessons */}

@@ -305,10 +305,7 @@ const DuoiHinhBatChu = () => {
         <div className="flex-shrink-0 bg-white shadow-md">
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
-              <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Quay lại
-              </Link>
+              
               <h1 className="text-2xl font-bold text-gray-800 flex items-center">
                 <span className="mr-2">🎯</span>
                 Đoán Hình Bắt Chữ Hóa Học
@@ -393,10 +390,6 @@ const DuoiHinhBatChu = () => {
         <div className="flex-shrink-0 bg-white shadow-md">
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
-              <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Quay lại
-              </Link>
               <h1 className="text-xl font-bold text-gray-800 flex items-center">
                 <Trophy className="w-5 h-5 mr-2 text-yellow-500" />
                 Kết quả
@@ -462,10 +455,7 @@ const DuoiHinhBatChu = () => {
       <div className="flex-shrink-0 bg-white shadow-md">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <Link to="/advanced-challenge" className="flex items-center text-gray-600 hover:text-gray-900">
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Quay lại
-            </Link>
+
             <h1 className="text-lg font-bold text-gray-800 flex items-center">
               <span className="mr-2">🎯</span>
               Đoán Hình Bắt Chữ Hóa Học

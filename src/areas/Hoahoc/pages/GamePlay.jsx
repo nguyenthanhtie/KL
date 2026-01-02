@@ -469,9 +469,6 @@ const GamePlay = () => {
     return (
       <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#ffebee', minHeight: '100vh' }}>
         <h2 style={{ color: '#c62828' }}>❌ Lỗi: {error}</h2>
-        <button onClick={() => navigate(-1)} style={{ marginTop: '20px', padding: '10px 20px' }}>
-          Quay lại
-        </button>
       </div>
     );
   }
@@ -485,10 +482,9 @@ const GamePlay = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="mx-auto px-4 py-8 w-[90%]">
       {/* Header */}
       <QuizHeader
-        onBack={() => navigate(-1)}
           currentIndex={currentQuizIndex}
           totalQuizzes={quizzes.length}
           score={score}
@@ -597,7 +593,6 @@ const GamePlay = () => {
         score={score}
         totalPoints={quizzes.reduce((sum, q) => sum + q.points, 0)}
         onRestart={restartGame}
-        onBack={() => navigate('/program/chemistry/dashboard')}
         onNext={goToNextLesson}
         hasNextLesson={!!nextLesson}
       />

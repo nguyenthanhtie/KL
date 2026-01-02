@@ -94,7 +94,7 @@ const Lesson = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50 py-8 px-4">
-        <div className="container mx-auto max-w-4xl">
+        <div className="mx-auto w-[90%]">
           <Card className="text-center py-8">
             <div className="text-6xl mb-4">⚠️</div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Có lỗi xảy ra</h2>
@@ -112,7 +112,7 @@ const Lesson = () => {
   if (!lessonData) {
     return (
       <div className="min-h-screen bg-gray-50 py-8 px-4">
-        <div className="container mx-auto max-w-4xl">
+        <div className="mx-auto w-[90%]">
           <Card className="text-center py-8">
             <div className="text-6xl mb-4">📚</div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Không tìm thấy bài học</h2>
@@ -215,7 +215,7 @@ const Lesson = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="container mx-auto max-w-4xl">
+      <div className="mx-auto w-[90%]">
         {/* Header */}
         <div className="mb-8">
          
