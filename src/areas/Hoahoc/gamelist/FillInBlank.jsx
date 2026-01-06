@@ -1,25 +1,80 @@
 const FillInBlank = ({ quiz, userAnswer, isAnswered, onAnswer }) => {
+  // Parse question text to render input at blank position
+  const renderQuestionWithInput = () => {
+    const questionText = quiz.question || '';
+    // Split by blank marker (____)
+    const parts = questionText.split(/(_{2,}|\.\.\.|\[\s*\])/);
+    
+    if (parts.length <= 1) {
+      // No blank found, show input below question
+      return (
+        <div className="fill-in-blank-container">
+          <p className="fill-in-blank-question">{questionText}</p>
+          <input
+            type="text"
+            value={userAnswer || ''}
+            onChange={(e) => onAnswer(e.target.value)}
+            disabled={isAnswered}
+            placeholder="Nhập câu trả lời..."
+            className="fill-in-blank-input standalone"
+            autoFocus
+          />
+        </div>
+      );
+    }
+    
+    // Render question with inline input
+    let hasInsertedInput = false;
+    return (
+      <div className="fill-in-blank-container">
+        <p className="fill-in-blank-question">
+          {parts.map((part, index) => {
+            // Check if this part is a blank marker
+            if (!hasInsertedInput && /^(_{2,}|\.\.\.|\[\s*\])$/.test(part)) {
+              hasInsertedInput = true;
+              return (
+                <span key={index} className="fill-in-blank-input-wrapper">
+                  <input
+                    type="text"
+                    value={userAnswer || ''}
+                    onChange={(e) => onAnswer(e.target.value)}
+                    disabled={isAnswered}
+                    placeholder="..."
+                    className={`fill-in-blank-input inline ${
+                      isAnswered 
+                        ? userAnswer?.toString().trim().toLowerCase() === quiz.correctAnswer?.toString().trim().toLowerCase()
+                          ? 'correct'
+                          : 'wrong'
+                        : ''
+                    }`}
+                    autoFocus
+                    style={{ width: `${Math.max(80, (userAnswer?.length || 3) * 14 + 30)}px` }}
+                  />
+                </span>
+              );
+            }
+            return <span key={index}>{part}</span>;
+          })}
+        </p>
+      </div>
+    );
+  };
+
   return (
-    <div>
-      <input
-        type="text"
-        value={userAnswer || ''}
-        onChange={(e) => onAnswer(e.target.value)}
-        disabled={isAnswered}
-        placeholder="Nhập câu trả lời của bạn..."
-        className="w-full p-4 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-      />
+    <div className="fill-in-blank-wrapper">
+      {renderQuestionWithInput()}
+      
       {isAnswered && (
-        <div className={`mt-3 p-3 rounded ${
+        <div className={`fill-in-blank-result ${
           userAnswer?.toString().trim().toLowerCase() === quiz.correctAnswer?.toString().trim().toLowerCase()
-            ? 'bg-green-50 text-green-700'
-            : 'bg-red-50 text-red-700'
+            ? 'correct'
+            : 'wrong'
         }`}>
           Đáp án đúng: <strong>{quiz.correctAnswer}</strong>
         </div>
       )}
       {quiz.hint && !isAnswered && (
-        <div className="mt-3 p-3 bg-yellow-50 text-yellow-800 rounded">
+        <div className="fill-in-blank-hint">
           💡 Gợi ý: {quiz.hint}
         </div>
       )}

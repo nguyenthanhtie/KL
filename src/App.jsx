@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { PKRoomProvider } from './contexts/PKRoomContext';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import ProgramSelection from './pages/ProgramSelection';
@@ -156,7 +157,9 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent />
+        <PKRoomProvider>
+          <AppContent />
+        </PKRoomProvider>
       </AuthProvider>
     </Router>
   );

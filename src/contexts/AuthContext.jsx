@@ -103,6 +103,9 @@ export const AuthProvider = ({ children }) => {
     // Remove local storage tokens and user
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    
+    // Xóa phòng PK khi đăng xuất
+    localStorage.removeItem('pkRoom');
 
     // Attempt to remove common non-HttpOnly cookies accessible from JS
     try {

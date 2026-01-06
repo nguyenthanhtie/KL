@@ -47,6 +47,77 @@
   cursor: pointer;
 }
 
+/* Waiting for Others State */
+.pkroom-waiting-others {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pkroom-waiting-others-content {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pkroom-waiting-others-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.pkroom-waiting-others h2 {
+  color: #2ecc71;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.pkroom-waiting-others p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+}
+
+.pkroom-waiting-others-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #f39c12;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 25px;
+}
+
+.pkroom-waiting-others-score,
+.pkroom-waiting-others-correct {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.pkroom-waiting-others-score strong {
+  color: #f1c40f;
+  font-size: 1.5rem;
+}
+
+.pkroom-waiting-others-correct strong {
+  color: #2ecc71;
+  font-size: 1.5rem;
+}
+
 /* Waiting State */
 .pkroom-waiting {
   max-width: 700px;
@@ -492,11 +563,17 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
 }
 
 .pkroom-live-player.me {
   background: rgba(52, 152, 219, 0.2);
   border-color: #3498db;
+}
+
+.pkroom-live-player.finished {
+  background: rgba(39, 174, 96, 0.15);
+  border-color: rgba(39, 174, 96, 0.4);
 }
 
 .pkroom-live-rank {
@@ -506,11 +583,40 @@
 
 .pkroom-live-name {
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pkroom-finished-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: #27ae60;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: bold;
 }
 
 .pkroom-live-score {
   color: #2ecc71;
   font-weight: 600;
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+
+.pkroom-live-player:hover .pkroom-live-score {
+  transform: scale(1.1);
+}
+
+/* Score update animation */
+@keyframes scoreUpdate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); color: #f39c12; }
+  100% { transform: scale(1); }
 }
 
 /* Finished State */
@@ -735,6 +841,134 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* Game Type Badge */
+.pkroom-game-type-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+}
+
+.pkroom-game-type-badge.blue {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.pkroom-game-type-badge.green {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.pkroom-game-type-badge.purple {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+}
+
+.pkroom-game-type-badge.orange {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+
+.pkroom-game-type-badge.pink {
+  background: linear-gradient(135deg, #e91e63, #c2185b);
+}
+
+.pkroom-game-type-badge.cyan {
+  background: linear-gradient(135deg, #00bcd4, #0097a7);
+}
+
+/* Game Wrapper */
+.pkroom-game-wrapper {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+.pkroom-game-wrapper input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: white;
+  padding: 15px;
+  font-size: 1.1rem;
+}
+
+.pkroom-game-wrapper input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
+}
+
+.pkroom-game-wrapper input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Submit Button for non-multiple-choice games */
+.pkroom-submit-btn {
+  margin-top: 20px;
+  padding: 15px 40px;
+  width: 100%;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pkroom-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+}
+
+.pkroom-submit-btn:disabled {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Matching Game Styles */
+.pkroom-game-wrapper .space-y-6 > div {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.pkroom-game-wrapper [draggable="true"] {
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.pkroom-game-wrapper [draggable="true"]:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.pkroom-game-wrapper [draggable="true"]:active {
+  cursor: grabbing;
+}
+
+/* Ordering Game Styles */
+.pkroom-game-wrapper .grid {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* True/False Buttons in Game Wrapper */
+.pkroom-game-wrapper button[class*="border-"] {
+  transition: all 0.3s ease;
+}
+
+.pkroom-game-wrapper button[class*="border-"]:not(:disabled):hover {
+  transform: scale(1.05);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .pkroom-game-header {
@@ -773,4 +1007,113 @@
     position: relative;
     margin-bottom: 20px;
   }
+  
+  .pkroom-game-type-badge {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Fill In Blank Styles */
+.fill-in-blank-wrapper {
+  width: 100%;
+}
+
+.fill-in-blank-container {
+  width: 100%;
+}
+
+.fill-in-blank-question {
+  font-size: 1.4rem;
+  color: #e0e6ed;
+  line-height: 2.2;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.fill-in-blank-input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.fill-in-blank-input {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px 15px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.fill-in-blank-input:focus {
+  border-color: #3498db;
+  background: rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+}
+
+.fill-in-blank-input.inline {
+  min-width: 80px;
+}
+
+.fill-in-blank-input.standalone {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  display: block;
+}
+
+.fill-in-blank-input.correct {
+  border-color: #27ae60;
+  background: rgba(39, 174, 96, 0.3);
+  color: #2ecc71;
+}
+
+.fill-in-blank-input.wrong {
+  border-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.3);
+  color: #e74c3c;
+}
+
+.fill-in-blank-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.fill-in-blank-result {
+  margin-top: 15px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.fill-in-blank-result.correct {
+  background: rgba(39, 174, 96, 0.2);
+  color: #2ecc71;
+  border: 1px solid rgba(39, 174, 96, 0.4);
+}
+
+.fill-in-blank-result.wrong {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+.fill-in-blank-hint {
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: rgba(241, 196, 15, 0.15);
+  color: #f1c40f;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid rgba(241, 196, 15, 0.3);
 }

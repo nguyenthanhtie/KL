@@ -1,11 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
+import { usePKRoom } from '../../../contexts/PKRoomContext';
 import { API_BASE_URL } from '../../../config/api';
 import './CSS/PKRoom.css';
 
+// Import game components
+import MultipleChoice from '../gamelist/MultipleChoice';
+import TrueFalse from '../gamelist/TrueFalse';
+import FillInBlank from '../gamelist/FillInBlank';
+import Matching from '../gamelist/Matching';
+import Ordering from '../gamelist/Ordering';
+import DragDrop from '../gamelist/DragDrop';
+
 const PKRoom = () => {
   const { user } = useAuth();
+  const { joinRoom, leaveRoom } = usePKRoom();
   const navigate = useNavigate();
   const { roomCode } = useParams();
   
@@ -22,27 +32,84 @@ const PKRoom = () => {
   const [myCorrectAnswers, setMyCorrectAnswers] = useState(0);
   const [gameResults, setGameResults] = useState(null);
   const [answerStartTime, setAnswerStartTime] = useState(null);
+  const [playersScores, setPlayersScores] = useState([]); // Realtime scores of all players
+  
+  // States for different game types
+  const [userAnswer, setUserAnswer] = useState(null);
+  const [matchingAnswers, setMatchingAnswers] = useState({});
+  const [matchingPool, setMatchingPool] = useState([]);
+  const [orderedItems, setOrderedItems] = useState([]);
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [inlineSlots, setInlineSlots] = useState([]);
+  const [inlineOptions, setInlineOptions] = useState([]);
+
+  // Reset game state for new question
+  const resetGameState = useCallback((question) => {
+    setUserAnswer(null);
+    setSelectedAnswer(null);
+    setMatchingAnswers({});
+    setDraggedIndex(null);
+    
+    if (question) {
+      // Initialize based on question type
+      if (question.type === 'matching' && question.pairs) {
+        const pool = question.pairs.map(p => p.right).sort(() => Math.random() - 0.5);
+        setMatchingPool(pool);
+      }
+      
+      if (question.type === 'ordering' && question.correctOrder) {
+        const shuffled = [...question.correctOrder].sort(() => Math.random() - 0.5);
+        setOrderedItems(shuffled);
+      }
+      
+      if (question.type === 'drag-drop' && question.inline && question.slots) {
+        setInlineSlots(question.slots.map(s => ({ ...s, value: null })));
+        setInlineOptions([...question.options].sort(() => Math.random() - 0.5));
+      }
+    }
+  }, []);
 
   // Fetch room data
-  const fetchRoom = useCallback(async () => {
+  const fetchRoom = useCallback(async (currentGameState) => {
     try {
       const response = await fetch(`${API_BASE_URL}/pk/${roomCode}`);
       if (response.ok) {
         const data = await response.json();
         setRoom(data);
-        setGameState(data.status);
         
-        if (data.status === 'playing' && data.questions) {
-          setTimeLeft(data.timePerQuestion);
-          setAnswerStartTime(Date.now());
+        // Lưu trạng thái phòng vào context để persist khi chuyển tab
+        if (data.status !== 'finished') {
+          joinRoom({ roomCode: data.roomCode || roomCode, status: data.status });
         }
         
+        // Always update to finished state when room is finished
         if (data.status === 'finished') {
+          // Xóa trạng thái phòng khi game kết thúc
+          leaveRoom();
+          // If was waiting for others, reload the page to show results
+          if (currentGameState === 'waiting-others') {
+            window.location.reload();
+            return;
+          }
+          setGameState('finished');
           setGameResults(data.results);
+          return;
+        }
+        
+        // Only update gameState if not in waiting-others state (to preserve it)
+        if (currentGameState !== 'waiting-others') {
+          setGameState(data.status);
+        }
+        
+        if (data.status === 'playing' && data.questions && currentGameState !== 'waiting-others') {
+          setTimeLeft(data.timePerQuestion);
+          setAnswerStartTime(Date.now());
         }
       } else {
         const data = await response.json();
         setError(data.message || 'Không tìm thấy phòng');
+        // Xóa trạng thái phòng nếu phòng không còn tồn tại
+        leaveRoom();
       }
     } catch (err) {
       setError('Lỗi kết nối server');
@@ -50,24 +117,52 @@ const PKRoom = () => {
     } finally {
       setLoading(false);
     }
-  }, [roomCode]);
+  }, [roomCode, joinRoom, leaveRoom]);
 
   useEffect(() => {
     if (!user) {
       navigate('/login');
       return;
     }
-    fetchRoom();
+    fetchRoom(gameState);
 
-    // Poll for updates every 2 seconds when waiting
+    // Poll for updates - faster when waiting for others
     const interval = setInterval(() => {
       if (gameState === 'waiting') {
-        fetchRoom();
+        fetchRoom(gameState);
+      } else if (gameState === 'waiting-others') {
+        // Poll faster when waiting for others to finish
+        fetchRoom(gameState);
       }
-    }, 2000);
+    }, gameState === 'waiting-others' ? 1000 : 2000);
 
     return () => clearInterval(interval);
   }, [user, navigate, fetchRoom, gameState]);
+
+  // Poll for realtime scores during gameplay
+  useEffect(() => {
+    if (gameState !== 'playing') return;
+
+    const fetchScores = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/pk/${roomCode}/scores`);
+        if (response.ok) {
+          const data = await response.json();
+          setPlayersScores(data.players);
+        }
+      } catch (err) {
+        console.error('Error fetching scores:', err);
+      }
+    };
+
+    // Fetch immediately
+    fetchScores();
+
+    // Poll every 1.5 seconds
+    const interval = setInterval(fetchScores, 1500);
+
+    return () => clearInterval(interval);
+  }, [gameState, roomCode]);
 
   // Timer countdown
   useEffect(() => {
@@ -87,7 +182,8 @@ const PKRoom = () => {
   }, [gameState, showResult, currentQuestion]);
 
   const handleTimeUp = async () => {
-    if (selectedAnswer === null) {
+    if (gameState !== 'playing') return;
+    if (selectedAnswer === null && !showResult) {
       // Auto submit wrong answer if time runs out
       await submitAnswer(-1);
     }
@@ -137,6 +233,9 @@ const PKRoom = () => {
   };
 
   const submitAnswer = async (answer) => {
+    // Don't submit if game is not playing
+    if (gameState !== 'playing') return;
+    
     const timeTaken = Math.floor((Date.now() - answerStartTime) / 1000);
     
     try {
@@ -151,6 +250,12 @@ const PKRoom = () => {
         })
       });
 
+      // If room is finished or not found, stop trying
+      if (response.status === 404) {
+        console.log('Game already finished or room not found');
+        return;
+      }
+
       const data = await response.json();
       
       if (response.ok) {
@@ -161,13 +266,18 @@ const PKRoom = () => {
 
         // Move to next question after 3 seconds
         setTimeout(() => {
+          // Check again if game is still playing
+          if (gameState !== 'playing') return;
+          
           if (currentQuestion < room.questions.length - 1) {
+            const nextQuestion = room.questions[currentQuestion + 1];
             setCurrentQuestion(prev => prev + 1);
             setSelectedAnswer(null);
             setShowResult(false);
             setAnswerResult(null);
             setTimeLeft(room.timePerQuestion);
             setAnswerStartTime(Date.now());
+            resetGameState(nextQuestion);
           } else {
             finishGame();
           }
@@ -184,18 +294,132 @@ const PKRoom = () => {
     submitAnswer(answerIndex);
   };
 
+  // Handler for different game types
+  const handleGameAnswer = (answer) => {
+    if (showResult) return;
+    setUserAnswer(answer);
+  };
+
+  // Submit answer for various game types
+  const handleSubmitGameAnswer = () => {
+    if (showResult || userAnswer === null) return;
+    submitAnswer(userAnswer);
+  };
+
+  // Matching game handlers
+  const handleMatchingDragStart = (e, item) => {
+    e.dataTransfer.setData('text/plain', item);
+  };
+
+  const handleMatchingDropToLeft = (leftItem, e) => {
+    e.preventDefault();
+    const draggedItem = e.dataTransfer.getData('text/plain');
+    setMatchingAnswers(prev => ({ ...prev, [leftItem]: draggedItem }));
+    setMatchingPool(prev => prev.filter(item => item !== draggedItem));
+  };
+
+  const handleMatchingDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleMatchingRemove = (leftItem) => {
+    const removedItem = matchingAnswers[leftItem];
+    setMatchingAnswers(prev => {
+      const newAnswers = { ...prev };
+      delete newAnswers[leftItem];
+      return newAnswers;
+    });
+    setMatchingPool(prev => [...prev, removedItem]);
+  };
+
+  // Check if matching is complete
+  const isMatchingComplete = useCallback(() => {
+    const question = room?.questions?.[currentQuestion];
+    if (!question || question.type !== 'matching') return false;
+    return question.pairs?.length === Object.keys(matchingAnswers).length;
+  }, [room, currentQuestion, matchingAnswers]);
+
+  // Ordering game handlers
+  const handleOrderingDragStart = (index) => {
+    setDraggedIndex(index);
+  };
+
+  const handleOrderingDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleOrderingDrop = (dropIndex) => {
+    if (draggedIndex === null) return;
+    const newItems = [...orderedItems];
+    const [draggedItem] = newItems.splice(draggedIndex, 1);
+    newItems.splice(dropIndex, 0, draggedItem);
+    setOrderedItems(newItems);
+    setDraggedIndex(null);
+  };
+
+  // Inline drag-drop handlers
+  const handleInlineDragStart = (e, item) => {
+    e.dataTransfer.setData('text/plain', item);
+  };
+
+  const handleInlineDropToSlot = (slotId, e) => {
+    e.preventDefault();
+    const item = e.dataTransfer.getData('text/plain');
+    setInlineSlots(prev => prev.map(s => s.id === slotId ? { ...s, value: item } : s));
+    setInlineOptions(prev => prev.filter(o => o !== item));
+  };
+
+  const handleInlineDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleInlineRemove = (slotId) => {
+    const slot = inlineSlots.find(s => s.id === slotId);
+    if (slot?.value) {
+      setInlineOptions(prev => [...prev, slot.value]);
+      setInlineSlots(prev => prev.map(s => s.id === slotId ? { ...s, value: null } : s));
+    }
+  };
+
+  // Submit matching/ordering answers
+  const submitMatchingAnswer = () => {
+    if (showResult) return;
+    submitAnswer(matchingAnswers);
+  };
+
+  const submitOrderingAnswer = () => {
+    if (showResult) return;
+    submitAnswer(orderedItems);
+  };
+
+  const submitInlineAnswer = () => {
+    if (showResult) return;
+    const answer = inlineSlots.reduce((acc, slot) => {
+      acc[slot.id] = slot.value;
+      return acc;
+    }, {});
+    submitAnswer(answer);
+  };
+
   const finishGame = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/pk/${roomCode}/finish`, {
+      // Mark this player as finished
+      const response = await fetch(`${API_BASE_URL}/pk/${roomCode}/player-finish`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user._id || user.id })
       });
 
       const data = await response.json();
       
       if (response.ok) {
-        setGameState('finished');
-        setGameResults(data.results);
+        if (data.allFinished) {
+          // All players finished, reload to show fresh results for everyone
+          window.location.reload();
+        } else {
+          // Waiting for other players
+          setGameState('waiting-others');
+        }
       }
     } catch (err) {
       console.error('Error finishing game:', err);
@@ -212,6 +436,8 @@ const PKRoom = () => {
     } catch (err) {
       console.error('Error leaving room:', err);
     }
+    // Xóa trạng thái phòng khỏi context và localStorage
+    leaveRoom();
     navigate('/chemistry/pk');
   };
 
@@ -351,35 +577,13 @@ const PKRoom = () => {
   // Playing state
   if (gameState === 'playing' && room.questions) {
     const question = room.questions[currentQuestion];
+    const questionType = question.type || 'multiple-choice';
     
-    return (
-      <div className="pkroom-container">
-        <div className="pkroom-playing">
-          {/* Game Header */}
-          <div className="pkroom-game-header">
-            <div className="pkroom-progress">
-              <span>Câu {currentQuestion + 1}/{room.questions.length}</span>
-              <div className="pkroom-progress-bar">
-                <div 
-                  className="pkroom-progress-fill"
-                  style={{ width: `${((currentQuestion + 1) / room.questions.length) * 100}%` }}
-                ></div>
-              </div>
-            </div>
-            <div className={`pkroom-timer ${timeLeft <= 5 ? 'warning' : ''}`}>
-              <span>⏱️</span>
-              <span>{timeLeft}s</span>
-            </div>
-            <div className="pkroom-score">
-              <span>⭐</span>
-              <span>{myScore} điểm</span>
-            </div>
-          </div>
-
-          {/* Question */}
-          <div className="pkroom-question-card">
-            <h2 className="pkroom-question-text">{question.question}</h2>
-            
+    // Render game component based on type
+    const renderGameComponent = () => {
+      switch (questionType) {
+        case 'multiple-choice':
+          return (
             <div className="pkroom-options">
               {question.options.map((option, index) => (
                 <button
@@ -401,6 +605,196 @@ const PKRoom = () => {
                 </button>
               ))}
             </div>
+          );
+
+        case 'true-false':
+          return (
+            <div className="pkroom-game-wrapper">
+              <TrueFalse
+                quiz={question}
+                userAnswer={userAnswer}
+                isAnswered={showResult}
+                onAnswer={(answer) => {
+                  setUserAnswer(answer);
+                  submitAnswer(answer);
+                }}
+              />
+            </div>
+          );
+
+        case 'fill-in-blank':
+          return (
+            <div className="pkroom-game-wrapper">
+              <FillInBlank
+                quiz={question}
+                userAnswer={userAnswer}
+                isAnswered={showResult}
+                onAnswer={setUserAnswer}
+              />
+              {!showResult && userAnswer && (
+                <button 
+                  className="pkroom-submit-btn"
+                  onClick={() => submitAnswer(userAnswer)}
+                >
+                  Xác nhận
+                </button>
+              )}
+            </div>
+          );
+
+        case 'matching':
+          return (
+            <div className="pkroom-game-wrapper">
+              <Matching
+                quiz={question}
+                isAnswered={showResult}
+                matchingAnswers={matchingAnswers}
+                matchingPool={matchingPool}
+                onDragStart={handleMatchingDragStart}
+                onDropToLeft={handleMatchingDropToLeft}
+                onDragOverLeft={handleMatchingDragOver}
+                onRemoveAssigned={handleMatchingRemove}
+              />
+              {!showResult && isMatchingComplete() && (
+                <button 
+                  className="pkroom-submit-btn"
+                  onClick={submitMatchingAnswer}
+                >
+                  Xác nhận
+                </button>
+              )}
+            </div>
+          );
+
+        case 'ordering':
+          return (
+            <div className="pkroom-game-wrapper">
+              <Ordering
+                quiz={question}
+                orderedItems={orderedItems}
+                isAnswered={showResult}
+                onDragStart={handleOrderingDragStart}
+                onDragOver={handleOrderingDragOver}
+                onDrop={handleOrderingDrop}
+              />
+              {!showResult && orderedItems.length > 0 && (
+                <button 
+                  className="pkroom-submit-btn"
+                  onClick={submitOrderingAnswer}
+                >
+                  Xác nhận
+                </button>
+              )}
+            </div>
+          );
+
+        case 'drag-drop':
+          return (
+            <div className="pkroom-game-wrapper">
+              <DragDrop
+                quiz={question}
+                isAnswered={showResult}
+                matchingAnswers={matchingAnswers}
+                inlineSlots={inlineSlots}
+                inlineOptions={inlineOptions}
+                onDragStartOption={handleMatchingDragStart}
+                onDropToLeft={handleMatchingDropToLeft}
+                onDragOverLeft={handleMatchingDragOver}
+                onRemoveAssigned={handleMatchingRemove}
+                onDragStartInline={handleInlineDragStart}
+                onDropToSlot={handleInlineDropToSlot}
+                onDragOverSlot={handleInlineDragOver}
+                onRemoveInlineAssigned={handleInlineRemove}
+              />
+              {!showResult && (
+                <button 
+                  className="pkroom-submit-btn"
+                  onClick={question.inline ? submitInlineAnswer : submitMatchingAnswer}
+                >
+                  Xác nhận
+                </button>
+              )}
+            </div>
+          );
+
+        default:
+          return (
+            <div className="pkroom-options">
+              {question.options?.map((option, index) => (
+                <button
+                  key={index}
+                  className={`pkroom-option ${
+                    selectedAnswer === index ? 'selected' : ''
+                  } ${
+                    showResult && index === question.correctAnswer ? 'correct' : ''
+                  } ${
+                    showResult && selectedAnswer === index && selectedAnswer !== question.correctAnswer ? 'wrong' : ''
+                  }`}
+                  onClick={() => handleSelectAnswer(index)}
+                  disabled={selectedAnswer !== null}
+                >
+                  <span className="pkroom-option-letter">
+                    {String.fromCharCode(65 + index)}
+                  </span>
+                  <span className="pkroom-option-text">{option}</span>
+                </button>
+              ))}
+            </div>
+          );
+      }
+    };
+
+    // Get game type badge
+    const getGameTypeBadge = () => {
+      const types = {
+        'multiple-choice': { label: 'Trắc nghiệm', icon: '📝', color: 'blue' },
+        'true-false': { label: 'Đúng/Sai', icon: '✓✗', color: 'green' },
+        'fill-in-blank': { label: 'Điền khuyết', icon: '✏️', color: 'purple' },
+        'matching': { label: 'Ghép đôi', icon: '🔗', color: 'orange' },
+        'ordering': { label: 'Sắp xếp', icon: '📊', color: 'pink' },
+        'drag-drop': { label: 'Kéo thả', icon: '🎯', color: 'cyan' }
+      };
+      return types[questionType] || types['multiple-choice'];
+    };
+
+    const typeBadge = getGameTypeBadge();
+    
+    return (
+      <div className="pkroom-container">
+        <div className="pkroom-playing">
+          {/* Game Header */}
+          <div className="pkroom-game-header">
+            <div className="pkroom-progress">
+              <span>Câu {currentQuestion + 1}/{room.questions.length}</span>
+              <div className="pkroom-progress-bar">
+                <div 
+                  className="pkroom-progress-fill"
+                  style={{ width: `${((currentQuestion + 1) / room.questions.length) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+            <div className={`pkroom-game-type-badge ${typeBadge.color}`}>
+              <span>{typeBadge.icon}</span>
+              <span>{typeBadge.label}</span>
+            </div>
+            <div className={`pkroom-timer ${timeLeft <= 5 ? 'warning' : ''}`}>
+              <span>⏱️</span>
+              <span>{timeLeft}s</span>
+            </div>
+            <div className="pkroom-score">
+              <span>⭐</span>
+              <span>{myScore} điểm</span>
+            </div>
+          </div>
+
+          {/* Question */}
+          <div className="pkroom-question-card">
+            {/* Don't show question text for fill-in-blank as it's rendered inside the component */}
+            {question.type !== 'fill-in-blank' && (
+              <h2 className="pkroom-question-text">{question.question}</h2>
+            )}
+            
+            {renderGameComponent()}
 
             {/* Result Overlay */}
             {showResult && answerResult && (
@@ -414,20 +808,52 @@ const PKRoom = () => {
             )}
           </div>
 
-          {/* Live Scoreboard */}
+          {/* Live Scoreboard - Realtime */}
           <div className="pkroom-live-scores">
-            {room.players.map((player, index) => (
-              <div 
-                key={player.oderId || index} 
-                className={`pkroom-live-player ${player.oderId?.toString() === userId ? 'me' : ''}`}
-              >
-                <span className="pkroom-live-rank">#{index + 1}</span>
-                <span className="pkroom-live-name">{player.odername}</span>
-                <span className="pkroom-live-score">
-                  {player.oderId?.toString() === userId ? myScore : player.score} ⭐
-                </span>
-              </div>
-            ))}
+            {(playersScores.length > 0 ? playersScores : room.players).map((player, index) => {
+              const isMe = player.oderId?.toString() === userId;
+              const displayScore = isMe ? myScore : player.score;
+              
+              return (
+                <div 
+                  key={player.oderId || index} 
+                  className={`pkroom-live-player ${isMe ? 'me' : ''} ${player.isFinished ? 'finished' : ''}`}
+                >
+                  <span className="pkroom-live-rank">#{index + 1}</span>
+                  <span className="pkroom-live-name">
+                    {player.odername}
+                    {player.isFinished && <span className="pkroom-finished-badge">✓</span>}
+                  </span>
+                  <span className="pkroom-live-score">
+                    {displayScore} ⭐
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Waiting for other players to finish
+  if (gameState === 'waiting-others') {
+    return (
+      <div className="pkroom-container">
+        <div className="pkroom-waiting-others">
+          <div className="pkroom-waiting-others-content">
+            <div className="pkroom-waiting-others-icon">✅</div>
+            <h2>Bạn đã hoàn thành!</h2>
+            <p>Đang chờ người chơi khác hoàn thành...</p>
+            <div className="pkroom-waiting-others-spinner"></div>
+            <div className="pkroom-waiting-others-score">
+              <span>Điểm của bạn:</span>
+              <strong>{myScore} ⭐</strong>
+            </div>
+            <div className="pkroom-waiting-others-correct">
+              <span>Số câu đúng:</span>
+              <strong>{myCorrectAnswers}/{room?.questions?.length || 0}</strong>
+            </div>
           </div>
         </div>
       </div>

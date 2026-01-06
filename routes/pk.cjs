@@ -3,250 +3,356 @@ const router = express.Router();
 const Room = require('../models/Room.cjs');
 const User = require('../models/User.cjs');
 
-// Ngân hàng câu hỏi PK theo lớp
+// Ngân hàng câu hỏi PK theo lớp với nhiều loại game
 const questionBanks = {
   8: [
+    // Multiple Choice
     {
+      type: 'multiple-choice',
       question: "Nguyên tử được cấu tạo bởi các hạt nào?",
       options: ["Proton và neutron", "Proton, neutron và electron", "Electron và neutron", "Chỉ có proton"],
       correctAnswer: 1,
       explanation: "Nguyên tử gồm hạt nhân (chứa proton và neutron) và vỏ electron."
     },
     {
+      type: 'multiple-choice',
       question: "Công thức hóa học của nước là gì?",
       options: ["HO", "H2O", "H2O2", "OH"],
       correctAnswer: 1,
       explanation: "Nước có công thức H2O, gồm 2 nguyên tử Hydro và 1 nguyên tử Oxy."
     },
     {
+      type: 'multiple-choice',
       question: "Phản ứng hóa học là gì?",
       options: ["Sự thay đổi trạng thái của chất", "Sự biến đổi chất này thành chất khác", "Sự hòa tan chất vào nước", "Sự bay hơi của chất"],
       correctAnswer: 1,
       explanation: "Phản ứng hóa học là quá trình biến đổi chất này thành chất khác."
     },
+    // True/False
     {
+      type: 'true-false',
+      question: "Oxi chiếm tỉ lệ lớn nhất trong không khí?",
+      correctAnswer: false,
+      explanation: "Nitơ (N2) chiếm khoảng 78% không khí, còn Oxi chỉ chiếm khoảng 21%."
+    },
+    {
+      type: 'true-false',
+      question: "Nước là hợp chất được tạo từ Hydro và Oxi?",
+      correctAnswer: true,
+      explanation: "Nước H2O gồm 2 nguyên tử Hydro và 1 nguyên tử Oxi."
+    },
+    {
+      type: 'true-false',
+      question: "Fe là ký hiệu hóa học của Sắt?",
+      correctAnswer: true,
+      explanation: "Fe (Ferrum trong tiếng Latin) là ký hiệu hóa học của Sắt."
+    },
+    // True/False
+    {
+      type: 'true-false',
+      question: "Khối lượng mol của H2SO4 là 98 g/mol",
+      correctAnswer: true,
+      explanation: "M(H2SO4) = 2×1 + 32 + 4×16 = 98 g/mol"
+    },
+    {
+      type: 'true-false',
+      question: "Công thức hóa học của muối ăn là KCl",
+      correctAnswer: false,
+      explanation: "Muối ăn là Natri clorua với công thức NaCl, không phải KCl."
+    },
+    // Ordering
+    {
+      type: 'ordering',
+      question: "Sắp xếp theo thứ tự khối lượng mol tăng dần:",
+      correctOrder: ["H2", "H2O", "CO2", "H2SO4"],
+      explanation: "H2 (2) < H2O (18) < CO2 (44) < H2SO4 (98)"
+    },
+    // Matching
+    {
+      type: 'matching',
+      question: "Ghép công thức với tên gọi đúng:",
+      pairs: [
+        { left: "H2O", right: "Nước" },
+        { left: "NaCl", right: "Muối ăn" },
+        { left: "HCl", right: "Axit clohidric" },
+        { left: "NaOH", right: "Natri hidroxit" }
+      ],
+      explanation: "Đây là các công thức hóa học thường gặp trong chương trình lớp 8."
+    },
+    {
+      type: 'multiple-choice',
       question: "Khối lượng mol của H2SO4 là bao nhiêu?",
       options: ["96 g/mol", "98 g/mol", "100 g/mol", "94 g/mol"],
       correctAnswer: 1,
       explanation: "M(H2SO4) = 2×1 + 32 + 4×16 = 98 g/mol"
     },
     {
+      type: 'multiple-choice',
       question: "Chất nào sau đây là oxit bazơ?",
       options: ["CO2", "SO2", "CaO", "P2O5"],
       correctAnswer: 2,
       explanation: "CaO là oxit bazơ vì tác dụng với nước tạo bazơ Ca(OH)2."
     },
     {
+      type: 'multiple-choice',
       question: "Axit clohidric có công thức là gì?",
       options: ["HCl", "H2SO4", "HNO3", "H3PO4"],
       correctAnswer: 0,
       explanation: "Axit clohidric có công thức HCl."
     },
     {
+      type: 'multiple-choice',
       question: "Phương trình hóa học nào sau đây đã cân bằng?",
       options: ["H2 + O2 → H2O", "2H2 + O2 → 2H2O", "H2 + O → H2O", "H + O2 → H2O"],
       correctAnswer: 1,
       explanation: "2H2 + O2 → 2H2O có số nguyên tử mỗi nguyên tố bằng nhau ở 2 vế."
     },
     {
+      type: 'multiple-choice',
       question: "Khí nào chiếm tỉ lệ lớn nhất trong không khí?",
       options: ["Oxi", "Nitơ", "Cacbon dioxit", "Argon"],
       correctAnswer: 1,
       explanation: "Nitơ chiếm khoảng 78% thể tích không khí."
-    },
-    {
-      question: "Chất nào là bazơ?",
-      options: ["HCl", "NaCl", "NaOH", "Na2SO4"],
-      correctAnswer: 2,
-      explanation: "NaOH (Natri hidroxit) là một bazơ mạnh."
-    },
-    {
-      question: "Muối ăn có công thức hóa học là gì?",
-      options: ["NaCl", "KCl", "CaCl2", "MgCl2"],
-      correctAnswer: 0,
-      explanation: "Muối ăn là Natri clorua, công thức NaCl."
     }
   ],
   9: [
+    // Multiple Choice
     {
+      type: 'multiple-choice',
       question: "Kim loại nào dẫn điện tốt nhất?",
       options: ["Vàng", "Bạc", "Đồng", "Nhôm"],
       correctAnswer: 1,
       explanation: "Bạc là kim loại dẫn điện tốt nhất."
     },
     {
+      type: 'multiple-choice',
       question: "Phi kim nào có tính oxi hóa mạnh nhất?",
       options: ["Oxi", "Clo", "Flo", "Brom"],
       correctAnswer: 2,
       explanation: "Flo có độ âm điện lớn nhất nên có tính oxi hóa mạnh nhất."
     },
+    // True/False
     {
+      type: 'true-false',
+      question: "Natri (Na) có thể tác dụng với nước ở nhiệt độ thường?",
+      correctAnswer: true,
+      explanation: "Na là kim loại kiềm, rất hoạt động, tác dụng mạnh với nước: 2Na + 2H2O → 2NaOH + H2."
+    },
+    {
+      type: 'true-false',
+      question: "Metan (CH4) là hidrocacbon không no?",
+      correctAnswer: false,
+      explanation: "Metan CH4 là hidrocacbon no (ankan) vì chỉ có liên kết đơn C-H."
+    },
+    // True/False
+    {
+      type: 'true-false',
+      question: "Công thức của etanol (rượu etylic) là C2H5OH",
+      correctAnswer: true,
+      explanation: "Etanol có công thức C2H5OH."
+    },
+    // Matching
+    {
+      type: 'matching',
+      question: "Ghép kim loại với tính chất đặc trưng:",
+      pairs: [
+        { left: "Bạc (Ag)", right: "Dẫn điện tốt nhất" },
+        { left: "Vàng (Au)", right: "Không bị oxi hóa trong không khí" },
+        { left: "Nhôm (Al)", right: "Nhẹ, bền với không khí" },
+        { left: "Sắt (Fe)", right: "Dễ bị gỉ trong không khí ẩm" }
+      ],
+      explanation: "Mỗi kim loại có tính chất đặc trưng riêng."
+    },
+    // Ordering
+    {
+      type: 'ordering',
+      question: "Sắp xếp dãy hoạt động hóa học của kim loại từ mạnh đến yếu:",
+      correctOrder: ["K", "Na", "Mg", "Al", "Fe", "Cu"],
+      explanation: "Dãy hoạt động hóa học: K > Na > Mg > Al > Zn > Fe > Ni > Sn > Pb > H > Cu > Hg > Ag > Pt > Au"
+    },
+    {
+      type: 'multiple-choice',
       question: "Công thức của metan là gì?",
       options: ["C2H6", "CH4", "C2H4", "C2H2"],
       correctAnswer: 1,
       explanation: "Metan là hidrocacbon đơn giản nhất với công thức CH4."
     },
     {
+      type: 'multiple-choice',
       question: "Axit axetic có công thức là gì?",
       options: ["HCOOH", "CH3COOH", "C2H5OH", "CH3OH"],
       correctAnswer: 1,
       explanation: "Axit axetic (giấm) có công thức CH3COOH."
     },
     {
+      type: 'multiple-choice',
       question: "Chất nào là polime?",
       options: ["Etilen", "Glucozơ", "Polietilen", "Axit axetic"],
       correctAnswer: 2,
       explanation: "Polietilen là polime được tạo từ nhiều phân tử etilen."
     },
     {
+      type: 'multiple-choice',
       question: "Sắt tác dụng với dung dịch CuSO4 tạo ra sản phẩm gì?",
       options: ["FeSO4 + Cu", "Fe2(SO4)3 + Cu", "FeSO4 + CuO", "Không phản ứng"],
       correctAnswer: 0,
       explanation: "Fe + CuSO4 → FeSO4 + Cu (Sắt đẩy đồng ra khỏi dung dịch muối)."
-    },
-    {
-      question: "Canxi cacbonat bị nhiệt phân tạo ra sản phẩm gì?",
-      options: ["CaO + CO", "CaO + CO2", "Ca + CO2", "Ca(OH)2 + CO2"],
-      correctAnswer: 1,
-      explanation: "CaCO3 --nhiệt--> CaO + CO2"
-    },
-    {
-      question: "Chất nào dùng để khử chua đất?",
-      options: ["NaCl", "CaO", "NaOH", "HCl"],
-      correctAnswer: 1,
-      explanation: "Vôi sống CaO được dùng để khử chua đất (trung hòa axit trong đất)."
-    },
-    {
-      question: "Etanol có công thức là gì?",
-      options: ["CH3OH", "C2H5OH", "C3H7OH", "C6H5OH"],
-      correctAnswer: 1,
-      explanation: "Etanol (rượu etylic) có công thức C2H5OH."
-    },
-    {
-      question: "Glucozơ thuộc loại hợp chất nào?",
-      options: ["Protein", "Lipit", "Cacbohidrat", "Axit nucleic"],
-      correctAnswer: 2,
-      explanation: "Glucozơ là một monosaccarit, thuộc nhóm cacbohidrat."
     }
   ],
   10: [
+    // Multiple Choice
     {
+      type: 'multiple-choice',
       question: "Số hiệu nguyên tử cho biết điều gì?",
       options: ["Số neutron", "Số proton", "Số electron hóa trị", "Khối lượng nguyên tử"],
       correctAnswer: 1,
       explanation: "Số hiệu nguyên tử Z = số proton = số electron (nguyên tử trung hòa)."
     },
     {
+      type: 'multiple-choice',
       question: "Nguyên tố nào thuộc nhóm halogen?",
       options: ["Oxi", "Clo", "Nitơ", "Lưu huỳnh"],
       correctAnswer: 1,
       explanation: "Clo thuộc nhóm VIIA (halogen) gồm F, Cl, Br, I, At."
     },
+    // True/False
     {
+      type: 'true-false',
+      question: "Liên kết ion được hình thành do sự dùng chung electron?",
+      correctAnswer: false,
+      explanation: "Liên kết ion hình thành do lực hút tĩnh điện giữa các ion trái dấu. Liên kết cộng hóa trị mới do dùng chung electron."
+    },
+    {
+      type: 'true-false',
+      question: "Phản ứng oxi hóa khử luôn có sự thay đổi số oxi hóa?",
+      correctAnswer: true,
+      explanation: "Đặc trưng của phản ứng oxi hóa khử là có sự thay đổi số oxi hóa của các nguyên tố."
+    },
+    // True/False
+    {
+      type: 'true-false',
+      question: "Số oxi hóa của Mn trong KMnO4 là +7",
+      correctAnswer: true,
+      explanation: "K(+1) + Mn(x) + 4×O(-2) = 0 → x = +7"
+    },
+    {
+      type: 'true-false',
+      question: "Cấu hình electron của Na (Z=11) là 1s²2s²2p⁶3s²",
+      correctAnswer: false,
+      explanation: "Na có 11 electron, cấu hình đúng là: 1s²2s²2p⁶3s¹ (không phải 3s²)"
+    },
+    // Matching
+    {
+      type: 'matching',
+      question: "Ghép loại liên kết với đặc điểm:",
+      pairs: [
+        { left: "Liên kết ion", right: "Cho nhận electron" },
+        { left: "Liên kết cộng hóa trị", right: "Dùng chung electron" },
+        { left: "Liên kết kim loại", right: "Electron tự do" },
+        { left: "Liên kết hydrogen", right: "Tương tác yếu" }
+      ],
+      explanation: "Mỗi loại liên kết có cơ chế hình thành khác nhau."
+    },
+    // Ordering
+    {
+      type: 'ordering',
+      question: "Sắp xếp các lớp electron theo thứ tự năng lượng tăng dần:",
+      correctOrder: ["1s", "2s", "2p", "3s", "3p"],
+      explanation: "Theo quy tắc Klechkowski: 1s < 2s < 2p < 3s < 3p < 4s < 3d..."
+    },
+    {
+      type: 'multiple-choice',
       question: "Liên kết cộng hóa trị là gì?",
       options: ["Liên kết do lực hút tĩnh điện", "Liên kết do dùng chung electron", "Liên kết do cho nhận electron", "Liên kết kim loại"],
       correctAnswer: 1,
       explanation: "Liên kết cộng hóa trị hình thành do sự dùng chung cặp electron."
     },
     {
+      type: 'multiple-choice',
       question: "Số oxi hóa của Mn trong KMnO4 là bao nhiêu?",
       options: ["+4", "+5", "+6", "+7"],
       correctAnswer: 3,
       explanation: "K(+1) + Mn(x) + 4×O(-2) = 0 → x = +7"
     },
     {
-      question: "Phản ứng oxi hóa khử là phản ứng có đặc điểm gì?",
-      options: ["Có sự thay đổi màu sắc", "Có sự thay đổi số oxi hóa", "Có chất khí thoát ra", "Có kết tủa tạo thành"],
-      correctAnswer: 1,
-      explanation: "Phản ứng oxi hóa khử là phản ứng có sự thay đổi số oxi hóa của các nguyên tố."
-    },
-    {
-      question: "Cấu hình electron của Na (Z=11) là gì?",
-      options: ["1s²2s²2p⁶3s¹", "1s²2s²2p⁶3s²", "1s²2s²2p⁶", "1s²2s²2p⁵3s²"],
-      correctAnswer: 0,
-      explanation: "Na có 11 electron, cấu hình: 1s²2s²2p⁶3s¹"
-    },
-    {
+      type: 'multiple-choice',
       question: "Axit nào sau đây là axit mạnh?",
       options: ["CH3COOH", "H2CO3", "HCl", "H2S"],
       correctAnswer: 2,
       explanation: "HCl là axit mạnh, phân li hoàn toàn trong nước."
-    },
-    {
-      question: "Tốc độ phản ứng phụ thuộc vào yếu tố nào?",
-      options: ["Chỉ nhiệt độ", "Chỉ nồng độ", "Chỉ áp suất", "Nhiệt độ, nồng độ, áp suất, xúc tác, diện tích tiếp xúc"],
-      correctAnswer: 3,
-      explanation: "Tốc độ phản ứng phụ thuộc vào nhiều yếu tố: nhiệt độ, nồng độ, áp suất, xúc tác, diện tích tiếp xúc."
-    },
-    {
-      question: "Clo có thể tác dụng với chất nào sau đây?",
-      options: ["O2", "N2", "H2", "CO2"],
-      correctAnswer: 2,
-      explanation: "Cl2 + H2 --ánh sáng--> 2HCl"
-    },
-    {
-      question: "Lưu huỳnh có các số oxi hóa phổ biến nào?",
-      options: ["-2, 0, +4, +6", "-1, 0, +2, +4", "-2, +2, +4", "-1, +1, +3, +5"],
-      correctAnswer: 0,
-      explanation: "Lưu huỳnh có các số oxi hóa: -2 (H2S), 0 (S), +4 (SO2), +6 (H2SO4)."
     }
   ],
   11: [
+    // Multiple Choice
     {
+      type: 'multiple-choice',
       question: "Nitơ có số oxi hóa bao nhiêu trong NH3?",
       options: ["+3", "-3", "0", "+5"],
       correctAnswer: 1,
       explanation: "Trong NH3: N(x) + 3×H(+1) = 0 → x = -3"
     },
+    // True/False
     {
+      type: 'true-false',
+      question: "Anken có liên kết đôi C=C trong phân tử?",
+      correctAnswer: true,
+      explanation: "Anken là hidrocacbon không no có một liên kết đôi C=C."
+    },
+    {
+      type: 'true-false',
+      question: "Phenol có tính bazơ mạnh?",
+      correctAnswer: false,
+      explanation: "Phenol C6H5OH có tính axit yếu, không phải tính bazơ."
+    },
+    // True/False
+    {
+      type: 'true-false',
+      question: "Công thức chung của ankan là CnH2n+2 (n≥1)",
+      correctAnswer: true,
+      explanation: "Ankan có công thức chung CnH2n+2 (n≥1)."
+    },
+    // Matching
+    {
+      type: 'matching',
+      question: "Ghép hợp chất hữu cơ với nhóm chức:",
+      pairs: [
+        { left: "Ancol", right: "-OH (gắn với C no)" },
+        { left: "Andehit", right: "-CHO" },
+        { left: "Axit cacboxylic", right: "-COOH" },
+        { left: "Este", right: "-COO-" }
+      ],
+      explanation: "Mỗi loại hợp chất hữu cơ có nhóm chức đặc trưng."
+    },
+    // Ordering
+    {
+      type: 'ordering',
+      question: "Sắp xếp theo độ linh động của nguyên tử H trong nhóm -OH:",
+      correctOrder: ["Phenol", "Ancol", "Nước"],
+      explanation: "Phenol > Ancol > Nước (do ảnh hưởng của vòng benzen)."
+    },
+    {
+      type: 'multiple-choice',
       question: "Sản phẩm của phản ứng este hóa giữa axit axetic và etanol là gì?",
       options: ["Etyl axetat", "Metyl axetat", "Etyl fomat", "Metyl fomat"],
       correctAnswer: 0,
       explanation: "CH3COOH + C2H5OH → CH3COOC2H5 (etyl axetat) + H2O"
     },
     {
+      type: 'multiple-choice',
       question: "Anken là hidrocacbon có đặc điểm gì?",
       options: ["Có liên kết ba", "Có liên kết đôi C=C", "Chỉ có liên kết đơn", "Có vòng benzen"],
       correctAnswer: 1,
       explanation: "Anken là hidrocacbon không no có một liên kết đôi C=C trong phân tử."
     },
     {
+      type: 'multiple-choice',
       question: "Phenol có tính chất gì đặc trưng?",
       options: ["Tính bazơ mạnh", "Tính axit yếu", "Tính trung tính", "Tính oxi hóa mạnh"],
       correctAnswer: 1,
       explanation: "Phenol C6H5OH có tính axit yếu do nhóm -OH liên kết với vòng benzen."
     },
     {
-      question: "Andehit axetic có công thức là gì?",
-      options: ["HCHO", "CH3CHO", "CH3COCH3", "CH3COOH"],
-      correctAnswer: 1,
-      explanation: "Andehit axetic có công thức CH3CHO."
-    },
-    {
-      question: "Axit cacboxylic có nhóm chức gì?",
-      options: ["-OH", "-CHO", "-COOH", "-CO-"],
-      correctAnswer: 2,
-      explanation: "Axit cacboxylic có nhóm chức -COOH (cacboxyl)."
-    },
-    {
-      question: "Phản ứng cộng của anken với Br2 tạo sản phẩm gì?",
-      options: ["Dẫn xuất monohalogen", "Dẫn xuất đihalogen", "Ancol", "Andehit"],
-      correctAnswer: 1,
-      explanation: "CH2=CH2 + Br2 → CH2Br-CH2Br (dẫn xuất đihalogen)"
-    },
-    {
-      question: "NH3 có tính chất gì đặc trưng?",
-      options: ["Tính axit", "Tính bazơ", "Tính trung tính", "Tính oxi hóa"],
-      correctAnswer: 1,
-      explanation: "NH3 có tính bazơ do có cặp electron tự do trên nguyên tử N."
-    },
-    {
-      question: "Axit nitric đặc nguội có tác dụng với kim loại nào?",
-      options: ["Fe", "Al", "Cu", "Cả Fe và Al đều không phản ứng"],
-      correctAnswer: 3,
-      explanation: "HNO3 đặc nguội làm thụ động hóa Fe và Al."
-    },
-    {
+      type: 'multiple-choice',
       question: "Phản ứng tráng gương dùng để nhận biết chất nào?",
       options: ["Ancol", "Andehit", "Axit cacboxylic", "Xeton"],
       correctAnswer: 1,
@@ -254,70 +360,85 @@ const questionBanks = {
     }
   ],
   12: [
+    // Multiple Choice
     {
+      type: 'multiple-choice',
       question: "Este có công thức tổng quát là gì?",
       options: ["R-OH", "R-CHO", "R-COOR'", "R-COOH"],
       correctAnswer: 2,
       explanation: "Este có công thức tổng quát RCOOR' (R-COO-R')."
     },
+    // True/False
     {
+      type: 'true-false',
+      question: "Amino axit có tính lưỡng tính?",
+      correctAnswer: true,
+      explanation: "Amino axit có cả nhóm -NH2 (bazơ) và -COOH (axit) nên có tính lưỡng tính."
+    },
+    {
+      type: 'true-false',
+      question: "Kim loại kiềm thổ thuộc nhóm IA?",
+      correctAnswer: false,
+      explanation: "Kim loại kiềm thổ thuộc nhóm IIA. Kim loại kiềm mới thuộc nhóm IA."
+    },
+    // True/False
+    {
+      type: 'true-false',
+      question: "Sắt có thể tạo ra 3 loại oxit: FeO, Fe2O3, Fe3O4",
+      correctAnswer: true,
+      explanation: "Sắt tạo 3 loại oxit: FeO, Fe2O3, Fe3O4."
+    },
+    // Matching
+    {
+      type: 'matching',
+      question: "Ghép polime với phản ứng điều chế:",
+      pairs: [
+        { left: "PE (Polietilen)", right: "Trùng hợp" },
+        { left: "PVC", right: "Trùng hợp" },
+        { left: "Nilon-6,6", right: "Trùng ngưng" },
+        { left: "Tơ lapsan", right: "Trùng ngưng" }
+      ],
+      explanation: "PE, PVC điều chế bằng trùng hợp. Nilon, tơ lapsan bằng trùng ngưng."
+    },
+    // Ordering
+    {
+      type: 'ordering',
+      question: "Sắp xếp kim loại theo tính khử giảm dần:",
+      correctOrder: ["K", "Na", "Mg", "Al", "Fe"],
+      explanation: "K > Na > Mg > Al > Zn > Fe > Cu > Ag > Au"
+    },
+    {
+      type: 'multiple-choice',
       question: "Phản ứng thủy phân este trong môi trường kiềm gọi là gì?",
       options: ["Este hóa", "Xà phòng hóa", "Trùng hợp", "Trùng ngưng"],
       correctAnswer: 1,
       explanation: "Phản ứng thủy phân este trong môi trường kiềm gọi là phản ứng xà phòng hóa."
     },
     {
+      type: 'multiple-choice',
       question: "Tinh bột thuộc loại cacbohidrat nào?",
       options: ["Monosaccarit", "Đisaccarit", "Polisaccarit", "Oligosaccarit"],
       correctAnswer: 2,
       explanation: "Tinh bột là polisaccarit, gồm nhiều gốc glucozơ liên kết với nhau."
     },
     {
-      question: "Amino axit có tính chất gì đặc biệt?",
-      options: ["Chỉ có tính axit", "Chỉ có tính bazơ", "Có tính lưỡng tính", "Không có tính chất đặc biệt"],
-      correctAnswer: 2,
-      explanation: "Amino axit có cả nhóm -NH2 (bazơ) và -COOH (axit) nên có tính lưỡng tính."
-    },
-    {
+      type: 'multiple-choice',
       question: "Polime được tạo thành bằng phản ứng gì?",
       options: ["Phản ứng thế", "Phản ứng cộng", "Phản ứng trùng hợp hoặc trùng ngưng", "Phản ứng phân hủy"],
       correctAnswer: 2,
       explanation: "Polime được tạo thành bằng phản ứng trùng hợp hoặc trùng ngưng."
     },
     {
+      type: 'multiple-choice',
       question: "Kim loại kiềm thuộc nhóm nào trong bảng tuần hoàn?",
       options: ["IA", "IIA", "IIIA", "IVA"],
       correctAnswer: 0,
       explanation: "Kim loại kiềm (Li, Na, K, Rb, Cs, Fr) thuộc nhóm IA."
-    },
-    {
-      question: "Sắt có thể tạo ra mấy loại oxit?",
-      options: ["1 loại", "2 loại", "3 loại", "4 loại"],
-      correctAnswer: 2,
-      explanation: "Sắt tạo 3 loại oxit: FeO, Fe2O3, Fe3O4."
-    },
-    {
-      question: "Điện phân dung dịch CuSO4 với điện cực trơ, ở catot thu được gì?",
-      options: ["Cu", "O2", "H2", "SO2"],
-      correctAnswer: 0,
-      explanation: "Catot (-): Cu²⁺ + 2e → Cu"
-    },
-    {
-      question: "Protein bị thủy phân hoàn toàn tạo ra sản phẩm gì?",
-      options: ["Glucozơ", "Amino axit", "Axit béo", "Nucleotit"],
-      correctAnswer: 1,
-      explanation: "Protein thủy phân hoàn toàn tạo ra các amino axit."
-    },
-    {
-      question: "Nhôm có tính chất hóa học gì đặc trưng?",
-      options: ["Tính oxi hóa", "Tính khử mạnh", "Tính trung tính", "Tính lưỡng tính của oxit và hidroxit"],
-      correctAnswer: 3,
-      explanation: "Al2O3 và Al(OH)3 có tính lưỡng tính, tác dụng được với cả axit và bazơ."
     }
   ]
 };
 
-// Lấy câu hỏi ngẫu nhiên cho phòng
+// Lấy câu hỏi ngẫu nhiên cho phòng với đa dạng loại game
 function getRandomQuestions(grade, count) {
   const questions = questionBanks[grade] || questionBanks[8];
   const shuffled = [...questions].sort(() => Math.random() - 0.5);
@@ -501,7 +622,7 @@ router.post('/:roomCode/ready', async (req, res) => {
       return res.status(404).json({ message: 'Không tìm thấy phòng' });
     }
 
-    const player = room.players.find(p => p.oderId.toString() === oderId);
+    const player = room.players.find(p => p.oderId.toString() === userId);
     if (!player) {
       return res.status(404).json({ message: 'Bạn không ở trong phòng này' });
     }
@@ -560,6 +681,34 @@ router.post('/:roomCode/start', async (req, res) => {
   }
 });
 
+// Lấy điểm realtime của tất cả người chơi
+router.get('/:roomCode/scores', async (req, res) => {
+  try {
+    const room = await Room.findOne({ roomCode: req.params.roomCode.toUpperCase() });
+
+    if (!room) {
+      return res.status(404).json({ message: 'Không tìm thấy phòng' });
+    }
+
+    // Return players with their scores, sorted by score descending
+    const players = room.players
+      .map(p => ({
+        oderId: p.oderId,
+        odername: p.odername,
+        avatar: p.avatar,
+        score: p.score,
+        correctAnswers: p.correctAnswers,
+        isFinished: p.isFinished
+      }))
+      .sort((a, b) => b.score - a.score);
+
+    res.json({ players });
+  } catch (error) {
+    console.error('Error fetching scores:', error);
+    res.status(500).json({ message: 'Lỗi lấy điểm', error: error.message });
+  }
+});
+
 // Gửi câu trả lời
 router.post('/:roomCode/answer', async (req, res) => {
   try {
@@ -580,7 +729,67 @@ router.post('/:roomCode/answer', async (req, res) => {
       return res.status(400).json({ message: 'Câu hỏi không hợp lệ' });
     }
 
-    const isCorrect = answer === question.correctAnswer;
+    // Check answer based on question type
+    let isCorrect = false;
+    const questionType = question.type || 'multiple-choice';
+    
+    switch (questionType) {
+      case 'multiple-choice':
+      case 'true-false':
+        isCorrect = answer === question.correctAnswer;
+        break;
+        
+      case 'fill-in-blank':
+        // Case-insensitive comparison, trim whitespace
+        isCorrect = answer?.toString().trim().toLowerCase() === 
+                   question.correctAnswer?.toString().trim().toLowerCase();
+        break;
+        
+      case 'matching':
+        // answer is an object like { "H2O": "Nước", "NaCl": "Muối ăn" }
+        // pairs is an array like [{ left: "H2O", right: "Nước" }, ...]
+        if (question.pairs && typeof answer === 'object') {
+          const correctPairs = {};
+          question.pairs.forEach(pair => {
+            correctPairs[pair.left] = pair.right;
+          });
+          
+          // Check if all pairs match
+          isCorrect = Object.keys(correctPairs).length === Object.keys(answer).length &&
+                     Object.keys(correctPairs).every(key => answer[key] === correctPairs[key]);
+        }
+        break;
+        
+      case 'ordering':
+        // answer is an array, correctOrder is an array
+        if (Array.isArray(answer) && Array.isArray(question.correctOrder)) {
+          isCorrect = answer.length === question.correctOrder.length &&
+                     answer.every((item, index) => item === question.correctOrder[index]);
+        }
+        break;
+        
+      case 'drag-drop':
+        // answer is an object mapping slot IDs to values
+        if (question.slots && question.choices && typeof answer === 'object') {
+          // For inline drag-drop, check if slots are filled correctly
+          // This depends on how correctAnswer is structured
+          if (Array.isArray(question.correctAnswer)) {
+            const answerValues = Object.values(answer);
+            isCorrect = question.correctAnswer.every((correct, index) => 
+              answerValues[index] === correct
+            );
+          } else if (typeof question.correctAnswer === 'object') {
+            isCorrect = Object.keys(question.correctAnswer).every(key => 
+              answer[key] === question.correctAnswer[key]
+            );
+          }
+        }
+        break;
+        
+      default:
+        isCorrect = answer === question.correctAnswer;
+    }
+    
     if (isCorrect) {
       // Tính điểm dựa trên thời gian trả lời (càng nhanh càng nhiều điểm)
       const timeBonus = Math.max(0, room.timePerQuestion - timeTaken);
@@ -593,7 +802,7 @@ router.post('/:roomCode/answer', async (req, res) => {
 
     res.json({
       isCorrect,
-      correctAnswer: question.correctAnswer,
+      correctAnswer: question.correctAnswer || question.correctOrder || question.pairs,
       explanation: question.explanation,
       playerScore: player.score,
       playerCorrectAnswers: player.correctAnswers
@@ -601,6 +810,78 @@ router.post('/:roomCode/answer', async (req, res) => {
   } catch (error) {
     console.error('Error submitting answer:', error);
     res.status(500).json({ message: 'Lỗi gửi câu trả lời', error: error.message });
+  }
+});
+
+// Đánh dấu người chơi đã hoàn thành
+router.post('/:roomCode/player-finish', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const room = await Room.findOne({ roomCode: req.params.roomCode.toUpperCase(), status: 'playing' });
+
+    if (!room) {
+      return res.status(404).json({ message: 'Không tìm thấy phòng' });
+    }
+
+    const player = room.players.find(p => p.oderId.toString() === userId);
+    if (!player) {
+      return res.status(404).json({ message: 'Bạn không ở trong phòng này' });
+    }
+
+    player.isFinished = true;
+    await room.save();
+
+    // Check if all players finished
+    const allFinished = room.players.every(p => p.isFinished);
+    
+    if (allFinished) {
+      // Auto finish the room
+      const results = room.players
+        .map(p => ({
+          oderId: p.oderId,
+          odername: p.odername,
+          score: p.score,
+          correctAnswers: p.correctAnswers,
+          timeTaken: Date.now() - room.startedAt.getTime()
+        }))
+        .sort((a, b) => b.score - a.score)
+        .map((r, index) => ({ ...r, rank: index + 1 }));
+
+      room.status = 'finished';
+      room.finishedAt = new Date();
+      room.results = results;
+      await room.save();
+
+      // Update user stats
+      for (const result of results) {
+        try {
+          await User.findByIdAndUpdate(result.oderId, {
+            $inc: {
+              totalScore: result.score,
+              xp: Math.floor(result.score / 10)
+            }
+          });
+        } catch (e) {
+          console.error('Error updating user stats:', e);
+        }
+      }
+
+      return res.json({
+        message: 'Tất cả đã hoàn thành',
+        allFinished: true,
+        results
+      });
+    }
+
+    res.json({
+      message: 'Đã đánh dấu hoàn thành',
+      allFinished: false,
+      finishedCount: room.players.filter(p => p.isFinished).length,
+      totalPlayers: room.players.length
+    });
+  } catch (error) {
+    console.error('Error marking player finish:', error);
+    res.status(500).json({ message: 'Lỗi đánh dấu hoàn thành', error: error.message });
   }
 });
 

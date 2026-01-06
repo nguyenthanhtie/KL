@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { usePKRoom } from '../contexts/PKRoomContext';
 import { 
   LogOut, 
   Home, 
@@ -23,6 +24,7 @@ import {
 
 const Sidebar = ({ children }) => {
   const { user, logout } = useAuth();
+  const { clearRoom } = usePKRoom();
   const navigate = useNavigate();
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -48,6 +50,10 @@ const Sidebar = ({ children }) => {
     try {
       const confirmed = window.confirm('Bạn có chắc muốn đăng xuất?');
       if (!confirmed) return;
+      
+      // Clear PK room trước khi logout để tránh race condition
+      clearRoom();
+      
       await logout();
       navigate('/login');
     } catch (error) {

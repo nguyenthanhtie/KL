@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
+import { usePKRoom } from '../../../contexts/PKRoomContext';
 import { API_BASE_URL } from '../../../config/api';
 import { 
   ArrowLeft, 
@@ -20,17 +21,45 @@ import {
 const PKSelection = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { pkRoom } = usePKRoom();
   const [activeTab, setActiveTab] = useState('create');
   const [mode, setMode] = useState('v1v1');
   const [roomCode, setRoomCode] = useState('');
   const [roomName, setRoomName] = useState('');
-  const [grade, setGrade] = useState(8);
   const [questionCount, setQuestionCount] = useState(10);
   const [timePerQuestion, setTimePerQuestion] = useState(30);
   const [maxPlayers, setMaxPlayers] = useState(4);
   const [availableRooms, setAvailableRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Lấy lớp hiện tại của người dùng từ chương trình hóa học
+  const getUserGrade = () => {
+    if (!user) return 10; // Default grade
+    
+    // Ưu tiên lấy từ chương trình hóa học
+    const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry');
+    if (chemistryProgram && chemistryProgram.currentClass) {
+      return chemistryProgram.currentClass;
+    }
+    
+    // Fallback về profile grade
+    if (user.profile?.grade) {
+      return user.profile.grade;
+    }
+    
+    // Default
+    return 10;
+  };
+
+  const userGrade = getUserGrade();
+
+  // Kiểm tra nếu đã trong phòng PK thì redirect về phòng đó
+  useEffect(() => {
+    if (pkRoom && pkRoom.roomCode) {
+      navigate(`/chemistry/pk/room/${pkRoom.roomCode}`);
+    }
+  }, [pkRoom, navigate]);
 
   useEffect(() => {
     if (!user) {
@@ -75,7 +104,7 @@ const PKSelection = () => {
           avatar: user.avatar || '',
           mode,
           name: roomName || `Phòng của ${userName}`,
-          grade,
+          grade: userGrade,
           questionCount,
           timePerQuestion,
           maxPlayers: mode === 'v1v1' ? 2 : maxPlayers
@@ -101,7 +130,7 @@ const PKSelection = () => {
     }
   };
 
-  const handleJoinRoom = async (code) => {
+  const handleJoinRoom = async (code, roomGrade = null) => {
     if (!user) {
       setError('Vui lòng đăng nhập để tham gia');
       return;
@@ -110,6 +139,12 @@ const PKSelection = () => {
     const joinCode = code || roomCode;
     if (!joinCode) {
       setError('Vui lòng nhập mã phòng');
+      return;
+    }
+
+    // Kiểm tra lớp nếu biết trước grade của phòng
+    if (roomGrade && roomGrade !== userGrade) {
+      setError(`Phòng này dành cho lớp ${roomGrade}. Bạn đang ở lớp ${userGrade} nên không thể tham gia.`);
       return;
     }
 
@@ -278,24 +313,8 @@ const PKSelection = () => {
                 />
               </div>
 
-              {/* Row 1: Grade & Questions */}
+              {/* Questions & Time Settings */}
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-white/80 text-sm font-medium mb-2">
-                    <BookOpen className="w-4 h-4 inline mr-2" />
-                    Lớp
-                  </label>
-                  <select 
-                    value={grade} 
-                    onChange={(e) => setGrade(Number(e.target.value))}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition-all appearance-none cursor-pointer"
-                  >
-                    {[8, 9, 10, 11, 12].map(g => (
-                      <option key={g} value={g} className="bg-slate-800 text-white">Lớp {g}</option>
-                    ))}
-                  </select>
-                </div>
-
                 <div>
                   <label className="block text-white/80 text-sm font-medium mb-2">
                     <HelpCircle className="w-4 h-4 inline mr-2" />
@@ -425,50 +444,69 @@ const PKSelection = () => {
                     </button>
                   </div>
                 ) : (
-                  availableRooms.map(room => (
-                    <div 
-                      key={room._id} 
-                      className="flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-xl transition-all"
-                    >
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-white font-semibold">{room.name}</span>
-                          <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${
-                            room.mode === 'v1v1' 
-                              ? 'bg-gradient-to-r from-orange-500 to-red-500' 
-                              : 'bg-gradient-to-r from-purple-500 to-blue-500'
-                          } text-white`}>
-                            {room.mode === 'v1v1' ? '1v1' : 'Multi'}
-                          </span>
-                        </div>
-                        <div className="flex flex-wrap gap-3 text-white/60 text-sm">
-                          <span className="flex items-center gap-1">
-                            <BookOpen className="w-3 h-3" />
-                            Lớp {room.grade}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <HelpCircle className="w-3 h-3" />
-                            {room.questionCount} câu
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {room.timePerQuestion}s
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Users className="w-3 h-3" />
-                            {room.players.length}/{room.maxPlayers}
-                          </span>
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => handleJoinRoom(room.roomCode)}
-                        disabled={loading}
-                        className="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold rounded-xl transition-all disabled:opacity-50"
+                  availableRooms.map(room => {
+                    const canJoin = room.grade === userGrade;
+                    return (
+                      <div 
+                        key={room._id} 
+                        className={`flex items-center justify-between p-4 border rounded-xl transition-all ${
+                          canJoin 
+                            ? 'bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20' 
+                            : 'bg-red-500/5 border-red-500/20 opacity-60'
+                        }`}
                       >
-                        Tham gia
-                      </button>
-                    </div>
-                  ))
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-white font-semibold">{room.name}</span>
+                            <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${
+                              room.mode === 'v1v1' 
+                                ? 'bg-gradient-to-r from-orange-500 to-red-500' 
+                                : 'bg-gradient-to-r from-purple-500 to-blue-500'
+                            } text-white`}>
+                              {room.mode === 'v1v1' ? '1v1' : 'Multi'}
+                            </span>
+                            {!canJoin && (
+                              <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-red-500/20 text-red-300 border border-red-500/30">
+                                Khác lớp
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex flex-wrap gap-3 text-white/60 text-sm">
+                            <span className={`flex items-center gap-1 ${!canJoin ? 'text-red-400' : ''}`}>
+                              <BookOpen className="w-3 h-3" />
+                              Lớp {room.grade}
+                              {!canJoin && <span className="text-xs">(Bạn: Lớp {userGrade})</span>}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <HelpCircle className="w-3 h-3" />
+                              {room.questionCount} câu
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {room.timePerQuestion}s
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Users className="w-3 h-3" />
+                              {room.players.length}/{room.maxPlayers}
+                            </span>
+                          </div>
+                        </div>
+                        {canJoin ? (
+                          <button 
+                            onClick={() => handleJoinRoom(room.roomCode, room.grade)}
+                            disabled={loading}
+                            className="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold rounded-xl transition-all disabled:opacity-50"
+                          >
+                            Tham gia
+                          </button>
+                        ) : (
+                          <div className="px-4 py-2 bg-gray-500/30 text-gray-400 font-medium rounded-xl cursor-not-allowed text-sm">
+                            🔒 Khác lớp
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
                 )}
               </div>
 

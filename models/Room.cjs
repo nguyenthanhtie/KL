@@ -28,6 +28,10 @@ const playerSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  isFinished: {
+    type: Boolean,
+    default: false
+  },
   joinedAt: {
     type: Date,
     default: Date.now
@@ -94,10 +98,27 @@ const roomSchema = new mongoose.Schema({
     default: 0
   },
   questions: [{
+    type: {
+      type: String,
+      enum: ['multiple-choice', 'true-false', 'fill-in-blank', 'matching', 'ordering', 'drag-drop'],
+      default: 'multiple-choice'
+    },
     question: String,
     options: [String],
-    correctAnswer: Number,
-    explanation: String
+    correctAnswer: mongoose.Schema.Types.Mixed, // Number for MC, String for fill-in-blank, Boolean for T/F
+    explanation: String,
+    hint: String,
+    // For matching type
+    pairs: [{
+      left: String,
+      right: String
+    }],
+    // For ordering type
+    correctOrder: [String],
+    // For drag-drop type
+    inline: Boolean,
+    slots: [String],
+    choices: [String]
   }],
   results: [{
     oderId: {
