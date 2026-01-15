@@ -9,57 +9,67 @@ import PlacementTest from './pages/PlacementTest';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
-// Hóa học area
-import ChemistryHome from './areas/Hoahoc/pages/ChemistryHome';
-import CurriculumSelection from './areas/Hoahoc/pages/CurriculumSelection';
-import Dashboard from './areas/Hoahoc/pages/Dashboard';
-import ClassDashboard from './areas/Hoahoc/pages/ClassDashboard';
-import Lesson from './areas/Hoahoc/pages/Lesson';
-import LessonSimple from './areas/Hoahoc/pages/LessonSimple';
-import GamePlay from './areas/Hoahoc/pages/GamePlay';
-import AdvancedChallenge from './areas/Hoahoc/pages/AdvancedChallenge';
-import GhepNguyenTu from './areas/Hoahoc/challenges/10/Bai02_GhepNguyenTu';
-import TroChoiCanBang from './areas/Hoahoc/challenges/08/Bai15_CanBangPhuongTrinh';
-import SuyLuanPhanUng from './areas/Hoahoc/challenges/10/Bai05_SuyLuanPhanUng';
-import DuoiHinhBatChu from './areas/Hoahoc/challenges/08/Bai01_DoanHinhBatChu';
-import NhanBietDungDich from './areas/Hoahoc/challenges/08/Bai38_NhanBietDungDich';
-import XayDungPhanTu from './areas/Hoahoc/challenges/10/Bai03_XayDungPhanTu';
-import PhaCheDungDich from './areas/Hoahoc/challenges/08/Bai06_PhaCheDungDich';
-import PhaCheDungDichNangCao from './areas/Hoahoc/challenges/10/Bai07_PhaCheDungDich_NangCao';
-import Bai08_NhomHalogen from './areas/Hoahoc/challenges/10/Bai08_NhomHalogen';
-import Bai09_Oxi_LuuHuynh from './areas/Hoahoc/challenges/10/Bai09_Oxi_LuuHuynh';
-import CauTrucNguyenTu from './areas/Hoahoc/challenges/10/Bai01_CauTrucNguyenTu';
-import PhongThiNghiem from './areas/Hoahoc/challenges/08/Bai05_PhongThiNghiem';
-import TinhOxiHoa from './areas/Hoahoc/challenges/10/Bai04_TinhOxiHoa';
-import MolQuickCalc from './areas/Hoahoc/challenges/08/Bai18_TinhKhoiLuongMol';
-import QuanSatPhanUng from './areas/Hoahoc/challenges/08/Bai12_QuanSatPhanUng';
-import TongKetLop8 from './areas/Hoahoc/challenges/08/Bai99_TongKetLop8';
-import Bai20_Oxi_KhongKhi from './areas/Hoahoc/challenges/08/Bai20_Oxi_KhongKhi';
-import Bai06_ChatTan_DungMoi from './areas/Hoahoc/challenges/10/Bai06_ChatTan_DungMoi';
-import HopChatVoCo from './areas/Hoahoc/challenges/09/Bai07_HopChatVoCo';
-import Bai15_KIM_LOAI from './areas/Hoahoc/challenges/09/Bai15_KIM_LOAI';
-import Bai20_PHI_KIM_HALOGEN from './areas/Hoahoc/challenges/09/Bai20_PHI_KIM_HALOGEN';
-import Bai26_HIDROCACBON from './areas/Hoahoc/challenges/09/Bai26_HIDROCACBON';
-import Bai34_HIDROCACBON_POLIME from './areas/Hoahoc/challenges/09/Bai34_HIDROCACBON_POLIME';
-import Baitonghop from './areas/Hoahoc/challenges/09/Baitonghop';
-import CanBangPhanUngNangCao from './areas/Hoahoc/challenges/11/Bai02_CanBangPhanUngNangCao';
-import NitoLuuHuynh from './areas/Hoahoc/challenges/11/Bai03_Nito_LuuHuynh';
-import DaiCuongHoaHuuCo from './areas/Hoahoc/challenges/11/Bai04_DaiCuongHoaHuuCo';
-import Hidrocacbon11 from './areas/Hoahoc/challenges/11/Bai05_Hidrocacbon';
-import DanXuatHalogenAncolPhenol from './areas/Hoahoc/challenges/11/Bai06_DanXuatHalogen_Ancol_Phenol';
-import HopChatCarbonylCarboxylic from './areas/Hoahoc/challenges/11/Bai07_HopChatCarbonyl_Carboxylic';
-import HoaHocVoiCuocSong from './areas/Hoahoc/challenges/11/Bai08_HoaHocVoiCuocSong';
-import Bai05_DaiCuongKimLoai from './areas/Hoahoc/challenges/12/Bai05_DaiCuongKimLoai';
-import Bai06_DaiCuongSatDong_HopKim from './areas/Hoahoc/challenges/12/Bai06_DaiCuongSatDong_HopKim';
-import Bai07_KimLoaiKiem_KiemTho_Nhom from './areas/Hoahoc/challenges/12/Bai07_KimLoaiKiem_KiemTho_Nhom';
-import Bai01_Este_Lipit from './areas/Hoahoc/challenges/12/Bai01_Este_Lipit';
-import Bai02_Cacbohidrat from './areas/Hoahoc/challenges/12/Bai02_Cacbohidrat';
-import Bai03_Amin_Aminoaxit_Protein from './areas/Hoahoc/challenges/12/Bai03_Amin_Aminoaxit_Protein';
-import Bai04_Polime from './areas/Hoahoc/challenges/12/Bai04_Polime';
+// Chemistry pages
+import ChemistryHome from './pages/chemistry/ChemistryHome';
+import CurriculumSelection from './pages/chemistry/CurriculumSelection';
+import Dashboard from './pages/chemistry/Dashboard';
+import ClassDashboard from './pages/chemistry/ClassDashboard';
+import Lesson from './pages/chemistry/Lesson';
+import LessonSimple from './pages/chemistry/LessonSimple';
+import GamePlay from './pages/chemistry/GamePlay';
+import AdvancedChallenge from './pages/chemistry/AdvancedChallenge';
+
+// Grade 8 challenges
+import DuoiHinhBatChu from './pages/challenges/grade08/Bai01_DoanHinhBatChu';
+import PhongThiNghiem from './pages/challenges/grade08/Bai05_PhongThiNghiem';
+import PhaCheDungDich from './pages/challenges/grade08/Bai06_PhaCheDungDich';
+import QuanSatPhanUng from './pages/challenges/grade08/Bai12_QuanSatPhanUng';
+import TroChoiCanBang from './pages/challenges/grade08/Bai15_CanBangPhuongTrinh';
+import MolQuickCalc from './pages/challenges/grade08/Bai18_TinhKhoiLuongMol';
+import Bai20_Oxi_KhongKhi from './pages/challenges/grade08/Bai20_Oxi_KhongKhi';
+import NhanBietDungDich from './pages/challenges/grade08/Bai38_NhanBietDungDich';
+import TongKetLop8 from './pages/challenges/grade08/Bai99_TongKetLop8';
+
+// Grade 9 challenges
+import HopChatVoCo from './pages/challenges/grade09/Bai07_HopChatVoCo';
+import Bai15_KIM_LOAI from './pages/challenges/grade09/Bai15_KIM_LOAI';
+import Bai20_PHI_KIM_HALOGEN from './pages/challenges/grade09/Bai20_PHI_KIM_HALOGEN';
+import Bai26_HIDROCACBON from './pages/challenges/grade09/Bai26_HIDROCACBON';
+import Bai34_HIDROCACBON_POLIME from './pages/challenges/grade09/Bai34_HIDROCACBON_POLIME';
+import Baitonghop from './pages/challenges/grade09/Baitonghop';
+
+// Grade 10 challenges
+import CauTrucNguyenTu from './pages/challenges/grade10/Bai01_CauTrucNguyenTu';
+import GhepNguyenTu from './pages/challenges/grade10/Bai02_GhepNguyenTu';
+import XayDungPhanTu from './pages/challenges/grade10/Bai03_XayDungPhanTu';
+import TinhOxiHoa from './pages/challenges/grade10/Bai04_TinhOxiHoa';
+import SuyLuanPhanUng from './pages/challenges/grade10/Bai05_SuyLuanPhanUng';
+import Bai06_ChatTan_DungMoi from './pages/challenges/grade10/Bai06_ChatTan_DungMoi';
+import PhaCheDungDichNangCao from './pages/challenges/grade10/Bai07_PhaCheDungDich_NangCao';
+import Bai08_NhomHalogen from './pages/challenges/grade10/Bai08_NhomHalogen';
+import Bai09_Oxi_LuuHuynh from './pages/challenges/grade10/Bai09_Oxi_LuuHuynh';
+
+// Grade 11 challenges
+import CanBangPhanUngNangCao from './pages/challenges/grade11/Bai02_CanBangPhanUngNangCao';
+import NitoLuuHuynh from './pages/challenges/grade11/Bai03_Nito_LuuHuynh';
+import DaiCuongHoaHuuCo from './pages/challenges/grade11/Bai04_DaiCuongHoaHuuCo';
+import Hidrocacbon11 from './pages/challenges/grade11/Bai05_Hidrocacbon';
+import DanXuatHalogenAncolPhenol from './pages/challenges/grade11/Bai06_DanXuatHalogen_Ancol_Phenol';
+import HopChatCarbonylCarboxylic from './pages/challenges/grade11/Bai07_HopChatCarbonyl_Carboxylic';
+import HoaHocVoiCuocSong from './pages/challenges/grade11/Bai08_HoaHocVoiCuocSong';
+
+// Grade 12 challenges
+import Bai01_Este_Lipit from './pages/challenges/grade12/Bai01_Este_Lipit';
+import Bai02_Cacbohidrat from './pages/challenges/grade12/Bai02_Cacbohidrat';
+import Bai03_Amin_Aminoaxit_Protein from './pages/challenges/grade12/Bai03_Amin_Aminoaxit_Protein';
+import Bai04_Polime from './pages/challenges/grade12/Bai04_Polime';
+import Bai05_DaiCuongKimLoai from './pages/challenges/grade12/Bai05_DaiCuongKimLoai';
+import Bai06_DaiCuongSatDong_HopKim from './pages/challenges/grade12/Bai06_DaiCuongSatDong_HopKim';
+import Bai07_KimLoaiKiem_KiemTho_Nhom from './pages/challenges/grade12/Bai07_KimLoaiKiem_KiemTho_Nhom';
 
 // PK (Player vs Player)
-import PKSelection from './areas/Hoahoc/pages/PKSelection';
-import PKRoom from './areas/Hoahoc/pages/PKRoom';
+import PKSelection from './pages/chemistry/PKSelection';
+import PKRoom from './pages/chemistry/PKRoom';
 
 // Chemistry Lab Interactive
 import ChemistryLab from './pages/ChemistryLab';
