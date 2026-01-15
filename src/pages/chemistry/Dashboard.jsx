@@ -297,12 +297,7 @@ const Dashboard = () => {
                     <span className="text-sm opacity-90">{classData.chapters.length} chương • {totalLessonsInClass} bài học</span>
                   </div>
                   <div className="flex gap-2">
-                    <button
-                      onClick={() => navigate(`/journey/${classData.classId}`)}
-                      className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
-                    >
-                      🗺️ Vượt ải
-                    </button>
+                   
                     <button
                       onClick={() => navigate(`/class/${classData.classId}`)}
                       className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"

@@ -1941,7 +1941,7 @@ export const categoryNames = {
   'halogen': 'Halogen',
   'lanthanide': 'Lanthanide',
   'actinide': 'Actinide',
- 
+  'unknown': 'Chưa xác định'
 };
 
 // Map nguyên tố với category

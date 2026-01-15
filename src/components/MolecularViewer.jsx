@@ -393,18 +393,10 @@ const MolecularViewer = ({ molecule: initialMolecule, viewMode: initialViewMode 
 
       {/* Instructions */}
       <div className="mt-4 text-center text-gray-400 text-sm">
-        <p>🖱️ Kéo chuột để xoay • 🔍 Cuộn để zoom • ⌨️ Click phải và kéo để di chuyển</p>
+        <p> Kéo chuột để xoay • Cuộn để zoom • Click phải và kéo để di chuyển</p>
       </div>
 
-      {/* Atom colors legend */}
-      <div className="mt-4 flex flex-wrap gap-2 justify-center">
-        {Object.entries(atomColors).filter(([key]) => key !== 'default').slice(0, 10).map(([element, color]) => (
-          <div key={element} className="flex items-center gap-1 px-2 py-1 bg-gray-800 rounded text-xs">
-            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: color }} />
-            <span className="text-white">{element}</span>
-          </div>
-        ))}
-      </div>
+      
     </div>
   );
 };

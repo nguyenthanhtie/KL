@@ -73,6 +73,7 @@ import PKRoom from './pages/chemistry/PKRoom';
 
 // Chemistry Lab Interactive
 import ChemistryLab from './pages/ChemistryLab';
+import LabAdventure from './pages/LabAdventure';
 
 
 const AppContent = () => {
@@ -161,6 +162,7 @@ const AppContent = () => {
           element={<PlacementTest />}
         />
         <Route path="/chemistry-lab" element={<ChemistryLab />} />
+        <Route path="/lab-adventure" element={<LabAdventure />} />
       </Routes>
       </div>
     </Sidebar>
