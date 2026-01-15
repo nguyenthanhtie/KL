@@ -80,8 +80,12 @@ const Sidebar = ({ children }) => {
       path: '/chemistry/pk',
       gradient: 'from-red-500 to-rose-500'
     },
-    {
-      title: 'Hồ sơ',
+    {      title: 'Phòng thí nghiệm',
+      icon: Beaker,
+      path: '/chemistry-lab',
+      gradient: 'from-indigo-500 to-purple-500'
+    },
+    {      title: 'Hồ sơ',
       icon: User,
       path: '/profile',
       gradient: 'from-emerald-500 to-teal-500'

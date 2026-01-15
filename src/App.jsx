@@ -61,6 +61,9 @@ import Bai04_Polime from './areas/Hoahoc/challenges/12/Bai04_Polime';
 import PKSelection from './areas/Hoahoc/pages/PKSelection';
 import PKRoom from './areas/Hoahoc/pages/PKRoom';
 
+// Chemistry Lab Interactive
+import ChemistryLab from './pages/ChemistryLab';
+
 
 const AppContent = () => {
   const location = useLocation();
@@ -147,6 +150,7 @@ const AppContent = () => {
           path="/placement-test/:programId?" 
           element={<PlacementTest />}
         />
+        <Route path="/chemistry-lab" element={<ChemistryLab />} />
       </Routes>
       </div>
     </Sidebar>

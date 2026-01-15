@@ -1,0 +1,807 @@
+// Dữ liệu mở rộng cho bảng tuần hoàn - bổ sung thông tin chi tiết
+export const elementExtendedData = {
+  H: {
+    category: 'nonmetal',
+    color: '#FFFFFF',
+    meltingPoint: -259.16,
+    boilingPoint: -252.87,
+    density: 0.00008988,
+    electronConfig: '1s¹',
+    oxidationStates: [-1, 1],
+    description: 'Nguyên tố nhẹ nhất và phổ biến nhất trong vũ trụ. Là thành phần chính của nước và các hợp chất hữu cơ.',
+    applications: ['Nhiên liệu rocket', 'Sản xuất amoniac', 'Pin nhiên liệu', 'Làm mát máy phát điện'],
+    discoveryYear: 1766,
+    discoveredBy: 'Henry Cavendish',
+    facts: [
+      'Là nguyên tố nhẹ nhất trong vũ trụ',
+      'Cấu thành 75% khối lượng vũ trụ',
+      'Năng lượng mặt trời đến từ phản ứng nhiệt hạch hydro',
+      'Có thể tạo thành kim loại ở áp suất cực cao'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Hydrogen_discharge_tube.jpg',
+    videoUrl: 'https://www.youtube.com/embed/qOTgeeTB_kA'
+  },
+  He: {
+    category: 'noble-gas',
+    color: '#D9FFFF',
+    meltingPoint: null,
+    boilingPoint: -268.93,
+    density: 0.0001785,
+    electronConfig: '1s²',
+    oxidationStates: [0],
+    description: 'Khí trơ, nhẹ thứ hai sau hydro. Được phát hiện trên mặt trời trước khi tìm thấy trên Trái Đất.',
+    applications: ['Bóng bay', 'Làm lạnh siêu dẫn', 'Khí bảo vệ khi hàn', 'MRI trong y tế'],
+    discoveryYear: 1868,
+    discoveredBy: 'Pierre Janssen, Joseph Lockyer',
+    facts: [
+      'Được phát hiện trên mặt trời trước khi tìm thấy trên Trái Đất',
+      'Tên gọi từ Helios - thần mặt trời Hy Lạp',
+      'Giọng nói thay đổi khi hít heli',
+      'Không thể đông đặc ở áp suất thường'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Helium_discharge_tube.jpg',
+    videoUrl: 'https://www.youtube.com/embed/mLHToVIHHkw'
+  },
+  Li: {
+    category: 'alkali-metal',
+    color: '#CC80FF',
+    meltingPoint: 180.5,
+    boilingPoint: 1342,
+    density: 0.534,
+    electronConfig: '1s² 2s¹',
+    oxidationStates: [1],
+    description: 'Kim loại kiềm nhẹ nhất, mềm và có màu bạc. Phản ứng mạnh với nước.',
+    applications: ['Pin lithium-ion', 'Hợp kim nhôm', 'Thuốc điều trị rối loạn lưỡng cực', 'Mỡ bôi trơn'],
+    discoveryYear: 1817,
+    discoveredBy: 'Johan August Arfwedson',
+    facts: [
+      'Kim loại rắn nhẹ nhất',
+      'Có thể nổi trên nước',
+      'Thành phần chính trong pin điện thoại và laptop',
+      'Tên gọi từ tiếng Hy Lạp "lithos" nghĩa là đá'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e2/Lithium_element.jpg',
+    videoUrl: 'https://www.youtube.com/embed/LiB1wGVL56g'
+  },
+  C: {
+    category: 'nonmetal',
+    color: '#909090',
+    meltingPoint: 3550,
+    boilingPoint: 4027,
+    density: 2.267,
+    electronConfig: '1s² 2s² 2p²',
+    oxidationStates: [-4, -3, -2, -1, 0, 1, 2, 3, 4],
+    description: 'Nguyên tố cơ bản của sự sống, có thể tạo thành hơn 10 triệu hợp chất khác nhau.',
+    applications: ['Hợp chất hữu cơ', 'Thép và gang', 'Kim cương và than chì', 'Dược phẩm', 'Nhựa'],
+    discoveryYear: 'Cổ đại',
+    discoveredBy: 'Đã biết từ thời cổ đại',
+    facts: [
+      'Có thể tạo ra hơn 10 triệu hợp chất',
+      'Kim cương và than chì đều là carbon nguyên chất',
+      'Cơ sở của tất cả sự sống trên Trái Đất',
+      'Có thể tồn tại ở dạng fullerene (C60)'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f8/Carbon_element.jpg',
+    videoUrl: 'https://www.youtube.com/embed/QuW4_bRHbUk'
+  },
+  N: {
+    category: 'nonmetal',
+    color: '#3050F8',
+    meltingPoint: -210.0,
+    boilingPoint: -195.8,
+    density: 0.0012506,
+    electronConfig: '1s² 2s² 2p³',
+    oxidationStates: [-3, -2, -1, 1, 2, 3, 4, 5],
+    description: 'Khí chiếm 78% khí quyển Trái Đất. Cần thiết cho protein và DNA.',
+    applications: ['Phân bón', 'Chất nổ TNT', 'Làm lạnh', 'Bảo quản thực phẩm', 'Thuốc'],
+    discoveryYear: 1772,
+    discoveredBy: 'Daniel Rutherford',
+    facts: [
+      'Chiếm 78% không khí',
+      'Liên kết ba N≡N rất bền vững',
+      'Dùng làm lạnh và bảo quản thực phẩm',
+      'Cần thiết cho DNA, RNA và protein'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Nitrogen_discharge_tube.jpg',
+    videoUrl: 'https://www.youtube.com/embed/lSoWxG30rb0'
+  },
+  O: {
+    category: 'nonmetal',
+    color: '#FF0D0D',
+    meltingPoint: -218.79,
+    boilingPoint: -182.96,
+    density: 0.001429,
+    electronConfig: '1s² 2s² 2p⁴',
+    oxidationStates: [-2, -1, 1, 2],
+    description: 'Cần thiết cho hô hấp và cháy. Nguyên tố phổ biến thứ 3 trong vũ trụ.',
+    applications: ['Hô hấp', 'Đốt cháy', 'Y tế', 'Hàn cắt kim loại', 'Xử lý nước'],
+    discoveryYear: 1774,
+    discoveredBy: 'Joseph Priestley, Carl Wilhelm Scheele',
+    facts: [
+      'Cần thiết cho sự sống',
+      'Chiếm 21% không khí',
+      'Ozon (O₃) bảo vệ Trái Đất khỏi tia UV',
+      'Oxy lỏng có màu xanh nhạt'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Oxygen_discharge_tube.jpg',
+    videoUrl: 'https://www.youtube.com/embed/MN-VN7mMLUM'
+  },
+  Na: {
+    category: 'alkali-metal',
+    color: '#AB5CF2',
+    meltingPoint: 97.72,
+    boilingPoint: 883,
+    density: 0.971,
+    electronConfig: '[Ne] 3s¹',
+    oxidationStates: [1],
+    description: 'Kim loại mềm, phản ứng mạnh với nước tạo ngọn lửa vàng.',
+    applications: ['Muối ăn NaCl', 'Xà phòng', 'Đèn natri', 'Chất làm mát lò phản ứng hạt nhân'],
+    discoveryYear: 1807,
+    discoveredBy: 'Humphry Davy',
+    facts: [
+      'Phản ứng nổ khi gặp nước',
+      'Thành phần của muối ăn (NaCl)',
+      'Cháy với ngọn lửa màu vàng đặc trưng',
+      'Cần thiết cho thần kinh và cơ bắp'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Na_%28Sodium%29.jpg',
+    videoUrl: 'https://www.youtube.com/embed/Vxqr_psnqCY'
+  },
+  Cl: {
+    category: 'halogen',
+    color: '#1FF01F',
+    meltingPoint: -101.5,
+    boilingPoint: -34.04,
+    density: 0.003214,
+    electronConfig: '[Ne] 3s² 3p⁵',
+    oxidationStates: [-1, 1, 3, 5, 7],
+    description: 'Khí vàng lục, độc, có mùi hắc. Dùng khử trùng nước.',
+    applications: ['Khử trùng nước', 'Sản xuất PVC', 'Thuốc tẩy', 'Sản xuất HCl'],
+    discoveryYear: 1774,
+    discoveredBy: 'Carl Wilhelm Scheele',
+    facts: [
+      'Đã được dùng làm vũ khí hóa học trong Thế chiến I',
+      'Dùng khử trùng 98% nước uống trên thế giới',
+      'Thành phần của muối ăn',
+      'Có mùi hắc đặc trưng giống hồ bơi'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Chlorine_ampoule.jpg',
+    videoUrl: 'https://www.youtube.com/embed/gBGdQhQkBVM'
+  },
+  Fe: {
+    category: 'transition-metal',
+    color: '#E06633',
+    meltingPoint: 1538,
+    boilingPoint: 2862,
+    density: 7.874,
+    electronConfig: '[Ar] 3d⁶ 4s²',
+    oxidationStates: [-2, -1, 1, 2, 3, 4, 5, 6],
+    description: 'Kim loại phổ biến và quan trọng nhất cho công nghiệp và sinh học.',
+    applications: ['Thép', 'Xây dựng', 'Ô tô', 'Hemoglobin trong máu', 'Động cơ'],
+    discoveryYear: 'Cổ đại',
+    discoveredBy: 'Đã biết từ thời cổ đại',
+    facts: [
+      'Kim loại được sử dụng nhiều nhất',
+      'Lõi Trái Đất chủ yếu là sắt nóng chảy',
+      'Cần thiết cho máu người (hemoglobin)',
+      'Có từ tính (ferromagnetic)'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Iron_electrolytic_and_target.jpg',
+    videoUrl: 'https://www.youtube.com/embed/7J2qOfXz0is'
+  },
+  Cu: {
+    category: 'transition-metal',
+    color: '#C88033',
+    meltingPoint: 1084.62,
+    boilingPoint: 2562,
+    density: 8.96,
+    electronConfig: '[Ar] 3d¹⁰ 4s¹',
+    oxidationStates: [1, 2, 3, 4],
+    description: 'Kim loại màu đỏ, dẫn điện và nhiệt tốt thứ hai sau bạc.',
+    applications: ['Dây điện', 'Đường ống nước', 'Tiền xu', 'Hợp kim đồng thau', 'Kháng khuẩn'],
+    discoveryYear: 'Cổ đại',
+    discoveredBy: 'Đã biết từ thời cổ đại',
+    facts: [
+      'Chất dẫn điện tốt thứ 2 sau bạc',
+      'Kháng khuẩn tự nhiên',
+      'Đã được sử dụng hơn 10,000 năm',
+      'Tượng Nữ thần Tự do được phủ đồng'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f0/NatCopper.jpg',
+    videoUrl: 'https://www.youtube.com/embed/gxBBCEEJHe0'
+  },
+  Zn: {
+    category: 'transition-metal',
+    color: '#7D80B0',
+    meltingPoint: 419.53,
+    boilingPoint: 907,
+    density: 7.134,
+    electronConfig: '[Ar] 3d¹⁰ 4s²',
+    oxidationStates: [2],
+    description: 'Kim loại xám xanh, dùng mạ kẽm chống gỉ và trong pin.',
+    applications: ['Mạ kẽm', 'Hợp kim đồng thau', 'Pin', 'Vitamin và thuốc', 'Kem chống nắng'],
+    discoveryYear: 1746,
+    discoveredBy: 'Andreas Marggraf',
+    facts: [
+      'Bảo vệ sắt khỏi gỉ (galvanization)',
+      'Cần thiết cho hệ miễn dịch',
+      'Thành phần của đồng thau',
+      'Dùng trong kem chống nắng'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Zinc_fragment_sublimed_and_1cm3_cube.jpg',
+    videoUrl: 'https://www.youtube.com/embed/WJvyORKJy7o'
+  },
+  Ag: {
+    category: 'transition-metal',
+    color: '#C0C0C0',
+    meltingPoint: 961.78,
+    boilingPoint: 2162,
+    density: 10.501,
+    electronConfig: '[Kr] 4d¹⁰ 5s¹',
+    oxidationStates: [1, 2, 3],
+    description: 'Kim loại quý, màu trắng bạc, dẫn điện tốt nhất trong tất cả kim loại.',
+    applications: ['Trang sức', 'Tiền xu', 'Nhiếp ảnh', 'Điện tử', 'Kháng khuẩn y tế'],
+    discoveryYear: 'Cổ đại',
+    discoveredBy: 'Đã biết từ thời cổ đại',
+    facts: [
+      'Chất dẫn điện và nhiệt tốt nhất',
+      'Kháng khuẩn mạnh',
+      'Phản xạ ánh sáng tốt nhất (gương)',
+      'Ký hiệu Ag từ tiếng Latin "argentum"'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/55/Silver_crystal.jpg',
+    videoUrl: 'https://www.youtube.com/embed/UGHe6dMtjHA'
+  },
+  Au: {
+    category: 'transition-metal',
+    color: '#FFD123',
+    meltingPoint: 1064.18,
+    boilingPoint: 2856,
+    density: 19.282,
+    electronConfig: '[Xe] 4f¹⁴ 5d¹⁰ 6s¹',
+    oxidationStates: [-1, 1, 2, 3, 5],
+    description: 'Kim loại quý, màu vàng đặc trưng, không bị ăn mòn hay biến màu.',
+    applications: ['Trang sức', 'Đầu tư', 'Điện tử cao cấp', 'Nha khoa', 'Phi thuyền vũ trụ'],
+    discoveryYear: 'Cổ đại',
+    discoveredBy: 'Đã biết từ thời cổ đại',
+    facts: [
+      'Không bị ăn mòn hoặc biến màu',
+      'Có thể kéo thành sợi mỏng nhất',
+      '1 ounce có thể dát mỏng thành 300 feet vuông',
+      'Tất cả vàng từng được khai thác đủ để lấp đầy 3 bể bơi Olympic'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/69/Gold_nugget_%28Australia%29_4_%2816848647509%29.jpg',
+    videoUrl: 'https://www.youtube.com/embed/GEBf3qvEXVE'
+  },
+  S: {
+    category: 'nonmetal',
+    color: '#FFFF30',
+    meltingPoint: 115.21,
+    boilingPoint: 444.72,
+    density: 2.067,
+    electronConfig: '[Ne] 3s² 3p⁴',
+    oxidationStates: [-2, -1, 1, 2, 3, 4, 5, 6],
+    description: 'Phi kim màu vàng, có mùi trứng thối khi kết hợp với hydro.',
+    applications: ['Axit sunfuric H₂SO₄', 'Diêm', 'Cao su lưu hóa', 'Phân bón', 'Thuốc'],
+    discoveryYear: 'Cổ đại',
+    discoveredBy: 'Đã biết từ thời cổ đại',
+    facts: [
+      'Mùi trứng thối là H₂S chứa lưu huỳnh',
+      'Dùng sản xuất axit sunfuric - hóa chất công nghiệp số 1',
+      'Cần thiết cho amino acid methionine và cysteine',
+      'Núi lửa phun ra lưu huỳnh'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Sulfur_-_El_Desierto_mine%2C_San_Pablo_de_Napa%2C_Daniel_Campos_Province%2C_Potos%C3%AD%2C_Bolivia.jpg',
+    videoUrl: 'https://www.youtube.com/embed/KmQnpJszjuY'
+  },
+  Ca: {
+    category: 'alkaline-earth-metal',
+    color: '#3DFF00',
+    meltingPoint: 842,
+    boilingPoint: 1484,
+    density: 1.55,
+    electronConfig: '[Ar] 4s²',
+    oxidationStates: [2],
+    description: 'Kim loại kiềm thổ, thành phần chính của xương và răng.',
+    applications: ['Xi măng', 'Thạch cao', 'Vitamin và bổ sung dinh dưỡng', 'Thép', 'Pháo hoa'],
+    discoveryYear: 1808,
+    discoveredBy: 'Humphry Davy',
+    facts: [
+      'Cấu thành 1.5% cơ thể người (xương, răng)',
+      'Thành phần chính của đá vôi và đá cẩm thạch',
+      'Cháy với ngọn lửa màu đỏ gạch',
+      'Canxi kim loại có thể cắt bằng dao'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Calcium_unter_Argon_Atmosph%C3%A4re.jpg',
+    videoUrl: 'https://www.youtube.com/embed/t6XGdg0bWWw'
+  },
+  Mg: {
+    category: 'alkaline-earth-metal',
+    color: '#8AFF00',
+    meltingPoint: 650,
+    boilingPoint: 1091,
+    density: 1.738,
+    electronConfig: '[Ne] 3s²',
+    oxidationStates: [2],
+    description: 'Kim loại nhẹ, cháy sáng với ngọn lửa trắng chói.',
+    applications: ['Hợp kim nhẹ', 'Pháo hoa', 'Pháo sáng', 'Bổ sung dinh dưỡng', 'Ô tô và máy bay'],
+    discoveryYear: 1755,
+    discoveredBy: 'Joseph Black',
+    facts: [
+      'Cháy với ngọn lửa trắng chói không thể nhìn trực tiếp',
+      'Kim loại nhẹ dùng trong công nghiệp hàng không',
+      'Cần thiết cho hơn 300 enzyme trong cơ thể',
+      'Diệp lục (chlorophyll) chứa magie'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Magnesium_crystals.jpg',
+    videoUrl: 'https://www.youtube.com/embed/0bEfXQX8bwE'
+  },
+  Al: {
+    category: 'post-transition-metal',
+    color: '#BFA6A6',
+    meltingPoint: 660.32,
+    boilingPoint: 2519,
+    density: 2.698,
+    electronConfig: '[Ne] 3s² 3p¹',
+    oxidationStates: [3],
+    description: 'Kim loại nhẹ, chống ăn mòn, được sử dụng rộng rãi trong đời sống.',
+    applications: ['Lon nước giải khát', 'Máy bay', 'Cửa sổ', 'Dây điện', 'Đóng gói thực phẩm'],
+    discoveryYear: 1825,
+    discoveredBy: 'Hans Christian Ørsted',
+    facts: [
+      'Kim loại phổ biến nhất trong vỏ Trái Đất',
+      'Từng quý hiếm hơn vàng (trước khi có điện phân)',
+      'Lon nhôm có thể tái chế vô hạn',
+      'Tháp nhọn Washington Monument được làm bằng nhôm'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Aluminium-4.jpg',
+    videoUrl: 'https://www.youtube.com/embed/J-v_HbzKbFI'
+  },
+  K: {
+    category: 'alkali-metal',
+    color: '#8F40D4',
+    meltingPoint: 63.5,
+    boilingPoint: 759,
+    density: 0.862,
+    electronConfig: '[Ar] 4s¹',
+    oxidationStates: [1],
+    description: 'Kim loại kiềm mềm, phản ứng mãnh liệt với nước.',
+    applications: ['Phân bón', 'Pháo hoa (màu tím)', 'Thủy tinh', 'Xà phòng', 'Thuốc'],
+    discoveryYear: 1807,
+    discoveredBy: 'Humphry Davy',
+    facts: [
+      'Phản ứng nổ mạnh hơn natri với nước',
+      'Cháy với ngọn lửa màu tím đặc trưng',
+      'Có thể cắt bằng dao do quá mềm',
+      'Cần thiết cho hoạt động thần kinh và cơ bắp'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Potassium.JPG',
+    videoUrl: 'https://www.youtube.com/embed/4uxLXkKNVsc'
+  },
+  P: {
+    category: 'nonmetal',
+    color: '#FF8000',
+    meltingPoint: 44.15,
+    boilingPoint: 280.5,
+    density: 1.82,
+    electronConfig: '[Ne] 3s² 3p³',
+    oxidationStates: [-3, 3, 5],
+    description: 'Phi kim có nhiều dạng thù hình, cần thiết cho DNA và ATP.',
+    applications: ['Phân bón', 'Diêm', 'Chất tẩy', 'Thuốc trừ sâu', 'Vũ khí (phốt pho trắng)'],
+    discoveryYear: 1669,
+    discoveredBy: 'Hennig Brand',
+    facts: [
+      'Phốt pho trắng phát sáng trong bóng tối',
+      'Cần thiết cho DNA, RNA và ATP',
+      'Phốt pho đỏ an toàn, dùng trong diêm',
+      'Được phát hiện từ nước tiểu'
+    ],
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/8/88/PhosphRite.png',
+    videoUrl: 'https://www.youtube.com/embed/nVBIXnTo_Wc'
+  },
+  Be: {
+    category: 'alkaline-earth-metal',
+    color: '#C2FF00',
+    meltingPoint: 1287,
+    boilingPoint: 2469,
+    density: 1.85,
+    electronConfig: '1s² 2s²',
+    oxidationStates: [2],
+    description: 'Kim loại kiềm thổ nhẹ, cứng, màu xám thép. Độc hại và nguy hiểm.',
+    applications: ['Hợp kim nhôm-berili', 'Tia X', 'Hạt nhân nguyên tử', 'Điện tử hàng không vũ trụ'],
+    discoveryYear: 1798,
+    discoveredBy: 'Louis-Nicolas Vauquelin',
+    facts: [
+      'Kim loại nhẹ và cứng nhất trong các kim loại kiềm thổ',
+      'Độc hại - gây bệnh berylliosis',
+      'Dùng trong cửa sổ máy phát tia X',
+      'Không phản ứng với nước ở nhiệt độ thường'
+    ]
+  },
+  B: {
+    category: 'metalloid',
+    color: '#FFB5B5',
+    meltingPoint: 2076,
+    boilingPoint: 3927,
+    density: 2.34,
+    electronConfig: '1s² 2s² 2p¹',
+    oxidationStates: [3],
+    description: 'Á kim cứng, màu đen, bán dẫn. Cần thiết cho thực vật.',
+    applications: ['Thủy tinh borosilicate', 'Chất tẩy', 'Phân bón', 'Vật liệu gốm sứ', 'Hợp kim đặc biệt'],
+    discoveryYear: 1808,
+    discoveredBy: 'Joseph Louis Gay-Lussac, Louis Jacques Thénard',
+    facts: [
+      'Thành phần chính của Pyrex (thủy tinh chịu nhiệt)',
+      'Cần thiết cho sự phát triển của tế bào thực vật',
+      'Bo nguyên chất rất cứng, chỉ sau kim cương',
+      'Có thể hấp thụ neutron trong lò phản ứng hạt nhân'
+    ]
+  },
+  F: {
+    category: 'halogen',
+    color: '#90E050',
+    meltingPoint: -219.62,
+    boilingPoint: -188.12,
+    density: 0.001696,
+    electronConfig: '1s² 2s² 2p⁵',
+    oxidationStates: [-1],
+    description: 'Halogen hoạt động mạnh nhất, khí vàng nhạt, cực độc và ăn mòn.',
+    applications: ['Kem đánh răng (fluoride)', 'Tủ lạnh (Freon)', 'Teflon', 'Làm giàu uranium'],
+    discoveryYear: 1886,
+    discoveredBy: 'Henri Moissan',
+    facts: [
+      'Nguyên tố có độ âm điện cao nhất (3.98)',
+      'Phản ứng với hầu hết các nguyên tố, kể cả khí hiếm',
+      'Fluoride giúp ngăn sâu răng',
+      'Có thể ăn mòn thủy tinh'
+    ]
+  },
+  Ne: {
+    category: 'noble-gas',
+    color: '#FFB5B5',
+    meltingPoint: -248.59,
+    boilingPoint: -246.08,
+    density: 0.0008999,
+    electronConfig: '1s² 2s² 2p⁶',
+    oxidationStates: [0],
+    description: 'Khí hiếm, không màu, không mùi, được dùng trong đèn neon.',
+    applications: ['Đèn neon', 'Tivi, laser', 'Chỉ báo điện áp cao', 'Làm lạnh'],
+    discoveryYear: 1898,
+    discoveredBy: 'William Ramsay, Morris Travers',
+    facts: [
+      'Tạo ánh sáng đỏ cam đặc trưng trong đèn neon',
+      'Khí hiếm phổ biến thứ 5 trong vũ trụ',
+      'Không phản ứng với bất kỳ nguyên tố nào',
+      'Tên từ tiếng Hy Lạp "neos" nghĩa là mới'
+    ]
+  },
+  Si: {
+    category: 'metalloid',
+    color: '#F0C8A0',
+    meltingPoint: 1414,
+    boilingPoint: 3265,
+    density: 2.3296,
+    electronConfig: '[Ne] 3s² 3p²',
+    oxidationStates: [-4, -3, -2, -1, 1, 2, 3, 4],
+    description: 'Á kim, nguyên tố phổ biến thứ 2 trong vỏ Trái Đất, cơ sở của công nghệ điện tử.',
+    applications: ['Chip máy tính', 'Pin mặt trời', 'Thủy tinh', 'Gốm sứ', 'Silicone'],
+    discoveryYear: 1824,
+    discoveredBy: 'Jöns Jacob Berzelius',
+    facts: [
+      'Cấu thành 27.7% vỏ Trái Đất',
+      'Cơ sở của ngành công nghiệp bán dẫn',
+      'Silicon Valley được đặt tên theo nguyên tố này',
+      'Cát bãi biển chủ yếu là SiO₂'
+    ]
+  },
+  Ar: {
+    category: 'noble-gas',
+    color: '#80D1E3',
+    meltingPoint: -189.35,
+    boilingPoint: -185.85,
+    density: 0.0017837,
+    electronConfig: '[Ne] 3s² 3p⁶',
+    oxidationStates: [0],
+    description: 'Khí hiếm chiếm 0.93% không khí, được dùng trong hàn và bóng đèn.',
+    applications: ['Hàn hồ quang', 'Bóng đèn', 'Laser', 'Bảo quản tài liệu lịch sử'],
+    discoveryYear: 1894,
+    discoveredBy: 'Lord Rayleigh, William Ramsay',
+    facts: [
+      'Khí thứ 3 phổ biến nhất trong không khí (0.93%)',
+      'Tên từ tiếng Hy Lạp "argos" nghĩa là lười biếng',
+      'Dùng trong bóng đèn để ngăn dây tóc bay hơi',
+      'Hoàn toàn không phản ứng'
+    ]
+  },
+  Sc: {
+    category: 'transition-metal',
+    color: '#E6E6E6',
+    meltingPoint: 1541,
+    boilingPoint: 2836,
+    density: 2.989,
+    electronConfig: '[Ar] 3d¹ 4s²',
+    oxidationStates: [3],
+    description: 'Kim loại chuyển tiếp màu bạc, mềm, nhẹ.',
+    applications: ['Hợp kim nhôm-scandium', 'Đèn thủy ngân', 'Thiết bị thể thao cao cấp'],
+    discoveryYear: 1879,
+    discoveredBy: 'Lars Fredrik Nilson',
+    facts: [
+      'Được đặt tên theo Scandinavia',
+      'Rất hiếm và đắt tiền',
+      'Dùng trong gậy baseball và khung xe đạp cao cấp',
+      'Được Mendeleev dự đoán trước khi phát hiện'
+    ]
+  },
+  Ti: {
+    category: 'transition-metal',
+    color: '#BFC2C7',
+    meltingPoint: 1668,
+    boilingPoint: 3287,
+    density: 4.506,
+    electronConfig: '[Ar] 3d² 4s²',
+    oxidationStates: [2, 3, 4],
+    description: 'Kim loại mạnh, nhẹ, chống ăn mòn, màu bạc.',
+    applications: ['Hàng không vũ trụ', 'Cấy ghép y tế', 'Sơn trắng TiO₂', 'Thiết bị thể thao'],
+    discoveryYear: 1791,
+    discoveredBy: 'William Gregor',
+    facts: [
+      'Tỷ lệ độ bền/trọng lượng cao nhất trong tất cả kim loại',
+      'Hoàn toàn tương thích sinh học - dùng làm xương giả',
+      'TiO₂ là chất màu trắng nhất',
+      'Được đặt tên theo các Titan trong thần化 Hy Lạp'
+    ]
+  },
+  V: {
+    category: 'transition-metal',
+    color: '#A6A6AB',
+    meltingPoint: 1910,
+    boilingPoint: 3407,
+    density: 6.11,
+    electronConfig: '[Ar] 3d³ 4s²',
+    oxidationStates: [2, 3, 4, 5],
+    description: 'Kim loại cứng, màu xám bạc, chống ăn mòn.',
+    applications: ['Hợp kim thép', 'Pin vanadi oxy hóa khử', 'Xúc tác', 'Sơn ceramic'],
+    discoveryYear: 1801,
+    discoveredBy: 'Andrés Manuel del Río',
+    facts: [
+      'Được đặt tên theo Vanadis - nữ thần sắc đẹp Bắc Âu',
+      '85% vanadi được dùng làm ferrovanadiun',
+      'Hợp chất vanadi có nhiều màu sắc khác nhau',
+      'Dùng trong pin lưu trữ năng lượng quy mô lớn'
+    ]
+  },
+  Cr: {
+    category: 'transition-metal',
+    color: '#8A99C7',
+    meltingPoint: 1907,
+    boilingPoint: 2671,
+    density: 7.15,
+    electronConfig: '[Ar] 3d⁵ 4s¹',
+    oxidationStates: [2, 3, 6],
+    description: 'Kim loại cứng, bóng, màu xám thép, chống ăn mòn.',
+    applications: ['Mạ crom', 'Thép không gỉ', 'Sơn và thuốc nhuộm', 'Da thuộc'],
+    discoveryYear: 1797,
+    discoveredBy: 'Louis Nicolas Vauquelin',
+    facts: [
+      'Tên từ tiếng Hy Lạp "chroma" nghĩa là màu sắc',
+      'Hợp chất crom có nhiều màu: xanh, vàng, đỏ, tím',
+      'Kim loại cứng nhất',
+      'Ruby và ngọc lục bảo có màu từ tạp chất crom'
+    ]
+  },
+  Mn: {
+    category: 'transition-metal',
+    color: '#9C7AC7',
+    meltingPoint: 1246,
+    boilingPoint: 2061,
+    density: 7.44,
+    electronConfig: '[Ar] 3d⁵ 4s²',
+    oxidationStates: [2, 3, 4, 6, 7],
+    description: 'Kim loại cứng, giòn, màu xám bạc.',
+    applications: ['Sản xuất thép', 'Pin kiềm', 'Hợp kim nhôm', 'Xúc tác'],
+    discoveryYear: 1774,
+    discoveredBy: 'Johan Gottlieb Gahn',
+    facts: [
+      'Cần thiết cho quang hợp ở thực vật',
+      'Mangan dioxide dùng trong pin Duracell',
+      'Kim loại thứ 12 phổ biến nhất trong vỏ Trái Đất',
+      'Thép chứa 1% mangan cứng và bền hơn'
+    ]
+  },
+  Co: {
+    category: 'transition-metal',
+    color: '#F090A0',
+    meltingPoint: 1495,
+    boilingPoint: 2927,
+    density: 8.86,
+    electronConfig: '[Ar] 3d⁷ 4s²',
+    oxidationStates: [2, 3],
+    description: 'Kim loại cứng, màu xám bạc, từ tính.',
+    applications: ['Hợp kim chịu nhiệt', 'Nam châm vĩnh cửu', 'Pin lithium-ion', 'Sơn màu xanh'],
+    discoveryYear: 1735,
+    discoveredBy: 'Georg Brandt',
+    facts: [
+      'Cần thiết cho vitamin B12',
+      'Cobalt-60 dùng trong xạ trị ung thư',
+      'Dùng làm sơn men xanh cobalt từ thời Ai Cập cổ đại',
+      'Có từ tính, mất từ tính ở 1115°C'
+    ]
+  },
+  Ni: {
+    category: 'transition-metal',
+    color: '#50D050',
+    meltingPoint: 1455,
+    boilingPoint: 2913,
+    density: 8.912,
+    electronConfig: '[Ar] 3d⁸ 4s²',
+    oxidationStates: [2, 3],
+    description: 'Kim loại cứng, dẻo, màu trắng bạc, từ tính, chống ăn mòn.',
+    applications: ['Thép không gỉ', 'Pin sạc', 'Mạ niken', 'Tiền xu', 'Xúc tác'],
+    discoveryYear: 1751,
+    discoveredBy: 'Axel Fredrik Cronstedt',
+    facts: [
+      'Lõi Trái Đất chứa 5-10% niken',
+      'Đồng xu 5 cent Mỹ chứa 25% niken',
+      'Dùng trong pin niken-cadmium và niken-hydride kim loại',
+      'Tên từ "kupfernickel" - quỷ đồng trong thần thoại Đức'
+    ]
+  },
+  Ga: {
+    category: 'post-transition-metal',
+    color: '#C28F8F',
+    meltingPoint: 29.76,
+    boilingPoint: 2204,
+    density: 5.91,
+    electronConfig: '[Ar] 3d¹⁰ 4s² 4p¹',
+    oxidationStates: [3],
+    description: 'Kim loại mềm, màu bạc, nóng chảy ở nhiệt độ gần nhiệt độ phòng.',
+    applications: ['Chip điện tử GaN', 'LED', 'Pin mặt trời', 'Hợp kim nhiệt độ thấp'],
+    discoveryYear: 1875,
+    discoveredBy: 'Paul-Émile Lecoq de Boisbaudran',
+    facts: [
+      'Nóng chảy trong tay người (29.76°C)',
+      'GaN dùng trong đèn LED màu xanh và trắng',
+      'Được Mendeleev dự đoán trước 15 năm',
+      'Có thể tồn tại ở trạng thái lỏng từ gần 0°C đến 2000°C'
+    ]
+  },
+  Ge: {
+    category: 'metalloid',
+    color: '#668F8F',
+    meltingPoint: 938.25,
+    boilingPoint: 2833,
+    density: 5.323,
+    electronConfig: '[Ar] 3d¹⁰ 4s² 4p²',
+    oxidationStates: [2, 4],
+    description: 'Á kim màu trắng xám, bán dẫn.',
+    applications: ['Sợi quang', 'Điện tử hồng ngoại', 'Pin mặt trời', 'Bóng bán dẫn'],
+    discoveryYear: 1886,
+    discoveredBy: 'Clemens Winkler',
+    facts: [
+      'Transistor đầu tiên được làm từ germani',
+      'Được Mendeleev dự đoán là "eka-silicon"',
+      'Trong suốt với bức xạ hồng ngoại',
+      'Dùng trong kính nhìn đêm'
+    ]
+  },
+  As: {
+    category: 'metalloid',
+    color: '#BD80E3',
+    meltingPoint: 817,
+    boilingPoint: 614,
+    density: 5.776,
+    electronConfig: '[Ar] 3d¹⁰ 4s² 4p³',
+    oxidationStates: [-3, 3, 5],
+    description: 'Á kim độc, màu xám thép hoặc vàng.',
+    applications: ['Bảo quản gỗ (đã bị cấm)', 'Hợp kim chì', 'Bán dẫn GaAs', 'Thuốc trừ sâu'],
+    discoveryYear: 'Thời cổ đại',
+    discoveredBy: 'Albertus Magnus',
+    facts: [
+      'Độc tính cao - từng được dùng làm chất độc',
+      'GaAs dùng trong chip điện thoại di động',
+      'Có mùi tỏi khi đun nóng',
+      'Được dùng trong y học cổ truyền Trung Quốc'
+    ]
+  },
+  Se: {
+    category: 'nonmetal',
+    color: '#FFA100',
+    meltingPoint: 221,
+    boilingPoint: 685,
+    density: 4.809,
+    electronConfig: '[Ar] 3d¹⁰ 4s² 4p⁴',
+    oxidationStates: [-2, 2, 4, 6],
+    description: 'Phi kim màu đen hoặc xám, bán dẫn.',
+    applications: ['Tế bào quang điện', 'Thủy tinh màu đỏ', 'Chất chống oxy hóa', 'Điện tử'],
+    discoveryYear: 1817,
+    discoveredBy: 'Jöns Jakob Berzelius',
+    facts: [
+      'Cần thiết cho sức khỏe con người nhưng độc ở liều cao',
+      'Độ dẫn điện tăng khi chiếu sáng',
+      'Dùng trong máy photocopy',
+      'Được đặt tên theo Selene - nữ thần mặt trăng'
+    ]
+  },
+  Br: {
+    category: 'halogen',
+    color: '#A62929',
+    meltingPoint: -7.2,
+    boilingPoint: 58.8,
+    density: 3.122,
+    electronConfig: '[Ar] 3d¹⁰ 4s² 4p⁵',
+    oxidationStates: [-1, 1, 3, 5, 7],
+    description: 'Halogen duy nhất ở thể lỏng ở nhiệt độ phòng, màu đỏ nâu, độc.',
+    applications: ['Chất chống cháy', 'Thuốc nhuộm', 'Dược phẩm', 'Khử trùng nước'],
+    discoveryYear: 1826,
+    discoveredBy: 'Antoine-Jérôme Balard',
+    facts: [
+      'Phi kim duy nhất ở thể lỏng ở nhiệt độ phòng',
+      'Có mùi hắc và kích thích mạnh',
+      'Tên từ tiếng Hy Lạp "bromos" nghĩa là mùi hôi',
+      'AgBr nhạy sáng, dùng trong phim ảnh'
+    ]
+  },
+  Kr: {
+    category: 'noble-gas',
+    color: '#5CB8D1',
+    meltingPoint: -157.36,
+    boilingPoint: -153.22,
+    density: 0.003733,
+    electronConfig: '[Ar] 3d¹⁰ 4s² 4p⁶',
+    oxidationStates: [0, 2],
+    description: 'Khí hiếm, không màu, không mùi, được dùng trong đèn flash.',
+    applications: ['Đèn flash nhiếp ảnh', 'Laser', 'Cửa sổ cách nhiệt', 'Đèn huỳnh quang'],
+    discoveryYear: 1898,
+    discoveredBy: 'William Ramsay, Morris Travers',
+    facts: [
+      'Tên từ tiếng Hy Lạp "kryptos" nghĩa là ẩn',
+      'Krypton-86 từng được dùng để định nghĩa mét',
+      'Phát ra ánh sáng trắng khi kích thích',
+      'Được Superman sợ (trong truyện tranh)'
+    ]
+  }
+};
+
+// Màu sắc theo loại nguyên tố
+export const categoryColors = {
+  'nonmetal': '#A1C935',
+  'noble-gas': '#00CED1',
+  'alkali-metal': '#FF6B6B',
+  'alkaline-earth-metal': '#FFA94D',
+  'transition-metal': '#74C0FC',
+  'post-transition-metal': '#9775FA',
+  'metalloid': '#20C997',
+  'halogen': '#F06595',
+  'lanthanide': '#E599F7',
+  'actinide': '#FAB005',
+  'unknown': '#868E96'
+};
+
+// Tên tiếng Việt cho các loại nguyên tố
+export const categoryNames = {
+  'nonmetal': 'Phi kim',
+  'noble-gas': 'Khí hiếm',
+  'alkali-metal': 'Kim loại kiềm',
+  'alkaline-earth-metal': 'Kim loại kiềm thổ',
+  'transition-metal': 'Kim loại chuyển tiếp',
+  'post-transition-metal': 'Kim loại sau chuyển tiếp',
+  'metalloid': 'Á kim',
+  'halogen': 'Halogen',
+  'lanthanide': 'Lanthanide',
+  'actinide': 'Actinide',
+  'unknown': 'Chưa xác định'
+};
+
+// Map nguyên tố với category
+export const elementCategories = {
+  H: 'nonmetal', He: 'noble-gas',
+  Li: 'alkali-metal', Be: 'alkaline-earth-metal', B: 'metalloid', C: 'nonmetal', N: 'nonmetal', O: 'nonmetal', F: 'halogen', Ne: 'noble-gas',
+  Na: 'alkali-metal', Mg: 'alkaline-earth-metal', Al: 'post-transition-metal', Si: 'metalloid', P: 'nonmetal', S: 'nonmetal', Cl: 'halogen', Ar: 'noble-gas',
+  K: 'alkali-metal', Ca: 'alkaline-earth-metal', Sc: 'transition-metal', Ti: 'transition-metal', V: 'transition-metal', Cr: 'transition-metal', Mn: 'transition-metal', Fe: 'transition-metal', Co: 'transition-metal', Ni: 'transition-metal', Cu: 'transition-metal', Zn: 'transition-metal', Ga: 'post-transition-metal', Ge: 'metalloid', As: 'metalloid', Se: 'nonmetal', Br: 'halogen', Kr: 'noble-gas',
+  // Period 5 (Rb-Xe)
+  Rb: 'alkali-metal', Sr: 'alkaline-earth-metal', Y: 'transition-metal', Zr: 'transition-metal', Nb: 'transition-metal', Mo: 'transition-metal', Tc: 'transition-metal', Ru: 'transition-metal', Rh: 'transition-metal', Pd: 'transition-metal', Ag: 'transition-metal', Cd: 'transition-metal', In: 'post-transition-metal', Sn: 'post-transition-metal', Sb: 'metalloid', Te: 'metalloid', I: 'halogen', Xe: 'noble-gas',
+  // Period 6 (Cs-Rn + Lanthanides)
+  Cs: 'alkali-metal', Ba: 'alkaline-earth-metal', La: 'lanthanide', Ce: 'lanthanide', Pr: 'lanthanide', Nd: 'lanthanide', Pm: 'lanthanide', Sm: 'lanthanide', Eu: 'lanthanide', Gd: 'lanthanide', Tb: 'lanthanide', Dy: 'lanthanide', Ho: 'lanthanide', Er: 'lanthanide', Tm: 'lanthanide', Yb: 'lanthanide', Lu: 'lanthanide', Hf: 'transition-metal', Ta: 'transition-metal', W: 'transition-metal', Re: 'transition-metal', Os: 'transition-metal', Ir: 'transition-metal', Pt: 'transition-metal', Au: 'transition-metal', Hg: 'transition-metal', Tl: 'post-transition-metal', Pb: 'post-transition-metal', Bi: 'post-transition-metal', Po: 'metalloid', At: 'halogen', Rn: 'noble-gas',
+  // Period 7 (Fr-Og + Actinides)
+  Fr: 'alkali-metal', Ra: 'alkaline-earth-metal', Ac: 'actinide', Th: 'actinide', Pa: 'actinide', U: 'actinide', Np: 'actinide', Pu: 'actinide', Am: 'actinide', Cm: 'actinide', Bk: 'actinide', Cf: 'actinide', Es: 'actinide', Fm: 'actinide', Md: 'actinide', No: 'actinide', Lr: 'actinide', Rf: 'transition-metal', Db: 'transition-metal', Sg: 'transition-metal', Bh: 'transition-metal', Hs: 'transition-metal', Mt: 'transition-metal', Ds: 'transition-metal', Rg: 'transition-metal', Cn: 'transition-metal', Nh: 'post-transition-metal', Fl: 'post-transition-metal', Mc: 'post-transition-metal', Lv: 'post-transition-metal', Ts: 'halogen', Og: 'noble-gas'
+};
