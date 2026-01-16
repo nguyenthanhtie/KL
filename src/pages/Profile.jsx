@@ -1,5 +1,5 @@
 import { useAuth } from '../contexts/AuthContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ProgressBar from '../components/ui/ProgressBar';
 import api from '../config/api';
 import { 
@@ -16,16 +16,53 @@ import {
   Zap,
   ChevronRight,
   Sparkles,
-  MessageCircle
+  MessageCircle,
+  Settings,
+  X,
+  Camera,
+  Bell,
+  Edit3,
+  Check,
+  Save
 } from 'lucide-react';
 import { showMissionBubble } from '../components/MissionBubble';
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, updateUserProfile } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedProgram, setSelectedProgram] = useState('chemistry');
+  
+  // Settings states
+  const [showSettings, setShowSettings] = useState(false);
+  const [editingName, setEditingName] = useState(false);
+  const [newDisplayName, setNewDisplayName] = useState('');
+  const [showAvatarPicker, setShowAvatarPicker] = useState(false);
+  const [savingSettings, setSavingSettings] = useState(false);
+  const fileInputRef = useRef(null);
+  
+  // Load settings from localStorage
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem('userSettings');
+    return saved ? JSON.parse(saved) : {
+      showMissionBubble: true,
+      enableNotifications: true
+    };
+  });
+
+  // Save settings to localStorage when changed
+  useEffect(() => {
+    localStorage.setItem('userSettings', JSON.stringify(settings));
+    // Dispatch event to notify MissionBubble
+    window.dispatchEvent(new CustomEvent('settingsChanged', { detail: settings }));
+  }, [settings]);
+
+  // Predefined avatars
+  const avatarOptions = [
+    '🧪', '⚗️', '🔬', '🧬', '⚛️', '🎓', '📚', '🎯',
+    '🚀', '💎', '🌟', '🏆', '🎮', '🤖', '🦊', '🐱'
+  ];
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -58,6 +95,56 @@ const Profile = () => {
 
     fetchUserProfile();
   }, [user]);
+
+  // Handle save display name
+  const handleSaveDisplayName = async () => {
+    if (!newDisplayName.trim() || !userData?._id) return;
+    
+    setSavingSettings(true);
+    try {
+      const response = await api.put(`/users/${userData._id}`, {
+        displayName: newDisplayName.trim()
+      });
+      setUserData(prev => ({ ...prev, displayName: newDisplayName.trim() }));
+      setEditingName(false);
+      // Update Firebase profile if available
+      if (updateUserProfile) {
+        await updateUserProfile({ displayName: newDisplayName.trim() });
+      }
+    } catch (err) {
+      console.error('Error updating display name:', err);
+      alert('Không thể cập nhật tên hiển thị');
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
+  // Handle avatar selection (emoji)
+  const handleSelectAvatar = async (emoji) => {
+    if (!userData?._id) return;
+    
+    setSavingSettings(true);
+    try {
+      await api.put(`/users/${userData._id}`, {
+        avatar: emoji
+      });
+      setUserData(prev => ({ ...prev, avatar: emoji }));
+      setShowAvatarPicker(false);
+    } catch (err) {
+      console.error('Error updating avatar:', err);
+      alert('Không thể cập nhật avatar');
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
+  // Toggle settings
+  const toggleSetting = (key) => {
+    setSettings(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
 
   // Get the selected program
   const getCurrentProgram = () => {
@@ -270,12 +357,23 @@ const Profile = () => {
           <div className="grid lg:grid-cols-3 gap-6 mb-8">
             {/* User Info Card */}
             <div className="lg:col-span-1">
-              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-6 border border-white/50">
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-6 border border-white/50 relative">
+                {/* Settings Button */}
+                <button
+                  onClick={() => setShowSettings(true)}
+                  className="absolute top-4 right-4 p-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors group"
+                  title="Cài đặt"
+                >
+                  <Settings className="w-5 h-5 text-gray-500 group-hover:text-gray-700 group-hover:rotate-90 transition-all duration-300" />
+                </button>
+
                 <div className="text-center">
                   {/* Avatar */}
                   <div className="relative inline-block mb-4">
                     <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 flex items-center justify-center shadow-xl">
-                      {userData?.avatar ? (
+                      {userData?.avatar && userData.avatar.length <= 2 ? (
+                        <span className="text-5xl">{userData.avatar}</span>
+                      ) : userData?.avatar ? (
                         <img 
                           src={userData.avatar} 
                           alt="Avatar" 
@@ -531,6 +629,212 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 p-6 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-gray-600 to-gray-800 rounded-2xl flex items-center justify-center">
+                  <Settings className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-800">Cài đặt</h2>
+                  <p className="text-sm text-gray-500">Tùy chỉnh hồ sơ của bạn</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setShowSettings(false);
+                  setEditingName(false);
+                  setShowAvatarPicker(false);
+                }}
+                className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-500" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {/* Change Avatar */}
+              <div className="bg-gray-50 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Camera className="w-5 h-5 text-gray-600" />
+                    <span className="font-semibold text-gray-700">Avatar</span>
+                  </div>
+                  <button
+                    onClick={() => setShowAvatarPicker(!showAvatarPicker)}
+                    className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                  >
+                    {showAvatarPicker ? 'Đóng' : 'Thay đổi'}
+                  </button>
+                </div>
+                
+                {/* Current Avatar */}
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 flex items-center justify-center shadow-lg">
+                    {userData?.avatar && userData.avatar.length <= 2 ? (
+                      <span className="text-3xl">{userData.avatar}</span>
+                    ) : (
+                      <span className="text-3xl text-white">
+                        {userData?.displayName?.[0]?.toUpperCase() || '👤'}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500">Chọn avatar yêu thích của bạn</p>
+                </div>
+
+                {/* Avatar Picker */}
+                {showAvatarPicker && (
+                  <div className="mt-4 grid grid-cols-8 gap-2">
+                    {avatarOptions.map((emoji, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSelectAvatar(emoji)}
+                        disabled={savingSettings}
+                        className={`
+                          w-10 h-10 rounded-xl flex items-center justify-center text-2xl
+                          transition-all duration-200 hover:scale-110
+                          ${userData?.avatar === emoji 
+                            ? 'bg-purple-100 ring-2 ring-purple-500' 
+                            : 'bg-white hover:bg-gray-100'
+                          }
+                          ${savingSettings ? 'opacity-50 cursor-not-allowed' : ''}
+                        `}
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Change Display Name */}
+              <div className="bg-gray-50 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Edit3 className="w-5 h-5 text-gray-600" />
+                    <span className="font-semibold text-gray-700">Tên hiển thị</span>
+                  </div>
+                  {!editingName ? (
+                    <button
+                      onClick={() => {
+                        setEditingName(true);
+                        setNewDisplayName(userData?.displayName || '');
+                      }}
+                      className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                    >
+                      Chỉnh sửa
+                    </button>
+                  ) : (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEditingName(false)}
+                        className="text-sm text-gray-500 hover:text-gray-700 font-medium"
+                      >
+                        Hủy
+                      </button>
+                      <button
+                        onClick={handleSaveDisplayName}
+                        disabled={savingSettings || !newDisplayName.trim()}
+                        className="text-sm text-green-600 hover:text-green-700 font-medium flex items-center gap-1 disabled:opacity-50"
+                      >
+                        <Check className="w-4 h-4" />
+                        Lưu
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {editingName ? (
+                  <input
+                    type="text"
+                    value={newDisplayName}
+                    onChange={(e) => setNewDisplayName(e.target.value)}
+                    placeholder="Nhập tên hiển thị mới"
+                    className="w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
+                    autoFocus
+                  />
+                ) : (
+                  <p className="text-gray-800 font-medium">
+                    {userData?.displayName || 'Chưa đặt tên'}
+                  </p>
+                )}
+              </div>
+
+              {/* Toggle Settings */}
+              <div className="space-y-4">
+                {/* Mission Bubble Toggle */}
+                <div className="bg-gray-50 rounded-2xl p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                      <MessageCircle className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Bong bóng nhiệm vụ</p>
+                      <p className="text-xs text-gray-500">Hiển thị bong bóng nhiệm vụ trên màn hình</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => toggleSetting('showMissionBubble')}
+                    className={`
+                      relative w-14 h-8 rounded-full transition-colors duration-300
+                      ${settings.showMissionBubble ? 'bg-purple-500' : 'bg-gray-300'}
+                    `}
+                  >
+                    <div className={`
+                      absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300
+                      ${settings.showMissionBubble ? 'left-7' : 'left-1'}
+                    `} />
+                  </button>
+                </div>
+
+                {/* Notifications Toggle */}
+                <div className="bg-gray-50 rounded-2xl p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
+                      <Bell className="w-5 h-5 text-amber-600" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Thông báo</p>
+                      <p className="text-xs text-gray-500">Nhận thông báo về hoạt động mới</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => toggleSetting('enableNotifications')}
+                    className={`
+                      relative w-14 h-8 rounded-full transition-colors duration-300
+                      ${settings.enableNotifications ? 'bg-amber-500' : 'bg-gray-300'}
+                    `}
+                  >
+                    <div className={`
+                      absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300
+                      ${settings.enableNotifications ? 'left-7' : 'left-1'}
+                    `} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Save & Close */}
+              <button
+                onClick={() => {
+                  setShowSettings(false);
+                  setEditingName(false);
+                  setShowAvatarPicker(false);
+                }}
+                className="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              >
+                <Save className="w-5 h-5" />
+                Hoàn tất
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -250,6 +250,43 @@ router.post('/auth/google', async (req, res) => {
   }
 });
 
+// Update user profile (displayName, avatar)
+router.put('/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { displayName, avatar } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update fields if provided
+    if (displayName !== undefined) {
+      user.displayName = displayName;
+    }
+    if (avatar !== undefined) {
+      user.avatar = avatar;
+    }
+
+    await user.save();
+
+    console.log('✅ User profile updated:', { userId, displayName, avatar });
+
+    res.json({
+      success: true,
+      message: 'Profile updated successfully',
+      user: {
+        displayName: user.displayName,
+        avatar: user.avatar
+      }
+    });
+  } catch (error) {
+    console.error('❌ Error updating user profile:', error);
+    res.status(500).json({ message: 'Lỗi server', error: error.message });
+  }
+});
+
 // Submit lesson completion and update progress
 router.post('/submit-lesson', async (req, res) => {
   try {

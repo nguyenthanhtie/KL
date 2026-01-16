@@ -68,8 +68,23 @@ const MissionBubble = () => {
   useEffect(() => {
     const savedVisible = localStorage.getItem('missionBubbleVisible');
     const savedPosition = localStorage.getItem('missionBubblePosition');
+    const userSettings = localStorage.getItem('userSettings');
     
-    if (savedVisible !== null) {
+    // Check user settings for showMissionBubble
+    if (userSettings) {
+      try {
+        const settings = JSON.parse(userSettings);
+        if (settings.showMissionBubble === false) {
+          setIsVisible(false);
+        } else if (savedVisible !== null) {
+          setIsVisible(savedVisible === 'true');
+        }
+      } catch (e) {
+        if (savedVisible !== null) {
+          setIsVisible(savedVisible === 'true');
+        }
+      }
+    } else if (savedVisible !== null) {
       setIsVisible(savedVisible === 'true');
     }
     
@@ -85,6 +100,22 @@ const MissionBubble = () => {
       // Default position
       setPosition({ x: window.innerWidth - 80, y: window.innerHeight - 80 });
     }
+  }, []);
+
+  // Listen for settings changes from Profile page
+  useEffect(() => {
+    const handleSettingsChange = (event) => {
+      const settings = event.detail;
+      if (settings.showMissionBubble === false) {
+        setIsVisible(false);
+        setShowMissions(false);
+      } else {
+        setIsVisible(true);
+      }
+    };
+
+    window.addEventListener('settingsChanged', handleSettingsChange);
+    return () => window.removeEventListener('settingsChanged', handleSettingsChange);
   }, []);
 
   // Save visibility to localStorage

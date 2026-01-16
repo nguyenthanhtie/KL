@@ -13,7 +13,6 @@ import Register from './pages/Register';
 import ChemistryHome from './pages/chemistry/ChemistryHome';
 import Dashboard from './pages/chemistry/Dashboard';
 import ClassDashboard from './pages/chemistry/ClassDashboard';
-import Lesson from './pages/chemistry/Lesson';
 import LessonSimple from './pages/chemistry/LessonSimple';
 import GamePlay from './pages/chemistry/GamePlay';
 import AdvancedChallenge from './pages/chemistry/AdvancedChallenge';

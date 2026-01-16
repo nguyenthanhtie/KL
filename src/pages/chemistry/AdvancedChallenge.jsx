@@ -24,7 +24,12 @@ const AdvancedChallenge = () => {
     12: { title: 'Hóa học 12', color: 'from-pink-500 to-pink-600', icon: '🎓', description: 'Este, amin, polime, kim loại kiềm, kiềm thổ' }
   };
 
-  const grades = [8, 9, 10, 11, 12];
+  // Get user's current class from chemistry program
+  const userCurrentClass = user?.programs?.find(p => p.programId === 'chemistry')?.currentClass || 8;
+  
+  // Filter grades based on user's current class
+  // Students can only see their current grade and all grades below
+  const grades = [8, 9, 10, 11, 12].filter(grade => grade <= userCurrentClass);
 
   useEffect(() => {
     // Set default grade from user's current class
@@ -65,9 +70,19 @@ const AdvancedChallenge = () => {
     fetchChallenges();
   }, [user]);
 
-  // Group challenges by grade
+  // Group challenges by grade and auto-unlock challenges from lower grades
   const getChallengesByGrade = (grade) => {
-    return challenges.filter(challenge => challenge.grade === grade);
+    const gradeChallenges = challenges.filter(challenge => challenge.grade === grade);
+    
+    // If this grade is lower than user's current class, all challenges are automatically unlocked
+    if (grade < userCurrentClass) {
+      return gradeChallenges.map(challenge => ({
+        ...challenge,
+        isUnlocked: true // Auto-unlock all challenges from lower grades
+      }));
+    }
+    
+    return gradeChallenges;
   };
 
   // Get stats for a specific grade

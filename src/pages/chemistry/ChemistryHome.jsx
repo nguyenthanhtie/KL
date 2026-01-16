@@ -1,27 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import Button from '../../components/ui/Button';
 import { useEffect, useState } from 'react';
-import { BookOpen, Trophy, Target, Clock, Star, Flame, Zap, Award, TrendingUp, Play, LogOut, ChevronDown, Scale } from 'lucide-react';
+import { BookOpen, Trophy, Star, Flame, Play, ChevronDown, Scale, ChevronRight, Sparkles, Target, Award, Swords, GraduationCap, Beaker, ArrowRight } from 'lucide-react';
 import api from '../../config/api';
 
 const ChemistryHome = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [programData, setProgramData] = useState(null);
   const [showProgramDropdown, setShowProgramDropdown] = useState(false);
   const [grades, setGrades] = useState([]);
   const [loading, setLoading] = useState(true);
   const [computedStats, setComputedStats] = useState(null);
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
 
   const availablePrograms = [
     { id: 'chemistry', name: 'Hóa học', icon: '🧪', path: '/program/chemistry', available: true },
@@ -35,710 +25,367 @@ const ChemistryHome = () => {
       alert(`Chương trình ${program.name} sắp ra mắt!`);
       return;
     }
-
-    // Kiểm tra xem user đã đăng ký chương trình này chưa
     const hasProgram = user.programs?.some(p => p.programId === program.id && p.isActive);
-    
     if (hasProgram) {
       navigate(program.path);
     } else {
-      // Chưa đăng ký -> chuyển đến placement test
       navigate(`/placement-test/${program.id}`);
     }
     setShowProgramDropdown(false);
   };
 
-  // Topic mapping for each grade
   const topicMapping = {
-    8: {
-      topics: ['Chất - Nguyên tử - Phân tử', 'Phản ứng hóa học', 'Mol và tính toán', 'Oxi - Không khí', 'Hiđro - Nước', 'Dung dịch'],
-      icon: '⚗️'
-    },
-    9: {
-      topics: ['Phi kim', 'Kim loại', 'Hợp chất hữu cơ', 'Hóa học và cuộc sống'],
-      icon: '🔬'
-    },
-    10: {
-      topics: ['Nguyên tử', 'Bảng tuần hoàn', 'Liên kết hóa học', 'Phản ứng oxi hóa khử'],
-      icon: '⚛️'
-    },
-    11: {
-      topics: ['Sự điện li', 'Nhóm Halogen', 'Nhóm Oxi', 'Tốc độ phản ứng', 'Nitơ - Photpho'],
-      icon: '🧪'
-    },
-    12: {
-      topics: ['Este - Lipit', 'Cacbohiđrat', 'Amin - Amino axit', 'Polime', 'Kim loại', 'Hóa học hữu cơ tổng hợp'],
-      icon: '🧬'
-    }
+    8: { topics: ['Nguyên tử', 'Phản ứng', 'Mol', 'Oxi', 'Hiđro', 'Dung dịch'], icon: '⚗️', gradient: 'from-blue-500 to-cyan-500' },
+    9: { topics: ['Phi kim', 'Kim loại', 'Hữu cơ', 'Đời sống'], icon: '🔬', gradient: 'from-emerald-500 to-teal-500' },
+    10: { topics: ['Nguyên tử', 'Bảng tuần hoàn', 'Liên kết', 'Oxi hóa khử'], icon: '⚛️', gradient: 'from-violet-500 to-purple-500' },
+    11: { topics: ['Điện li', 'Halogen', 'Oxi', 'Tốc độ', 'Nitơ'], icon: '🧪', gradient: 'from-amber-500 to-orange-500' },
+    12: { topics: ['Este', 'Cacbohiđrat', 'Amin', 'Polime', 'Kim loại'], icon: '🧬', gradient: 'from-rose-500 to-pink-500' }
   };
 
   useEffect(() => {
     const initializeData = async () => {
-      // Kiểm tra xem user đã đăng ký chương trình Hóa học chưa
-      if (!user) {
-        navigate('/login');
-        return;
-      }
+      if (!user) { navigate('/login'); return; }
 
       const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry' && p.isActive);
       if (!chemistryProgram) {
-        // Chưa đăng ký -> lưu curriculum mặc định và chuyển đến placement test
-        localStorage.setItem('selectedCurriculum', JSON.stringify({
-          programId: 'chemistry',
-          curriculumType: 'ketnoi',
-          curriculumName: 'Kết nối tri thức'
-        }));
+        localStorage.setItem('selectedCurriculum', JSON.stringify({ programId: 'chemistry', curriculumType: 'ketnoi', curriculumName: 'Kết nối tri thức' }));
         navigate('/placement-test/chemistry');
         return;
       }
 
       setProgramData(chemistryProgram);
 
-      // Fetch user progress from API
       try {
         setLoading(true);
         const userUid = user?.firebaseUid || user?.uid;
+        if (!userUid) throw new Error('User UID not found');
         
-        if (!userUid) {
-          throw new Error('User UID not found');
-        }
-        
-        // Fetch actual user progress
         const userResponse = await api.get(`/users/firebase/${userUid}`);
         const userData = userResponse.data;
-        
-        // Find chemistry program progress
         const chemProgram = userData.programs?.find(p => p.programId === 'chemistry');
-        
-        // Fetch grades statistics
         const response = await api.get('/lessons/statistics');
-        
-        // Normalize response – support multiple shapes: [] | { data: [] } | { grades: [] }
         const raw = response.data;
         const list = Array.isArray(raw) ? raw : (raw.data || raw.grades || []);
 
-        // Calculate user's completed lessons per class from chemistry program
         const completedLessonsByClass = {};
         const lessonStarsMap = chemProgram?.progress?.lessonStars || {};
         
-        if (chemProgram && chemProgram.progress && chemProgram.progress.completedLessons) {
+        if (chemProgram?.progress?.completedLessons) {
           chemProgram.progress.completedLessons.forEach(uniqueId => {
-            // uniqueId format: classId * 1000 + lessonId
             const lessonClassId = Math.floor(uniqueId / 1000);
-            if (!completedLessonsByClass[lessonClassId]) {
-              completedLessonsByClass[lessonClassId] = 0;
-            }
-            completedLessonsByClass[lessonClassId]++;
+            completedLessonsByClass[lessonClassId] = (completedLessonsByClass[lessonClassId] || 0) + 1;
           });
         }
 
-        // Map and normalize each grade object (ensure numeric grade and expected keys)
         const gradesWithTopics = list.map(g => {
           const gradeNum = Number(g.grade ?? g.class ?? g.classId);
-          const completedForThisClass = completedLessonsByClass[gradeNum] || 0;
-          
           return {
-            // keep original fields, but normalize names commonly used in UI
             grade: Number.isNaN(gradeNum) ? 0 : gradeNum,
             chapters: g.chapters ?? g.totalChapters ?? 0,
             lessons: g.lessons ?? g.totalLessons ?? 0,
-            completedLessons: completedForThisClass,
-            completedChapters: g.completedChapters ?? 0,
-            totalStars: g.totalStars ?? g.stars ?? 0,
-            totalPoints: g.totalPoints ?? g.points ?? 0,
-            totalTimeSpent: g.totalTimeSpent ?? g.timeSpent ?? 0,
-            topics: topicMapping[Number(g.grade ?? g.class ?? g.classId)]?.topics || [],
-            icon: topicMapping[Number(g.grade ?? g.class ?? g.classId)]?.icon || '📚',
-            // include other original data if needed
+            completedLessons: completedLessonsByClass[gradeNum] || 0,
+            topics: topicMapping[gradeNum]?.topics || [],
+            icon: topicMapping[gradeNum]?.icon || '📚',
+            gradient: topicMapping[gradeNum]?.gradient || 'from-gray-500 to-gray-600',
             ...g
           };
         });
 
         setGrades(gradesWithTopics);
 
-        // Compute actual user stats from chemistry program
-        if (chemProgram && chemProgram.progress) {
+        if (chemProgram?.progress) {
           const completedCount = chemProgram.progress.completedLessons?.length || 0;
           const totalScore = chemProgram.progress.totalScore || 0;
-          
-          // Calculate total stars from lessonStars map
           const totalStars = Object.values(lessonStarsMap).reduce((sum, stars) => sum + (stars || 0), 0);
-          
-          const userStats = {
+          setComputedStats({
             totalLessons: gradesWithTopics.reduce((sum, g) => sum + Number(g.lessons || 0), 0),
             completedLessons: completedCount,
-            totalStars: totalStars,
-            totalPoints: totalScore,
-            averageScore: completedCount > 0 ? Math.round(totalScore / completedCount) : 0,
-            totalTimeSpent: 0 // TODO: implement time tracking
-          };
-          
-          setComputedStats(userStats);
+            totalStars,
+            totalPoints: totalScore
+          });
         } else {
-          // Fallback if no progress data
-          const aggregated = gradesWithTopics.reduce((acc, g) => {
-            acc.totalLessons += Number(g.lessons || 0);
-            return acc;
-          }, { totalLessons: 0, completedLessons: 0, totalStars: 0, totalPoints: 0, averageScore: 0, totalTimeSpent: 0 });
-
-          setComputedStats(aggregated);
+          setComputedStats({ totalLessons: gradesWithTopics.reduce((sum, g) => sum + Number(g.lessons || 0), 0), completedLessons: 0, totalStars: 0, totalPoints: 0 });
         }
-
-       } catch (error) {
-         console.error('Error fetching grades data:', error);
-         if (error.code === 'ERR_NETWORK') {
-           console.warn('⚠️ Backend server is not running. Please start the server with: npm run server:dev');
-         }
-         // Fallback to empty array if error
-         setGrades([]);
-         setComputedStats({ totalLessons: 0, completedLessons: 0, totalStars: 0, totalPoints: 0, averageScore: 0, totalTimeSpent: 0 });
-       } finally {
-         setLoading(false);
-       }
-     };
-
-     initializeData();
-   }, [user, navigate]);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setGrades([]);
+        setComputedStats({ totalLessons: 0, completedLessons: 0, totalStars: 0, totalPoints: 0 });
+      } finally {
+        setLoading(false);
+      }
+    };
+    initializeData();
+  }, [user, navigate]);
 
   if (!programData || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-violet-50/30 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Đang tải...</p>
+          <div className="relative w-14 h-14 mx-auto mb-4">
+            <div className="absolute inset-0 rounded-full border-2 border-slate-200"></div>
+            <div className="absolute inset-0 rounded-full border-2 border-violet-500 border-t-transparent animate-spin"></div>
+            <div className="absolute inset-2 rounded-full border-2 border-violet-300/50 border-b-transparent animate-spin" style={{animationDirection: 'reverse', animationDuration: '1.5s'}}></div>
+          </div>
+          <p className="text-slate-400 text-sm">Đang tải...</p>
         </div>
       </div>
     );
   }
 
-  // Prefer program-provided statistics; fallback to computedStats (from grades) if missing
-  const programStats = programData.programProgress?.statistics || null;
-  const stats = programStats || computedStats || {
-    totalLessons: 0,
-    completedLessons: 0,
-    totalStars: 0,
-    totalPoints: 0,
-    averageScore: 0,
-    totalTimeSpent: 0
-  };
-
-  // Get current class from programData.currentClass (set by placement test)
+  const stats = computedStats || { totalLessons: 0, completedLessons: 0, totalStars: 0, totalPoints: 0 };
   const currentClassId = Number(programData.currentClass ?? 8);
-  const currentClass = { classId: currentClassId, className: `Lớp ${currentClassId}` };
-  
-  // Get current class data from grades
-  const currentGradeData = grades.find(g => Number(g.grade) === Number(currentClassId));
+  const currentGradeData = grades.find(g => Number(g.grade) === currentClassId);
   const currentClassTotalLessons = currentGradeData?.lessons || 0;
   const currentClassCompletedLessons = currentGradeData?.completedLessons || 0;
-  
-  // Calculate completion rate for current class based on actual user progress
-  const completionRate = currentClassTotalLessons > 0 
-    ? Math.round((currentClassCompletedLessons / currentClassTotalLessons) * 100) 
-    : 0;
+  const completionRate = currentClassTotalLessons > 0 ? Math.round((currentClassCompletedLessons / currentClassTotalLessons) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Floating Background Elements */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-violet-50/30">
+      {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-violet-200/40 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-200/30 rounded-full blur-[100px]"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-100/40 rounded-full blur-[150px]"></div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative py-8 px-4">
-        <div className="mx-auto w-[90%]">
-          {/* Navigation Bar */}
-          <div className="flex items-center justify-between mb-6">
-            {/* Program Selector Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setShowProgramDropdown(!showProgramDropdown)}
-                className="flex items-center gap-3 px-5 py-2.5 bg-white hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-all shadow-md hover:shadow-lg border border-gray-200"
-              >
-                <span className="text-2xl">🧪</span>
-                <span>Hóa học</span>
-                <ChevronDown className={`w-5 h-5 transition-transform ${showProgramDropdown ? 'rotate-180' : ''}`} />
-              </button>
+      <div className="relative z-10 max-w-6xl mx-auto px-4 py-6">
+        {/* Header */}
+        <header className="flex items-center justify-between mb-8">
+          <div className="relative">
+            <button
+              onClick={() => setShowProgramDropdown(!showProgramDropdown)}
+              className="flex items-center gap-2.5 px-4 py-2.5 bg-white/80 backdrop-blur-xl hover:bg-white rounded-xl text-sm font-medium transition-all border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow"
+            >
+              <Beaker className="w-4 h-4 text-violet-600" />
+              <span className="text-slate-700">Hóa học</span>
+              <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showProgramDropdown ? 'rotate-180' : ''}`} />
+            </button>
 
-              {/* Dropdown Menu */}
-              {showProgramDropdown && (
-                <>
-                  {/* Backdrop */}
-                  <div 
-                    className="fixed inset-0 z-40" 
-                    onClick={() => setShowProgramDropdown(false)}
-                  ></div>
-                  
-                  {/* Dropdown Content */}
-                  <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50">
-                    <div className="p-3">
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 py-2">
-                        Chọn chương trình học
-                      </p>
-                      {availablePrograms.map((program) => {
-                        const isActive = program.id === 'chemistry';
-                        const isEnrolled = user.programs?.some(p => p.programId === program.id && p.isActive);
-                        
-                        return (
-                          <button
-                            key={program.id}
-                            onClick={() => handleProgramChange(program)}
-                            disabled={!program.available && !isEnrolled}
-                            className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${
-                              isActive 
-                                ? 'bg-blue-50 text-blue-700 border-2 border-blue-200' 
-                                : program.available
-                                ? 'hover:bg-gray-50 text-gray-700'
-                                : 'opacity-50 cursor-not-allowed text-gray-400'
-                            }`}
-                          >
-                            <span className="text-2xl">{program.icon}</span>
-                            <div className="flex-1 text-left">
-                              <p className="font-semibold">{program.name}</p>
-                              {isActive && (
-                                <p className="text-xs text-blue-600">Đang học</p>
-                              )}
-                              {!program.available && !isActive && (
-                                <p className="text-xs">Sắp ra mắt</p>
-                              )}
-                              {isEnrolled && !isActive && (
-                                <p className="text-xs text-green-600">Đã đăng ký</p>
-                              )}
-                            </div>
-                            {isActive && (
-                              <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
+            {showProgramDropdown && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setShowProgramDropdown(false)}></div>
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-xl border border-slate-200 overflow-hidden z-50 shadow-xl">
+                  <div className="p-1.5">
+                    {availablePrograms.map((program) => (
+                      <button
+                        key={program.id}
+                        onClick={() => handleProgramChange(program)}
+                        disabled={!program.available}
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
+                          program.id === 'chemistry' ? 'bg-violet-50 text-violet-700' : program.available ? 'hover:bg-slate-50 text-slate-700' : 'opacity-40 cursor-not-allowed text-slate-400'
+                        }`}
+                      >
+                        <span className="text-lg">{program.icon}</span>
+                        <span className="font-medium">{program.name}</span>
+                        {program.id === 'chemistry' && <div className="ml-auto w-2 h-2 rounded-full bg-violet-500"></div>}
+                        {!program.available && <span className="ml-auto text-[10px] text-slate-400">Sắp ra mắt</span>}
+                      </button>
+                    ))}
                   </div>
-                </>
-              )}
-            </div>
-
-            {/* Logout Button - removed, now in Sidebar */}
+                </div>
+              </>
+            )}
           </div>
+          
+          <div className="flex items-center gap-3">
+            <div className="text-right hidden sm:block">
+              <p className="text-slate-400 text-xs">Xin chào</p>
+              <p className="text-slate-700 font-medium text-sm">{user?.displayName || 'Học sinh'}</p>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-lg font-bold text-white">
+              {(user?.displayName || 'H')[0]}
+            </div>
+          </div>
+        </header>
 
-          {/* Welcome Card */}
-          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl p-8 mb-6 text-white shadow-2xl relative overflow-hidden">
-            {/* Decorative Elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+        {/* Hero Section */}
+        <div className="grid lg:grid-cols-3 gap-4 mb-6">
+          {/* Main Progress Card */}
+          <div className="lg:col-span-2 relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAzMHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
             
-            <div className="relative z-10">
+            <div className="relative p-6">
               <div className="flex items-start justify-between mb-6">
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-5xl shadow-lg">
-                      🧪
-                    </div>
-                    <div>
-                      <h1 className="text-3xl md:text-4xl font-bold mb-1">
-                        Chào mừng trở lại, {user?.displayName || user?.username || 'Học sinh'}! 👋
-                      </h1>
-                      <p className="text-blue-100 text-lg">
-                        Tiếp tục hành trình khám phá Hóa học cùng chúng tôi
-                      </p>
-                    </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <GraduationCap className="w-5 h-5 text-white/70" />
+                    <span className="text-white/70 text-sm">Đang học</span>
                   </div>
+                  <h1 className="text-3xl font-bold text-white">Lớp {currentClassId}</h1>
+                </div>
+                <div className="text-right">
+                  <div className="text-4xl font-bold text-white">{completionRate}%</div>
+                  <p className="text-white/60 text-xs">hoàn thành</p>
                 </div>
               </div>
 
-              {/* Current Progress */}
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="text-blue-100 text-sm mb-1">Đang học</p>
-                    <p className="text-2xl font-bold">{currentClass.className}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-blue-100 text-sm mb-1">Tiến độ</p>
-                    <p className="text-2xl font-bold">{completionRate}%</p>
-                  </div>
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-white/70">{currentClassCompletedLessons} / {currentClassTotalLessons} bài học</span>
+                  <span className="text-yellow-300 flex items-center gap-1 font-medium">
+                    <Star className="w-4 h-4 fill-current" /> {stats.totalStars}
+                  </span>
                 </div>
-                <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+                <div className="h-2 bg-white/20 rounded-full overflow-hidden">
                   <div 
-                    className="bg-gradient-to-r from-green-400 to-emerald-500 h-full rounded-full transition-all duration-500 shadow-lg"
+                    className="h-full bg-gradient-to-r from-emerald-400 to-green-400 rounded-full transition-all duration-1000"
                     style={{ width: `${completionRate}%` }}
                   ></div>
                 </div>
-                <div className="flex justify-between mt-3 text-sm text-blue-100">
-                  <span>{currentClassCompletedLessons} / {currentClassTotalLessons} bài học</span>
-                  <span>{stats.totalStars} ⭐</span>
-                </div>
               </div>
+
+              <button 
+                onClick={() => navigate('/program/chemistry/dashboard')}
+                className="mt-6 w-full py-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all group text-white"
+              >
+                <Play className="w-4 h-4" />
+                Tiếp tục học
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <BookOpen className="w-6 h-6 text-blue-600" />
+          {/* Stats Panel */}
+          <div className="space-y-4">
+            {[
+              { icon: BookOpen, label: 'Bài hoàn thành', value: stats.completedLessons, gradient: 'from-blue-500 to-cyan-500', bg: 'bg-blue-50' },
+              { icon: Star, label: 'Sao tích lũy', value: stats.totalStars, gradient: 'from-amber-500 to-orange-500', bg: 'bg-amber-50' },
+              { icon: Trophy, label: 'Điểm thành tích', value: stats.totalPoints, gradient: 'from-violet-500 to-purple-500', bg: 'bg-violet-50' },
+            ].map((stat, i) => (
+              <div key={i} className="flex items-center gap-4 p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 hover:border-slate-300 hover:shadow-md transition-all">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center flex-shrink-0`}>
+                  <stat.icon className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                  +{Math.floor(Math.random() * 5) + 1} tuần này
-                </span>
-              </div>
-              <p className="text-3xl font-bold text-gray-800 mb-1">{stats.completedLessons}</p>
-              <p className="text-sm text-gray-600">Bài đã hoàn thành</p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-                  <Star className="w-6 h-6 text-yellow-600" />
-                </div>
-                <Flame className="w-5 h-5 text-orange-500" />
-              </div>
-              <p className="text-3xl font-bold text-gray-800 mb-1">{stats.totalStars}</p>
-              <p className="text-sm text-gray-600">Sao tích lũy</p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                  <Trophy className="w-6 h-6 text-purple-600" />
-                </div>
-                <TrendingUp className="w-5 h-5 text-green-500" />
-              </div>
-              <p className="text-3xl font-bold text-gray-800 mb-1">{stats.totalPoints}</p>
-              <p className="text-sm text-gray-600">Điểm thành tích</p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-green-600" />
-                </div>
-                <Zap className="w-5 h-5 text-yellow-500" />
-              </div>
-              <p className="text-3xl font-bold text-gray-800 mb-1">
-                {Math.floor(stats.totalTimeSpent / 60)}
-              </p>
-              <p className="text-sm text-gray-600">Phút học tập</p>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-            <button
-              onClick={() => navigate('/program/chemistry/dashboard')}
-              className="group bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Play className="w-7 h-7" />
-                </div>
-                <svg className="w-6 h-6 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Tiếp tục học</h3>
-              <p className="text-blue-100 text-sm">Học tiếp bài học gần nhất</p>
-            </button>
-
-            <button
-              onClick={() => navigate('/advanced-challenge')}
-              className="group bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Target className="w-7 h-7" />
-                </div>
-                <svg className="w-6 h-6 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Thử thách</h3>
-              <p className="text-purple-100 text-sm">Làm bài tập nâng cao</p>
-            </button>
-
-            <button
-              onClick={() => navigate('/profile')}
-              className="group bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Award className="w-7 h-7" />
-                </div>
-                <svg className="w-6 h-6 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Hồ sơ</h3>
-              <p className="text-emerald-100 text-sm">Xem thành tích của bạn</p>
-            </button>
-
-            <button
-              onClick={() => navigate('/equation-balancer')}
-              className="group bg-gradient-to-br from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Scale className="w-7 h-7" />
-                </div>
-                <svg className="w-6 h-6 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Cân bằng PT</h3>
-              <p className="text-cyan-100 text-sm">Cân bằng phương trình hóa học</p>
-            </button>
-          </div>
-
-          {/* PK Battle Section */}
-          <div className="mt-6">
-            <button
-              onClick={() => navigate('/chemistry/pk')}
-              className="w-full group bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:from-orange-600 hover:via-red-600 hover:to-pink-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1 relative overflow-hidden"
-            >
-              {/* Animated background */}
-              <div className="absolute inset-0 opacity-20">
-                <div className="absolute top-0 left-0 w-20 h-20 bg-white rounded-full blur-2xl animate-pulse"></div>
-                <div className="absolute bottom-0 right-0 w-32 h-32 bg-yellow-300 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
-              </div>
-              
-              <div className="relative flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span className="text-4xl">⚔️</span>
-                  </div>
-                  <div className="text-left">
-                    <h3 className="text-2xl font-bold mb-1">Đấu Trường PK</h3>
-                    <p className="text-white/80 text-sm">Thách đấu cùng bạn bè • 1v1 hoặc nhiều người</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full animate-bounce">
-                    HOT
-                  </span>
-                  <svg className="w-8 h-8 opacity-70 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
+                <div className="flex-1 min-w-0">
+                  <p className="text-2xl font-bold text-slate-800">{stat.value}</p>
+                  <p className="text-slate-500 text-xs">{stat.label}</p>
                 </div>
               </div>
-            </button>
+            ))}
           </div>
         </div>
-      </section>
 
-      {/* Learning Path */}
-      <section className="py-8 px-4">
-        <div className="mx-auto w-[90%]">
-          <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
-              <span className="text-4xl">🎯</span>
-              Lộ trình học tập
-            </h2>
-            <p className="text-gray-600">Chương trình Hóa học từ lớp 8 đến lớp 12</p>
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+          {[
+            { icon: Target, title: 'Thử thách', desc: 'Bài tập nâng cao', gradient: 'from-violet-600 to-purple-600', path: '/advanced-challenge' },
+            { icon: Scale, title: 'Cân bằng PT', desc: 'Phương trình hóa học', gradient: 'from-cyan-600 to-blue-600', path: '/equation-balancer' },
+            { icon: Swords, title: 'PK Battle', desc: 'Đấu trường 1v1', gradient: 'from-orange-600 to-rose-600', path: '/chemistry/pk', hot: true },
+            { icon: Award, title: 'Hồ sơ', desc: 'Thành tích của bạn', gradient: 'from-emerald-600 to-teal-600', path: '/profile' },
+          ].map((action, i) => (
+            <button
+              key={i}
+              onClick={() => navigate(action.path)}
+              className="group relative overflow-hidden rounded-xl p-4 text-left transition-all hover:-translate-y-1 hover:shadow-xl"
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${action.gradient} opacity-90 group-hover:opacity-100 transition-opacity`}></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.2),transparent)]"></div>
+              
+              <div className="relative">
+                {action.hot && (
+                  <span className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-yellow-400 text-yellow-900 text-[9px] font-bold rounded animate-pulse">HOT</span>
+                )}
+                <action.icon className="w-6 h-6 mb-3 text-white/90" />
+                <h3 className="font-bold text-white text-sm mb-0.5">{action.title}</h3>
+                <p className="text-white/60 text-[11px]">{action.desc}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Learning Path */}
+        <section>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-slate-800">Lộ trình học tập</h2>
+              <p className="text-slate-500 text-xs">Hóa học từ lớp 8 đến lớp 12</p>
+            </div>
           </div>
 
-          <div className="space-y-4">
-            {grades.map(({ grade, topics, chapters, lessons, icon, completedLessons = 0 }) => {
-              const isCurrentGrade = currentClass.classId === grade;
-              const isPastGrade = grade < currentClass.classId;
-              const classProgress = programData.programProgress?.classProgress?.find(c => c.classId === grade);
-              // Past grades should always be unlocked for review
-              const isUnlocked = classProgress?.isUnlocked || grade <= currentClass.classId || isPastGrade;
-              const isCompleted = classProgress?.completedAt || isPastGrade;
-              let progress = 0;
-              if (classProgress) {
-                progress = Math.round((classProgress.chapters?.filter(ch => ch.completedAt).length || 0) / (chapters || 1) * 100);
-              } else {
-                // Fallback: compute progress from completedLessons (count) vs total lessons
-                progress = lessons > 0 ? Math.round((completedLessons || 0) / lessons * 100) : 0;
-              }
-              // If this is a past grade (lower than current), treat as 100% complete for display
+          <div className="grid gap-3">
+            {grades.map(({ grade, topics, chapters, lessons, icon, gradient, completedLessons = 0 }) => {
+              const isCurrentGrade = currentClassId === grade;
+              const isPastGrade = grade < currentClassId;
+              const isUnlocked = grade <= currentClassId;
+              const progress = lessons > 0 ? Math.round((completedLessons / lessons) * 100) : 0;
               const displayProgress = isPastGrade ? 100 : progress;
 
               return (
                 <div 
                   key={grade}
-                  className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all hover:shadow-xl ${
-                    !isUnlocked ? 'opacity-60' : ''
+                  onClick={() => isUnlocked && navigate(`/class/${grade}`)}
+                  className={`relative overflow-hidden rounded-xl border transition-all cursor-pointer ${
+                    isCurrentGrade 
+                      ? 'bg-white border-violet-300 shadow-lg shadow-violet-100 hover:shadow-xl' 
+                      : isUnlocked 
+                        ? 'bg-white/80 border-slate-200 hover:border-slate-300 hover:shadow-md' 
+                        : 'bg-slate-50/50 border-slate-200/50 opacity-60 cursor-not-allowed'
                   }`}
                 >
-                  <div className={`p-6 ${
-                    isCurrentGrade 
-                      ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500' 
-                      : ''
-                  }`}>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg ${
-                          isCurrentGrade 
-                            ? 'bg-gradient-to-br from-blue-500 to-indigo-600' 
-                            : isUnlocked
-                            ? 'bg-gradient-to-br from-gray-100 to-gray-200'
-                            : 'bg-gray-100'
-                        }`}>
-                          {icon}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-3 mb-1">
-                            <h3 className="text-2xl font-bold text-gray-800">
-                              Lớp {grade}
-                            </h3>
-                            {isCurrentGrade && (
-                              <span className="bg-blue-500 text-white text-sm px-3 py-1 rounded-full font-medium flex items-center gap-1">
-                                <Zap className="w-4 h-4" />
-                                Đang học
-                              </span>
-                            )}
-                            {isCompleted && (
-                              <span className="bg-green-500 text-white text-sm px-3 py-1 rounded-full font-medium flex items-center gap-1">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                Hoàn thành
-                              </span>
-                            )}
-                            {!isUnlocked && (
-                              <span className="bg-gray-300 text-gray-600 text-sm px-3 py-1 rounded-full font-medium flex items-center gap-1">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                                </svg>
-                                Khóa
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-gray-600 flex items-center gap-3 text-sm">
-                            <span className="flex items-center gap-1">
-                              <BookOpen className="w-4 h-4" />
-                              {chapters} chương
-                            </span>
-                            <span className="text-gray-400">•</span>
-                            <span>{lessons} bài học</span>
-                            {isUnlocked && !isCompleted && (
-                              <>
-                                <span className="text-gray-400">•</span>
-                                <span className="text-blue-600 font-medium">{progress}% hoàn thành</span>
-                              </>
-                            )}
-                          </p>
-                        </div>
+                  {isCurrentGrade && <div className="absolute inset-0 bg-gradient-to-r from-violet-50/50 via-transparent to-purple-50/50"></div>}
+                  
+                  <div className="relative p-4">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${isUnlocked ? gradient : 'from-slate-300 to-slate-400'} flex items-center justify-center text-2xl flex-shrink-0 ${isCurrentGrade ? 'shadow-lg shadow-violet-200' : ''}`}>
+                        {icon}
                       </div>
                       
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-bold text-slate-800">Lớp {grade}</h3>
+                          {isCurrentGrade && (
+                            <span className="px-2 py-0.5 bg-violet-100 text-violet-700 text-[10px] font-semibold rounded-full flex items-center gap-1">
+                              <Flame className="w-3 h-3" /> Đang học
+                            </span>
+                          )}
+                          {isPastGrade && (
+                            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-semibold rounded-full">✓ Xong</span>
+                          )}
+                          {!isUnlocked && (
+                            <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-semibold rounded-full">🔒 Khóa</span>
+                          )}
+                        </div>
+                        <p className="text-slate-500 text-xs mb-2">{chapters} chương • {lessons} bài</p>
+                        
+                        {isUnlocked && (
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                              <div className={`h-full rounded-full bg-gradient-to-r ${gradient}`} style={{ width: `${displayProgress}%` }}></div>
+                            </div>
+                            <span className="text-xs text-slate-500 font-medium w-8">{displayProgress}%</span>
+                          </div>
+                        )}
+                      </div>
+
                       {isUnlocked && (
-                        <button
-                          onClick={() => navigate(`/class/${grade}`)}
-                          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all hover:scale-105 shadow-lg flex items-center gap-2"
-                        >
-                          {isCurrentGrade ? 'Học tiếp' : (isPastGrade ? 'Xem lại' : 'Xem chi tiết')}
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </button>
+                        <ChevronRight className="w-5 h-5 text-slate-400 flex-shrink-0" />
                       )}
                     </div>
 
-                    {/* Progress Bar */}
                     {isUnlocked && (
-                      <div className="mb-4">
-                        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                          <div 
-                            className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500"
-                            style={{ width: `${displayProgress}%` }}
-                          ></div>
-                        </div>
+                      <div className="flex flex-wrap gap-1.5 mt-3 pl-[72px]">
+                        {topics.slice(0, 4).map((topic, idx) => (
+                          <span key={idx} className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] rounded-md">{topic}</span>
+                        ))}
+                        {topics.length > 4 && <span className="px-2 py-0.5 bg-slate-50 text-slate-400 text-[10px] rounded-md">+{topics.length - 4}</span>}
                       </div>
                     )}
-
-                    {/* Topics */}
-                    <div className="flex flex-wrap gap-2">
-                      {topics.map((topic, idx) => (
-                        <span 
-                          key={idx}
-                          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                            isUnlocked 
-                              ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
-                              : 'bg-gray-200 text-gray-400'
-                          }`}
-                        >
-                          {topic}
-                        </span>
-                      ))}
-                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Features Section */}
-      <section className="py-12 px-4 bg-gradient-to-b from-transparent to-blue-50/50">
-        <div className="mx-auto w-[90%]">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-3">
-              Tại sao chọn chương trình Hóa học của chúng tôi?
-            </h2>
-            <p className="text-gray-600 text-lg">
-              Phương pháp học hiện đại, hiệu quả cao
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-lg">
-                🎯
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Học theo trình độ</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Nội dung được thiết kế phù hợp với từng lớp học, từ cơ bản đến nâng cao, 
-                giúp học sinh tiếp thu kiến thức một cách logic và hiệu quả.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-lg">
-                🔬
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Thực hành tương tác</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Thí nghiệm ảo 3D và bài tập thực hành đa dạng giúp học sinh trải nghiệm 
-                và hiểu sâu các hiện tượng hóa học một cách sinh động.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-lg">
-                📊
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Theo dõi tiến độ</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Hệ thống đánh giá và báo cáo chi tiết giúp học sinh và phụ huynh 
-                theo dõi quá trình học tập và điều chỉnh phương pháp phù hợp.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <style>{`
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
+        {/* Footer */}
+        <footer className="mt-12 py-6 border-t border-slate-200 text-center">
+          <p className="text-slate-400 text-xs">© 2024 KL Learning • Học Hóa học thông minh</p>
+        </footer>
+      </div>
     </div>
   );
 };
