@@ -86,11 +86,6 @@ const Sidebar = ({ children }) => {
       icon: Beaker,
       path: '/chemistry-lab',
       gradient: 'from-indigo-500 to-purple-500'
-    },
-    {      title: 'Hồ sơ',
-      icon: User,
-      path: '/profile',
-      gradient: 'from-emerald-500 to-teal-500'
     }
   ];
 
@@ -237,35 +232,66 @@ const Sidebar = ({ children }) => {
 
         {/* User Info & Logout */}
         <div className="p-4 border-t border-gray-200/50 space-y-3">
-          {/* User Card */}
+          {/* User Card - Links to Profile */}
           {!isCollapsed && user && (
-            <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl">
+            <Link
+              to="/profile"
+              className={`
+                flex items-center gap-3 p-3 rounded-xl transition-all duration-300 group
+                ${isActive('/profile')
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 shadow-lg'
+                  : 'bg-gradient-to-r from-gray-50 to-gray-100 hover:from-emerald-50 hover:to-teal-50'
+                }
+              `}
+            >
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
+                <div className={`
+                  w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-md transition-all duration-300
+                  ${isActive('/profile')
+                    ? 'bg-white/20 text-white'
+                    : 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white group-hover:scale-105'
+                  }
+                `}>
                   {user.displayName?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || 'U'}
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
+                <div className={`
+                  absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 border-2 rounded-full
+                  ${isActive('/profile') ? 'bg-white border-emerald-500' : 'bg-green-500 border-white'}
+                `}></div>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate">
+                <p className={`text-sm font-semibold truncate ${isActive('/profile') ? 'text-white' : 'text-gray-800'}`}>
                   {user.displayName || 'Người dùng'}
                 </p>
-                <p className="text-xs text-gray-500 truncate">
+                <p className={`text-xs truncate ${isActive('/profile') ? 'text-white/80' : 'text-gray-500'}`}>
                   {user.email}
                 </p>
               </div>
-            </div>
+              <User className={`w-5 h-5 ${isActive('/profile') ? 'text-white' : 'text-gray-400 group-hover:text-emerald-500'}`} />
+            </Link>
           )}
 
           {isCollapsed && user && (
-            <div className="flex justify-center">
-              <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
+            <Link
+              to="/profile"
+              className="flex justify-center"
+            >
+              <div className="relative group">
+                <div className={`
+                  w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-md transition-all duration-300
+                  ${isActive('/profile')
+                    ? 'bg-gradient-to-br from-emerald-500 to-teal-500 text-white ring-2 ring-emerald-300'
+                    : 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white group-hover:scale-105'
+                  }
+                `}>
                   {user.displayName?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || 'U'}
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
+                <div className={`
+                  absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 border-2 rounded-full
+                  ${isActive('/profile') ? 'bg-white border-emerald-500' : 'bg-green-500 border-white'}
+                `}></div>
               </div>
-            </div>
+            </Link>
           )}
 
           {/* Logout Button */}

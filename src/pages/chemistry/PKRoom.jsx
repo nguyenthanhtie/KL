@@ -922,8 +922,8 @@ const PKRoom = () => {
                   <span className="pkroom-stat-label">Trả lời đúng</span>
                 </div>
                 <div className="pkroom-stat">
-                  <span className="pkroom-stat-value">+{Math.floor(myResult.score / 10)}</span>
-                  <span className="pkroom-stat-label">XP nhận được</span>
+                  <span className="pkroom-stat-value">+{myResult.xpGained || (10 + myResult.correctAnswers * 5 + (myResult.rank <= 3 ? 30 : 0) + (myResult.rank === 1 ? 50 : 0))}</span>
+                  <span className="pkroom-stat-label">🎯 EXP nhiệm vụ</span>
                 </div>
               </div>
             </div>

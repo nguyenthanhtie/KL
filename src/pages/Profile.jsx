@@ -15,8 +15,10 @@ import {
   Award,
   Zap,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  MessageCircle
 } from 'lucide-react';
+import { showMissionBubble } from '../components/MissionBubble';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -299,10 +301,10 @@ const Profile = () => {
                     {userData?.email || user?.email}
                   </p>
 
-                  {/* XP Progress */}
+                  {/* XP Progress - New Mission-based EXP System */}
                   <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-4 mb-6">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700">Kinh nghiệm</span>
+                      <span className="text-sm font-medium text-gray-700">🎯 Kinh nghiệm</span>
                       <span className="text-sm text-purple-600 font-semibold">{userData?.xp || 0} XP</span>
                     </div>
                     <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -314,6 +316,14 @@ const Profile = () => {
                     <p className="text-xs text-gray-500 mt-2 text-center">
                       Còn {100 - ((userData?.xp || 0) % 100)} XP để lên level tiếp theo
                     </p>
+                    <div className="mt-3 p-2 bg-white/50 rounded-lg">
+                      <p className="text-xs text-gray-600 text-center">
+                        💡 Hoàn thành bài học: <span className="font-semibold text-green-600">+20-60 XP</span>
+                      </p>
+                      <p className="text-xs text-gray-600 text-center">
+                        🏆 Hoàn thành thử thách: <span className="font-semibold text-purple-600">+30-95 XP</span>
+                      </p>
+                    </div>
                   </div>
 
                   {/* Current Program Info */}
@@ -496,6 +506,28 @@ const Profile = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Show Mission Bubble Button */}
+        <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                <Target className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">Nhiệm vụ</h2>
+                <p className="text-gray-500 text-sm">Xem danh sách nhiệm vụ và tiến độ</p>
+              </div>
+            </div>
+            <button
+              onClick={showMissionBubble}
+              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Mở bảng nhiệm vụ
+            </button>
           </div>
         </div>
       </div>

@@ -477,19 +477,29 @@ router.post('/attempts/complete', async (req, res) => {
       user.updateStudyTime(programId || 'chemistry', timeSpentMinutes);
     }
 
-    // 7. Add XP based on stars
-    const xpReward = stars * 10;
-    user.addXP(xpReward);
+    // XP is now awarded through MISSION completion only (not per challenge)
+    // Track today's challenge completion for daily missions
+    const isFirstTime = currentStars === 0;
+    
+    // Update today's progress for daily missions
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    
+    if (!user.todayProgress || user.todayProgress.date !== todayStr) {
+      user.todayProgress = { date: todayStr, lessons: 0, challenges: 0, perfectLessons: 0, login: 1 };
+    }
+    user.todayProgress.challenges = (user.todayProgress.challenges || 0) + 1;
 
     // QUAN TRỌNG: Đánh dấu programs đã thay đổi
     user.markModified('programs');
+    user.markModified('todayProgress');
     
     console.log('📝 After update - completedChallenges:', program.progress.completedChallenges);
     console.log('📝 Saving user...');
     
     await user.save();
     
-    console.log('✅ Challenge completed and saved:', challengeSlug, '| Stars:', stars, '| XP:', xpReward);
+    console.log('✅ Challenge completed and saved:', challengeSlug, '| Stars:', stars);
 
     // Verify save
     const verifyUser = await User.findById(userId);
@@ -500,8 +510,9 @@ router.post('/attempts/complete', async (req, res) => {
       success: true, 
       stars,
       percentage,
-      xpReward,
+      isFirstTime,
       completedChallenges: program.progress.completedChallenges,
+      todayProgress: user.todayProgress,
       message: 'Challenge completed successfully' 
     });
   } catch (error) {

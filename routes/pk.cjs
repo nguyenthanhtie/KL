@@ -852,13 +852,13 @@ router.post('/:roomCode/player-finish', async (req, res) => {
       room.results = results;
       await room.save();
 
-      // Update user stats
+      // XP is now awarded through MISSION completion only
+      // Update user totalScore only (no XP)
       for (const result of results) {
         try {
           await User.findByIdAndUpdate(result.oderId, {
             $inc: {
-              totalScore: result.score,
-              xp: Math.floor(result.score / 10)
+              totalScore: result.score
             }
           });
         } catch (e) {
@@ -911,13 +911,13 @@ router.post('/:roomCode/finish', async (req, res) => {
     room.results = results;
     await room.save();
 
-    // Update user stats
+    // XP is now awarded through MISSION completion only
+    // Update user totalScore only (no XP)
     for (const result of results) {
       try {
         await User.findByIdAndUpdate(result.oderId, {
           $inc: {
-            totalScore: result.score,
-            xp: Math.floor(result.score / 10)
+            totalScore: result.score
           }
         });
       } catch (e) {

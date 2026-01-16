@@ -52,6 +52,31 @@ const userSchema = new mongoose.Schema({
     min: 1
   },
   
+  // Claimed missions (for mission-based XP system) - Regular missions
+  claimedMissions: {
+    type: [String],
+    default: []
+  },
+  
+  // Daily claimed missions (reset daily)
+  dailyClaimedMissions: {
+    type: [String],
+    default: []
+  },
+  dailyMissionsDate: {
+    type: String, // Format: 'YYYY-MM-DD'
+    default: ''
+  },
+  
+  // Today's progress for daily missions
+  todayProgress: {
+    date: { type: String, default: '' }, // Format: 'YYYY-MM-DD'
+    lessons: { type: Number, default: 0 },
+    challenges: { type: Number, default: 0 },
+    perfectLessons: { type: Number, default: 0 },
+    login: { type: Number, default: 0 }
+  },
+  
   // Chương trình học
   programs: [{
     programId: {

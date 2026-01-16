@@ -255,10 +255,13 @@ router.post('/submit-lesson', async (req, res) => {
   try {
     const { firebaseUid, programId, pathId, lessonId, score, totalQuestions, studyDuration } = req.body;
 
-    const user = await User.findOne({ firebaseUid });
+    let user = await User.findOne({ firebaseUid });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+
+    // Check and reset daily data
+    user = checkAndResetDailyData(user);
 
     // Calculate percentage and stars
     const percentage = (score / totalQuestions) * 100;
@@ -285,11 +288,13 @@ router.post('/submit-lesson', async (req, res) => {
     // Update lesson stars based on percentage
     const stars = user.updateLessonStars(programId, pathId, lessonId, percentage);
 
-    // Add XP based on stars: 1 star=20 XP, 2 stars=40 XP, 3 stars=60 XP
-    if (completed && stars > 0) {
-      const xpGain = stars * 20;
-      user.xp = (user.xp || 0) + xpGain;
-      console.log(`✨ Added ${xpGain} XP to user (${stars} stars)`);
+    // XP is now awarded through MISSION completion only (not per lesson)
+    // But we need to track today's progress for daily missions
+    if (completed) {
+      user.todayProgress.lessons = (user.todayProgress.lessons || 0) + 1;
+      if (stars === 3) {
+        user.todayProgress.perfectLessons = (user.todayProgress.perfectLessons || 0) + 1;
+      }
     }
 
     // Update study time and streak if duration provided
@@ -309,9 +314,9 @@ router.post('/submit-lesson', async (req, res) => {
       score,
       totalQuestions,
       percentage: percentage.toFixed(2),
-      xpGained: completed && stars > 0 ? stars * 20 : 0,
       program: updatedProgram,
-      studyStats
+      studyStats,
+      todayProgress: user.todayProgress
     });
   } catch (error) {
     console.error('❌ Error updating lesson progress:', error);
@@ -351,10 +356,9 @@ router.post('/progress', async (req, res) => {
       learningProgram.grades.push(gradeData);
     }
 
-    // Add lesson if not exists
+    // XP is now awarded through MISSION completion only
     if (!gradeData.lessons.includes(lesson)) {
       gradeData.lessons.push(lesson);
-      user.xp += 10; // Add XP for completing lesson
     }
 
     await user.save();
@@ -502,16 +506,54 @@ router.post('/enroll-program', async (req, res) => {
   }
 });
 
+// Helper function to get today's date string
+const getTodayDateString = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+};
+
+// Helper function to check and reset daily data if new day
+const checkAndResetDailyData = (user) => {
+  const today = getTodayDateString();
+  
+  // Reset daily claimed missions if it's a new day
+  if (user.dailyMissionsDate !== today) {
+    user.dailyClaimedMissions = [];
+    user.dailyMissionsDate = today;
+  }
+  
+  // Reset today progress if it's a new day
+  if (!user.todayProgress || user.todayProgress.date !== today) {
+    user.todayProgress = {
+      date: today,
+      lessons: 0,
+      challenges: 0,
+      perfectLessons: 0,
+      login: 1 // Login counts as 1 when they access
+    };
+  } else {
+    // Mark login for today
+    user.todayProgress.login = 1;
+  }
+  
+  return user;
+};
+
 // Get user by firebaseUid
 router.get('/firebase/:firebaseUid', async (req, res) => {
   try {
-    const user = await User.findOne({ firebaseUid: req.params.firebaseUid });
+    let user = await User.findOne({ firebaseUid: req.params.firebaseUid });
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // Check and reset daily data
+    user = checkAndResetDailyData(user);
+    await user.save();
+
     res.json({
+      _id: user._id,
       id: user._id,
       username: user.username,
       email: user.email,
@@ -521,7 +563,10 @@ router.get('/firebase/:firebaseUid', async (req, res) => {
       level: user.level,
       programs: user.programs,
       profile: user.profile,
-      firebaseUid: user.firebaseUid
+      firebaseUid: user.firebaseUid,
+      claimedMissions: user.claimedMissions || [],
+      dailyClaimedMissions: user.dailyClaimedMissions || [],
+      todayProgress: user.todayProgress || { lessons: 0, challenges: 0, perfectLessons: 0, login: 1 }
     });
   } catch (error) {
     console.error('❌ Error fetching user by firebaseUid:', error);
@@ -755,6 +800,117 @@ router.post('/select-curriculum', async (req, res) => {
       message: 'Server error', 
       error: error.message 
     });
+  }
+});
+
+// ==================== MISSION SYSTEM ====================
+
+// Get user's completed missions
+router.get('/:userId/missions', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Check and reset daily data
+    user = checkAndResetDailyData(user);
+    await user.save();
+    
+    res.json({
+      success: true,
+      claimedMissions: user.claimedMissions || [],
+      dailyClaimedMissions: user.dailyClaimedMissions || [],
+      todayProgress: user.todayProgress || { lessons: 0, challenges: 0, perfectLessons: 0, login: 1 },
+      xp: user.xp || 0,
+      level: user.level || 1
+    });
+  } catch (error) {
+    console.error('❌ Get missions error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Claim a mission reward
+router.post('/:userId/missions/claim', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { missionId, missionExp, isDaily } = req.body;
+    
+    if (!missionId || !missionExp) {
+      return res.status(400).json({ message: 'Mission ID and EXP are required' });
+    }
+    
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Check and reset daily data first
+    user = checkAndResetDailyData(user);
+    
+    // Handle daily vs regular missions
+    if (isDaily) {
+      // Initialize dailyClaimedMissions array if not exists
+      if (!user.dailyClaimedMissions) {
+        user.dailyClaimedMissions = [];
+      }
+      
+      // Check if daily mission already claimed today
+      if (user.dailyClaimedMissions.includes(missionId)) {
+        return res.status(400).json({ 
+          success: false,
+          message: 'Daily mission already claimed today' 
+        });
+      }
+      
+      // Mark daily mission as claimed
+      user.dailyClaimedMissions.push(missionId);
+    } else {
+      // Initialize claimedMissions array if not exists
+      if (!user.claimedMissions) {
+        user.claimedMissions = [];
+      }
+      
+      // Check if regular mission already claimed
+      if (user.claimedMissions.includes(missionId)) {
+        return res.status(400).json({ 
+          success: false,
+          message: 'Mission already claimed' 
+        });
+      }
+      
+      // Mark regular mission as claimed
+      user.claimedMissions.push(missionId);
+    }
+    
+    // Add XP
+    user.xp = (user.xp || 0) + missionExp;
+    
+    // Check for level up (every 100 XP = 1 level)
+    const newLevel = Math.floor(user.xp / 100) + 1;
+    const leveledUp = newLevel > (user.level || 1);
+    user.level = newLevel;
+    
+    await user.save();
+    
+    console.log(`🎁 ${isDaily ? 'Daily' : 'Regular'} mission claimed: ${missionId} | +${missionExp} XP | User: ${userId}`);
+    
+    res.json({
+      success: true,
+      message: 'Mission claimed successfully',
+      missionId,
+      isDaily,
+      xpGained: missionExp,
+      totalXp: user.xp,
+      level: user.level,
+      leveledUp
+    });
+  } catch (error) {
+    console.error('❌ Claim mission error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 

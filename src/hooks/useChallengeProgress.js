@@ -196,6 +196,8 @@ const useChallengeProgress = (challengeSlug, options = {}) => {
         console.log('✅ Challenge completed:', {
           stars: data.stars,
           xpReward: data.xpReward,
+          xpBreakdown: data.xpBreakdown,
+          isFirstTime: data.isFirstTime,
           completedChallenges: data.completedChallenges
         });
         
@@ -203,6 +205,8 @@ const useChallengeProgress = (challengeSlug, options = {}) => {
           success: true,
           stars: data.stars,
           xpReward: data.xpReward,
+          xpBreakdown: data.xpBreakdown,
+          isFirstTime: data.isFirstTime,
           percentage: data.percentage
         };
       } else {

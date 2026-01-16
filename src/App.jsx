@@ -75,6 +75,9 @@ import PKRoom from './pages/chemistry/PKRoom';
 import ChemistryLab from './pages/ChemistryLab';
 import LabAdventure from './pages/LabAdventure';
 
+// Mission Bubble Component
+import MissionBubble from './components/MissionBubble';
+
 
 const AppContent = () => {
   const location = useLocation();
@@ -175,6 +178,7 @@ function App() {
       <AuthProvider>
         <PKRoomProvider>
           <AppContent />
+          <MissionBubble />
         </PKRoomProvider>
       </AuthProvider>
     </Router>
