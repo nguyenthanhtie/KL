@@ -105,9 +105,9 @@ const TongKetLop8 = () => {
       type: 'multiple-choice',
       chapter: 'Mol - Tính toán',
       question: '1 mol bất kỳ chất khí nào ở đktc đều có thể tích là:',
-      options: ['11.2 lít', '22.4 lít', '33.6 lít', '44.8 lít'],
+      options: ['12.395 lít', '24.79 lít', '37.185 lít', '49.58 lít'],
       correctAnswer: 1,
-      explanation: 'Ở điều kiện tiêu chuẩn (đktc: 0°C, 1 atm), 1 mol bất kỳ chất khí nào cũng có thể tích 22.4 lít.'
+      explanation: 'Ở điều kiện tiêu chuẩn (đktc: 25°C, 1 bar) theo chương trình GDPT 2018, 1 mol bất kỳ chất khí nào cũng có thể tích khoảng 24.79 lít.'
     },
 
     // PHẦN 4: OXYGEN - KHÔNG KHÍ

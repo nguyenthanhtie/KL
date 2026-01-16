@@ -677,3 +677,200 @@ export const getDifficultyInfo = (difficulty) => {
   };
   return info[difficulty] || info.medium;
 };
+
+// Hướng dẫn chi tiết cho từng loại objective với đường dẫn trực tiếp
+export const objectiveGuides = {
+  watch_video: {
+    icon: '🎬',
+    title: 'Xem Video',
+    description: 'Xem video bài giảng để hiểu kiến thức',
+    actionPath: '/program/chemistry/dashboard',
+    actionLabel: 'Đi đến Bài học'
+  },
+  read_lesson: {
+    icon: '📖',
+    title: 'Đọc Bài học',
+    description: 'Đọc nội dung bài học lý thuyết',
+    actionPath: '/program/chemistry/dashboard',
+    actionLabel: 'Đi đến Bài học'
+  },
+  answer_quiz: {
+    icon: '❓',
+    title: 'Trả lời Câu hỏi',
+    description: 'Trả lời đúng các câu hỏi ôn tập',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  exercise: {
+    icon: '✏️',
+    title: 'Làm Bài tập',
+    description: 'Hoàn thành các bài tập thực hành',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  mini_test: {
+    icon: '📝',
+    title: 'Bài kiểm tra Mini',
+    description: 'Hoàn thành bài kiểm tra ngắn',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  simulation: {
+    icon: '🧪',
+    title: 'Mô phỏng Thí nghiệm',
+    description: 'Thực hiện thí nghiệm ảo trên máy tính',
+    actionPath: '/chemistry-lab',
+    actionLabel: 'Đi đến Phòng thí nghiệm'
+  },
+  explore: {
+    icon: '🔍',
+    title: 'Khám phá',
+    description: 'Tự do khám phá và tìm hiểu',
+    actionPath: '/chemistry-lab',
+    actionLabel: 'Đi đến Phòng thí nghiệm'
+  },
+  view_elements: {
+    icon: '⚛️',
+    title: 'Xem Nguyên tố',
+    description: 'Xem thông tin các nguyên tố trong bảng tuần hoàn',
+    actionPath: '/chemistry-lab',
+    actionLabel: 'Đi đến Phòng thí nghiệm'
+  },
+  quiz_streak: {
+    icon: '🔥',
+    title: 'Chuỗi Câu hỏi',
+    description: 'Trả lời đúng liên tiếp không được sai',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  drawing: {
+    icon: '🎨',
+    title: 'Vẽ/Xây dựng',
+    description: 'Vẽ cấu trúc hoặc xây dựng mô hình',
+    actionPath: '/advanced-challenge/xay-dung-phan-tu',
+    actionLabel: 'Đi đến Xây dựng phân tử'
+  },
+  prediction: {
+    icon: '🔮',
+    title: 'Dự đoán',
+    description: 'Dự đoán kết quả dựa trên kiến thức',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  classify: {
+    icon: '📂',
+    title: 'Phân loại',
+    description: 'Phân loại các chất hoặc phản ứng vào đúng nhóm',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  identify: {
+    icon: '🎯',
+    title: 'Nhận diện',
+    description: 'Nhận diện và xác định đúng đối tượng',
+    actionPath: '/advanced-challenge/nhan-biet-dung-dich',
+    actionLabel: 'Đi đến Nhận biết dung dịch'
+  },
+  comparison: {
+    icon: '⚖️',
+    title: 'So sánh',
+    description: 'So sánh và tìm điểm giống/khác nhau',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  experiment: {
+    icon: '🔬',
+    title: 'Thí nghiệm',
+    description: 'Thực hiện thí nghiệm và quan sát kết quả',
+    actionPath: '/chemistry-lab',
+    actionLabel: 'Đi đến Phòng thí nghiệm'
+  },
+  balance_equation: {
+    icon: '⚖️',
+    title: 'Cân bằng Phương trình',
+    description: 'Cân bằng phương trình hóa học',
+    actionPath: '/advanced-challenge/can-bang',
+    actionLabel: 'Đi đến Cân bằng phương trình'
+  },
+  balance_redox: {
+    icon: '⚡',
+    title: 'Cân bằng Oxi hóa-Khử',
+    description: 'Cân bằng phản ứng oxi hóa khử',
+    actionPath: '/advanced-challenge/tinh-oxi-hoa',
+    actionLabel: 'Đi đến Tính oxi hóa'
+  },
+  calculate: {
+    icon: '🧮',
+    title: 'Tính toán',
+    description: 'Thực hiện các phép tính hóa học',
+    actionPath: '/advanced-challenge/mol-quick-calc',
+    actionLabel: 'Đi đến Tính toán Mol'
+  },
+  naming: {
+    icon: '🏷️',
+    title: 'Đặt tên',
+    description: 'Gọi tên đúng các hợp chất hóa học',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  speed_challenge: {
+    icon: '⚡',
+    title: 'Thử thách Tốc độ',
+    description: 'Hoàn thành nhanh nhất có thể',
+    actionPath: '/advanced-challenge',
+    actionLabel: 'Đi đến Thử thách'
+  },
+  craft_chemical: {
+    icon: '⚗️',
+    title: 'Chế tạo Hóa chất',
+    description: 'Chế tạo hóa chất trong xưởng',
+    actionPath: '/lab-adventure',
+    actionLabel: 'Đi đến Phiêu lưu Lab'
+  },
+  perform_reaction: {
+    icon: '🧪',
+    title: 'Thực hiện Phản ứng',
+    description: 'Thực hiện phản ứng hóa học',
+    actionPath: '/chemistry-lab',
+    actionLabel: 'Đi đến Phòng thí nghiệm'
+  },
+  login: {
+    icon: '📅',
+    title: 'Đăng nhập',
+    description: 'Đăng nhập vào ứng dụng',
+    actionPath: '/',
+    actionLabel: 'Trang chủ'
+  },
+  safety_test: {
+    icon: '🦺',
+    title: 'Kiểm tra An toàn',
+    description: 'Hoàn thành bài kiểm tra an toàn phòng thí nghiệm',
+    actionPath: '/advanced-challenge/phong-thi-nghiem',
+    actionLabel: 'Đi đến Phòng thí nghiệm an toàn'
+  },
+  reaction_streak: {
+    icon: '⛓️',
+    title: 'Chuỗi Phản ứng',
+    description: 'Thực hiện nhiều phản ứng đúng liên tiếp',
+    actionPath: '/chemistry-lab',
+    actionLabel: 'Đi đến Phòng thí nghiệm'
+  },
+  craft_all: {
+    icon: '🧙',
+    title: 'Chế tạo Tất cả',
+    description: 'Chế tạo thành công tất cả hóa chất có thể',
+    actionPath: '/lab-adventure',
+    actionLabel: 'Đi đến Phiêu lưu Lab'
+  }
+};
+
+// Hàm lấy hướng dẫn cho objective
+export const getObjectiveGuide = (objectiveType) => {
+  return objectiveGuides[objectiveType] || {
+    icon: '📋',
+    title: 'Nhiệm vụ',
+    description: 'Hoàn thành nhiệm vụ được giao',
+    howTo: 'Làm theo hướng dẫn trên màn hình',
+    tips: ['Đọc kỹ yêu cầu', 'Làm từng bước một']
+  };
+};

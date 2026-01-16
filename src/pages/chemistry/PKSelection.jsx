@@ -43,11 +43,6 @@ const PKSelection = () => {
       return chemistryProgram.currentClass;
     }
     
-    // Fallback về profile grade
-    if (user.profile?.grade) {
-      return user.profile.grade;
-    }
-    
     // Default
     return 10;
   };

@@ -37,8 +37,7 @@ router.post('/register', async (req, res) => {
       displayName: username,
       xp: 0,
       level: 1,
-      programs: [], // Không tự động enroll, chờ làm placement test
-      profile: {}
+      programs: [] // Không tự động enroll, chờ làm placement test
     });
 
     await newUser.save();
@@ -68,8 +67,7 @@ router.post('/register', async (req, res) => {
         uid: newUser.firebaseUid, // Add uid alias for compatibility
         xp: newUser.xp,
         level: newUser.level,
-        programs: newUser.programs,
-        profile: newUser.profile
+        programs: newUser.programs
       }
     });
   } catch (error) {
@@ -103,8 +101,7 @@ router.post('/google-login', async (req, res) => {
         avatar: avatar || '',
         xp: 0,
         level: 1,
-        programs: [], // Không tự động enroll, chờ làm placement test
-        profile: {}
+        programs: [] // Không tự động enroll, chờ làm placement test
       });
 
       await user.save();
@@ -143,7 +140,6 @@ router.post('/google-login', async (req, res) => {
         xp: user.xp,
         level: user.level,
         programs: user.programs,
-        profile: user.profile,
         avatar: user.avatar
       }
     });
@@ -180,8 +176,7 @@ router.post('/email-login', async (req, res) => {
         displayName: user.displayName,
         xp: user.xp,
         level: user.level,
-        programs: user.programs,
-        profile: user.profile,
+        programs: user.programs
       }
     });
   } catch (error) {
@@ -214,8 +209,7 @@ router.get('/me/:userId', async (req, res) => {
         displayName: user.displayName,
         xp: user.xp,
         level: user.level,
-        programs: user.programs,
-        profile: user.profile,
+        programs: user.programs
       }
     });
   } catch (error) {

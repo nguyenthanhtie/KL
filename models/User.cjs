@@ -40,13 +40,6 @@ const userSchema = new mongoose.Schema({
     default: ''
   },
   
-  // Profile information
-  profile: {
-    grade: Number, // Lớp học hiện tại sau khi làm placement test
-    bio: String,
-    avatar: String
-  },
-  
   // XP và Level
   xp: {
     type: Number,

@@ -4,6 +4,48 @@ import { useAuth } from '../contexts/AuthContext';
 import { API_BASE_URL } from '../config/api';
 import { Sparkles, Trophy, Zap, Clock, Target, ChevronRight, Star, CheckCircle, XCircle, Award } from 'lucide-react';
 
+// True/False Quiz Component
+const TrueFalseQuiz = ({ question, userAnswer, isAnswered, onAnswer }) => {
+  return (
+    <div className="flex gap-4 justify-center">
+      <button
+        onClick={() => onAnswer(true)}
+        disabled={isAnswered}
+        className={`px-8 py-4 text-lg font-bold rounded-2xl border-2 transition-all transform ${
+          userAnswer === true
+            ? isAnswered
+              ? question.answer === true
+                ? 'border-green-500 bg-green-500 text-white scale-105 shadow-lg shadow-green-500/30'
+                : 'border-red-500 bg-red-500 text-white shake'
+              : 'border-blue-500 bg-blue-500 text-white'
+            : isAnswered && question.answer === true
+            ? 'border-green-500 bg-green-50 text-green-700'
+            : 'border-gray-300 hover:border-blue-300 bg-white/10 text-white hover:bg-white/20'
+        }`}
+      >
+        ✓ Đúng
+      </button>
+      <button
+        onClick={() => onAnswer(false)}
+        disabled={isAnswered}
+        className={`px-8 py-4 text-lg font-bold rounded-2xl border-2 transition-all transform ${
+          userAnswer === false
+            ? isAnswered
+              ? question.answer === false
+                ? 'border-green-500 bg-green-500 text-white scale-105 shadow-lg shadow-green-500/30'
+                : 'border-red-500 bg-red-500 text-white shake'
+              : 'border-blue-500 bg-blue-500 text-white'
+            : isAnswered && question.answer === false
+            ? 'border-green-500 bg-green-50 text-green-700'
+            : 'border-gray-300 hover:border-blue-300 bg-white/10 text-white hover:bg-white/20'
+        }`}
+      >
+        ✗ Sai
+      </button>
+    </div>
+  );
+};
+
 // Questions data với emoji và hints
 const questions = [
   // Lớp 8 (5 câu)
@@ -13,15 +55,16 @@ const questions = [
     answer: "O2",
     level: 8,
     emoji: "🧪",
-    hint: "Đơn chất chỉ chứa một loại nguyên tố"
+    hint: "Đơn chất chỉ chứa một loại nguyên tố",
+    type: "multiple" // Trắc nghiệm
   },
   {
-    question: "Công thức hóa học của axit sunfuric là gì?",
-    options: ["H2SO4", "HCl", "NaOH", "H2O"],
-    answer: "H2SO4",
+    question: "Axit sunfuric có công thức là H2SO4",
+    answer: true,
     level: 8,
     emoji: "⚗️",
-    hint: "Axit mạnh chứa lưu huỳnh"
+    hint: "Axit mạnh chứa lưu huỳnh",
+    type: "truefalse" // Đúng/Sai
   },
   {
     question: "Phản ứng hóa học là gì?",
@@ -29,23 +72,25 @@ const questions = [
     answer: "Quá trình chất biến đổi tạo ra chất mới",
     level: 8,
     emoji: "💥",
-    hint: "Tạo ra chất mới khác với chất ban đầu"
+    hint: "Tạo ra chất mới khác với chất ban đầu",
+    type: "multiple"
   },
   {
-    question: "Ký hiệu hóa học của Sắt là gì?",
+    question: "Ký hiệu hóa học của Sắt là?",
     options: ["S", "Fe", "Si", "Na"],
     answer: "Fe",
     level: 8,
     emoji: "🔩",
-    hint: "Ferrum trong tiếng Latin"
+    hint: "Ferrum trong tiếng Latin",
+    type: "multiple"
   },
   {
-    question: "Trong không khí, khí nào chiếm tỉ lệ lớn nhất?",
-    options: ["Oxi", "Cacbonic", "Nito", "Heli"],
-    answer: "Nito",
+    question: "Nito chiếm khoảng 78% trong không khí",
+    answer: true,
     level: 8,
     emoji: "🌬️",
-    hint: "Chiếm khoảng 78% không khí"
+    hint: "Đây là khí chính trong không khí",
+    type: "truefalse"
   },
   // Lớp 9 (5 câu)
   {
@@ -54,39 +99,42 @@ const questions = [
     answer: "Bazo",
     level: 9,
     emoji: "🔵",
-    hint: "Chất có tính kiềm"
+    hint: "Chất có tính kiềm",
+    type: "multiple"
   },
   {
-    question: "Kim loại nào sau đây tác dụng được với nước ở nhiệt độ thường?",
-    options: ["Cu", "Fe", "Na", "Ag"],
-    answer: "Na",
+    question: "Natri (Na) tác dụng được với nước ở nhiệt độ thường",
+    answer: true,
     level: 9,
     emoji: "💧",
-    hint: "Kim loại kiềm rất hoạt động"
+    hint: "Kim loại kiềm rất hoạt động",
+    type: "truefalse"
   },
   {
-    question: "Chất nào được dùng để sản xuất vôi sống?",
+    question: "Vôi sống (CaO) được sản xuất từ?",
     options: ["CaCO3", "NaCl", "H2SO4", "SO2"],
     answer: "CaCO3",
     level: 9,
     emoji: "🏗️",
-    hint: "Đá vôi hay đá phite"
+    hint: "Đá vôi hay đá phite",
+    type: "multiple"
   },
   {
-    question: "Dãy kim loại nào sau đây được sắp xếp theo chiều hoạt động hóa học giảm dần?",
+    question: "Sắp xếp theo chiều hoạt động hóa học giảm dần?",
     options: ["K, Na, Mg, Al", "Al, Mg, Na, K", "Na, K, Al, Mg", "Mg, Al, K, Na"],
     answer: "K, Na, Mg, Al",
     level: 9,
     emoji: "📊",
-    hint: "Kali hoạt động mạnh nhất"
+    hint: "Kali hoạt động mạnh nhất",
+    type: "multiple"
   },
   {
-    question: "Khí metan (CH4) có nhiều trong đâu?",
-    options: ["Mỏ than", "Không khí", "Nước biển", "Mỏ đá vôi"],
-    answer: "Mỏ than",
+    question: "Metan (CH4) là khí gây nổ nguy hiểm trong hầm mỏ than",
+    answer: true,
     level: 9,
     emoji: "⛏️",
-    hint: "Khí gây nổ nguy hiểm trong hầm mỏ"
+    hint: "Khí cữu hỏa mỏ",
+    type: "truefalse"
   },
   // Lớp 10 (10 câu)
   {
@@ -103,15 +151,16 @@ const questions = [
     answer: "1s2 2s2 2p6 3s1",
     level: 10,
     emoji: "🔬",
-    hint: "Natri có 11 electron"
+    hint: "Natri có 11 electron",
+    type: "multiple"
   },
   {
-    question: "Liên kết trong phân tử NaCl là liên kết gì?",
-    options: ["Cộng hóa trị", "Ion", "Kim loại", "Hydro"],
-    answer: "Ion",
+    question: "Liên kết trong NaCl là liên kết ion",
+    answer: true,
     level: 10,
     emoji: "🔗",
-    hint: "Kim loại + phi kim"
+    hint: "Kim loại + phi kim",
+    type: "truefalse"
   },
   {
     question: "Số oxi hóa của S trong H2SO4 là?",
@@ -119,26 +168,28 @@ const questions = [
     answer: "+6",
     level: 10,
     emoji: "🎯",
-    hint: "H: +1, O: -2, tổng = 0"
+    hint: "H: +1, O: -2, tổng = 0",
+    type: "multiple"
   },
   {
-    question: "Trong bảng tuần hoàn, Flo (F) thuộc nhóm nào?",
-    options: ["IA", "IIA", "VIIA", "VIIIA"],
-    answer: "VIIA",
+    question: "Flo (F) thuộc nhóm VIIA (Halogen) trong bảng tuần hoàn",
+    answer: true,
     level: 10,
     emoji: "📋",
-    hint: "Nhóm halogen"
+    hint: "Nhóm halogen là VIIA",
+    type: "truefalse"
   },
   {
-    question: "Phản ứng tỏa nhiệt là phản ứng có Delta H...?",
+    question: "Phản ứng tỏa nhiệt có Delta H...?",
     options: ["< 0", "> 0", "= 0", "Không xác định"],
     answer: "< 0",
     level: 10,
     emoji: "🔥",
-    hint: "Năng lượng thoát ra môi trường"
+    hint: "Năng lượng thoát ra môi trường",
+    type: "multiple"
   },
   {
-    question: "Tốc độ phản ứng KHÔNG phụ thuộc vào yếu tố nào sau đây?",
+    question: "Tốc độ phản ứng KHÔNG phụ thuộc vào yếu tố nào?",
     options: ["Nồng độ", "Nhiệt độ", "Chất xúc tác", "Màu sắc chất"],
     answer: "Màu sắc chất",
     level: 10,
@@ -159,15 +210,16 @@ const questions = [
     answer: "Flo",
     level: 10,
     emoji: "🌟",
-    hint: "Độ âm điện cao nhất"
+    hint: "Độ âm điện cao nhất",
+    type: "multiple"
   },
   {
-    question: "Khí SO2 là nguyên nhân chính gây ra hiện tượng gì?",
-    options: ["Hiệu ứng nhà kính", "Mưa axit", "Thủng tầng ozon", "Thủy triều đỏ"],
-    answer: "Mưa axit",
+    question: "SO2 gây ra mưa axit",
+    answer: true,
     level: 10,
     emoji: "🌧️",
-    hint: "Ô nhiễm không khí từ nhà máy"
+    hint: "Ô nhiễm không khí từ nhà máy",
+    type: "truefalse"
   },
   // Lớp 11 (5 câu)
   {
@@ -176,80 +228,86 @@ const questions = [
     answer: "CnH2n+2 (n>=1)",
     level: 11,
     emoji: "🛢️",
-    hint: "Hydrocacbon no, mạch hở"
+    hint: "Hydrocacbon no, mạch hở",
+    type: "multiple"
   },
   {
-    question: "Chất nào sau đây là anken?",
-    options: ["CH4", "C2H4", "C2H2", "C6H6"],
-    answer: "C2H4",
+    question: "C2H4 là một anken",
+    answer: true,
     level: 11,
     emoji: "🧬",
-    hint: "Có liên kết đôi C=C"
+    hint: "Có liên kết đôi C=C",
+    type: "truefalse"
   },
   {
-    question: "Dẫn xuất halogen nào được dùng làm chất gây mê?",
-    options: ["Freon", "Cloroform", "DDT", "Teflon"],
-    answer: "Cloroform",
+    question: "Cloroform (CHCl3) được dùng làm chất gây mê",
+    options: ["Đúng, dùng làm mê\", \"Sai, dùng Freon\", \"Sai, dùng DDT\", \"Sai, dùng Teflon"],
+    answer: "Đúng, dùng làm mê",
     level: 11,
     emoji: "💉",
-    hint: "CHCl3 - dùng trong y tế"
+    hint: "CHCl3 - dùng trong y tế",
+    type: "multiple"
   },
   {
-    question: "Ancol etylic có công thức là?",
-    options: ["CH3OH", "C2H5OH", "C3H7OH", "CH3COOH"],
-    answer: "C2H5OH",
+    question: "Ancol etylic có công thức C2H5OH",
+    answer: true,
     level: 11,
     emoji: "🍷",
-    hint: "Có trong rượu, bia"
+    hint: "Có trong rượu, bia",
+    type: "truefalse"
   },
   {
-    question: "Phenol (C6H5OH) có tính chất hóa học đặc trưng là?",
+    question: "Phenol (C6H5OH) có tính chất?",
     options: ["Tính axit yếu", "Tính bazo yếu", "Trung tính", "Lưỡng tính"],
     answer: "Tính axit yếu",
     level: 11,
     emoji: "🧴",
-    hint: "Vòng benzen + nhóm OH"
+    hint: "Vòng benzen + nhóm OH",
+    type: "multiple"
   },
   // Lớp 12 (5 câu)
   {
-    question: "Chất nào sau đây là este?",
+    question: "Chất nào là este?",
     options: ["CH3COOH", "CH3COOCH3", "C2H5OH", "HCHO"],
     answer: "CH3COOCH3",
     level: 12,
     emoji: "🍌",
-    hint: "Có nhóm -COO- trong phân tử"
+    hint: "Có nhóm -COO- trong phân tử",
+    type: "multiple"
   },
   {
-    question: "Chất béo là trieste của axit béo với chất nào sau đây?",
-    options: ["Etanol", "Glixerol", "Metanol", "Phenol"],
-    answer: "Glixerol",
+    question: "Chất béo là trieste của glixerol",
+    answer: true,
     level: 12,
     emoji: "🧈",
-    hint: "Rượu 3 chức C3H5(OH)3"
+    hint: "Rượu 3 chức C3H5(OH)3",
+    type: "truefalse"
   },
   {
-    question: "Saccarozơ và glucozơ đều có phản ứng nào?",
-    options: ["Tráng gương", "Thủy phân", "Với Cu(OH)2", "Màu với iot"],
-    answer: "Với Cu(OH)2",
+    question: "Cả saccarozơ và glucozơ phản ứng với Cu(OH)2",
+    options: ["Đúng, cùng tráng gương\", \"Sai, chỉ glucozơ\", \"Sai, chỉ saccarozơ\", \"Sai, không phản ứng"],
+    answer: "Đúng, cùng tráng gương",
     level: 12,
     emoji: "🍬",
-    hint: "Đều có nhóm OH liền kề"
+    hint: "Đều có nhóm OH liền kề",
+    type: "multiple"
   },
   {
-    question: "Polime nào sau đây được điều chế bằng phản ứng trùng hợp?",
-    options: ["Tơ nilon-6,6", "Poli(etylen terephtalat)", "Poli(vinyl clorua)", "Tơ lapsan"],
-    answer: "Poli(vinyl clorua)",
+    question: "PVC được tạo bằng phản ứng trùng hợp",
+    answer: true,
     level: 12,
     emoji: "🧵",
-    hint: "PVC - nhựa phổ biến"
+    hint: "Poli(vinyl clorua) - nhựa phổ biến",
+    type: "truefalse"
   },
   {
-    question: "Kim loại nào sau đây có tính khử mạnh nhất?",
+    question: "Kim loại nào có tính khử mạnh nhất?",
     options: ["K", "Mg", "Cu", "Ag"],
     answer: "K",
     level: 12,
     emoji: "🥇",
-    hint: "Kim loại kiềm nhóm IA"
+    hint: "Kim loại kiềm nhóm IA",
+    type: "multiple"
   }
 ];
 
@@ -308,7 +366,13 @@ const PlacementTest = () => {
   // Initialize shuffled options for current question
   useEffect(() => {
     if (quizStarted && questions[currentQuestion]) {
-      setShuffledOptions(shuffleArray(questions[currentQuestion].options));
+      const q = questions[currentQuestion];
+      if (q.type === 'multiple' && q.options) {
+        setShuffledOptions(shuffleArray(q.options));
+      } else if (q.type === 'truefalse') {
+        // For true/false, set empty array since we don't need shuffled options
+        setShuffledOptions([]);
+      }
     }
   }, [currentQuestion, quizStarted]);
 
@@ -359,7 +423,8 @@ const PlacementTest = () => {
     setSelectedAnswer(option);
     setIsAnswered(true);
     
-    const isCorrect = option === questions[currentQuestion].answer;
+    const q = questions[currentQuestion];
+    const isCorrect = option === q.answer;
     
     setAnswers(prev => ({
       ...prev,
@@ -834,49 +899,59 @@ const PlacementTest = () => {
             </div>
           )}
 
-          {/* Options */}
-          <div className="grid gap-4">
-            {shuffledOptions.map((option, index) => {
-              const isSelected = selectedAnswer === option;
-              const isCorrect = option === currentQ.answer;
-              const showCorrect = isAnswered && isCorrect;
-              const showWrong = isAnswered && isSelected && !isCorrect;
-              
-              return (
-                <button
-                  key={index}
-                  onClick={() => handleAnswerSelect(option)}
-                  disabled={isAnswered}
-                  className={`w-full p-4 rounded-2xl text-left font-medium transition-all duration-300 transform ${
-                    showCorrect
-                      ? 'bg-green-500 text-white scale-105 shadow-lg shadow-green-500/30'
-                      : showWrong
-                        ? 'bg-red-500 text-white shake'
-                        : isSelected
-                          ? 'bg-white/30 text-white border-2 border-white'
-                          : 'bg-white/10 text-white hover:bg-white/20 hover:scale-102 border border-white/10'
-                  } ${isAnswered && !isSelected && !isCorrect ? 'opacity-50' : ''}`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                        showCorrect 
-                          ? 'bg-white text-green-500' 
-                          : showWrong 
-                            ? 'bg-white text-red-500'
-                            : 'bg-white/20 text-white'
-                      }`}>
-                        {String.fromCharCode(65 + index)}
-                      </span>
-                      <span>{option}</span>
+          {/* Render based on question type */}
+          {currentQ.type === 'truefalse' ? (
+            <TrueFalseQuiz 
+              question={currentQ}
+              userAnswer={selectedAnswer}
+              isAnswered={isAnswered}
+              onAnswer={handleAnswerSelect}
+            />
+          ) : (
+            // Multiple Choice Options
+            <div className="grid gap-4">
+              {shuffledOptions.map((option, index) => {
+                const isSelected = selectedAnswer === option;
+                const isCorrect = option === currentQ.answer;
+                const showCorrect = isAnswered && isCorrect;
+                const showWrong = isAnswered && isSelected && !isCorrect;
+                
+                return (
+                  <button
+                    key={index}
+                    onClick={() => handleAnswerSelect(option)}
+                    disabled={isAnswered}
+                    className={`w-full p-4 rounded-2xl text-left font-medium transition-all duration-300 transform ${
+                      showCorrect
+                        ? 'bg-green-500 text-white scale-105 shadow-lg shadow-green-500/30'
+                        : showWrong
+                          ? 'bg-red-500 text-white shake'
+                          : isSelected
+                            ? 'bg-white/30 text-white border-2 border-white'
+                            : 'bg-white/10 text-white hover:bg-white/20 hover:scale-102 border border-white/10'
+                    } ${isAnswered && !isSelected && !isCorrect ? 'opacity-50' : ''}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                          showCorrect 
+                            ? 'bg-white text-green-500' 
+                            : showWrong 
+                              ? 'bg-white text-red-500'
+                              : 'bg-white/20 text-white'
+                        }`}>
+                          {String.fromCharCode(65 + index)}
+                        </span>
+                        <span>{option}</span>
+                      </div>
+                      {showCorrect && <CheckCircle className="w-6 h-6" />}
+                      {showWrong && <XCircle className="w-6 h-6" />}
                     </div>
-                    {showCorrect && <CheckCircle className="w-6 h-6" />}
-                    {showWrong && <XCircle className="w-6 h-6" />}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           {/* Hint Button */}
           {!showHint && !isAnswered && hintsUsed < 5 && (

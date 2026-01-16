@@ -32,8 +32,6 @@ const AdvancedChallenge = () => {
       const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry');
       if (chemistryProgram && chemistryProgram.currentClass) {
         setSelectedGrade(chemistryProgram.currentClass);
-      } else if (user.profile?.grade) {
-        setSelectedGrade(user.profile.grade);
       }
     }
   }, [user]);

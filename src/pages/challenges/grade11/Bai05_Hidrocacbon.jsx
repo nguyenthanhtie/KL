@@ -298,11 +298,11 @@ const CHALLENGES = [
     category: 'unsaturated',
     type: 'multiple-choice',
     difficulty: 3,
-    question: 'Cho 2,24 lít (đktc) hỗn hợp anken qua dung dịch brom dư, khối lượng brom phản ứng là bao nhiêu?',
+    question: 'Cho 2,479 lít (đktc) hỗn hợp anken qua dung dịch brom dư, khối lượng brom phản ứng là bao nhiêu?',
     options: ['8 gam', '16 gam', '24 gam', '32 gam'],
     correctAnswer: '16 gam',
-    explanation: 'n(anken) = 2,24/22,4 = 0,1 mol. Anken + Br2 (tỉ lệ 1:1). m(Br2) = 0,1 × 160 = 16 gam.',
-    hint: 'Tỉ lệ mol anken : Br2 = 1 : 1.'
+    explanation: 'n(anken) = 2,479/24,79 = 0,1 mol (theo đktc mới: 25°C, 1 bar). Anken + Br2 (tỉ lệ 1:1). m(Br2) = 0,1 × 160 = 16 gam.',
+    hint: 'Tỉ lệ mol anken : Br2 = 1 : 1. Lưu ý: Thể tích mol khí ở đktc (25°C, 1 bar) = 24,79 lít.'
   },
   {
     id: 24,

@@ -28,9 +28,6 @@ const Dashboard = () => {
       if (chemistryProgram && chemistryProgram.currentClass) {
         setUserGrade(chemistryProgram.currentClass);
         setSelectedClass(chemistryProgram.currentClass);
-      } else if (user.profile?.grade) {
-        setUserGrade(user.profile.grade);
-        setSelectedClass(user.profile.grade);
       } else {
         // Mặc định là lớp 8 nếu chưa có thông tin
         setUserGrade(8);

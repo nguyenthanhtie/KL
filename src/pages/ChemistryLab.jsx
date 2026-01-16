@@ -1,47 +1,35 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PeriodicTable from '../components/PeriodicTable';
-import ChemicalReactionSimulator from '../components/ChemicalReactionSimulator';
 import MolecularViewer from '../components/MolecularViewer';
-import ChemistryLabGame from '../components/ChemistryLabGame';
-import ChemistryLabIntro from '../components/ChemistryLabIntro';
 
 const ChemistryLab = () => {
-  const [activeTab, setActiveTab] = useState('lab');
-  const [showIntro, setShowIntro] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'periodic';
+  const [activeTab, setActiveTab] = useState(initialTab);
 
-  // Kiểm tra xem người dùng đã xem intro chưa
+  // Đồng bộ tab với URL khi thay đổi
   useEffect(() => {
-    const hasSeenIntro = localStorage.getItem('chemistryLabIntroSeen');
-    if (!hasSeenIntro) {
-      setShowIntro(true);
+    if (activeTab !== searchParams.get('tab')) {
+      setSearchParams({ tab: activeTab }, { replace: true });
     }
-  }, []);
-
-  const handleCloseIntro = () => {
-    localStorage.setItem('chemistryLabIntroSeen', 'true');
-    setShowIntro(false);
-  };
+  }, [activeTab, searchParams, setSearchParams]);
 
   const tabs = [
-    { id: 'lab', name: 'Phòng thí nghiệm', icon: '🧪' },
     { id: 'periodic', name: 'Bảng tuần hoàn', icon: '🔬' },
-    { id: 'reaction', name: 'Mô phỏng phản ứng', icon: '⚗️' },
     { id: 'molecule', name: 'Mô hình phân tử 3D', icon: '🔮' }
   ];
 
   return (
     <div className="chemistry-lab-page min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Intro Modal */}
-      {showIntro && <ChemistryLabIntro onClose={handleCloseIntro} />}
-
       {/* Header */}
       <header className="bg-black/30 backdrop-blur-md border-b border-white/10">
         <div className="container mx-auto px-6 py-4">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            🧬 Phòng Thí Nghiệm Hóa Học Tương Tác
+            🧬 Công Cụ Hóa Học Tương Tác
           </h1>
           <p className="text-white/80">
-            Khám phá, thực hành và học hỏi hóa học qua trải nghiệm tương tác
+            Khám phá bảng tuần hoàn và mô hình phân tử 3D
           </p>
         </div>
       </header>
@@ -70,21 +58,9 @@ const ChemistryLab = () => {
 
       {/* Content */}
       <main className="container mx-auto px-4 md:px-6 py-6">
-        {activeTab === 'lab' && (
-          <div className="animate-fadeIn">
-            <ChemistryLabGame />
-          </div>
-        )}
-
         {activeTab === 'periodic' && (
           <div className="animate-fadeIn">
             <PeriodicTable />
-          </div>
-        )}
-
-        {activeTab === 'reaction' && (
-          <div className="animate-fadeIn">
-            <ChemicalReactionSimulator />
           </div>
         )}
 
@@ -98,9 +74,9 @@ const ChemistryLab = () => {
       {/* Footer */}
       <footer className="bg-black/30 backdrop-blur-md border-t border-white/10 mt-8">
         <div className="container mx-auto px-6 py-6 text-center text-white">
-          <p className="mb-1">🧪 Phòng Thí Nghiệm Hóa Học Tương Tác</p>
+          <p className="mb-1">🧬 Công Cụ Hóa Học Tương Tác</p>
           <p className="text-sm text-white/60">
-            Học hóa học qua trải nghiệm - Khám phá • Thực hành • Chinh phục
+            Khám phá bảng tuần hoàn và mô hình phân tử 3D
           </p>
         </div>
       </footer>

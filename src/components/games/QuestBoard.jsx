@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   quests, 
   dailyQuests, 
@@ -7,7 +8,8 @@ import {
   questStatus,
   getQuestById,
   getAvailableQuests,
-  getDifficultyInfo 
+  getDifficultyInfo,
+  getObjectiveGuide 
 } from '../../data/questsData';
 import { getIngredientById } from '../../data/knowledgeIngredientsData';
 
@@ -20,6 +22,7 @@ const QuestBoard = ({
   onClaimReward,
   onClose 
 }) => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('available');
   const [selectedQuest, setSelectedQuest] = useState(null);
   const [selectedChapter, setSelectedChapter] = useState(0);
@@ -181,26 +184,47 @@ const QuestBoard = ({
               {/* Expanded view */}
               {isSelected && !isLocked && (
                 <div className="mt-4 pt-4 border-t border-white/20">
-                  {/* Mục tiêu */}
+                  {/* Mục tiêu với đường dẫn trực tiếp */}
                   <div className="mb-4">
                     <h5 className="font-semibold text-white mb-2">📋 Mục tiêu:</h5>
-                    <ul className="space-y-2">
+                    <ul className="space-y-3">
                       {quest.objectives.map(obj => {
                         const isCompleted = questProgress[quest.id]?.completedObjectives?.includes(obj.id);
+                        const guide = getObjectiveGuide(obj.type);
                         return (
                           <li 
                             key={obj.id}
-                            className={`flex items-center gap-2 text-sm ${
-                              isCompleted ? 'text-green-400' : 'text-purple-200'
+                            className={`p-3 rounded-lg transition ${
+                              isCompleted ? 'bg-green-500/20' : 'bg-white/5 hover:bg-white/10'
                             }`}
                           >
-                            <span>{isCompleted ? '✅' : '⬜'}</span>
-                            {obj.text}
-                            {obj.count && (
-                              <span className="text-xs text-purple-400">
-                                ({obj.count})
-                              </span>
-                            )}
+                            <div className="flex items-start gap-3">
+                              <span className="text-xl">{isCompleted ? '✅' : guide.icon}</span>
+                              <div className="flex-1">
+                                <div className={`font-medium ${isCompleted ? 'text-green-400' : 'text-white'}`}>
+                                  {obj.text}
+                                  {obj.count && (
+                                    <span className="text-xs text-purple-400 ml-2">
+                                      (×{obj.count})
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="text-xs text-purple-300 mt-1">
+                                  {guide.description}
+                                </div>
+                                {!isCompleted && guide.actionPath && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      navigate(guide.actionPath);
+                                    }}
+                                    className="mt-2 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-sm rounded-lg flex items-center gap-2 transition-all"
+                                  >
+                                    🚀 {guide.actionLabel}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
                           </li>
                         );
                       })}
@@ -345,6 +369,34 @@ const QuestBoard = ({
               </button>
             )}
           </div>
+        </div>
+
+        {/* Hướng dẫn nhanh */}
+        <div className="mt-4 p-4 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-xl">
+          <h4 className="font-bold text-yellow-300 mb-2 flex items-center gap-2">
+            <span>📖</span> Hướng dẫn hoàn thành nhiệm vụ
+          </h4>
+          <div className="grid md:grid-cols-4 gap-3 text-sm">
+            <div className="flex items-center gap-2 text-yellow-100">
+              <span className="text-lg">1️⃣</span>
+              <span>Chọn nhiệm vụ phù hợp level</span>
+            </div>
+            <div className="flex items-center gap-2 text-yellow-100">
+              <span className="text-lg">2️⃣</span>
+              <span>Click "Bắt đầu" để nhận nhiệm vụ</span>
+            </div>
+            <div className="flex items-center gap-2 text-yellow-100">
+              <span className="text-lg">3️⃣</span>
+              <span>Hoàn thành từng mục tiêu</span>
+            </div>
+            <div className="flex items-center gap-2 text-yellow-100">
+              <span className="text-lg">4️⃣</span>
+              <span>Nhận thưởng khi hoàn tất</span>
+            </div>
+          </div>
+          <p className="text-xs text-yellow-200/70 mt-2">
+            💡 Click vào nhiệm vụ để xem chi tiết • Click "Xem hướng dẫn chi tiết" để biết cách hoàn thành từng mục tiêu
+          </p>
         </div>
 
         {/* Tabs */}
