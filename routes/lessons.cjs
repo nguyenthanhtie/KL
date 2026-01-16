@@ -23,7 +23,7 @@ router.get('/grouped', async (req, res) => {
       filter.curriculumType = curriculumType;
     }
     
-    const lessons = await Lesson.find(filter).sort({ classId: 1, chapterId: 1, order: 1 }).lean();
+    const lessons = await Lesson.find(filter).sort({ classId: 1, chapterId: 1, lessonId: 1 }).lean();
 
     const grouped = {};
     lessons.forEach((l) => {

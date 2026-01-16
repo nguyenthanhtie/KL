@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/ui/Button';
 import { useEffect, useState } from 'react';
-import { BookOpen, Trophy, Target, Clock, Star, Flame, Zap, Award, TrendingUp, Play, LogOut, ChevronDown } from 'lucide-react';
+import { BookOpen, Trophy, Target, Clock, Star, Flame, Zap, Award, TrendingUp, Play, LogOut, ChevronDown, Scale } from 'lucide-react';
 import api from '../../config/api';
 
 const ChemistryHome = () => {
@@ -82,8 +82,13 @@ const ChemistryHome = () => {
 
       const chemistryProgram = user.programs?.find(p => p.programId === 'chemistry' && p.isActive);
       if (!chemistryProgram) {
-        // Chưa đăng ký -> chuyển đến chọn curriculum trước
-        navigate('/curriculum-selection/chemistry');
+        // Chưa đăng ký -> lưu curriculum mặc định và chuyển đến placement test
+        localStorage.setItem('selectedCurriculum', JSON.stringify({
+          programId: 'chemistry',
+          curriculumType: 'ketnoi',
+          curriculumName: 'Kết nối tri thức'
+        }));
+        navigate('/placement-test/chemistry');
         return;
       }
 
@@ -421,7 +426,7 @@ const ChemistryHome = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
             <button
               onClick={() => navigate('/program/chemistry/dashboard')}
               className="group bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
@@ -468,6 +473,22 @@ const ChemistryHome = () => {
               </div>
               <h3 className="text-xl font-bold mb-2">Hồ sơ</h3>
               <p className="text-emerald-100 text-sm">Xem thành tích của bạn</p>
+            </button>
+
+            <button
+              onClick={() => navigate('/equation-balancer')}
+              className="group bg-gradient-to-br from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Scale className="w-7 h-7" />
+                </div>
+                <svg className="w-6 h-6 opacity-50 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Cân bằng PT</h3>
+              <p className="text-cyan-100 text-sm">Cân bằng phương trình hóa học</p>
             </button>
           </div>
 

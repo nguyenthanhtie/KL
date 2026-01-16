@@ -289,7 +289,7 @@ const ClassDashboard = () => {
 
                 {/* Lessons Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {chapter.lessons && chapter.lessons.map((lesson) => {
+                  {chapter.lessons && [...chapter.lessons].sort((a, b) => a.lessonId - b.lessonId).map((lesson) => {
                     const progress = lessonsProgress[lesson.lessonId];
                     const isCompleted = progress?.completed;
                     const score = progress?.score || 0;

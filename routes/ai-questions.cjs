@@ -780,4 +780,105 @@ router.post('/clear-cache', (req, res) => {
   res.json({ success: true, message: 'Cache cleared' });
 });
 
+// ==================== DỰ ĐOÁN SẢN PHẨM PHẢN ỨNG HÓA HỌC BẰNG AI ====================
+router.post('/predict-products', async (req, res) => {
+  try {
+    const { reactants } = req.body;
+    
+    if (!reactants || reactants.trim().length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Vui lòng nhập chất tham gia' 
+      });
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ 
+        success: false, 
+        error: 'API key chưa được cấu hình' 
+      });
+    }
+
+    const prompt = `Bạn là chuyên gia hóa học. Cho các chất tham gia sau: ${reactants}
+
+Hãy dự đoán sản phẩm của phản ứng hóa học này.
+
+QUY TẮC:
+1. Chỉ trả về sản phẩm, KHÔNG cân bằng hệ số
+2. Nếu có nhiều sản phẩm, ngăn cách bằng dấu +
+3. Viết công thức hóa học chuẩn (ví dụ: H2O, CO2, NaCl, Fe2O3)
+4. Nếu không có phản ứng hoặc không xác định được, trả về "NONE"
+5. Chỉ trả về công thức sản phẩm, KHÔNG giải thích
+
+VÍ DỤ:
+- Input: Fe + O2 → Output: Fe2O3
+- Input: NaOH + HCl → Output: NaCl + H2O
+- Input: CaCO3 + HCl → Output: CaCl2 + H2O + CO2
+- Input: CH4 + O2 → Output: CO2 + H2O
+- Input: Au + HCl → Output: NONE
+
+Trả lời (CHỈ công thức sản phẩm hoặc NONE):`;
+
+    console.log('Calling Gemini API with reactants:', reactants);
+    
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { 
+            temperature: 0.1, 
+            maxOutputTokens: 100 
+          }
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Gemini API error status:', response.status);
+      console.error('Gemini API error details:', JSON.stringify(errorData, null, 2));
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Lỗi khi gọi AI API',
+        details: errorData.error?.message || 'Unknown error'
+      });
+    }
+
+    const data = await response.json();
+    console.log('Gemini API response:', JSON.stringify(data, null, 2));
+    let products = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+
+    if (!products || products === 'NONE' || products.toLowerCase().includes('none')) {
+      return res.json({ 
+        success: false, 
+        error: 'Không tìm thấy phản ứng phù hợp',
+        notFound: true
+      });
+    }
+
+    // Làm sạch kết quả (loại bỏ text thừa nếu có)
+    products = products
+      .replace(/^(Output:|Sản phẩm:|Products:)/i, '')
+      .replace(/\n.*/g, '') // Chỉ lấy dòng đầu
+      .trim();
+
+    res.json({ 
+      success: true, 
+      products,
+      source: 'ai'
+    });
+
+  } catch (error) {
+    console.error('Predict products error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Lỗi server khi dự đoán sản phẩm' 
+    });
+  }
+});
+
 module.exports = router;
