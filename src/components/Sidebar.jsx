@@ -19,7 +19,8 @@ import {
   Menu,
   X,
   Sparkles,
-  GraduationCap
+  GraduationCap,
+  Scale
 } from 'lucide-react';
 
 const Sidebar = ({ children }) => {
@@ -84,6 +85,12 @@ const Sidebar = ({ children }) => {
       icon: Beaker,
       path: '/chemistry-lab',
       gradient: 'from-indigo-500 to-purple-500'
+    },
+    {
+      title: 'Cân bằng PT',
+      icon: Scale,
+      path: '/equation-balancer',
+      gradient: 'from-teal-500 to-emerald-500'
     },
     {      title: 'Hồ sơ',
       icon: User,

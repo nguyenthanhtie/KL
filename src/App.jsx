@@ -11,13 +11,13 @@ import Register from './pages/Register';
 
 // Chemistry pages
 import ChemistryHome from './pages/chemistry/ChemistryHome';
-import CurriculumSelection from './pages/chemistry/CurriculumSelection';
 import Dashboard from './pages/chemistry/Dashboard';
 import ClassDashboard from './pages/chemistry/ClassDashboard';
 import Lesson from './pages/chemistry/Lesson';
 import LessonSimple from './pages/chemistry/LessonSimple';
 import GamePlay from './pages/chemistry/GamePlay';
 import AdvancedChallenge from './pages/chemistry/AdvancedChallenge';
+import EquationBalancer from './pages/chemistry/EquationBalancer';
 
 // Grade 8 challenges
 import DuoiHinhBatChu from './pages/challenges/grade08/Bai01_DoanHinhBatChu';
@@ -88,7 +88,7 @@ const AppContent = () => {
         <Route path="/" element={<ProgramSelection />} />
         <Route path="/home" element={<Home />} />
         <Route path="/program/chemistry" element={<ChemistryHome />} />
-        <Route path="/curriculum-selection/:programId" element={<CurriculumSelection />} />
+        <Route path="/equation-balancer" element={<EquationBalancer />} />
         <Route path="/advanced-challenge" element={<AdvancedChallenge />} />
         <Route path="/advanced-challenge/ghep-nguyen-tu" element={<GhepNguyenTu />} />
         <Route path="/advanced-challenge/can-bang" element={<TroChoiCanBang />} />
