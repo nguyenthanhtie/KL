@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.cjs');
+const Lesson = require('../models/Lesson.cjs');
 
 // Register route
 router.post('/register', async (req, res) => {
@@ -341,6 +342,38 @@ router.post('/submit-lesson', async (req, res) => {
       console.log('⏱️ Study time updated:', studyStats);
     }
 
+    // ============ AUTO-UPGRADE CLASS LOGIC ============
+    // Check if user completed all lessons in current class and upgrade to next class
+    let classUpgraded = false;
+    let newClass = null;
+    
+    // Only check for class upgrade if the lesson was completed and user is at the class of this lesson
+    const lessonClassId = parseInt(pathId);
+    if (completed && lessonClassId === updatedProgram.currentClass && lessonClassId < 12) {
+      const currentClass = lessonClassId;
+      
+      // Get total lessons count for current class from database
+      const totalLessonsInClass = await Lesson.countDocuments({ classId: currentClass });
+      
+      // Count completed lessons for current class (uniqueId format: classId * 1000 + lessonId)
+      const completedLessonsInClass = updatedProgram.progress.completedLessons.filter(
+        uniqueId => Math.floor(uniqueId / 1000) === currentClass
+      ).length;
+      
+      console.log(`📊 Class ${currentClass} progress: ${completedLessonsInClass}/${totalLessonsInClass} lessons`);
+      
+      // If all lessons completed, upgrade to next class
+      if (completedLessonsInClass >= totalLessonsInClass && totalLessonsInClass > 0) {
+        const nextClass = currentClass + 1;
+        updatedProgram.currentClass = nextClass;
+        user.markModified('programs');
+        classUpgraded = true;
+        newClass = nextClass;
+        console.log(`🎉 AUTO-UPGRADE: User upgraded from class ${currentClass} to class ${nextClass}!`);
+      }
+    }
+    // ============ END AUTO-UPGRADE CLASS LOGIC ============
+
     await user.save();
     console.log('✅ Lesson progress updated successfully');
 
@@ -353,7 +386,9 @@ router.post('/submit-lesson', async (req, res) => {
       percentage: percentage.toFixed(2),
       program: updatedProgram,
       studyStats,
-      todayProgress: user.todayProgress
+      todayProgress: user.todayProgress,
+      classUpgraded,
+      newClass
     });
   } catch (error) {
     console.error('❌ Error updating lesson progress:', error);

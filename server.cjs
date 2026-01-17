@@ -69,6 +69,7 @@ app.use('/api/lessons', require('./routes/lessons.cjs'));
 app.use('/api/challenges', require('./routes/challenges.cjs'));
 app.use('/api/pk', require('./routes/pk.cjs'));
 app.use('/api/ai-questions', require('./routes/ai-questions.cjs'));
+app.use('/api/notifications', require('./routes/notifications.cjs'));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -86,4 +87,13 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`✓ Server is running on port ${PORT}`);
   console.log(`✓ Environment: ${process.env.NODE_ENV || 'development'}`);
+  
+  // Start notification scheduler
+  try {
+    const notificationScheduler = require('./services/notificationScheduler.cjs');
+    notificationScheduler.start();
+    console.log('✓ Notification scheduler started');
+  } catch (error) {
+    console.log('⚠️  Notification scheduler not started:', error.message);
+  }
 });

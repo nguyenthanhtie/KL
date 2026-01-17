@@ -211,12 +211,14 @@ const Sidebar = ({ children }) => {
           )}
 
           {/* Mobile Close Button */}
-          <button
-            onClick={() => setIsMobileOpen(false)}
-            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-500" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsMobileOpen(false)}
+              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+          </div>
         </div>
 
         {/* Navigation */}

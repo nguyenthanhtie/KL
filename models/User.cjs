@@ -175,6 +175,57 @@ const userSchema = new mongoose.Schema({
     }
   }],
   
+  // Notification Settings
+  notificationSettings: {
+    // Push notification settings
+    pushEnabled: {
+      type: Boolean,
+      default: true
+    },
+    // Email notification settings
+    emailEnabled: {
+      type: Boolean,
+      default: true
+    },
+    // Reminder settings
+    studyReminder: {
+      enabled: { type: Boolean, default: true },
+      time: { type: String, default: '18:00' }, // HH:mm format
+      days: { type: [Number], default: [1, 2, 3, 4, 5, 6, 0] } // 0-6 (Sun-Sat)
+    },
+    // Streak reminder (notify before losing streak)
+    streakReminder: {
+      enabled: { type: Boolean, default: true }
+    },
+    // New lesson/challenge notification
+    newContentNotification: {
+      enabled: { type: Boolean, default: true }
+    },
+    // Achievement notification
+    achievementNotification: {
+      enabled: { type: Boolean, default: true }
+    },
+    // Weekly progress report
+    weeklyReport: {
+      enabled: { type: Boolean, default: true },
+      dayOfWeek: { type: Number, default: 0 } // 0 = Sunday
+    }
+  },
+  
+  // FCM Tokens for push notifications (multiple devices)
+  fcmTokens: [{
+    token: { type: String, required: true },
+    deviceInfo: { type: String }, // e.g., "Chrome on Windows"
+    createdAt: { type: Date, default: Date.now },
+    lastUsed: { type: Date, default: Date.now }
+  }],
+  
+  // Unread notifications count
+  unreadNotifications: {
+    type: Number,
+    default: 0
+  },
+
   createdAt: {
     type: Date,
     default: Date.now
@@ -322,12 +373,17 @@ userSchema.methods.updateProgramProgress = function(programId, classId, lessonId
     console.log('✅ Auto-created program:', programId, 'with lesson:', lessonId);
   }
 
-  // Cập nhật lớp và bài hiện tại
-  program.currentClass = parseInt(classId);
+  // Chỉ cập nhật currentClass nếu chưa có hoặc nếu lớp mới cao hơn
+  // (không ghi đè currentClass xuống lớp thấp hơn khi user làm lại bài cũ)
+  const lessonClassId = parseInt(classId);
+  if (!program.currentClass || lessonClassId > program.currentClass) {
+    program.currentClass = lessonClassId;
+  }
   
   console.log('📝 Updating program:', {
     programId,
-    currentClass: program.currentClass
+    currentClass: program.currentClass,
+    lessonClassId: lessonClassId
   });
   
   // Tạo unique ID cho bài học: classId * 1000 + lessonId

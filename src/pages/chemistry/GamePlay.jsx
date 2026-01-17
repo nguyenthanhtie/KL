@@ -31,6 +31,10 @@ const GamePlay = () => {
   const [showResult, setShowResult] = useState(false);
   const [startTime] = useState(Date.now()); // Track start time
   
+  // Class upgrade state
+  const [classUpgraded, setClassUpgraded] = useState(false);
+  const [newClass, setNewClass] = useState(null);
+  
   // For matching quiz
   const [matchingAnswers, setMatchingAnswers] = useState({});
   const [matchingPool, setMatchingPool] = useState([]);
@@ -122,6 +126,12 @@ const GamePlay = () => {
 
   // Chuyển đến bài học tiếp theo
   const goToNextLesson = () => {
+    // If class was upgraded, navigate to new class dashboard
+    if (classUpgraded && newClass) {
+      navigate(`/class/${newClass}`);
+      return;
+    }
+    
     if (nextLesson) {
       navigate(`/gameplay/${nextLesson.classId}/${nextLesson.chapterId}/${nextLesson.lessonId}`);
       // Reset game state
@@ -130,6 +140,11 @@ const GamePlay = () => {
       setScore(0);
       setIsAnswered(false);
       setUserAnswer(null);
+      setClassUpgraded(false);
+      setNewClass(null);
+    } else {
+      // No next lesson in current class, go back to dashboard
+      navigate(`/class/${classId}`);
     }
   };
 
@@ -432,6 +447,13 @@ const GamePlay = () => {
       
       console.log('✅ Progress submitted successfully:', response.data);
       
+      // Check if class was upgraded
+      if (response.data.classUpgraded && response.data.newClass) {
+        setClassUpgraded(true);
+        setNewClass(response.data.newClass);
+        console.log(`🎉 Class upgraded to ${response.data.newClass}!`);
+      }
+      
       // Fetch updated user data from server
       const updatedUserResponse = await axios.get(`${API_URL}/users/firebase/${userUid}`);
       if (updatedUserResponse.data) {
@@ -595,6 +617,8 @@ const GamePlay = () => {
         onRestart={restartGame}
         onNext={goToNextLesson}
         hasNextLesson={!!nextLesson}
+        classUpgraded={classUpgraded}
+        newClass={newClass}
       />
     </div>
   );

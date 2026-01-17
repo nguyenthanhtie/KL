@@ -8,7 +8,9 @@ const ResultModal = ({
   totalPoints, 
   onRestart, 
   onNext,
-  hasNextLesson = false
+  hasNextLesson = false,
+  classUpgraded = false,
+  newClass = null
 }) => {
   const percentage = (score / totalPoints) * 100;
   
@@ -27,6 +29,19 @@ const ResultModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="text-center">
+        {/* Class Upgrade Celebration */}
+        {classUpgraded && newClass && (
+          <div className="mb-6 p-4 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl border-2 border-yellow-400">
+            <div className="text-5xl mb-2">🎊🏆🎊</div>
+            <h3 className="text-2xl font-bold text-orange-600 mb-2">
+              Chúc mừng lên lớp!
+            </h3>
+            <p className="text-lg text-orange-700">
+              Bạn đã hoàn thành tất cả bài học và được nâng lên <strong>Lớp {newClass}</strong>!
+            </p>
+          </div>
+        )}
+        
         {/* Hiển thị số sao đạt được */}
         {stars > 0 && (
           <div className="text-6xl mb-4 animate-bounce flex justify-center gap-1">
@@ -57,7 +72,9 @@ const ResultModal = ({
         </div>
 
         <p className="text-lg mb-6">
-          {stars === 3
+          {classUpgraded && newClass
+            ? `🎉 Bạn đã hoàn thành lớp ${newClass - 1} và được nâng lên lớp ${newClass}!`
+            : stars === 3
             ? '🎊 Hoàn hảo! Bạn đạt 3 sao! 🌟🌟🌟'
             : stars === 2
             ? '⭐ Tuyệt vời! Bạn đạt 2 sao! ⭐⭐'
@@ -73,7 +90,7 @@ const ResultModal = ({
             // Nếu đạt ≥60%, cho phép tiếp tục hoặc về dashboard
             <>              
                 <Button onClick={onNext}>
-                  ➡️ Bài học tiếp theo
+                  {classUpgraded ? `🚀 Bắt đầu Lớp ${newClass}` : '➡️ Bài học tiếp theo'}
                 </Button>
             </>
           ) : (

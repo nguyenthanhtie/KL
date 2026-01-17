@@ -1,6 +1,8 @@
 import { useAuth } from '../contexts/AuthContext';
 import { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import ProgressBar from '../components/ui/ProgressBar';
+import NotificationSettings from '../components/NotificationSettings';
 import api from '../config/api';
 import { 
   User, 
@@ -25,14 +27,16 @@ import {
   Check,
   Save
 } from 'lucide-react';
-import { showMissionBubble } from '../components/MissionBubble';
+import { showMissionBubble } from '../components/GameFloatingBar';
 
 const Profile = () => {
   const { user, updateUserProfile } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedProgram, setSelectedProgram] = useState('chemistry');
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'overview');
   
   // Settings states
   const [showSettings, setShowSettings] = useState(false);
@@ -41,6 +45,19 @@ const Profile = () => {
   const [showAvatarPicker, setShowAvatarPicker] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
   const fileInputRef = useRef(null);
+  
+  // Sync tab with URL
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && ['overview', 'notifications'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
+  
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setSearchParams({ tab });
+  };
   
   // Load settings from localStorage
   const [settings, setSettings] = useState(() => {
@@ -354,6 +371,39 @@ const Profile = () => {
             </div>
           )}
 
+          {/* Profile Tabs */}
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-2 bg-white/80 backdrop-blur-xl rounded-2xl p-2 shadow-lg border border-white/50">
+              <button
+                onClick={() => handleTabChange('overview')}
+                className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  activeTab === 'overview'
+                    ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-lg'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <User className="w-5 h-5" />
+                Tổng quan
+              </button>
+              <button
+                onClick={() => handleTabChange('notifications')}
+                className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  activeTab === 'notifications'
+                    ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-lg'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <Bell className="w-5 h-5" />
+                Thông báo
+              </button>
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          {activeTab === 'notifications' ? (
+            <NotificationSettings />
+          ) : (
+          <>
           <div className="grid lg:grid-cols-3 gap-6 mb-8">
             {/* User Info Card */}
             <div className="lg:col-span-1">
@@ -605,7 +655,6 @@ const Profile = () => {
               ))}
             </div>
           </div>
-        </div>
 
         {/* Show Mission Bubble Button */}
         <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
@@ -627,6 +676,9 @@ const Profile = () => {
               Mở bảng nhiệm vụ
             </button>
           </div>
+        </div>
+        </>
+        )}
         </div>
       </div>
 

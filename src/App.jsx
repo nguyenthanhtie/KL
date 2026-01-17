@@ -74,8 +74,8 @@ import PKRoom from './pages/chemistry/PKRoom';
 import ChemistryLab from './pages/ChemistryLab';
 import LabAdventure from './pages/LabAdventure';
 
-// Mission Bubble Component
-import MissionBubble from './components/MissionBubble';
+// Game Floating Bar (Mission + Notifications)
+import GameFloatingBar from './components/GameFloatingBar';
 
 
 const AppContent = () => {
@@ -177,7 +177,7 @@ function App() {
       <AuthProvider>
         <PKRoomProvider>
           <AppContent />
-          <MissionBubble />
+          <GameFloatingBar />
         </PKRoomProvider>
       </AuthProvider>
     </Router>

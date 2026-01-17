@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../config/firebase';
 import { API_BASE_URL } from '../config/api';
-import { Mail, Lock, Eye, EyeOff, GraduationCap, ArrowRight, Loader2 } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, GraduationCap, ArrowRight, Loader2, Sparkles, Atom, Beaker, FlaskConical, Zap } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -99,38 +99,95 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Decorative */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
-        {/* Animated Background Elements */}
+      {/* Left Side - Modern Decorative */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#0a0a1a]">
+        {/* Animated Gradient Background */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl"></div>
+          <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-purple-600/40 via-fuchsia-500/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-[-20%] right-[-10%] w-[400px] h-[400px] bg-gradient-to-tl from-blue-600/40 via-cyan-500/30 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Grid pattern */}
+          <div className="absolute inset-0 opacity-10" style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '50px 50px'
+          }}></div>
         </div>
         
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full">
-          <div className="mb-8">
-            <div className="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-2xl">
-              <GraduationCap className="w-10 h-10 text-white" />
+        {/* Content - Compact Layout */}
+        <div className="relative z-10 flex flex-col justify-center items-center text-white p-8 w-full">
+          {/* Logo + Title */}
+          <div className="text-center mb-6">
+            <div className="relative inline-block mb-4">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-lg opacity-50 animate-pulse"></div>
+              <div className="relative w-16 h-16 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                <div className="absolute inset-1 bg-[#0a0a1a]/80 rounded-xl"></div>
+                <Atom className="w-8 h-8 text-white relative z-10 animate-spin-slow" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center animate-bounce shadow-lg">
+                <Sparkles className="w-2.5 h-2.5 text-white" />
+              </div>
             </div>
-            <h1 className="text-4xl font-bold text-center mb-4">KL Learning</h1>
-            <p className="text-xl text-white/80 text-center max-w-md">
-              Nền tảng học tập trực tuyến thông minh với AI
+            
+            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
+              KL Learning
+            </h1>
+            <p className="text-sm text-gray-400">
+              Khám phá Hóa học với công nghệ AI
             </p>
           </div>
           
-          {/* Features */}
-          <div className="space-y-4 max-w-sm">
+          {/* Mini Chemistry Illustration */}
+          <div className="relative w-48 h-24 mb-6">
+            <div className="absolute inset-0 flex items-center justify-center">
+              {/* Mini Beaker */}
+              <div className="absolute left-4 bottom-2">
+                <div className="w-10 h-12 border-2 border-cyan-400/60 rounded-b-lg bg-gradient-to-t from-cyan-500/30 to-transparent">
+                  <div className="absolute bottom-1 left-1 right-1 h-6 bg-gradient-to-t from-cyan-400/50 to-cyan-400/20 rounded-b animate-pulse"></div>
+                </div>
+              </div>
+              
+              {/* Central Molecule */}
+              <div className="relative animate-spin-slow" style={{ animationDuration: '20s' }}>
+                <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-lg"></div>
+                {[0, 120, 240].map((angle, i) => (
+                  <div key={i} className="absolute top-1/2 left-1/2 w-10 h-0.5 bg-gradient-to-r from-purple-400 to-transparent origin-left" style={{ transform: `rotate(${angle}deg)` }}>
+                    <div className="absolute right-0 -top-1 w-2.5 h-2.5 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full"></div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Mini Flask */}
+              <div className="absolute right-4 bottom-2">
+                <div className="w-8 h-10 border-2 border-pink-400/60 bg-gradient-to-t from-pink-500/30 to-transparent" style={{ clipPath: 'polygon(20% 0, 80% 0, 100% 100%, 0 100%)' }}></div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Features - Compact 2x2 */}
+          <div className="grid grid-cols-2 gap-2 max-w-xs w-full mb-6">
             {[
-              { icon: '🎯', text: 'Học theo lộ trình cá nhân hóa' },
-              { icon: '🏆', text: 'Hệ thống gamification hấp dẫn' },
-              { icon: '📊', text: 'Theo dõi tiến độ chi tiết' },
-              { icon: '🤖', text: 'Hỗ trợ bởi AI thông minh' }
+              { icon: '🎯', text: 'Cá nhân hóa' },
+              { icon: '🎮', text: 'Gamification' },
+              { icon: '📈', text: 'Theo dõi tiến độ' },
+              { icon: '🤖', text: 'AI hỗ trợ' }
             ].map((feature, idx) => (
-              <div key={idx} className="flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                <span className="text-2xl">{feature.icon}</span>
-                <span className="text-white/90">{feature.text}</span>
+              <div key={idx} className="flex items-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+                <span className="text-lg">{feature.icon}</span>
+                <span className="text-xs text-gray-300">{feature.text}</span>
+              </div>
+            ))}
+          </div>
+          
+          {/* Stats - Inline */}
+          <div className="flex items-center gap-6 pt-4 border-t border-white/10">
+            {[
+              { value: '10K+', label: 'Học sinh' },
+              { value: '500+', label: 'Bài học' },
+              { value: '98%', label: 'Hài lòng' }
+            ].map((stat, idx) => (
+              <div key={idx} className="text-center">
+                <div className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{stat.value}</div>
+                <div className="text-xs text-gray-500">{stat.label}</div>
               </div>
             ))}
           </div>
