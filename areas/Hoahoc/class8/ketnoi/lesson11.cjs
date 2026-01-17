@@ -59,12 +59,6 @@ module.exports = {
         <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời trước khi làm test.</p>
       </div>
     </div>
-
-    <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Bảng tính tan muối phổ biến: <em>/images/hoahoc/lesson11-solubility.png</em></p>
-      <p style="margin:0;">Sơ đồ phân loại muối: <em>/images/hoahoc/lesson11-salts.png</em></p>
-    </div>
   `,
   game: [
     {

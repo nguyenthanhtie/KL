@@ -54,12 +54,6 @@ module.exports = {
       </ol>
       <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự giải trước khi làm 10 câu test.</p>
     </div>
-
-    <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Sơ đồ n–m–M và V=22,4n: <em>/images/hoahoc/lesson3-formulas.png</em></p>
-      <p style="margin:0;">Bảng tỉ khối phổ biến: <em>/images/hoahoc/lesson3-density.png</em></p>
-    </div>
   `,
   game: [
     {

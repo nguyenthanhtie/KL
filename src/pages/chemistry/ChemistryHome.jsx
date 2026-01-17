@@ -35,11 +35,11 @@ const ChemistryHome = () => {
   };
 
   const topicMapping = {
-    8: { topics: ['Nguyên tử', 'Phản ứng', 'Mol', 'Oxi', 'Hiđro', 'Dung dịch'], icon: '⚗️', gradient: 'from-blue-500 to-cyan-500' },
-    9: { topics: ['Phi kim', 'Kim loại', 'Hữu cơ', 'Đời sống'], icon: '🔬', gradient: 'from-emerald-500 to-teal-500' },
-    10: { topics: ['Nguyên tử', 'Bảng tuần hoàn', 'Liên kết', 'Oxi hóa khử'], icon: '⚛️', gradient: 'from-violet-500 to-purple-500' },
-    11: { topics: ['Điện li', 'Halogen', 'Oxi', 'Tốc độ', 'Nitơ'], icon: '🧪', gradient: 'from-amber-500 to-orange-500' },
-    12: { topics: ['Este', 'Cacbohiđrat', 'Amin', 'Polime', 'Kim loại'], icon: '🧬', gradient: 'from-rose-500 to-pink-500' }
+    8: { topics: ['Nguyên tử', 'Phản ứng', 'Mol', 'Oxi', 'Hiđro', 'Dung dịch'], icon: '⚗️', gradient: 'from-blue-500 to-cyan-500', image: '/images/hoa8.webp' },
+    9: { topics: ['Phi kim', 'Kim loại', 'Hữu cơ', 'Đời sống'], icon: '🔬', gradient: 'from-emerald-500 to-teal-500', image: '/images/hoa9.webp' },
+    10: { topics: ['Nguyên tử', 'Bảng tuần hoàn', 'Liên kết', 'Oxi hóa khử'], icon: '⚛️', gradient: 'from-violet-500 to-purple-500', image: '/images/hoa10.jpg' },
+    11: { topics: ['Điện li', 'Halogen', 'Oxi', 'Tốc độ', 'Nitơ'], icon: '🧪', gradient: 'from-amber-500 to-orange-500', image: '/images/hoa11.jpg' },
+    12: { topics: ['Este', 'Cacbohiđrat', 'Amin', 'Polime', 'Kim loại'], icon: '🧬', gradient: 'from-rose-500 to-pink-500', image: '/images/hoa12.webp' }
   };
 
   useEffect(() => {
@@ -87,6 +87,7 @@ const ChemistryHome = () => {
             topics: topicMapping[gradeNum]?.topics || [],
             icon: topicMapping[gradeNum]?.icon || '📚',
             gradient: topicMapping[gradeNum]?.gradient || 'from-gray-500 to-gray-600',
+            image: topicMapping[gradeNum]?.image || null,
             ...g
           };
         });
@@ -307,7 +308,7 @@ const ChemistryHome = () => {
           </div>
 
           <div className="grid gap-3">
-            {grades.map(({ grade, topics, chapters, lessons, icon, gradient, completedLessons = 0 }) => {
+            {grades.map(({ grade, topics, chapters, lessons, icon, gradient, image, completedLessons = 0 }) => {
               const isCurrentGrade = currentClassId === grade;
               const isPastGrade = grade < currentClassId;
               const isUnlocked = grade <= currentClassId;
@@ -330,8 +331,20 @@ const ChemistryHome = () => {
                   
                   <div className="relative p-4">
                     <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${isUnlocked ? gradient : 'from-slate-300 to-slate-400'} flex items-center justify-center text-2xl flex-shrink-0 ${isCurrentGrade ? 'shadow-lg shadow-violet-200' : ''}`}>
-                        {icon}
+                      {/* Hiển thị ảnh bìa sách hoặc fallback về icon */}
+                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${isUnlocked ? gradient : 'from-slate-300 to-slate-400'} flex items-center justify-center text-2xl flex-shrink-0 overflow-hidden ${isCurrentGrade ? 'shadow-lg shadow-violet-200' : ''}`}>
+                        {image ? (
+                          <img 
+                            src={image} 
+                            alt={`Hóa học lớp ${grade}`} 
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'block';
+                            }}
+                          />
+                        ) : null}
+                        <span style={{ display: image ? 'none' : 'block' }}>{icon}</span>
                       </div>
                       
                       <div className="flex-1 min-w-0">

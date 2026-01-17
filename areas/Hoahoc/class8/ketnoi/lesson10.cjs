@@ -57,12 +57,6 @@ module.exports = {
         <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời trước khi làm test.</p>
       </div>
     </div>
-
-    <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Bảng phân loại oxide: <em>/images/hoahoc/lesson10-oxides.png</em></p>
-      <p style="margin:0;">Quá trình nung đá vôi: <em>/images/hoahoc/lesson10-caco3.png</em></p>
-    </div>
   `,
   game: [
     {
