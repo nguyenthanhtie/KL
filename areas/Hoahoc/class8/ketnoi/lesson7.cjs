@@ -56,12 +56,6 @@ module.exports = {
         <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời trước khi làm test 10 câu.</p>
       </div>
     </div>
-
-    <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Đồ thị năng lượng hoạt hóa có/không xúc tác: <em>/images/hoahoc/lesson7-catalyst.png</em></p>
-      <p style="margin:0;">Minh họa yếu tố ảnh hưởng tốc độ: <em>/images/hoahoc/lesson7-factors.png</em></p>
-    </div>
   `,
   game: [
     {

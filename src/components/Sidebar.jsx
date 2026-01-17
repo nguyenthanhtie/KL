@@ -313,7 +313,15 @@ const Sidebar = ({ children }) => {
           {/* Collapse Toggle - Desktop Only */}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hidden lg:flex w-full items-center justify-center gap-2 px-3 py-2 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-300"
+            className={`
+              hidden lg:flex w-full items-center justify-center gap-2 px-3 py-2 rounded-xl 
+              transition-all duration-300
+              ${isCollapsed 
+                ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 shadow-md' 
+                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
+              }
+            `}
+            title={isCollapsed ? 'Mở rộng sidebar' : 'Thu gọn sidebar'}
           >
             {isCollapsed ? (
               <ChevronRight className="w-5 h-5" />

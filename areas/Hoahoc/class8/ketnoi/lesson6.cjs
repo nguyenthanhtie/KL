@@ -57,12 +57,6 @@ module.exports = {
         <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời rồi làm 10 câu test.</p>
       </div>
     </div>
-
-    <div style="margin:16px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; text-align:center; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Placeholder hình/sơ đồ</strong>:</p>
-      <p style="margin:0 0 4px;">Sơ đồ 4 bước tính PTHH: <em>/images/hoahoc/lesson6-steps.png</em></p>
-      <p style="margin:0;">Bảng chuyển đổi n–m–V: <em>/images/hoahoc/lesson6-convert.png</em></p>
-    </div>
   `,
   game: [
     {
