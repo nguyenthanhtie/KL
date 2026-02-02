@@ -8,64 +8,83 @@ module.exports = {
   description: 'Tính chất, dãy hoạt động, hợp chất đặc trưng của kim loại kiềm.',
   level: 'Intermediate',
   order: 24,
-  theory: `
-    <h2>Kim loại nhóm IA</h2>
-    <p style="margin:8px 0; color:#334155;">Nhận diện tính khử cực mạnh, phản ứng với nước/phi kim và hợp chất quan trọng của kim loại kiềm.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Tính chất & phản ứng</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>1e hoá trị (ns1) → tính khử mạnh; hoạt động tăng Li → Cs.</li>
-          <li>Phản ứng mãnh liệt với nước: 2M + 2H2O → 2MOH + H2↑.</li>
-          <li>Dễ bị oxi hoá trong không khí → bảo quản trong dầu hoả.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #cbd5e1; border-radius:10px; background:#fff7ed; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Hợp chất đặc trưng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Oxit, peoxit (Na2O2), superoxit (KO2) có tính oxi hoá/khử mạnh.</li>
-          <li>Hiđroxit (kiềm mạnh), muối halogenua tan, muối cacbonat bền nhiệt.</li>
-          <li>NaHCO3 (thuốc muối), Na2CO3 (soda), NaCl (muối ăn), KNO3 (phân bón).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ứng dụng & nhận biết</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Pin kiềm, trao đổi ion làm mềm nước, tổng hợp hữu cơ.</li>
-          <li>Màu ngọn lửa: Li đỏ, Na vàng, K tím, Rb đỏ tím, Cs xanh lam.</li>
-          <li>Bảo quản và vận chuyển cần tránh ẩm, tránh tiếp xúc trực tiếp.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#fef9c3,#fff); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">So sánh nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Hoạt động: Li < Na < K < Rb < Cs (mạnh dần, nóng chảy giảm dần).</li>
-          <li>Sản phẩm với O2: Li2O, Na2O2, KO2 (bẫy đề phổ biến).</li>
-          <li>Kiềm: LiOH yếu nhất, CsOH mạnh nhất; đều tan và ăn mòn.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#ecfeff; color:#0ea5e9;">
-        <h4 style="margin:0 0 6px;">Case & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>KO2 trong mặt nạ cứu hoả: hấp thụ CO2, nhả O2 (2KO2 + CO2 → K2CO3 + O2).</li>
-          <li>NaHCO3 chữa đau dạ dày, Na2CO3 công nghiệp thủy tinh, xà phòng.</li>
-          <li>Pin Na/K lỏng dùng trong trao đổi nhiệt; Li dùng trong pin Li-ion.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Viết PTHH với nước/halogen/oxy; xác định sản phẩm chính theo kim loại.</li>
-          <li>Bài nhận biết: dùng màu ngọn lửa, kết tủa carbonat/hidroxit.</li>
-          <li>Tính khối lượng NaOH/KO2 sinh ra khi điện phân hoặc đốt; chú ý cân bằng điện tích và e.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Kim loại nhóm IA',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Nhận diện tính khử cực mạnh, phản ứng với nước/phi kim và hợp chất quan trọng của kim loại kiềm.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Tính chất & phản ứng',
+            content: '1e hoá trị (ns1) → tính khử mạnh; hoạt động tăng Li → Cs.\nPhản ứng mãnh liệt với nước: 2M + 2H2O → 2MOH + H2↑.\nDễ bị oxi hoá trong không khí → bảo quản trong dầu hoả.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Hợp chất đặc trưng',
+            content: 'Oxit, peoxit (Na2O2), superoxit (KO2) có tính oxi hoá/khử mạnh.\nHiđroxit (kiềm mạnh), muối halogenua tan, muối cacbonat bền nhiệt.\nNaHCO3 (thuốc muối), Na2CO3 (soda), NaCl (muối ăn), KNO3 (phân bón).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & nhận biết',
+            content: 'Pin kiềm, trao đổi ion làm mềm nước, tổng hợp hữu cơ.\nMàu ngọn lửa: Li đỏ, Na vàng, K tím, Rb đỏ tím, Cs xanh lam.\nBảo quản và vận chuyển cần tránh ẩm, tránh tiếp xúc trực tiếp.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh nhanh',
+            content: 'Hoạt động: Li < Na < K < Rb < Cs (mạnh dần, nóng chảy giảm dần).\nSản phẩm với O2: Li2O, Na2O2, KO2 (bẫy đề phổ biến).\nKiềm: LiOH yếu nhất, CsOH mạnh nhất; đều tan và ăn mòn.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & ứng dụng',
+            content: 'KO2 trong mặt nạ cứu hoả: hấp thụ CO2, nhả O2 (2KO2 + CO2 → K2CO3 + O2).\nNaHCO3 chữa đau dạ dày, Na2CO3 công nghiệp thủy tinh, xà phòng.\nPin Na/K lỏng dùng trong trao đổi nhiệt; Li dùng trong pin Li-ion.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Viết PTHH với nước/halogen/oxy; xác định sản phẩm chính theo kim loại.\nBài nhận biết: dùng màu ngọn lửa, kết tủa carbonat/hidroxit.\nTính khối lượng NaOH/KO2 sinh ra khi điện phân hoặc đốt; chú ý cân bằng điện tích và e.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

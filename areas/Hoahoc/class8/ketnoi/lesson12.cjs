@@ -6,59 +6,73 @@ module.exports = {
   lessonId: 12,
   order: 12,
   title: 'Bài 12: Phân bón hóa học',
-  theory: `
-    <h2>🌾 Bài 12: Phân bón hóa học</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận biết nhóm phân đạm, lân, kali, NPK; hiểu vai trò và lưu ý an toàn/môi trường.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Phân đơn</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Phân đạm (N): Ure (NH₂)₂CO, NH₄NO₃, (NH₄)₂SO₄ → thúc lá, xanh cây.</li>
-          <li>Phân lân (P): Supe lân Ca(H₂PO₄)₂, lân nung chảy → phát triển rễ, ra hoa.</li>
-          <li>Phân kali (K): KCl, K₂SO₄ → chắc hạt, tăng chống chịu.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Phân đa nguyên tố</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>NPK: phối trộn N, P, K với tỉ lệ khác nhau.</li>
-          <li>Trung vi lượng: bổ sung Ca, Mg, S, Fe, Zn,... theo nhu cầu.</li>
-          <li>Dạng bón: rải gốc, hòa nước tưới, viên nén chậm tan.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#fef9c3,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#854d0e;">Lưu ý sử dụng & an toàn</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Bón đúng loại/đúng giai đoạn; tránh bón đạm sát ngày thu hoạch.</li>
-        <li>Không lạm dụng → chua đất, ô nhiễm nước (phú dưỡng hóa).</li>
-        <li>Bảo hộ khi tiếp xúc phân đạm, kali; tránh hít bụi, tránh dính mắt.</li>
-        <li>Bảo quản khô ráo; NPK/urea hút ẩm dễ vón.</li>
-      </ul>
-    </div>
-
-    <div style="margin:16px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fef2f2;">
-        <h4 style="margin:0 0 8px; color:#b91c1c;">Hiệu quả & nhận biết</h4>
-        <ul style="margin:0; padding-left:18px; color:#991b1b;">
-          <li>Thiếu N: lá vàng nhạt; thừa N: lá rậm, dễ đổ.</li>
-          <li>Thiếu P: lá tím, rễ kém; thừa P: cản hấp thu vi lượng.</li>
-          <li>Thiếu K: mép lá cháy; đủ K: quả chắc, ngọt.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Mini quiz đọc nhanh</h4>
-        <ol style="margin:0; padding-left:18px; color:#334155;">
-          <li>Vai trò chính của đạm? của kali?</li>
-          <li>Vì sao không bón nhiều phân đạm sát thu hoạch?</li>
-          <li>Hiện tượng phú dưỡng hóa đến từ đâu?</li>
-        </ol>
-        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Trả lời nhanh trước khi làm bài.</p>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🌾 Bài 12: Phân bón hóa học',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nhận biết nhóm phân đạm, lân, kali, NPK; hiểu vai trò và lưu ý an toàn/môi trường.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Phân đơn',
+            content: 'Phân đạm (N): Ure (NH₂)₂CO, NH₄NO₃, (NH₄)₂SO₄ → thúc lá, xanh cây.\nPhân lân (P): Supe lân Ca(H₂PO₄)₂, lân nung chảy → phát triển rễ, ra hoa.\nPhân kali (K): KCl, K₂SO₄ → chắc hạt, tăng chống chịu.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Phân đa nguyên tố',
+            content: 'NPK: phối trộn N, P, K với tỉ lệ khác nhau.\nTrung vi lượng: bổ sung Ca, Mg, S, Fe, Zn,... theo nhu cầu.\nDạng bón: rải gốc, hòa nước tưới, viên nén chậm tan.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Lưu ý sử dụng & an toàn',
+            content: 'Bón đúng loại/đúng giai đoạn; tránh bón đạm sát ngày thu hoạch.\nKhông lạm dụng → chua đất, ô nhiễm nước (phú dưỡng hóa).\nBảo hộ khi tiếp xúc phân đạm, kali; tránh hít bụi, tránh dính mắt.\nBảo quản khô ráo; NPK/urea hút ẩm dễ vón.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'warningBox',
+        content: {
+            title: 'Hiệu quả & nhận biết',
+            content: 'Thiếu N: lá vàng nhạt; thừa N: lá rậm, dễ đổ.\nThiếu P: lá tím, rễ kém; thừa P: cản hấp thu vi lượng.\nThiếu K: mép lá cháy; đủ K: quả chắc, ngọt.',
+            color: 'red',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Vai trò chính của đạm? của kali?\nVì sao không bón nhiều phân đạm sát thu hoạch?\nHiện tượng phú dưỡng hóa đến từ đâu?\nTrả lời nhanh trước khi làm bài.',
+            color: 'blue',
+            listType: 'number'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

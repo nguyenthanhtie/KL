@@ -8,64 +8,83 @@ module.exports = {
   description: 'Cơ chế ăn mòn hoá học/điện hoá, yếu tố ảnh hưởng, phương pháp bảo vệ.',
   level: 'Intermediate',
   order: 22,
-  theory: `
-    <h2>Ăn mòn và bảo vệ kim loại</h2>
-    <p style="margin:8px 0; color:#334155;">Phân biệt ăn mòn hoá học và điện hoá, nhận yếu tố ảnh hưởng và áp dụng biện pháp chống ăn mòn.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cơ chế</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Ăn mòn hoá học: kim loại phản ứng trực tiếp với môi trường khô/khí (O2, S).</li>
-          <li>Ăn mòn điện hoá: vi pin tạo trên bề mặt ẩm; anot bị oxi hoá (mất e), catot khử O2/H+.</li>
-          <li>Yếu tố: ẩm, chất điện li, chênh lệch điện thế kim loại/ion, oxy, pH.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Biện pháp bảo vệ</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Sơn phủ, phủ dầu, mạ kim loại bền (Cr, Ni) ngăn tiếp xúc môi trường.</li>
-          <li>Bảo vệ catot: nối kim loại cần bảo vệ với kim loại hi sinh hoạt động hơn (Zn bảo vệ thép tàu).</li>
-          <li>Chất ức chế ăn mòn, kiểm soát pH, khử oxy trong hệ kín.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ví dụ & thực tế</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Gỉ sắt: Fe → Fe2+ (anot), O2 + H2O + e → OH- (catot) → Fe(OH)3 → Fe2O3·nH2O.</li>
-          <li>Ăn mòn pin hai kim loại: Fe-Cu trong ẩm, Fe bị ăn mòn nhanh hơn.</li>
-          <li>Thụ động hoá: Al, Cr tạo màng oxit bền tự bảo vệ.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">So sánh nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Ăn mòn hoá học: không cần dung dịch, khí khô (Cl2, O3) tấn công trực tiếp.</li>
-          <li>Ăn mòn điện hoá: cần chất điện li + vi pin; tốc độ thường nhanh hơn.</li>
-          <li>Thụ động hoá: màng oxit bền (Al, Cr, Ti) chặn O2/H2O.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Ống dẫn ngầm: lắp anode hi sinh Zn/Mg + sơn epoxy + kiểm soát pH đất.</li>
-          <li>Thân tàu thép: mạ kẽm + sơn biển; thay anode định kỳ để duy trì bảo vệ.</li>
-          <li>Nhà máy: khử oxy bằng N2/hoá chất, thêm ức chế (chromat, phosphat) cho hệ kín.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Vẽ sơ đồ pin ăn mòn Fe-Cu: anot/catot, dòng e, dòng ion, PTHH.</li>
-          <li>Chọn biện pháp bảo vệ cho cầu thép vs thùng chứa axit; giải thích lí do.</li>
-          <li>Tính khối lượng Zn hi sinh cần thiết trong 1 năm cho diện tích đã cho (dùng định luật Faraday). </li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ăn mòn và bảo vệ kim loại',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Phân biệt ăn mòn hoá học và điện hoá, nhận yếu tố ảnh hưởng và áp dụng biện pháp chống ăn mòn.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cơ chế',
+            content: 'Ăn mòn hoá học: kim loại phản ứng trực tiếp với môi trường khô/khí (O2, S).\nĂn mòn điện hoá: vi pin tạo trên bề mặt ẩm; anot bị oxi hoá (mất e), catot khử O2/H+.\nYếu tố: ẩm, chất điện li, chênh lệch điện thế kim loại/ion, oxy, pH.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Biện pháp bảo vệ',
+            content: 'Sơn phủ, phủ dầu, mạ kim loại bền (Cr, Ni) ngăn tiếp xúc môi trường.\nBảo vệ catot: nối kim loại cần bảo vệ với kim loại hi sinh hoạt động hơn (Zn bảo vệ thép tàu).\nChất ức chế ăn mòn, kiểm soát pH, khử oxy trong hệ kín.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ví dụ & thực tế',
+            content: 'Gỉ sắt: Fe → Fe2+ (anot), O2 + H2O + e → OH- (catot) → Fe(OH)3 → Fe2O3·nH2O.\nĂn mòn pin hai kim loại: Fe-Cu trong ẩm, Fe bị ăn mòn nhanh hơn.\nThụ động hoá: Al, Cr tạo màng oxit bền tự bảo vệ.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh nhanh',
+            content: 'Ăn mòn hoá học: không cần dung dịch, khí khô (Cl2, O3) tấn công trực tiếp.\nĂn mòn điện hoá: cần chất điện li + vi pin; tốc độ thường nhanh hơn.\nThụ động hoá: màng oxit bền (Al, Cr, Ti) chặn O2/H2O.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & ứng dụng',
+            content: 'Ống dẫn ngầm: lắp anode hi sinh Zn/Mg + sơn epoxy + kiểm soát pH đất.\nThân tàu thép: mạ kẽm + sơn biển; thay anode định kỳ để duy trì bảo vệ.\nNhà máy: khử oxy bằng N2/hoá chất, thêm ức chế (chromat, phosphat) cho hệ kín.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Vẽ sơ đồ pin ăn mòn Fe-Cu: anot/catot, dòng e, dòng ion, PTHH.\nChọn biện pháp bảo vệ cho cầu thép vs thùng chứa axit; giải thích lí do.\nTính khối lượng Zn hi sinh cần thiết trong 1 năm cho diện tích đã cho (dùng định luật Faraday).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

@@ -8,25 +8,46 @@ module.exports = {
   description: 'Ôn chương 5: phân biệt thu/tỏa nhiệt, viết PTHH kèm ΔH, áp dụng Hess nhanh.',
   level: 'Intermediate',
   order: 2,
-  theory: `
-    <h2>Ôn tập chương 5</h2>
-    <h3>Nhận dạng nhanh</h3>
-    <ul>
-      <li>Thu nhiệt: hấp thụ nhiệt, ΔH &gt; 0 (hòa tan NH4NO3); T môi trường giảm.</li>
-      <li>Tỏa nhiệt: giải phóng nhiệt, ΔH &lt; 0 (cháy, trung hòa axit-bazơ mạnh); T môi trường tăng.</li>
-    </ul>
-    <h3>Viết phương trình nhiệt hóa học</h3>
-    <ul>
-      <li>Luôn ghi trạng thái, hệ số chuẩn; ΔH theo chiều đã viết.</li>
-      <li>Đảo chiều phương trình → đổi dấu ΔH; nhân hệ số → nhân ΔH tương ứng.</li>
-    </ul>
-    <h3>Áp dụng định luật Hess</h3>
-    <ul>
-      <li>Chọn các phản ứng đã biết ΔH, sắp xếp/đảo chiều/nhân hệ số để tổng hợp phản ứng đích.</li>
-      <li>Cộng ΔH các bước → ΔH phản ứng cần tính.</li>
-      <li>Mẹo: dùng ΔH_f° (tạo thành) để tính ΔH phản ứng = ΣΔH_f°(sp) - ΣΔH_f°(pư).</li>
-    </ul>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập chương 5',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Nhận dạng nhanh',
+            content: 'Thu nhiệt: hấp thụ nhiệt, ΔH > 0 (hòa tan NH4NO3); T môi trường giảm.\nTỏa nhiệt: giải phóng nhiệt, ΔH < 0 (cháy, trung hòa axit-bazơ mạnh); T môi trường tăng.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Viết phương trình nhiệt hóa học',
+            content: 'Luôn ghi trạng thái, hệ số chuẩn; ΔH theo chiều đã viết.\nĐảo chiều phương trình → đổi dấu ΔH; nhân hệ số → nhân ΔH tương ứng.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Áp dụng định luật Hess',
+            content: 'Chọn các phản ứng đã biết ΔH, sắp xếp/đảo chiều/nhân hệ số để tổng hợp phản ứng đích.\nCộng ΔH các bước → ΔH phản ứng cần tính.\nMẹo: dùng ΔH_f° (tạo thành) để tính ΔH phản ứng = ΣΔH_f°(sp) - ΣΔH_f°(pư).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

@@ -71,6 +71,10 @@ app.use('/api/pk', require('./routes/pk.cjs'));
 app.use('/api/ai-questions', require('./routes/ai-questions.cjs'));
 app.use('/api/notifications', require('./routes/notifications.cjs'));
 
+// Admin & Teacher routes
+app.use('/api/admin', require('./routes/admin.cjs'));
+app.use('/api/teacher', require('./routes/teacher.cjs'));
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });

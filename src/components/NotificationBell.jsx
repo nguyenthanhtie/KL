@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Bell, Check, CheckCheck, Trash2, X, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import useNotifications from '../hooks/useNotifications';
+import { useNotifications } from '../hooks/useNotifications';
 
 const NotificationBell = () => {
   const navigate = useNavigate();

@@ -42,6 +42,16 @@ const lessonSchema = new mongoose.Schema({
     type: String
   },
 
+  // Theory modules - array of content modules for visual editor
+  theoryModules: [{
+    id: String,
+    type: {
+      type: String,
+      enum: ['heading', 'paragraph', 'list', 'infoBox', 'warningBox', 'tipBox', 'formula', 'table', 'image', 'video', 'code', 'html']
+    },
+    content: mongoose.Schema.Types.Mixed
+  }],
+
   // Legacy content field kept for backward compatibility (optional)
   content: {
     type: String

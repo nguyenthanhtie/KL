@@ -8,46 +8,63 @@ module.exports = {
   description: 'Ôn nhanh chương 3: octet, ion, cộng hoá trị, H-bond và van der Waals kèm lỗi thường gặp.',
   level: 'Intermediate',
   order: 5,
-  theory: `
-    <h2>Ôn tập chương 3</h2>
-    <p style="margin:8px 0; color:#334155;">Checklist: nhận diện loại liên kết, ngoại lệ octet, xu hướng cực/không cực, và vai trò liên kết yếu.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:10px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Octet & phân loại liên kết</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Octet: đạt 8e (H/He: 2e); ngoại lệ thiếu (B, Be, NO) và giãn (PCl5, SF6, SO3).</li>
-          <li>ΔEN lớn → ion; ΔEN vừa → cộng hoá trị có cực; rất nhỏ → không cực.</li>
-          <li>Khung Lewis: đếm e hoá trị, vẽ liên kết đơn, phân bổ e, tăng bậc nếu thiếu octet.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Ion vs cộng hoá trị</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Ion: mạng tinh thể, T nóng chảy cao, dẫn điện khi nóng chảy/hoà tan, giòn.</li>
-          <li>Cộng hoá trị: dùng chung e; liên kết đôi/ba bền và ngắn hơn đơn.</li>
-          <li>Hình học VSEPR ảnh hưởng mômen tổng (CO2 thẳng → μ=0; H2O gấp khúc → μ≠0).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 6px; color:#0e7490;">Liên kết H & van der Waals</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>H-bond: H gắn F/O/N + cặp e tự do → tăng T sôi, độ tan (H2O, HF, ROH).</li>
-          <li>van der Waals: luôn có; London mạnh hơn khi phân tử lớn/chuỗi thẳng.</li>
-          <li>Thứ tự bền: ion≈cộng hoá trị > H-bond > lưỡng cực > London.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:10px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <h4 style="margin:0 0 6px;">Lỗi hay gặp</h4>
-      <ul style="margin:0; padding-left:18px;">
-        <li>CO2 có liên kết cực nhưng phân tử không cực do hình học thẳng.</li>
-        <li>Ép chu kỳ 2 giãn octet (không hợp lệ).</li>
-        <li>Gọi H-bond chỉ vì có O/N nhưng H không gắn trực tiếp (CH3-O-CH3 không có H-bond liên phân tử mạnh).</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập chương 3',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Checklist: nhận diện loại liên kết, ngoại lệ octet, xu hướng cực/không cực, và vai trò liên kết yếu.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Octet & phân loại liên kết',
+            content: 'Octet: đạt 8e (H/He: 2e); ngoại lệ thiếu (B, Be, NO) và giãn (PCl5, SF6, SO3).\nΔEN lớn → ion; ΔEN vừa → cộng hoá trị có cực; rất nhỏ → không cực.\nKhung Lewis: đếm e hoá trị, vẽ liên kết đơn, phân bổ e, tăng bậc nếu thiếu octet.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Ion vs cộng hoá trị',
+            content: 'Ion: mạng tinh thể, T nóng chảy cao, dẫn điện khi nóng chảy/hoà tan, giòn.\nCộng hoá trị: dùng chung e; liên kết đôi/ba bền và ngắn hơn đơn.\nHình học VSEPR ảnh hưởng mômen tổng (CO2 thẳng → μ=0; H2O gấp khúc → μ≠0).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Liên kết H & van der Waals',
+            content: 'H-bond: H gắn F/O/N + cặp e tự do → tăng T sôi, độ tan (H2O, HF, ROH).\nvan der Waals: luôn có; London mạnh hơn khi phân tử lớn/chuỗi thẳng.\nThứ tự bền: ion≈cộng hoá trị > H-bond > lưỡng cực > London.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Lỗi hay gặp',
+            content: 'CO2 có liên kết cực nhưng phân tử không cực do hình học thẳng.\nÉp chu kỳ 2 giãn octet (không hợp lệ).\nGọi H-bond chỉ vì có O/N nhưng H không gắn trực tiếp (CH3-O-CH3 không có H-bond liên phân tử mạnh).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

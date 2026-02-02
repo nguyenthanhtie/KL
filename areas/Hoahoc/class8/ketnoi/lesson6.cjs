@@ -5,59 +5,73 @@ module.exports = {
   chapterName: "Chương 2: Phản ứng hóa học",
   lessonId: 6,
   title: 'Bài 6: Tính theo phương trình hóa học',
-  theory: `
-    <h2>📐 Bài 6: Tính theo phương trình hóa học</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: dùng PTHH cân bằng để tính số mol/khối lượng/thể tích, nhận diện chất dư – chất hết.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Cơ sở tính toán</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>PTHH đã cân bằng cho tỉ lệ mol giữa các chất.</li>
-          <li>Dùng quan hệ <strong>n = m/M</strong>, <strong>V = 22,4n</strong> (khí đktc).</li>
-          <li>Từ tỉ lệ mol ⇒ suy ra khối lượng/thể tích.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Quy trình 4 bước</h4>
-        <ol style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Viết và cân bằng PTHH.</li>
-          <li>Đổi dữ liệu về mol (n = m/M).</li>
-          <li>Lập tỉ lệ mol theo hệ số PTHH.</li>
-          <li>Quy đổi về khối lượng/thể tích cần tìm.</li>
-        </ol>
-      </div>
-    </div>
-
-    <div style="margin:16px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Ví dụ minh họa</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>2H₂ + O₂ → 2H₂O: 2 mol H₂ sinh 2 mol H₂O.</li>
-        <li>CaCO₃ → CaO + CO₂: 0,2 mol CaCO₃ ⇒ 0,2 mol CO₂ ⇒ m = 8,8 g.</li>
-        <li>Zn + 2HCl → ZnCl₂ + H₂: từ n Zn tính n H₂ theo tỉ lệ 1:1.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Mẹo & lưu ý</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Đổi đơn vị ngay đầu bài.</li>
-          <li>Kiểm tra chất dư bằng so sánh tỉ lệ mol thực tế / lý thuyết.</li>
-          <li>Khí ở đktc dùng 22,4 L/mol.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Mini quiz đọc nhanh</h4>
-        <ol style="margin:0; padding-left:18px; color:#334155;">
-          <li>2 mol H₂ tạo bao nhiêu mol H₂O?</li>
-          <li>m 0,2 mol CaCO₃ (M=100) là bao nhiêu?</li>
-          <li>Khí thu được 5,6 L ở đktc thì n bằng?</li>
-        </ol>
-        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời rồi làm 10 câu test.</p>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '📐 Bài 6: Tính theo phương trình hóa học',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: dùng PTHH cân bằng để tính số mol/khối lượng/thể tích, nhận diện chất dư - chất hết.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cơ sở tính toán',
+            content: 'PTHH đã cân bằng cho tỉ lệ mol giữa các chất.\nDùng quan hệ **n = m/M**, **V = 22,4n** (khí đktc).\nTừ tỉ lệ mol ⇒ suy ra khối lượng/thể tích.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Quy trình 4 bước',
+            content: 'Viết và cân bằng PTHH.\nĐổi dữ liệu về mol (n = m/M).\nLập tỉ lệ mol theo hệ số PTHH.\nQuy đổi về khối lượng/thể tích cần tìm.',
+            color: 'blue',
+            listType: 'number'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ví dụ minh họa',
+            content: '2H₂ + O₂ → 2H₂O: 2 mol H₂ sinh 2 mol H₂O.\nCaCO₃ → CaO + CO₂: 0,2 mol CaCO₃ ⇒ 0,2 mol CO₂ ⇒ m = 8,8 g.\nZn + 2HCl → ZnCl₂ + H₂: từ n Zn tính n H₂ theo tỉ lệ 1:1.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'warningBox',
+        content: {
+            title: 'Mẹo & lưu ý',
+            content: 'Đổi đơn vị ngay đầu bài.\nKiểm tra chất dư bằng so sánh tỉ lệ mol thực tế / lý thuyết.\nKhí ở đktc dùng 22,4 L/mol.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: '2 mol H₂ tạo bao nhiêu mol H₂O?\nm 0,2 mol CaCO₃ (M=100) là bao nhiêu?\nKhí thu được 5,6 L ở đktc thì n bằng?\nTự trả lời rồi làm 10 câu test.',
+            color: 'blue',
+            listType: 'number'
+        }
+    }
+  ],
   game: [
     {
       question: 'Phản ứng hóa học là gì?',

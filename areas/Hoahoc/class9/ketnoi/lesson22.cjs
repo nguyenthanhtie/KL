@@ -8,73 +8,93 @@ module.exports = {
   description: 'Đặc điểm chung của hợp chất hữu cơ và các nhóm phân loại cơ bản.',
   level: 'Beginner',
   order: 5,
-  theory: `
-    <h2>🧬 Tổng quan hợp chất hữu cơ</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nắm thành phần, liên kết chủ đạo, các nhóm phân loại lớn và cách biểu diễn công thức.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Thành phần &amp; liên kết</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Chủ yếu chứa C, H; kèm O, N, S, halogen.</li>
-          <li>Liên kết cộng hoá trị C–C, C–H bền; dễ bị nhiệt phân so với vô cơ.</li>
-          <li>Có mạch thẳng, nhánh, vòng (no/không no/aromatic).</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Phân loại nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Hydrocarbon: chỉ C, H (ankan, anken, ankin).</li>
-          <li>Dẫn xuất: chứa nhóm chức (–OH, –COOH, –O–, –CHO...).</li>
-          <li>Tự nhiên vs nhân tạo: lipid, đường, protein; polymer tổng hợp.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Biểu diễn công thức</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Công thức phân tử: số nguyên tử từng nguyên tố.</li>
-          <li>Công thức cấu tạo: cách liên kết, thứ tự nguyên tử.</li>
-          <li>Công thức thu gọn/vẽ khung xương giúp nhìn mạch C nhanh.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Ứng dụng &amp; ví dụ</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Nhiên liệu (xăng, LPG), dung môi (etanol, axeton).</li>
-          <li>Thực phẩm (đường, lipid), dược phẩm (aspirin), vật liệu (PVC, PE).</li>
-          <li>Sinh học: glucose – năng lượng tế bào; protein – cấu trúc/enzym.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li><strong>Hydrocarbon</strong>: ankan (CnH2n+2), anken (CnH2n), ankin (CnH2n-2).</li>
-        <li><strong>Dẫn xuất</strong>: ancol (–OH), axit cacboxylic (–COOH), este (–COO–).</li>
-        <li><strong>Tính chất chung</strong>: cộng hoá trị, dễ cháy; nhiều chất ít tan nước, tan dung môi hữu cơ.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
-      <p style="margin:0 0 4px;">Sơ đồ cây phân loại hữu cơ: <em>/images/hoahoc9/lesson22-classification.png</em></p>
-      <p style="margin:0;">Mô hình mạch thẳng/nhánh/vòng: <em>/images/hoahoc9/lesson22-structures.png</em></p>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-        <li>Vì sao công thức cấu tạo quan trọng hơn công thức phân tử?</li>
-        <li>Phân biệt nhanh ankan và anken bằng tính chất hoá học nào?</li>
-        <li>Kể 2 ví dụ dẫn xuất hữu cơ thông dụng trong đời sống.</li>
-      </ul>
-      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Tự trả lời trước khi làm bộ 10 câu bên dưới.</p>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🧬 Tổng quan hợp chất hữu cơ',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nắm thành phần, liên kết chủ đạo, các nhóm phân loại lớn và cách biểu diễn công thức.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Thành phần & liên kết',
+            content: 'Chủ yếu chứa C, H; kèm O, N, S, halogen.\nLiên kết cộng hoá trị C-C, C-H bền; dễ bị nhiệt phân so với vô cơ.\nCó mạch thẳng, nhánh, vòng (no/không no/aromatic).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Phân loại nhanh',
+            content: 'Hydrocarbon: chỉ C, H (ankan, anken, ankin).\nDẫn xuất: chứa nhóm chức (-OH, -COOH, -O-, -CHO...).\nTự nhiên vs nhân tạo: lipid, đường, protein; polymer tổng hợp.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'warningBox',
+        content: {
+            title: 'Biểu diễn công thức',
+            content: 'Công thức phân tử: số nguyên tử từng nguyên tố.\nCông thức cấu tạo: cách liên kết, thứ tự nguyên tử.\nCông thức thu gọn/vẽ khung xương giúp nhìn mạch C nhanh.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & ví dụ',
+            content: 'Nhiên liệu (xăng, LPG), dung môi (etanol, axeton).\nThực phẩm (đường, lipid), dược phẩm (aspirin), vật liệu (PVC, PE).\nSinh học: glucose - năng lượng tế bào; protein - cấu trúc/enzym.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Bảng tóm tắt nhanh',
+            content: '**Hydrocarbon**: ankan (CnH2n+2), anken (CnH2n), ankin (CnH2n-2).\n**Dẫn xuất**: ancol (-OH), axit cacboxylic (-COOH), este (-COO-).\n**Tính chất chung**: cộng hoá trị, dễ cháy; nhiều chất ít tan nước, tan dung môi hữu cơ.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: '',
+            content: '**Gợi ý hình**:\nSơ đồ cây phân loại hữu cơ: */images/hoahoc9/lesson22-classification.png*\nMô hình mạch thẳng/nhánh/vòng: */images/hoahoc9/lesson22-structures.png*',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-9',
+        type: 'warningBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Vì sao công thức cấu tạo quan trọng hơn công thức phân tử?\nPhân biệt nhanh ankan và anken bằng tính chất hoá học nào?\nKể 2 ví dụ dẫn xuất hữu cơ thông dụng trong đời sống.\nTự trả lời trước khi làm bộ 10 câu bên dưới.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

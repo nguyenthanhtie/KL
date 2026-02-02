@@ -8,48 +8,63 @@ module.exports = {
   description: 'Chưng cất, chiết, kết tinh, sắc kí cơ bản cho hợp chất hữu cơ.',
   level: 'Intermediate',
   order: 11,
-  theory: `
-    <h2>Tách biệt và tinh chế</h2>
-    <p style="margin:8px 0; color:#334155;">Chọn phương pháp tinh chế dựa trên độ bay hơi, độ tan, độ bền nhiệt và tính hấp phụ.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Chưng cất</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Chưng cất đơn: tách chất có chênh lệch điểm sôi lớn (>25–30°C), không tạo azeotrop.</li>
-          <li>Chưng cất phân đoạn: dùng cột chưng, tách hỗn hợp nhiều cấu tử gần điểm sôi.</li>
-          <li>Chưng cất chân không: cho chất dễ phân huỷ nhiệt, hạ áp để giảm điểm sôi.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Chiết</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Dựa trên độ tan khác nhau giữa hai pha lỏng không trộn (nước/hữu cơ).</li>
-          <li>Phễu chiết: lắc nhẹ, xả lớp nặng trước; chọn dung môi hữu cơ nhẹ hơn (ete, dichloromethan nặng hơn nước).</li>
-          <li>Có thể chiết axit-bazơ: chuyển dạng ion để thay đổi độ tan.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Kết tinh</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Chọn dung môi: tan tốt nóng, tan ít lạnh; không phản ứng với chất.</li>
-          <li>Hoà tan nóng, lọc nóng loại tạp không tan, làm lạnh kết tinh; rửa và sấy tinh thể.</li>
-          <li>Dùng than hoạt để khử màu (hấp phụ), lọc bỏ trước khi kết tinh.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Sắc kí mỏng (TLC)</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Pha tĩnh: lớp mỏng silica gel/Al2O3 trên bản kính/nhôm.</li>
-          <li>Pha động: dung môi hoặc hỗn hợp dung môi; chất di chuyển với tốc độ khác nhau.</li>
-          <li>Rf = (khoảng cách chất chạy)/(khoảng cách dung môi); dùng theo dõi phản ứng, độ tinh khiết.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Tách biệt và tinh chế',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Chọn phương pháp tinh chế dựa trên độ bay hơi, độ tan, độ bền nhiệt và tính hấp phụ.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Chưng cất',
+            content: 'Chưng cất đơn: tách chất có chênh lệch điểm sôi lớn (>25-30°C), không tạo azeotrop.\nChưng cất phân đoạn: dùng cột chưng, tách hỗn hợp nhiều cấu tử gần điểm sôi.\nChưng cất chân không: cho chất dễ phân huỷ nhiệt, hạ áp để giảm điểm sôi.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Chiết',
+            content: 'Dựa trên độ tan khác nhau giữa hai pha lỏng không trộn (nước/hữu cơ).\nPhễu chiết: lắc nhẹ, xả lớp nặng trước; chọn dung môi hữu cơ nhẹ hơn (ete, dichloromethan nặng hơn nước).\nCó thể chiết axit-bazơ: chuyển dạng ion để thay đổi độ tan.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Kết tinh',
+            content: 'Chọn dung môi: tan tốt nóng, tan ít lạnh; không phản ứng với chất.\nHoà tan nóng, lọc nóng loại tạp không tan, làm lạnh kết tinh; rửa và sấy tinh thể.\nDùng than hoạt để khử màu (hấp phụ), lọc bỏ trước khi kết tinh.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Sắc kí mỏng (TLC)',
+            content: 'Pha tĩnh: lớp mỏng silica gel/Al2O3 trên bản kính/nhôm.\nPha động: dung môi hoặc hỗn hợp dung môi; chất di chuyển với tốc độ khác nhau.\nRf = (khoảng cách chất chạy)/(khoảng cách dung môi); dùng theo dõi phản ứng, độ tinh khiết.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

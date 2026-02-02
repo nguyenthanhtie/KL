@@ -8,64 +8,83 @@ module.exports = {
   description: 'Tổng hợp pin Galvani, tính E, điện phân và định luật Faraday.',
   level: 'Intermediate',
   order: 17,
-  theory: `
-    <h2>Ôn tập chương 5: Pin điện và điện phân</h2>
-    <p style="margin:8px 0; color:#334155;">Phân biệt nguồn điện hoá học và quá trình điện phân; luyện tập tính E, ΔG, khối lượng thoát ra theo Faraday.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Pin Galvani</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Anot oxi hoá, catot khử; electron đi qua mạch ngoài.</li>
-          <li>E = E°catot - E°anot; ΔG° = -nFE°; K liên hệ với E°.</li>
-          <li>Ứng dụng: cảm biến, pin khô, pin nhiên liệu.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Điện phân</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Phi tự phát, cần nguồn điện; ưu tiên phóng điện phụ thuộc E°, nồng độ, màng.</li>
-          <li>Định luật Faraday: m ∝ It; tính khối lượng/ thể tích khí thoát ra.</li>
-          <li>Điện cực trơ vs tan; ứng dụng mạ điện, tinh luyện, sản xuất hoá chất.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Kỹ năng tính toán</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Dùng phương trình Nernst cho [ion] ≠ 1 M.</li>
-          <li>Tính số mol e = It/F = Q/F; liên hệ với hệ số n ở điện cực.</li>
-          <li>Nhận diện sản phẩm ưu tiên phóng điện trong dung dịch nước.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">Sơ đồ phân biệt</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Pin (tự phát): anot (–) oxi hoá, catot (+) khử, E = E°catot – E°anot.</li>
-          <li>Điện phân (phi tự phát): anot (+) oxi hoá, catot (–) khử, cần nguồn ngoài.</li>
-          <li>Nernst áp dụng cả hai khi nồng độ khác 1 M.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & mẹo</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Trắc nghiệm ưu tiên phóng điện: nhớ catot ưu tiên ion có E° cao hơn H2O; anot ưu tiên anion halogen nếu đậm đặc.</li>
-          <li>Tính m khí: xác định số e/mol khí; ví dụ O2: 4e, H2: 2e, Cl2: 2e.</li>
-          <li>Pin nồng độ: E phụ thuộc log([ion loãng]/[ion đậm]); khi cân bằng E=0. </li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Đặt sơ đồ pin: anot | ion anot || ion catot | catot; ghi đúng trạng thái (rắn/aq/khí, Pt trơ nếu cần).</li>
-          <li>Nhiều bước: tính Q = It, suy mol e, chia cho n để ra mol chất; kiểm tra sản phẩm ở cả hai điện cực.</li>
-          <li>Liên hệ ΔG° = –nFE°, K = 10^{nE°/0.059}; dùng để suy chiều phản ứng và mức độ tự phát.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập chương 5: Pin điện và điện phân',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Phân biệt nguồn điện hoá học và quá trình điện phân; luyện tập tính E, ΔG, khối lượng thoát ra theo Faraday.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Pin Galvani',
+            content: 'Anot oxi hoá, catot khử; electron đi qua mạch ngoài.\nE = E°catot - E°anot; ΔG° = -nFE°; K liên hệ với E°.\nỨng dụng: cảm biến, pin khô, pin nhiên liệu.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Điện phân',
+            content: 'Phi tự phát, cần nguồn điện; ưu tiên phóng điện phụ thuộc E°, nồng độ, màng.\nĐịnh luật Faraday: m ∝ It; tính khối lượng/ thể tích khí thoát ra.\nĐiện cực trơ vs tan; ứng dụng mạ điện, tinh luyện, sản xuất hoá chất.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Kỹ năng tính toán',
+            content: 'Dùng phương trình Nernst cho [ion] ≠ 1 M.\nTính số mol e = It/F = Q/F; liên hệ với hệ số n ở điện cực.\nNhận diện sản phẩm ưu tiên phóng điện trong dung dịch nước.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Sơ đồ phân biệt',
+            content: 'Pin (tự phát): anot (-) oxi hoá, catot (+) khử, E = E°catot - E°anot.\nĐiện phân (phi tự phát): anot (+) oxi hoá, catot (-) khử, cần nguồn ngoài.\nNernst áp dụng cả hai khi nồng độ khác 1 M.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & mẹo',
+            content: 'Trắc nghiệm ưu tiên phóng điện: nhớ catot ưu tiên ion có E° cao hơn H2O; anot ưu tiên anion halogen nếu đậm đặc.\nTính m khí: xác định số e/mol khí; ví dụ O2: 4e, H2: 2e, Cl2: 2e.\nPin nồng độ: E phụ thuộc log([ion loãng]/[ion đậm]); khi cân bằng E=0.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Đặt sơ đồ pin: anot | ion anot || ion catot | catot; ghi đúng trạng thái (rắn/aq/khí, Pt trơ nếu cần).\nNhiều bước: tính Q = It, suy mol e, chia cho n để ra mol chất; kiểm tra sản phẩm ở cả hai điện cực.\nLiên hệ ΔG° = -nFE°, K = 10^{nE°/0.059}; dùng để suy chiều phản ứng và mức độ tự phát.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

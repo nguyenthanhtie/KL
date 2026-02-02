@@ -8,48 +8,73 @@ module.exports = {
   description: 'So sánh oxit/hiđroxit, độ axit-bazơ và tính kim loại/phi kim theo chu kì.',
   level: 'Intermediate',
   order: 3,
-  theory: `
-    <h2>Xu hướng theo chu kì</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nắm xu hướng Z hiệu dụng, bán kính, IE, độ âm điện, chuyển hoá tính kim loại/phi kim và sự biến đổi oxit/hiđroxit trong một chu kì.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Kích thước & năng lượng</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Bán kính giảm từ trái → phải do Z hiệu dụng tăng (lực hút hạt nhân lên e ngoài mạnh hơn).</li>
-          <li>Năng lượng ion hoá (IE1) tăng, độ âm điện tăng; có ngoại lệ nhỏ ở nhóm III (B, Al) và VI (O, S) do cấu hình e bán bão hòa/bão hòa.</li>
-          <li>Ái lực e tăng dần với phi kim (đặc biệt nhóm VIA, VIIA) trừ một số lệch nhỏ ở O, F.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Tính kim loại/phi kim</h4>
-        <p style="margin:0; color:#7c2d12;">Kim loại → á kim → phi kim; oxit/hiđroxit chuyển dần từ bazơ (Na2O, MgO) → lưỡng tính (Al2O3) → axit (SiO2, P2O5, SO3, Cl2O7).</p>
-        <p style="margin:6px 0 0; color:#7c2d12;">Tính oxi hóa tăng dần (mạnh nhất ở halogen), tính khử giảm dần trong chu kì.</p>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 6px; color:#0e7490;">Số oxi hóa cao nhất</h4>
-        <p style="margin:0; color:#0f172a;">Tăng dần bằng số e hoá trị (chu kì ngắn: +1 → +7). Với phi kim, số oxi hóa âm thường -1 (VIIA), -2 (VIA).</p>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Biến đổi hợp chất</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Oxit: bazơ mạnh (Na2O) → bazơ yếu (MgO) → lưỡng tính (Al2O3) → axit yếu (SiO2) → axit mạnh (P2O5, SO3, Cl2O7).</li>
-          <li>Hiđroxit: bazơ mạnh (NaOH) → bazơ yếu (Mg(OH)2) → lưỡng tính (Al(OH)3) → axit (H2SiO3, H3PO4, H2SO4, HClO4).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Tránh nhầm lẫn</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Nhóm III, VI có ngoại lệ IE1 nhỏ (B so với Be; O so với N).</li>
-          <li>SiO2 là oxit axit yếu nhưng rất bền, không tan kiềm loãng thường.</li>
-          <li>Cl2O7 là oxit axit mạnh nhất của Cl trong chu kì 3.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Xu hướng theo chu kì',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nắm xu hướng Z hiệu dụng, bán kính, IE, độ âm điện, chuyển hoá tính kim loại/phi kim và sự biến đổi oxit/hiđroxit trong một chu kì.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Kích thước & năng lượng',
+            content: 'Bán kính giảm từ trái → phải do Z hiệu dụng tăng (lực hút hạt nhân lên e ngoài mạnh hơn).\nNăng lượng ion hoá (IE1) tăng, độ âm điện tăng; có ngoại lệ nhỏ ở nhóm III (B, Al) và VI (O, S) do cấu hình e bán bão hòa/bão hòa.\nÁi lực e tăng dần với phi kim (đặc biệt nhóm VIA, VIIA) trừ một số lệch nhỏ ở O, F.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính kim loại/phi kim',
+            content: 'Kim loại → á kim → phi kim; oxit/hiđroxit chuyển dần từ bazơ (Na2O, MgO) → lưỡng tính (Al2O3) → axit (SiO2, P2O5, SO3, Cl2O7).\nTính oxi hóa tăng dần (mạnh nhất ở halogen), tính khử giảm dần trong chu kì.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Số oxi hóa cao nhất',
+            content: 'Tăng dần bằng số e hoá trị (chu kì ngắn: +1 → +7). Với phi kim, số oxi hóa âm thường -1 (VIIA), -2 (VIA).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Biến đổi hợp chất',
+            content: 'Oxit: bazơ mạnh (Na2O) → bazơ yếu (MgO) → lưỡng tính (Al2O3) → axit yếu (SiO2) → axit mạnh (P2O5, SO3, Cl2O7).\nHiđroxit: bazơ mạnh (NaOH) → bazơ yếu (Mg(OH)2) → lưỡng tính (Al(OH)3) → axit (H2SiO3, H3PO4, H2SO4, HClO4).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Tránh nhầm lẫn',
+            content: 'Nhóm III, VI có ngoại lệ IE1 nhỏ (B so với Be; O so với N).\nSiO2 là oxit axit yếu nhưng rất bền, không tan kiềm loãng thường.\nCl2O7 là oxit axit mạnh nhất của Cl trong chu kì 3.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

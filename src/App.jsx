@@ -2,12 +2,27 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AuthProvider } from './contexts/AuthContext';
 import { PKRoomProvider } from './contexts/PKRoomContext';
 import Sidebar from './components/Sidebar';
+import { AdminRoute, TeacherRoute } from './components/ProtectedRoute';
 import Home from './pages/Home';
 import ProgramSelection from './pages/ProgramSelection';
 import Profile from './pages/Profile';
 import PlacementTest from './pages/PlacementTest';
 import Login from './pages/Login';
 import Register from './pages/Register';
+
+// Admin pages
+import AdminDashboard from './pages/admin/AdminDashboard';
+import UserManagement from './pages/admin/UserManagement';
+
+// Teacher pages
+import TeacherDashboard from './pages/teacher/TeacherDashboard';
+import ClassManagement from './pages/teacher/ClassManagement';
+import LessonManagement from './pages/teacher/LessonManagement';
+import LessonEditor from './pages/teacher/LessonEditor';
+
+// Student pages
+import MyClasses from './pages/student/MyClasses';
+import StudentClassDetail from './pages/student/StudentClassDetail';
 
 // Chemistry pages
 import ChemistryHome from './pages/chemistry/ChemistryHome';
@@ -69,6 +84,7 @@ import Bai07_KimLoaiKiem_KiemTho_Nhom from './pages/challenges/grade12/Bai07_Kim
 // PK (Player vs Player)
 import PKSelection from './pages/chemistry/PKSelection';
 import PKRoom from './pages/chemistry/PKRoom';
+import PKSpectate from './pages/chemistry/PKSpectate';
 
 // Chemistry Lab Interactive
 import ChemistryLab from './pages/ChemistryLab';
@@ -134,6 +150,7 @@ const AppContent = () => {
         {/* PK Routes */}
         <Route path="/chemistry/pk" element={<PKSelection />} />
         <Route path="/chemistry/pk/room/:roomCode" element={<PKRoom />} />
+        <Route path="/chemistry/pk/spectate/:roomCode" element={<PKSpectate />} />
         
         <Route 
           path="/program/chemistry/dashboard" 
@@ -165,6 +182,25 @@ const AppContent = () => {
         />
         <Route path="/chemistry-lab" element={<ChemistryLab />} />
         <Route path="/lab-adventure" element={<LabAdventure />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
+        <Route path="/admin/teachers" element={<AdminRoute><UserManagement /></AdminRoute>} />
+        <Route path="/admin/classes" element={<AdminRoute><ClassManagement /></AdminRoute>} />
+        
+        {/* Teacher Routes */}
+        <Route path="/teacher" element={<TeacherRoute><TeacherDashboard /></TeacherRoute>} />
+        <Route path="/teacher/classes" element={<TeacherRoute><ClassManagement /></TeacherRoute>} />
+        <Route path="/teacher/classes/new" element={<TeacherRoute><ClassManagement /></TeacherRoute>} />
+        <Route path="/teacher/classes/:classId" element={<TeacherRoute><ClassManagement /></TeacherRoute>} />
+        <Route path="/teacher/lessons" element={<TeacherRoute><LessonManagement /></TeacherRoute>} />
+        <Route path="/teacher/lessons/new" element={<TeacherRoute><LessonEditor /></TeacherRoute>} />
+        <Route path="/teacher/lessons/:lessonId/edit" element={<TeacherRoute><LessonEditor /></TeacherRoute>} />
+        
+        {/* Student Classroom Routes */}
+        <Route path="/student/classes" element={<MyClasses />} />
+        <Route path="/student/classes/:classId" element={<StudentClassDetail />} />
       </Routes>
       </div>
     </Sidebar>

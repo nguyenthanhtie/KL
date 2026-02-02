@@ -8,26 +8,46 @@ module.exports = {
   description: 'Tốc độ phản ứng, biểu thức v = ΔC/Δt, yếu tố chi phối, thuyết va chạm và Ea.',
   level: 'Intermediate',
   order: 1,
-  theory: `
-    <h2>Tốc độ phản ứng</h2>
-    <h3>Khái niệm</h3>
-    <ul>
-      <li>v = ΔC/Δt: ΔC là độ giảm nồng độ chất phản ứng hoặc tăng nồng độ sản phẩm.</li>
-      <li>Đơn vị thường gặp: mol·L^{-1}·s^{-1}.</li>
-    </ul>
-    <h3>Yếu tố ảnh hưởng</h3>
-    <ul>
-      <li>Nồng độ/áp suất (khí): cao → va chạm nhiều → v tăng.</li>
-      <li>Nhiệt độ: tăng T → nhiều phân tử đạt Ea → v tăng (quy tắc Van’t Hoff gần đúng).</li>
-      <li>Diện tích tiếp xúc (rắn): nghiền nhỏ, khuấy trộn → v tăng.</li>
-      <li>Xúc tác: hạ Ea, mở cơ chế mới; không thay đổi cân bằng nhưng đạt cân bằng nhanh hơn.</li>
-    </ul>
-    <h3>Thuyết va chạm</h3>
-    <ul>
-      <li>Phản ứng xảy ra khi va chạm đủ năng lượng (≥ Ea) và đúng định hướng.</li>
-      <li>Năng lượng hoạt hóa (Ea) là rào cản; càng thấp → phản ứng càng nhanh.</li>
-    </ul>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Tốc độ phản ứng',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Khái niệm',
+            content: 'v = ΔC/Δt: ΔC là độ giảm nồng độ chất phản ứng hoặc tăng nồng độ sản phẩm.\nĐơn vị thường gặp: mol·L^{-1}·s^{-1}.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Yếu tố ảnh hưởng',
+            content: 'Nồng độ/áp suất (khí): cao → va chạm nhiều → v tăng.\nNhiệt độ: tăng T → nhiều phân tử đạt Ea → v tăng (quy tắc Van’t Hoff gần đúng).\nDiện tích tiếp xúc (rắn): nghiền nhỏ, khuấy trộn → v tăng.\nXúc tác: hạ Ea, mở cơ chế mới; không thay đổi cân bằng nhưng đạt cân bằng nhanh hơn.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Thuyết va chạm',
+            content: 'Phản ứng xảy ra khi va chạm đủ năng lượng (≥ Ea) và đúng định hướng.\nNăng lượng hoạt hóa (Ea) là rào cản; càng thấp → phản ứng càng nhanh.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
@@ -67,7 +87,7 @@ module.exports = {
     },
     {
       type: 'multiple-choice',
-      question: 'Tăng 10°C làm tốc độ tăng xấp xỉ 2–4 lần (quy tắc Van’t Hoff). Đây là do:',
+      question: 'Tăng 10°C làm tốc độ tăng xấp xỉ 2-4 lần (quy tắc Van’t Hoff). Đây là do:',
       options: ['Nồng độ tăng', 'Nhiệt độ tăng làm nhiều phân tử vượt Ea', 'Ea giảm', 'Áp suất giảm'],
       correctAnswer: 1,
       explanation: 'T tăng → phân bố Maxwell dịch chuyển → nhiều va chạm đủ Ea.',

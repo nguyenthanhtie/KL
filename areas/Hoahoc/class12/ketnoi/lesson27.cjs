@@ -8,69 +8,88 @@ module.exports = {
   description: 'Đặc điểm cấu hình e, tính chất đặc trưng của dãy 3d.',
   level: 'Intermediate',
   order: 27,
-  theory: `
-    <h2>Kim loại chuyển tiếp (dãy 3d)</h2>
-    <p style="margin:8px 0; color:#334155;">Khám phá cấu hình e đặc trưng, mức oxi hoá đa dạng, ion màu và ứng dụng công nghiệp.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu hình & hoá trị</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Obitan d chưa bão hoà → nhiều mức oxi hoá (Fe2+/Fe3+, Cu+/Cu2+).</li>
-          <li>Ion màu do chuyển d–d; lực trường phối tử quyết định màu.</li>
-          <li>Từ tính: electron độc thân → thuận từ (Fe3+, Mn2+); cặp đôi → nghịch từ.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #cbd5e1; border-radius:10px; background:#fff7ed; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Tính chất vật lí & hoá học</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Độ cứng cao, điểm nóng chảy/boiling lớn (Fe, Ni, Cr).</li>
-          <li>Dẫn điện tốt (Cu), dẫn nhiệt, dễ tạo hợp kim (thép, đồng thau).</li>
-          <li>Xúc tác: Fe (Haber), V2O5 (tiếp xúc), Ni/Pt (hydro hoá).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ứng dụng tiêu biểu</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Fe thép xây dựng; Cr/Ni thép không gỉ; Mn thép bền.</li>
-          <li>Cu dây dẫn, hợp kim đồng thau/bronz, xúc tác CuO/ZnO.</li>
-          <li>Ti (dãy 3d mở rộng) vật liệu y sinh, bền ăn mòn.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#f0f9ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">So sánh nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Số oxi hoá: Sc(+3) ổn định; Mn đa dạng +2 → +7; Cu ổn định +1/+2; Zn thường +2.</li>
-          <li>Màu: phụ thuộc phối tử; d10 (Zn2+, Cu+) thường không màu/nhạt.</li>
-          <li>Từ tính: e độc thân → thuận từ (Fe3+, Mn2+); ghép đôi → nghịch từ (Zn2+).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Haber: Fe/K/Al2O3 xúc tác; tiếp xúc: V2O5; hydro hoá: Ni/Pt; cải hóa metan: Cu/ZnO/Al2O3.</li>
-          <li>Inox: cần ≥10,5% Cr để thụ động hoá; thêm Ni tăng dẻo, Mn có thể thay Ni.</li>
-          <li>Ion màu trong phân tích: dung dịch Cu2+ xanh, Cr2O7 2- da cam, MnO4- tím. </li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Xác định số oxi hoá trong hỗn hợp muối chuyển tiếp; cân bằng phản ứng oxi hoá khử có nhiều mức.</li>
-          <li>Phân biệt ion màu: thử với NH3, NaOH để quan sát kết tủa/phức (Cu(OH)2 xanh, [Cu(NH3)4]2+ xanh đậm).</li>
-          <li>Tính khối lượng thép không gỉ cần thêm Cr/Ni dựa trên phần trăm khối lượng yêu cầu.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Kim loại chuyển tiếp (dãy 3d)',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Khám phá cấu hình e đặc trưng, mức oxi hoá đa dạng, ion màu và ứng dụng công nghiệp.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu hình & hoá trị',
+            content: 'Obitan d chưa bão hoà → nhiều mức oxi hoá (Fe2+/Fe3+, Cu+/Cu2+).\nIon màu do chuyển d-d; lực trường phối tử quyết định màu.\nTừ tính: electron độc thân → thuận từ (Fe3+, Mn2+); cặp đôi → nghịch từ.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính chất vật lí & hoá học',
+            content: 'Độ cứng cao, điểm nóng chảy/boiling lớn (Fe, Ni, Cr).\nDẫn điện tốt (Cu), dẫn nhiệt, dễ tạo hợp kim (thép, đồng thau).\nXúc tác: Fe (Haber), V2O5 (tiếp xúc), Ni/Pt (hydro hoá).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng tiêu biểu',
+            content: 'Fe thép xây dựng; Cr/Ni thép không gỉ; Mn thép bền.\nCu dây dẫn, hợp kim đồng thau/bronz, xúc tác CuO/ZnO.\nTi (dãy 3d mở rộng) vật liệu y sinh, bền ăn mòn.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh nhanh',
+            content: 'Số oxi hoá: Sc(+3) ổn định; Mn đa dạng +2 → +7; Cu ổn định +1/+2; Zn thường +2.\nMàu: phụ thuộc phối tử; d10 (Zn2+, Cu+) thường không màu/nhạt.\nTừ tính: e độc thân → thuận từ (Fe3+, Mn2+); ghép đôi → nghịch từ (Zn2+).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & ứng dụng',
+            content: 'Haber: Fe/K/Al2O3 xúc tác; tiếp xúc: V2O5; hydro hoá: Ni/Pt; cải hóa metan: Cu/ZnO/Al2O3.\nInox: cần ≥10,5% Cr để thụ động hoá; thêm Ni tăng dẻo, Mn có thể thay Ni.\nIon màu trong phân tích: dung dịch Cu2+ xanh, Cr2O7 2- da cam, MnO4- tím.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Xác định số oxi hoá trong hỗn hợp muối chuyển tiếp; cân bằng phản ứng oxi hoá khử có nhiều mức.\nPhân biệt ion màu: thử với NH3, NaOH để quan sát kết tủa/phức (Cu(OH)2 xanh, [Cu(NH3)4]2+ xanh đậm).\nTính khối lượng thép không gỉ cần thêm Cr/Ni dựa trên phần trăm khối lượng yêu cầu.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
       question: 'Nguyên nhân ion chuyển tiếp thường có màu là:',
-      options: ['Kích thước nhỏ', 'Chuyển d–d trong obitan d', 'Có nhiều proton', 'Lượng điện tích cao'],
+      options: ['Kích thước nhỏ', 'Chuyển d-d trong obitan d', 'Có nhiều proton', 'Lượng điện tích cao'],
       correctAnswer: 1,
       explanation: 'Sự tách mức năng lượng d khi phối trí gây hấp thụ ánh sáng.',
       points: 10

@@ -2,53 +2,69 @@ module.exports = {
   classId: 11,
   curriculumType: 'ketnoi',
   chapterId: 2,
-  chapterName: 'Chương 2: Nitrogen – sulfur',
+  chapterName: 'Chương 2: Nitrogen - sulfur',
   lessonId: 7,
   title: 'Bài 7: Sulfur và sulfur dioxide',
   description: 'Tính chất của S, SO2; vai trò oxi hoá/khử, ứng dụng và tác hại môi trường.',
   level: 'Intermediate',
   order: 7,
-  theory: `
-    <h2>Sulfur và SO2</h2>
-    <p style="margin:8px 0; color:#334155;">Phân tích dạng thù hình của S, tính oxi hoá/khử của SO2, chuỗi chuyển hoá S → SO2 và các tác động môi trường.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Sulfur (S)</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Thù hình: tà phương (rhombic) ổn định ở thường; đơn tà (monoclinic) ổn định >96°C; S vô định hình (dẻo) khi làm lạnh nhanh.</li>
-          <li>Tính chất: rắn vàng, không tan nước, tan trong dung môi không phân cực (CS2); cháy xanh nhạt tạo SO2.</li>
-          <li>Tính oxi hoá/khử: S0 vừa bị khử (H2, kim loại) vừa bị oxi hoá (O2, halogen) → vai trò trung gian.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Sulfur dioxide (SO2)</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Khí không màu, mùi hắc, tan tốt tạo H2SO3 (axit yếu, không bền).</li>
-          <li>Tính khử: bị oxi hoá thành SO3/H2SO4 (2SO2 + O2 ⇌ 2SO3); tính oxi hoá: oxi hoá H2S, FeO → S, Fe2O3.</li>
-          <li>Tẩy màu trong môi trường ẩm do khử chất màu; khử thuốc nhuộm.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Điều chế & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Điều chế SO2: đốt S, nung quặng pirit FeS2; phụ phẩm luyện kim.</li>
-          <li>Ứng dụng SO2: sản xuất H2SO4 (quy trình tiếp xúc), chất tẩy trắng, bảo quản thực phẩm (giới hạn ppm).</li>
-          <li>Ứng dụng S: lưu hoá cao su, sản xuất H2SO4, diệt nấm lưu huỳnh vôi.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Môi trường & an toàn</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>SO2 gây kích ứng hô hấp, tiền chất mưa axit; kiểm soát bằng hấp thụ đá vôi/đá vôi ướt (desulfurization).</li>
-          <li>Hạn chế rò rỉ, thông gió; lưu trữ S khô, tránh bụi dễ cháy.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Sulfur và SO2',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Phân tích dạng thù hình của S, tính oxi hoá/khử của SO2, chuỗi chuyển hoá S → SO2 và các tác động môi trường.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Sulfur (S)',
+            content: 'Thù hình: tà phương (rhombic) ổn định ở thường; đơn tà (monoclinic) ổn định >96°C; S vô định hình (dẻo) khi làm lạnh nhanh.\nTính chất: rắn vàng, không tan nước, tan trong dung môi không phân cực (CS2); cháy xanh nhạt tạo SO2.\nTính oxi hoá/khử: S0 vừa bị khử (H2, kim loại) vừa bị oxi hoá (O2, halogen) → vai trò trung gian.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Sulfur dioxide (SO2)',
+            content: 'Khí không màu, mùi hắc, tan tốt tạo H2SO3 (axit yếu, không bền).\nTính khử: bị oxi hoá thành SO3/H2SO4 (2SO2 + O2 ⇌ 2SO3); tính oxi hoá: oxi hoá H2S, FeO → S, Fe2O3.\nTẩy màu trong môi trường ẩm do khử chất màu; khử thuốc nhuộm.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Điều chế & ứng dụng',
+            content: 'Điều chế SO2: đốt S, nung quặng pirit FeS2; phụ phẩm luyện kim.\nỨng dụng SO2: sản xuất H2SO4 (quy trình tiếp xúc), chất tẩy trắng, bảo quản thực phẩm (giới hạn ppm).\nỨng dụng S: lưu hoá cao su, sản xuất H2SO4, diệt nấm lưu huỳnh vôi.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Môi trường & an toàn',
+            content: 'SO2 gây kích ứng hô hấp, tiền chất mưa axit; kiểm soát bằng hấp thụ đá vôi/đá vôi ướt (desulfurization).\nHạn chế rò rỉ, thông gió; lưu trữ S khô, tránh bụi dễ cháy.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

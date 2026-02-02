@@ -8,44 +8,63 @@ module.exports = {
   description: 'Tổng hợp khái niệm hữu cơ, phân loại, công thức, đồng phân và tách tinh chế.',
   level: 'Intermediate',
   order: 14,
-  theory: `
-    <h2>Ôn tập đại cương hữu cơ</h2>
-    <p style="margin:8px 0; color:#334155;">Tóm lược phân loại, xác định CTPT, đồng phân và chọn phương pháp tinh chế thích hợp.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Phân loại & nhóm chức</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Hiđrocacbon: ankan, anken, ankin, thơm; dẫn xuất: halogen, ancol, anđehit, axit, este...</li>
-          <li>Mạch thẳng/nhánh/vòng; dị vòng có dị tố.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">CTPT & IHD</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Từ % khối lượng → CTĐG → dùng M xác định CTPT.</li>
-          <li>IHD = (2C + 2 + N - H - X)/2 để suy vòng/nối π.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Đồng phân</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Cấu tạo: mạch, vị trí, nhóm chức.</li>
-          <li>Lập công thức và đếm nhanh: ankan từ C4 xuất hiện nhánh; nối đôi có đồng phân vị trí/hình học.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Tách & tinh chế</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Chưng cất (đơn/phân đoạn/chân không), chiết, kết tinh lại, sắc kí mỏng theo dõi.</li>
-          <li>Chọn phương pháp dựa trên điểm sôi, độ tan, bền nhiệt, hệ số phân bố.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập đại cương hữu cơ',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Tóm lược phân loại, xác định CTPT, đồng phân và chọn phương pháp tinh chế thích hợp.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Phân loại & nhóm chức',
+            content: 'Hiđrocacbon: ankan, anken, ankin, thơm; dẫn xuất: halogen, ancol, anđehit, axit, este...\nMạch thẳng/nhánh/vòng; dị vòng có dị tố.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'CTPT & IHD',
+            content: 'Từ % khối lượng → CTĐG → dùng M xác định CTPT.\nIHD = (2C + 2 + N - H - X)/2 để suy vòng/nối π.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Đồng phân',
+            content: 'Cấu tạo: mạch, vị trí, nhóm chức.\nLập công thức và đếm nhanh: ankan từ C4 xuất hiện nhánh; nối đôi có đồng phân vị trí/hình học.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Tách & tinh chế',
+            content: 'Chưng cất (đơn/phân đoạn/chân không), chiết, kết tinh lại, sắc kí mỏng theo dõi.\nChọn phương pháp dựa trên điểm sôi, độ tan, bền nhiệt, hệ số phân bố.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
@@ -72,7 +91,7 @@ module.exports = {
     },
     {
       type: 'multiple-choice',
-      question: 'Phương pháp phù hợp tách hỗn hợp benzen–toluen:',
+      question: 'Phương pháp phù hợp tách hỗn hợp benzen-toluen:',
       options: ['Chiết nước', 'Chưng cất phân đoạn', 'Kết tinh', 'Sắc kí giấy'],
       correctAnswer: 1,
       explanation: 'Điểm sôi gần nhưng vẫn tách bằng cột chưng phân đoạn.',
@@ -95,10 +114,10 @@ module.exports = {
     },
     {
       type: 'multiple-choice',
-      question: 'Hỗn hợp etanol – nước tách bằng:',
+      question: 'Hỗn hợp etanol - nước tách bằng:',
       options: ['Chiết với hexan', 'Chưng cất thường', 'Chưng cất azeotrop hoặc thêm chất tách nước', 'Kết tinh'],
       correctAnswer: 2,
-      explanation: 'Ethanol–nước tạo azeotrop 95%, cần phương pháp đặc biệt để vượt.',
+      explanation: 'Ethanol-nước tạo azeotrop 95%, cần phương pháp đặc biệt để vượt.',
       points: 10
     },
     {

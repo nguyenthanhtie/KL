@@ -8,48 +8,63 @@ module.exports = {
   description: 'Định luật tuần hoàn và cách dự đoán tính chất từ vị trí trong bảng tuần hoàn.',
   level: 'Intermediate',
   order: 4,
-  theory: `
-    <h2>Định luật tuần hoàn</h2>
-    <p style="margin:10px 0; color:#334155;">Tính chất nguyên tố biến đổi tuần hoàn theo chiều tăng của Z vì cấu hình e lớp ngoài lặp lại. Bản chất: khi Z tăng thêm 1, thêm 1 e theo thứ tự năng lượng → lặp lại kiểu cấu hình sau mỗi chu kỳ.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Liên hệ vị trí → tính chất</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Nhóm: số e hoá trị (nhóm A) → hoá trị, số oxi hoá cao nhất, kiểu oxit/hiđroxit.</li>
-          <li>Chu kỳ: số lớp e → kích thước, IE, EN biến đổi đều; chu kỳ dài có thêm khối d, f.</li>
-          <li>Khối: phân lớp điền cuối (s/p/d/f) → dự đoán mức độ kim loại, khả năng tạo phức (khối d, f).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Ý nghĩa thực tiễn</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Dự đoán tính chất nguyên tố/hợp chất chưa điều chế.</li>
-          <li>Chọn nguyên tố thay thế trong vật liệu (ví dụ cùng nhóm halogen, kim loại kiềm thổ).</li>
-          <li>Hiểu xu hướng oxi hóa/khử để chọn chất oxi hóa/khử phù hợp.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Cách suy luận nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Từ cấu hình ngoài ns2 np1 → nhóm IIIA, chu kỳ = n.</li>
-          <li>Từ vị trí nhóm/chu kỳ → viết cấu hình e và hoá trị cao nhất.</li>
-          <li>Nhóm càng phải (phi kim) → oxit càng axit, tính oxi hóa càng mạnh.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Tránh nhầm lẫn</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Không dùng khối lượng nguyên tử để sắp xếp; dùng Z.</li>
-          <li>Số oxi hóa cao nhất của nhóm chính = số thứ tự nhóm (trừ khí hiếm thường 0, F tối đa +1).</li>
-          <li>Chu kỳ 6,7 có 32 nguyên tố vì có dãy lantan/actini (khối f) chen vào.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Định luật tuần hoàn',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Tính chất nguyên tố biến đổi tuần hoàn theo chiều tăng của Z vì cấu hình e lớp ngoài lặp lại. Bản chất: khi Z tăng thêm 1, thêm 1 e theo thứ tự năng lượng → lặp lại kiểu cấu hình sau mỗi chu kỳ.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Liên hệ vị trí → tính chất',
+            content: 'Nhóm: số e hoá trị (nhóm A) → hoá trị, số oxi hoá cao nhất, kiểu oxit/hiđroxit.\nChu kỳ: số lớp e → kích thước, IE, EN biến đổi đều; chu kỳ dài có thêm khối d, f.\nKhối: phân lớp điền cuối (s/p/d/f) → dự đoán mức độ kim loại, khả năng tạo phức (khối d, f).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Ý nghĩa thực tiễn',
+            content: 'Dự đoán tính chất nguyên tố/hợp chất chưa điều chế.\nChọn nguyên tố thay thế trong vật liệu (ví dụ cùng nhóm halogen, kim loại kiềm thổ).\nHiểu xu hướng oxi hóa/khử để chọn chất oxi hóa/khử phù hợp.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Cách suy luận nhanh',
+            content: 'Từ cấu hình ngoài ns2 np1 → nhóm IIIA, chu kỳ = n.\nTừ vị trí nhóm/chu kỳ → viết cấu hình e và hoá trị cao nhất.\nNhóm càng phải (phi kim) → oxit càng axit, tính oxi hóa càng mạnh.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Tránh nhầm lẫn',
+            content: 'Không dùng khối lượng nguyên tử để sắp xếp; dùng Z.\nSố oxi hóa cao nhất của nhóm chính = số thứ tự nhóm (trừ khí hiếm thường 0, F tối đa +1).\nChu kỳ 6,7 có 32 nguyên tố vì có dãy lantan/actini (khối f) chen vào.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

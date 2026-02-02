@@ -2,43 +2,59 @@ module.exports = {
   classId: 11,
   curriculumType: 'ketnoi',
   chapterId: 2,
-  chapterName: 'Chương 2: Nitrogen – sulfur',
+  chapterName: 'Chương 2: Nitrogen - sulfur',
   lessonId: 9,
   title: 'Bài 9: Ôn tập chương 2',
   description: 'Tổng hợp N, NH3, muối amoni, oxit N; S, SO2, H2SO4 và sunfat.',
   level: 'Intermediate',
   order: 9,
-  theory: `
-    <h2>Ôn tập Nitrogen – sulfur</h2>
-    <p style="margin:8px 0; color:#334155;">Tổng hợp chuỗi chuyển hoá N và S, bài tập nhận biết, cân bằng phản ứng và liên hệ môi trường.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Nitrogen</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>N2 bền, cần nhiệt/xúc tác để phản ứng (Haber: N2 + 3H2 ⇌ 2NH3).</li>
-          <li>NH3: bazơ yếu, khử mạnh với Cl2, O2; muối amoni dễ bị kiềm đẩy NH3.</li>
-          <li>Oxit N: NO (khử), NO2 (oxi hoá), N2O5 (anhiđrit HNO3); chuỗi Ostwald: NH3 → NO → NO2 → HNO3.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Sulfur</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>S rắn, cháy tạo SO2; SO2 khử/oxi hoá yếu, tiền chất H2SO4.</li>
-          <li>H2SO4 loãng: axit mạnh; H2SO4 đặc: háo nước, oxi hoá nóng.</li>
-          <li>Nhận biết: SO4^{2-} (BaCl2/HCl), NH4+ (NaOH đun nóng, mùi khai), NO3- (thí nghiệm vòng nâu với FeSO4/H2SO4).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="padding:12px; border-radius:12px; border:1px dashed #cbd5e1; background:#f8fafc; color:#475569;">
-      <h4 style="margin:0 0 6px;">Liên hệ môi trường</h4>
-      <ul style="margin:0; padding-left:18px;">
-        <li>NOx, SO2 → mưa axit (HNO3, H2SO4) → ăn mòn, hại rừng, axit hoá nước.</li>
-        <li>Kiểm soát: xúc tác SCR khử NOx bằng NH3/ure; khử SO2 bằng hấp thụ CaCO3/Ca(OH)2.</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập Nitrogen - sulfur',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Tổng hợp chuỗi chuyển hoá N và S, bài tập nhận biết, cân bằng phản ứng và liên hệ môi trường.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Nitrogen',
+            content: 'N2 bền, cần nhiệt/xúc tác để phản ứng (Haber: N2 + 3H2 ⇌ 2NH3).\nNH3: bazơ yếu, khử mạnh với Cl2, O2; muối amoni dễ bị kiềm đẩy NH3.\nOxit N: NO (khử), NO2 (oxi hoá), N2O5 (anhiđrit HNO3); chuỗi Ostwald: NH3 → NO → NO2 → HNO3.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Sulfur',
+            content: 'S rắn, cháy tạo SO2; SO2 khử/oxi hoá yếu, tiền chất H2SO4.\nH2SO4 loãng: axit mạnh; H2SO4 đặc: háo nước, oxi hoá nóng.\nNhận biết: SO4^{2-} (BaCl2/HCl), NH4+ (NaOH đun nóng, mùi khai), NO3- (thí nghiệm vòng nâu với FeSO4/H2SO4).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Liên hệ môi trường',
+            content: 'NOx, SO2 → mưa axit (HNO3, H2SO4) → ăn mòn, hại rừng, axit hoá nước.\nKiểm soát: xúc tác SCR khử NOx bằng NH3/ure; khử SO2 bằng hấp thụ CaCO3/Ca(OH)2.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

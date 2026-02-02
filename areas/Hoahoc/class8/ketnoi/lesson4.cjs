@@ -5,58 +5,73 @@ module.exports = {
   chapterName: "Chương 2: Phản ứng hóa học",
   lessonId: 4,
   title: 'Bài 4: Dung dịch và nồng độ',
-  theory: `
-    <h2>💧 Bài 4: Dung dịch và nồng độ</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu dung dịch, độ tan, tính C% và thao tác pha loãng/cô đặc an toàn.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Khái niệm & độ tan</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Dung dịch: hỗn hợp đồng nhất (dung môi + chất tan).</li>
-          <li>Độ tan S: g chất tan tối đa trong 100 g nước ở nhiệt độ xác định.</li>
-          <li>Bão hòa: không tan thêm ở nhiệt độ đó.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Nồng độ khối lượng (C%)</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li><strong>C% = m(ct)/m(dd) × 100%</strong>.</li>
-          <li>m(dd) = m(ct) + m(dm).</li>
-          <li>Tra cứu nhanh: 200 g dd 10% ⇒ 20 g chất tan.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:16px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Pha loãng – Cô đặc</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li><strong>Pha loãng:</strong> thêm dung môi, m(ct) giữ nguyên ⇒ C% giảm.</li>
-        <li><strong>Cô đặc:</strong> bay hơi bớt dung môi ⇒ C% tăng.</li>
-        <li>Ví dụ: 100 g dd 20% xuống 10% ⇒ m(ct)=20 g ⇒ m(dd mới)=200 g ⇒ thêm 100 g nước.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Ghi nhớ nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Đọc kỹ đơn vị: g, g/100g, %. </li>
-          <li>Mọi phép tính C% phải cộng khối lượng dung môi.</li>
-          <li>Không trộn lung tung dung dịch khác loại nếu không biết phản ứng.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Mini quiz đọc nhanh</h4>
-        <ol style="margin:0; padding-left:18px; color:#334155;">
-          <li>200 g dd KCl 8% có bao nhiêu g KCl?</li>
-          <li>Muốn giảm 15% xuống 10%, thêm hay bớt gì?</li>
-          <li>Bão hòa nghĩa là gì?</li>
-        </ol>
-        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời trước khi vào 10 câu test.</p>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '💧 Bài 4: Dung dịch và nồng độ',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: hiểu dung dịch, độ tan, tính C% và thao tác pha loãng/cô đặc an toàn.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Khái niệm & độ tan',
+            content: 'Dung dịch: hỗn hợp đồng nhất (dung môi + chất tan).\nĐộ tan S: g chất tan tối đa trong 100 g nước ở nhiệt độ xác định.\nBão hòa: không tan thêm ở nhiệt độ đó.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Nồng độ khối lượng (C%)',
+            content: '**C% = m(ct)/m(dd) × 100%**.\nm(dd) = m(ct) + m(dm).\nTra cứu nhanh: 200 g dd 10% ⇒ 20 g chất tan.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Pha loãng - Cô đặc',
+            content: '**Pha loãng:** thêm dung môi, m(ct) giữ nguyên ⇒ C% giảm.\n**Cô đặc:** bay hơi bớt dung môi ⇒ C% tăng.\nVí dụ: 100 g dd 20% xuống 10% ⇒ m(ct)=20 g ⇒ m(dd mới)=200 g ⇒ thêm 100 g nước.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'warningBox',
+        content: {
+            title: 'Ghi nhớ nhanh',
+            content: 'Đọc kỹ đơn vị: g, g/100g, %.\nMọi phép tính C% phải cộng khối lượng dung môi.\nKhông trộn lung tung dung dịch khác loại nếu không biết phản ứng.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: '200 g dd KCl 8% có bao nhiêu g KCl?\nMuốn giảm 15% xuống 10%, thêm hay bớt gì?\nBão hòa nghĩa là gì?\nTự trả lời trước khi vào 10 câu test.',
+            color: 'blue',
+            listType: 'number'
+        }
+    }
+  ],
   game: [
     {
       question: 'C% cho biết gì?',

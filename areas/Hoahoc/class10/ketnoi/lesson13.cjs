@@ -8,47 +8,63 @@ module.exports = {
   description: 'Liên kết H và van der Waals: lực liên phân tử quyết định sôi, tan, cấu trúc sinh học.',
   level: 'Intermediate',
   order: 4,
-  theory: `
-    <h2>Liên kết hydro & van der Waals</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: phân biệt H-bond và các tương tác van der Waals (London, lưỡng cực), hiểu điều kiện hình thành và hệ quả lên T sôi/tan.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Liên kết hydrogen</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Điều kiện: H phải gắn cộng hoá trị trực tiếp với F/O/N; cần cặp e tự do của phân tử/nhóm khác (hoặc nội phân tử gần kề).</li>
-          <li>Sức mạnh: yếu hơn liên kết hoá trị nhưng mạnh hơn van der Waals; tạo mạng trong H2O, HF → T sôi cao bất thường.</li>
-          <li>Ứng dụng/sinh học: ổn định xoắn ADN, cấu trúc protein, độ nhớt/nhiệt dung của nước.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Tương tác van der Waals</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>London (tức thời), lưỡng cực-lưỡng cực, lưỡng cực cảm ứng.</li>
-          <li>Phụ thuộc khối lượng/polarizability và diện tích tiếp xúc: chuỗi thẳng sôi cao hơn mạch nhánh.</li>
-          <li>Luôn tồn tại ở mọi phân tử, kể cả không cực (CH4, Cl2, I2).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">So sánh sức mạnh (giảm dần)</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Cộng hoá trị ≈ ion &gt; H-bond &gt; lưỡng cực-lưỡng cực &gt; London.</li>
-          <li>Hệ quả: quyết định trạng thái vật lí, T nóng chảy/sôi, độ tan, điểm bất thường (nước sôi cao, HF ăn mòn kính).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Tránh nhầm lẫn</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>H-bond cần H gắn trực tiếp F/O/N, không chỉ “có O” (CH3OH có, CH3-O-CH3 yếu hơn nhiều).</li>
-          <li>Không nhầm màu/oxi hóa (Cl2 màu vàng lục không do H-bond).</li>
-          <li>I2 rắn do London mạnh (khối lượng lớn), không phải liên kết H.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Liên kết hydro & van der Waals',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: phân biệt H-bond và các tương tác van der Waals (London, lưỡng cực), hiểu điều kiện hình thành và hệ quả lên T sôi/tan.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Liên kết hydrogen',
+            content: 'Điều kiện: H phải gắn cộng hoá trị trực tiếp với F/O/N; cần cặp e tự do của phân tử/nhóm khác (hoặc nội phân tử gần kề).\nSức mạnh: yếu hơn liên kết hoá trị nhưng mạnh hơn van der Waals; tạo mạng trong H2O, HF → T sôi cao bất thường.\nỨng dụng/sinh học: ổn định xoắn ADN, cấu trúc protein, độ nhớt/nhiệt dung của nước.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tương tác van der Waals',
+            content: 'London (tức thời), lưỡng cực-lưỡng cực, lưỡng cực cảm ứng.\nPhụ thuộc khối lượng/polarizability và diện tích tiếp xúc: chuỗi thẳng sôi cao hơn mạch nhánh.\nLuôn tồn tại ở mọi phân tử, kể cả không cực (CH4, Cl2, I2).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh sức mạnh (giảm dần)',
+            content: 'Cộng hoá trị ≈ ion > H-bond > lưỡng cực-lưỡng cực > London.\nHệ quả: quyết định trạng thái vật lí, T nóng chảy/sôi, độ tan, điểm bất thường (nước sôi cao, HF ăn mòn kính).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Tránh nhầm lẫn',
+            content: 'H-bond cần H gắn trực tiếp F/O/N, không chỉ “có O” (CH3OH có, CH3-O-CH3 yếu hơn nhiều).\nKhông nhầm màu/oxi hóa (Cl2 màu vàng lục không do H-bond).\nI2 rắn do London mạnh (khối lượng lớn), không phải liên kết H.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

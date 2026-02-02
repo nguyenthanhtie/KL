@@ -6,58 +6,73 @@ module.exports = {
   lessonId: 10,
   order: 10,
   title: 'Bài 10: Oxide',
-  theory: `
-    <h2>🪨 Bài 10: Oxide</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận diện oxide, phân loại, gọi tên, điều chế và ứng dụng.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Định nghĩa & phân loại</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Oxide: hợp chất gồm O và 1 nguyên tố khác.</li>
-          <li>Oxide bazơ (kim loại): Na₂O, CaO, CuO... phản ứng với acid.</li>
-          <li>Oxide acid (phi kim): CO₂, SO₂, P₂O₅... phản ứng với bazơ.</li>
-          <li>Oxide lưỡng tính: Al₂O₃, ZnO (phản ứng được với cả acid và bazơ).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Gọi tên & phản ứng tiêu biểu</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Gọi: [Tên nguyên tố] + oxide; nhiều hóa trị ghi số La Mã (FeO sắt(II), Fe₂O₃ sắt(III)).</li>
-          <li>CaO + H₂O → Ca(OH)₂ (oxide bazơ + nước tạo bazơ).</li>
-          <li>SO₂ + 2NaOH → Na₂SO₃ + H₂O (oxide acid + bazơ).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:16px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Điều chế</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Đốt cháy đơn chất: 2Mg + O₂ → 2MgO; C + O₂ → CO₂.</li>
-        <li>Nhiệt phân: CaCO₃ → CaO + CO₂; Cu(OH)₂ → CuO + H₂O.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Ứng dụng nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>CaO: sản xuất vôi.</li>
-          <li>CO₂: chữa cháy, nước giải khát.</li>
-          <li>Al₂O₃: luyện nhôm; Fe₂O₃/Fe₃O₄: quặng sắt.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Mini quiz đọc nhanh</h4>
-        <ol style="margin:0; padding-left:18px; color:#334155;">
-          <li>Oxide lưỡng tính là gì? Ví dụ?</li>
-          <li>Phản ứng CaO + H₂O cho sản phẩm nào?</li>
-          <li>Gọi tên Fe₂O₃?</li>
-        </ol>
-        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời trước khi làm test.</p>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🪨 Bài 10: Oxide',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nhận diện oxide, phân loại, gọi tên, điều chế và ứng dụng.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Định nghĩa & phân loại',
+            content: 'Oxide: hợp chất gồm O và 1 nguyên tố khác.\nOxide bazơ (kim loại): Na₂O, CaO, CuO... phản ứng với acid.\nOxide acid (phi kim): CO₂, SO₂, P₂O₅... phản ứng với bazơ.\nOxide lưỡng tính: Al₂O₃, ZnO (phản ứng được với cả acid và bazơ).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Gọi tên & phản ứng tiêu biểu',
+            content: 'Gọi: [Tên nguyên tố] + oxide; nhiều hóa trị ghi số La Mã (FeO sắt(II), Fe₂O₃ sắt(III)).\nCaO + H₂O → Ca(OH)₂ (oxide bazơ + nước tạo bazơ).\nSO₂ + 2NaOH → Na₂SO₃ + H₂O (oxide acid + bazơ).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Điều chế',
+            content: 'Đốt cháy đơn chất: 2Mg + O₂ → 2MgO; C + O₂ → CO₂.\nNhiệt phân: CaCO₃ → CaO + CO₂; Cu(OH)₂ → CuO + H₂O.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'warningBox',
+        content: {
+            title: 'Ứng dụng nhanh',
+            content: 'CaO: sản xuất vôi.\nCO₂: chữa cháy, nước giải khát.\nAl₂O₃: luyện nhôm; Fe₂O₃/Fe₃O₄: quặng sắt.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Oxide lưỡng tính là gì? Ví dụ?\nPhản ứng CaO + H₂O cho sản phẩm nào?\nGọi tên Fe₂O₃?\nTự trả lời trước khi làm test.',
+            color: 'blue',
+            listType: 'number'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

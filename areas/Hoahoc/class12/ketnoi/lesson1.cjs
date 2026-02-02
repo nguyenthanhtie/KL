@@ -8,71 +8,90 @@ module.exports = {
   description: 'Khái quát cấu tạo, tính chất, điều chế ester và lipid; liên hệ thực phẩm.',
   level: 'Intermediate',
   order: 1,
-  theory: `
-    <h2>Ester và lipid</h2>
-    <p style="margin:8px 0; color:#334155;">Đào sâu cấu tạo, danh pháp, tính chất và ứng dụng của ester, lipid (trieste của glixerol) để hiểu hương liệu, xà phòng, trans-fat và bảo quản thực phẩm.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu tạo & danh pháp</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Ester: RCOOR'; danh pháp: alkyl + anion axit (đổi -ic → -ate; axit Việt hoá: axetat, fomat...).</li>
-          <li>Lipid: trieste của glixerol với axit béo (mạch C15–C19); có thể chứa nối đôi cis (dầu lỏng).</li>
-          <li>Đồng phân: vị trí nhóm COO, chiều dài và nhánh mạch alkyl/acy, tạo khác biệt mùi và nhiệt độ sôi.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed; color:#7c2d12;">
-        <h4 style="margin:0 0 6px;">Tính chất trọng tâm</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Vật lí: mùi trái cây (este nhỏ), ít tan nước; T sôi tăng theo M, giảm khi phân nhánh.</li>
-          <li>Hoá học: thuỷ phân axit (thuận nghịch); xà phòng hoá kiềm một chiều → muối axit béo + ancol.</li>
-          <li>Hydro hoá nối đôi (dầu → mỡ); phản ứng cháy toả nhiệt lớn; LiAlH4 khử este → ancol.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Chỉ số & kiểm soát chất lượng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Chỉ số xà phòng hoá (mg KOH/1 g lipid) ∝ 1/độ dài mạch axit béo.</li>
-          <li>Chỉ số axit đo axit béo tự do (mức ôi thiu); chỉ số iot phản ánh mức độ không no (khả năng bị oxy hoá).</li>
-          <li>Vận dụng: chọn dầu ít không no cho chiên rán (giảm ôi thiu); kiểm tra chất lượng dầu/mỡ.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Phản ứng & quy trình công nghiệp</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Xà phòng hoá: triglycerid + 3NaOH → 3RCOONa (xà phòng) + glixerol (tận dụng sản xuất dược).</li>
-          <li>Transester hoá làm biodiesel: triglycerid + MeOH (NaOCH3) → methyl ester (nhiên liệu sinh học) + glixerol.</li>
-          <li>Hydro hoá từng phần → chuyển cis thành trans-fat (cần kiểm soát để hạn chế rủi ro sức khoẻ tim mạch).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Nhận biết & bảo quản</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Nhận biết este nhỏ: mùi thơm đặc trưng, thuỷ phân nhẹ trong Na2CO3 cho mùi axit (giấm, bơ).</li>
-          <li>Lipid dễ oxy hoá khi có ánh sáng/kim loại chuyển tiếp → cần chống oxy hoá (BHT, vitamin E), bảo quản mát, kín.</li>
-          <li>Khử mùi dầu bằng hấp phụ, chưng cất chân không; kiểm soát peroxit để tránh ôi khét.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fffaf0; color:#7c2d12;">
-        <h4 style="margin:0 0 6px;">Ứng dụng mở rộng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Hương liệu: isoamyl axetat (chuối), etyl butirat (dứa), benzyl axetat (hoa nhài).</li>
-          <li>Vật liệu: sơn, vecni (este dung môi), nhựa alkyd (ngưng tụ dầu + anhidrit).</li>
-          <li>Sinh học: phospholipid tạo màng tế bào; omega-3 (este ethyl) bổ trợ tim mạch.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ester và lipid',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Đào sâu cấu tạo, danh pháp, tính chất và ứng dụng của ester, lipid (trieste của glixerol) để hiểu hương liệu, xà phòng, trans-fat và bảo quản thực phẩm.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu tạo & danh pháp',
+            content: 'Ester: RCOOR\\\'; danh pháp: alkyl + anion axit (đổi -ic → -ate; axit Việt hoá: axetat, fomat...).\nLipid: trieste của glixerol với axit béo (mạch C15-C19); có thể chứa nối đôi cis (dầu lỏng).\nĐồng phân: vị trí nhóm COO, chiều dài và nhánh mạch alkyl/acy, tạo khác biệt mùi và nhiệt độ sôi.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính chất trọng tâm',
+            content: 'Vật lí: mùi trái cây (este nhỏ), ít tan nước; T sôi tăng theo M, giảm khi phân nhánh.\nHoá học: thuỷ phân axit (thuận nghịch); xà phòng hoá kiềm một chiều → muối axit béo + ancol.\nHydro hoá nối đôi (dầu → mỡ); phản ứng cháy toả nhiệt lớn; LiAlH4 khử este → ancol.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Chỉ số & kiểm soát chất lượng',
+            content: 'Chỉ số xà phòng hoá (mg KOH/1 g lipid) ∝ 1/độ dài mạch axit béo.\nChỉ số axit đo axit béo tự do (mức ôi thiu); chỉ số iot phản ánh mức độ không no (khả năng bị oxy hoá).\nVận dụng: chọn dầu ít không no cho chiên rán (giảm ôi thiu); kiểm tra chất lượng dầu/mỡ.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Phản ứng & quy trình công nghiệp',
+            content: 'Xà phòng hoá: triglycerid + 3NaOH → 3RCOONa (xà phòng) + glixerol (tận dụng sản xuất dược).\nTransester hoá làm biodiesel: triglycerid + MeOH (NaOCH3) → methyl ester (nhiên liệu sinh học) + glixerol.\nHydro hoá từng phần → chuyển cis thành trans-fat (cần kiểm soát để hạn chế rủi ro sức khoẻ tim mạch).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Nhận biết & bảo quản',
+            content: 'Nhận biết este nhỏ: mùi thơm đặc trưng, thuỷ phân nhẹ trong Na2CO3 cho mùi axit (giấm, bơ).\nLipid dễ oxy hoá khi có ánh sáng/kim loại chuyển tiếp → cần chống oxy hoá (BHT, vitamin E), bảo quản mát, kín.\nKhử mùi dầu bằng hấp phụ, chưng cất chân không; kiểm soát peroxit để tránh ôi khét.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'warningBox',
+        content: {
+            title: 'Ứng dụng mở rộng',
+            content: 'Hương liệu: isoamyl axetat (chuối), etyl butirat (dứa), benzyl axetat (hoa nhài).\nVật liệu: sơn, vecni (este dung môi), nhựa alkyd (ngưng tụ dầu + anhidrit).\nSinh học: phospholipid tạo màng tế bào; omega-3 (este ethyl) bổ trợ tim mạch.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
       question: 'Tên gọi của CH3COOCH2CH3 là:',
       options: ['Etyl axetat', 'Metyl propionat', 'Etyl fomat', 'Propyl axetat'],
       correctAnswer: 0,
-      explanation: 'CH3COO– là anion axetat, gắn với nhóm etyl → etyl axetat.',
+      explanation: 'CH3COO- là anion axetat, gắn với nhóm etyl → etyl axetat.',
       points: 10
     },
     {
@@ -139,9 +158,9 @@ module.exports = {
     {
       type: 'multiple-choice',
       question: 'Nhóm chức đặc trưng của ester là:',
-      options: ['–COOH', '–COO–', '–CHO', '–OH'],
+      options: ['-COOH', '-COO-', '-CHO', '-OH'],
       correctAnswer: 1,
-      explanation: 'Ester chứa nhóm –COO– nối giữa gốc axyl và gốc alkyl/aryl.',
+      explanation: 'Ester chứa nhóm -COO- nối giữa gốc axyl và gốc alkyl/aryl.',
       points: 10
     }
   ]

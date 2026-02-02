@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../config/api';
-import useNotifications from '../hooks/useNotifications';
+import { useNotifications } from '../hooks/useNotifications';
 import {
   Target,
   CheckCircle2,

@@ -8,48 +8,73 @@ module.exports = {
   description: 'Tổng hợp cấu trúc hạt nhân, lớp vỏ electron, đồng vị và quy tắc điền e.',
   level: 'Intermediate',
   order: 4,
-  theory: `
-    <h2>Ôn tập chương 1</h2>
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Hạt nhân & lớp vỏ</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>p, n khối lượng ~1u; e rất nhỏ, quay quanh hạt nhân.</li>
-          <li>Z = p = e (trung hòa); A = Z + n; n/p chi phối độ bền hạt nhân.</li>
-          <li>Bán kính nguyên tử thường giảm theo chu kì và tăng theo nhóm.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Đồng vị & nuclit</h4>
-        <p style="margin:0; color:#7c2d12;">Cùng Z khác A; kí hiệu ^{A}_{Z}X; n = A - Z; M trung bình = ∑(A_i × %)/100.</p>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 6px; color:#0e7490;">Cấu hình e</h4>
-        <p style="margin:0; color:#0f172a;">Tuân Aufbau, Pauli, Hund; dạng chuẩn: 1s^2 2s^2 2p^6 ...; rút gọn theo khí hiếm.</p>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Check-list nhanh</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Đọc đúng Z, A; tính p, n, e.</li>
-          <li>Viết cấu hình e và xác định nhóm/chu kì.</li>
-          <li>Dự đoán tính kim loại/phi kim theo cấu hình ngoài.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed; color:#7c2d12;">
-        <h4 style="margin:0 0 6px;">Dạng bài tập hay gặp</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Tính n, p, e từ kí hiệu nuclit hoặc tên đồng vị.</li>
-          <li>Viết cấu hình e cho nguyên tử/ion, phát hiện vi phạm Pauli/Hund.</li>
-          <li>Sắp xếp bán kính, hoá tính theo chu kì/nhóm dựa trên Z.</li>
-        </ul>
-      </div>
-    </div>
-
-    <p style="margin:8px 0 0; color:#334155;">Nhớ số Avogadro N = 6,02×10^{23}; điện tích hạt nhân = +Ze; e ngoài cùng quyết định hoá tính.</p>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập chương 1',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Hạt nhân & lớp vỏ',
+            content: 'p, n khối lượng ~1u; e rất nhỏ, quay quanh hạt nhân.\nZ = p = e (trung hòa); A = Z + n; n/p chi phối độ bền hạt nhân.\nBán kính nguyên tử thường giảm theo chu kì và tăng theo nhóm.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'warningBox',
+        content: {
+            title: 'Đồng vị & nuclit',
+            content: 'Cùng Z khác A; kí hiệu ^{A}_{Z}X; n = A - Z; M trung bình = ∑(A_i × %)/100.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu hình e',
+            content: 'Tuân Aufbau, Pauli, Hund; dạng chuẩn: 1s^2 2s^2 2p^6 ...; rút gọn theo khí hiếm.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Check-list nhanh',
+            content: 'Đọc đúng Z, A; tính p, n, e.\nViết cấu hình e và xác định nhóm/chu kì.\nDự đoán tính kim loại/phi kim theo cấu hình ngoài.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'warningBox',
+        content: {
+            title: 'Dạng bài tập hay gặp',
+            content: 'Tính n, p, e từ kí hiệu nuclit hoặc tên đồng vị.\nViết cấu hình e cho nguyên tử/ion, phát hiện vi phạm Pauli/Hund.\nSắp xếp bán kính, hoá tính theo chu kì/nhóm dựa trên Z.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'paragraph',
+        content: {
+            text: 'Nhớ số Avogadro N = 6,02×10^{23}; điện tích hạt nhân = +Ze; e ngoài cùng quyết định hoá tính.'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

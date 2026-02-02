@@ -8,64 +8,83 @@ module.exports = {
   description: 'Màu sắc, từ tính, xúc tác của kim loại chuyển tiếp và vai trò của phức chất.',
   level: 'Intermediate',
   order: 29,
-  theory: `
-    <h2>Tính chất và ứng dụng của kim loại chuyển tiếp & phức chất</h2>
-    <p style="margin:8px 0; color:#334155;">Liên hệ màu sắc, từ tính, xúc tác với ứng dụng công nghiệp và y sinh của kim loại chuyển tiếp/phức chất.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Màu sắc & từ tính</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Màu do hấp thụ ánh sáng khi e chuyển mức d–d; phụ thuộc phối tử.</li>
-          <li>Thuận từ: e độc thân (Fe3+, Mn2+); nghịch từ: e ghép đôi (Zn2+, Cu+).</li>
-          <li>Dải màu: Cu2+ xanh, Ni2+ lục, Cr3+ lục tím, MnO4- tím.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #cbd5e1; border-radius:10px; background:#fff7ed; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Phức chất & ổn định</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Phức làm ổn định trạng thái oxi hoá (Fe2+/Fe3+ trong cyanoferrat).</li>
-          <li>Tăng độ tan: [Ag(NH3)2]+ hoà tan AgCl; [CuCl4]2- tan trong HCl.</li>
-          <li>Thuốc: cis-platin (điều trị ung thư), EDTA tạo phức làm mềm nước.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Xúc tác & công nghệ</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>V2O5 (quá trình tiếp xúc SO2 → SO3), Fe (Haber), Ni/Pt (hydro hoá).</li>
-          <li>Cu/ZnO/Al2O3 (Metan hóa, methanol), Cr2O3 (oxi hoá amoniac).</li>
-          <li>Mạ điện: phức Ni, Cr dùng để mạ trang trí/chống gỉ.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#f0f9ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">So sánh nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Màu: phụ thuộc phối tử; d10 (Zn2+, Cu+) thường không màu, d5 cao spin (Mn2+) nhạt.</li>
-          <li>Từ tính: e độc thân → thuận từ (Fe3+, Mn2+); ghép đôi → nghịch từ (Zn2+, [Fe(CN)6]4- thấp spin).</li>
-          <li>Ổn định phức: phối tử càng mạnh (CN-, CO, en) → Δo lớn, màu thay đổi.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Điều trị: cis-platin phá DNA; ferrocene bền nhờ liên kết sandwich; EDTA chống cứng nước.</li>
-          <li>Phân tích: chuẩn độ complexon với EDTA xác định Ca2+, Mg2+; thuốc thử SCN- cho màu đỏ máu với Fe3+.</li>
-          <li>Công nghệ: xúc tác ba chức năng ô tô (Pt/Rh) khử NOx, oxi hoá CO/HC.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Giải thích màu/từ tính của phức dựa trên cấu hình e và phối tử mạnh/yếu (thuyết trường tinh thể).</li>
-          <li>Tính nồng độ ion Ca2+ còn lại sau khi thêm lượng EDTA, áp dụng bảo toàn mol phức.</li>
-          <li>Lập sơ đồ xúc tác: viết bậc oxi hoá và phản ứng đi kèm cho Haber, tiếp xúc, hydro hoá.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Tính chất và ứng dụng của kim loại chuyển tiếp & phức chất',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Liên hệ màu sắc, từ tính, xúc tác với ứng dụng công nghiệp và y sinh của kim loại chuyển tiếp/phức chất.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Màu sắc & từ tính',
+            content: 'Màu do hấp thụ ánh sáng khi e chuyển mức d-d; phụ thuộc phối tử.\nThuận từ: e độc thân (Fe3+, Mn2+); nghịch từ: e ghép đôi (Zn2+, Cu+).\nDải màu: Cu2+ xanh, Ni2+ lục, Cr3+ lục tím, MnO4- tím.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Phức chất & ổn định',
+            content: 'Phức làm ổn định trạng thái oxi hoá (Fe2+/Fe3+ trong cyanoferrat).\nTăng độ tan: [Ag(NH3)2]+ hoà tan AgCl; [CuCl4]2- tan trong HCl.\nThuốc: cis-platin (điều trị ung thư), EDTA tạo phức làm mềm nước.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Xúc tác & công nghệ',
+            content: 'V2O5 (quá trình tiếp xúc SO2 → SO3), Fe (Haber), Ni/Pt (hydro hoá).\nCu/ZnO/Al2O3 (Metan hóa, methanol), Cr2O3 (oxi hoá amoniac).\nMạ điện: phức Ni, Cr dùng để mạ trang trí/chống gỉ.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh nhanh',
+            content: 'Màu: phụ thuộc phối tử; d10 (Zn2+, Cu+) thường không màu, d5 cao spin (Mn2+) nhạt.\nTừ tính: e độc thân → thuận từ (Fe3+, Mn2+); ghép đôi → nghịch từ (Zn2+, [Fe(CN)6]4- thấp spin).\nỔn định phức: phối tử càng mạnh (CN-, CO, en) → Δo lớn, màu thay đổi.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & ứng dụng',
+            content: 'Điều trị: cis-platin phá DNA; ferrocene bền nhờ liên kết sandwich; EDTA chống cứng nước.\nPhân tích: chuẩn độ complexon với EDTA xác định Ca2+, Mg2+; thuốc thử SCN- cho màu đỏ máu với Fe3+.\nCông nghệ: xúc tác ba chức năng ô tô (Pt/Rh) khử NOx, oxi hoá CO/HC.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Giải thích màu/từ tính của phức dựa trên cấu hình e và phối tử mạnh/yếu (thuyết trường tinh thể).\nTính nồng độ ion Ca2+ còn lại sau khi thêm lượng EDTA, áp dụng bảo toàn mol phức.\nLập sơ đồ xúc tác: viết bậc oxi hoá và phản ứng đi kèm cho Haber, tiếp xúc, hydro hoá.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

@@ -5,59 +5,73 @@ module.exports = {
   chapterName: "Chương 2: Phản ứng hóa học",
   lessonId: 5,
   title: 'Bài 5: Định luật bảo toàn khối lượng và phương trình hóa học',
-  theory: `
-    <h2>⚖️ Bài 5: Định luật bảo toàn khối lượng & phương trình hóa học</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nắm phát biểu định luật, cách viết/cân bằng PTHH và ứng dụng tính khối lượng.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Định luật bảo toàn khối lượng</h4>
-        <p style="margin:0 0 8px; color:#475569;"><strong>Tổng khối lượng chất tham gia = tổng khối lượng sản phẩm</strong> (trong hệ kín).</p>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Dựa trên bảo toàn số nguyên tử mỗi nguyên tố.</li>
-          <li>Áp dụng cho mọi phản ứng trong hệ kín.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Phương trình hóa học (PTHH)</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Biểu diễn phản ứng bằng công thức hóa học.</li>
-          <li>Cần <strong>cân bằng</strong> để bảo toàn nguyên tử.</li>
-          <li>Ví dụ: 2H₂ + O₂ → 2H₂O.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:16px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Quy trình cân bằng PTHH</h3>
-      <ol style="margin:0; padding-left:18px; color:#334155;">
-        <li>Viết sơ đồ phản ứng, xác định chất tham gia/sản phẩm.</li>
-        <li>Chọn hệ số sao cho số nguyên tử từng nguyên tố hai vế bằng nhau.</li>
-        <li>Kiểm tra lại tổng khối lượng theo hệ số mol.</li>
-      </ol>
-      <p style="margin:10px 0 0; color:#475569;">Ví dụ: Đốt 12 g C thu 44 g CO₂ ⇒ m(O₂) = 44 − 12 = 32 g.</p>
-    </div>
-
-    <div style="margin:14px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Ghi nhớ nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Cân bằng trước, tính toán sau.</li>
-          <li>Hệ số PTHH thể hiện tỉ lệ mol.</li>
-          <li>Kiểm tra nguyên tử và khối lượng để tránh sai sót.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Mini quiz đọc nhanh</h4>
-        <ol style="margin:0; padding-left:18px; color:#334155;">
-          <li>Tổng khối lượng hai vế có thể khác nhau không?</li>
-          <li>Hệ số 2 trong 2H₂O biểu diễn điều gì?</li>
-          <li>Đốt 5,6 g Fe (M=56) cần bao nhiêu g O₂ nếu thu Fe₂O₃?</li>
-        </ol>
-        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự kiểm tra rồi làm 10 câu test.</p>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '⚖️ Bài 5: Định luật bảo toàn khối lượng & phương trình hóa học',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nắm phát biểu định luật, cách viết/cân bằng PTHH và ứng dụng tính khối lượng.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Định luật bảo toàn khối lượng',
+            content: 'Dựa trên bảo toàn số nguyên tử mỗi nguyên tố.\nÁp dụng cho mọi phản ứng trong hệ kín.\n**Tổng khối lượng chất tham gia = tổng khối lượng sản phẩm** (trong hệ kín).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Phương trình hóa học (PTHH)',
+            content: 'Biểu diễn phản ứng bằng công thức hóa học.\nCần **cân bằng** để bảo toàn nguyên tử.\nVí dụ: 2H₂ + O₂ → 2H₂O.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Quy trình cân bằng PTHH',
+            content: 'Viết sơ đồ phản ứng, xác định chất tham gia/sản phẩm.\nChọn hệ số sao cho số nguyên tử từng nguyên tố hai vế bằng nhau.\nKiểm tra lại tổng khối lượng theo hệ số mol.\nVí dụ: Đốt 12 g C thu 44 g CO₂ ⇒ m(O₂) = 44 − 12 = 32 g.',
+            color: 'purple',
+            listType: 'number'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'warningBox',
+        content: {
+            title: 'Ghi nhớ nhanh',
+            content: 'Cân bằng trước, tính toán sau.\nHệ số PTHH thể hiện tỉ lệ mol.\nKiểm tra nguyên tử và khối lượng để tránh sai sót.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Tổng khối lượng hai vế có thể khác nhau không?\nHệ số 2 trong 2H₂O biểu diễn điều gì?\nĐốt 5,6 g Fe (M=56) cần bao nhiêu g O₂ nếu thu Fe₂O₃?\nTự kiểm tra rồi làm 10 câu test.',
+            color: 'blue',
+            listType: 'number'
+        }
+    }
+  ],
   game: [
     {
       question: 'Định luật bảo toàn khối lượng phát biểu:',

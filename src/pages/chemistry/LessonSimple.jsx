@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../../config/api';
+import TheoryRenderer from '../../components/TheoryRenderer';
 
 const LessonSimple = () => {
   const { classId, chapterId, lessonId } = useParams();
@@ -87,7 +88,10 @@ const LessonSimple = () => {
 
       <div style={{ background: 'white', padding: '30px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <h2 style={{ marginBottom: '20px' }}>📖 Lý thuyết</h2>
-        <div dangerouslySetInnerHTML={{ __html: lessonData.theory }} />
+        <TheoryRenderer 
+          modules={lessonData.theoryModules} 
+          fallbackHtml={lessonData.theory}
+        />
         
         {/* Nút đã đọc */}
         <div style={{ marginTop: '30px', textAlign: 'center' }}>

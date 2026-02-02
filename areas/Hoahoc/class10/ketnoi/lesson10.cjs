@@ -8,49 +8,63 @@ module.exports = {
   description: 'Quy tắc octet, ngoại lệ và ứng dụng dự đoán liên kết/hoá trị.',
   level: 'Beginner',
   order: 1,
-  theory: `
-    <h2>Quy tắc octet</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu bản chất quy tắc octet, nhận diện ngoại lệ (thiếu/giãn), vận dụng viết Lewis và dự đoán loại liên kết.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Nội dung quy tắc</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Nguyên tử có xu hướng đạt 8e lớp ngoài (He ổn định với 2e).</li>
-          <li>Thực hiện bằng nhường/nhận e (tạo ion) hoặc dùng chung e (cộng hoá trị).</li>
-          <li>Ứng dụng: dự đoán công thức Lewis, hoá trị, kiểu liên kết.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Ngoại lệ thường gặp</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Thiếu octet: H (2e), Be (4e), B (6e), phân tử e lẻ (NO).</li>
-          <li>Giãn octet (chu kỳ ≥ 3, có obitan trống d): PCl5 (10e), SF6 (12e), SO3 (12e).</li>
-          <li>Hạn chế: nguyên tố chu kỳ 2 không giãn octet (C, N, O, F).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Cách viết nhanh công thức Lewis</h4>
-        <ol style="margin:0; padding-left:18px; color:#334155;">
-          <li>Tính tổng e hoá trị (điều chỉnh theo điện tích).</li>
-          <li>Chọn nguyên tử trung tâm (thường kém âm điện, không phải H, F).</li>
-          <li>Vẽ liên kết đơn trước, phân bổ e còn lại cho nguyên tử ngoài, sau đó trung tâm.</li>
-          <li>Thiếu octet → tăng bậc liên kết (đôi/ba) nếu cần; kiểm tra điện tích hình thức hợp lí.</li>
-        </ol>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Tránh nhầm lẫn</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Không cố ép B, Be lên 8e trong BF3, BeCl2; chúng chấp nhận thiếu.</li>
-          <li>Chu kỳ 2 không mở rộng lên 10e/12e.</li>
-          <li>Gốc tự do (NO, NO2) không thể đủ 8e cho mọi nguyên tử.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Quy tắc octet',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: hiểu bản chất quy tắc octet, nhận diện ngoại lệ (thiếu/giãn), vận dụng viết Lewis và dự đoán loại liên kết.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Nội dung quy tắc',
+            content: 'Nguyên tử có xu hướng đạt 8e lớp ngoài (He ổn định với 2e).\nThực hiện bằng nhường/nhận e (tạo ion) hoặc dùng chung e (cộng hoá trị).\nỨng dụng: dự đoán công thức Lewis, hoá trị, kiểu liên kết.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Ngoại lệ thường gặp',
+            content: 'Thiếu octet: H (2e), Be (4e), B (6e), phân tử e lẻ (NO).\nGiãn octet (chu kỳ ≥ 3, có obitan trống d): PCl5 (10e), SF6 (12e), SO3 (12e).\nHạn chế: nguyên tố chu kỳ 2 không giãn octet (C, N, O, F).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Cách viết nhanh công thức Lewis',
+            content: 'Tính tổng e hoá trị (điều chỉnh theo điện tích).\nChọn nguyên tử trung tâm (thường kém âm điện, không phải H, F).\nVẽ liên kết đơn trước, phân bổ e còn lại cho nguyên tử ngoài, sau đó trung tâm.\nThiếu octet → tăng bậc liên kết (đôi/ba) nếu cần; kiểm tra điện tích hình thức hợp lí.',
+            color: 'purple',
+            listType: 'number'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Tránh nhầm lẫn',
+            content: 'Không cố ép B, Be lên 8e trong BF3, BeCl2; chúng chấp nhận thiếu.\nChu kỳ 2 không mở rộng lên 10e/12e.\nGốc tự do (NO, NO2) không thể đủ 8e cho mọi nguyên tử.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

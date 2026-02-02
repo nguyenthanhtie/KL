@@ -8,69 +8,88 @@ module.exports = {
   description: 'Liên kết glycosid, tính khử/không khử, phản ứng thuỷ phân saccharose và maltose.',
   level: 'Intermediate',
   order: 5,
-  theory: `
-    <h2>Saccharose và maltose</h2>
-    <p style="margin:8px 0; color:#334155;">Hai disaccharide quen thuộc: một không khử (saccharose), một khử (maltose); hiểu cấu trúc glycosid và phản ứng thuỷ phân.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu trúc & tính khử</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Saccharose: α-Glucose (C1) liên kết β-Fructose (C2) → không còn nhóm hemiacetal → không khử.</li>
-          <li>Maltose: α-1,4-glucose dimer; đầu khử còn hemiacetal → tráng bạc/Fehling dương tính.</li>
-          <li>Tính tan cao, vị ngọt; saccharose ngọt hơn maltose.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Phản ứng & thuỷ phân</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Thuỷ phân saccharose (axit/enzym invertase) → glucose + fructose (đường nghịch đảo).</li>
-          <li>Thuỷ phân maltose (men maltase) → 2 glucose.</li>
-          <li>Không tham gia phản ứng tráng bạc: saccharose; tham gia: maltose.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ứng dụng & công nghệ</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Sản xuất đường trắng từ mía/ củ cải: làm sạch, kết tinh saccharose.</li>
-          <li>Đường nghịch đảo dùng trong bánh kẹo vì giữ ẩm, hạn chế kết tinh.</li>
-          <li>Maltose hình thành trong ươm mạch nha, cung cấp đường lên men bia.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">Phân biệt nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Saccharose: không khử, không tráng bạc; maltose: khử → tráng bạc/Fehling dương.</li>
-          <li>Thuỷ phân saccharose → góc quay quang học đổi từ dương sang âm (đường nghịch đảo).</li>
-          <li>Maltose phản ứng Cu(OH)2 ở nhiệt độ thường cho dung dịch xanh lam như glucose (đa –OH liền kề).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Ứng dụng thực tế</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Đường nghịch đảo hạn chế kết tinh → kẹo mềm, siro; tăng độ ngọt nhờ fructose.</li>
-          <li>Maltose từ mạch nha cung cấp đường dễ lên men cho bia, bánh mì (men nở nhanh).</li>
-          <li>Kiểm soát độ ngọt: saccharose ~1, maltose ~0.5, glucose ~0.74, fructose ~1.7.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn tập bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Bảo toàn khối lượng khi thuỷ phân saccharose: m(H2O) thêm vào = m(glucose+fructose) - m(saccharose).</li>
-          <li>Tính góc quay hỗn hợp sau thuỷ phân dựa trên tỉ lệ glucose/fructose và [α] riêng.</li>
-          <li>Trắc nghiệm nhận biết: thuỷ phân + Tollens/Fehling; hoặc đo góc quay quang học.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Saccharose và maltose',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Hai disaccharide quen thuộc: một không khử (saccharose), một khử (maltose); hiểu cấu trúc glycosid và phản ứng thuỷ phân.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu trúc & tính khử',
+            content: 'Saccharose: α-Glucose (C1) liên kết β-Fructose (C2) → không còn nhóm hemiacetal → không khử.\nMaltose: α-1,4-glucose dimer; đầu khử còn hemiacetal → tráng bạc/Fehling dương tính.\nTính tan cao, vị ngọt; saccharose ngọt hơn maltose.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Phản ứng & thuỷ phân',
+            content: 'Thuỷ phân saccharose (axit/enzym invertase) → glucose + fructose (đường nghịch đảo).\nThuỷ phân maltose (men maltase) → 2 glucose.\nKhông tham gia phản ứng tráng bạc: saccharose; tham gia: maltose.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & công nghệ',
+            content: 'Sản xuất đường trắng từ mía/ củ cải: làm sạch, kết tinh saccharose.\nĐường nghịch đảo dùng trong bánh kẹo vì giữ ẩm, hạn chế kết tinh.\nMaltose hình thành trong ươm mạch nha, cung cấp đường lên men bia.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Phân biệt nhanh',
+            content: 'Saccharose: không khử, không tráng bạc; maltose: khử → tráng bạc/Fehling dương.\nThuỷ phân saccharose → góc quay quang học đổi từ dương sang âm (đường nghịch đảo).\nMaltose phản ứng Cu(OH)2 ở nhiệt độ thường cho dung dịch xanh lam như glucose (đa -OH liền kề).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng thực tế',
+            content: 'Đường nghịch đảo hạn chế kết tinh → kẹo mềm, siro; tăng độ ngọt nhờ fructose.\nMaltose từ mạch nha cung cấp đường dễ lên men cho bia, bánh mì (men nở nhanh).\nKiểm soát độ ngọt: saccharose ~1, maltose ~0.5, glucose ~0.74, fructose ~1.7.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn tập bài tập',
+            content: 'Bảo toàn khối lượng khi thuỷ phân saccharose: m(H2O) thêm vào = m(glucose+fructose) - m(saccharose).\nTính góc quay hỗn hợp sau thuỷ phân dựa trên tỉ lệ glucose/fructose và [α] riêng.\nTrắc nghiệm nhận biết: thuỷ phân + Tollens/Fehling; hoặc đo góc quay quang học.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
       question: 'Saccharose không tham gia phản ứng tráng bạc vì:',
-      options: ['Không tan trong nước', 'Không có nhóm hemiacetal tự do', 'Quá bền với kiềm', 'Không có nhóm –OH'],
+      options: ['Không tan trong nước', 'Không có nhóm hemiacetal tự do', 'Quá bền với kiềm', 'Không có nhóm -OH'],
       correctAnswer: 1,
       explanation: 'Liên kết glycosid khoá cả C1 glucose và C2 fructose.',
       points: 10

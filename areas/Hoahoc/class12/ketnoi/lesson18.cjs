@@ -8,64 +8,83 @@ module.exports = {
   description: 'Mạng tinh thể kim loại, liên kết kim loại, tính chất tập thể.',
   level: 'Intermediate',
   order: 18,
-  theory: `
-    <h2>Cấu tạo kim loại</h2>
-    <p style="margin:8px 0; color:#334155;">Khám phá "biển electron" trong mạng tinh thể kim loại và cách cấu trúc ảnh hưởng đến tính chất.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Mạng tinh thể</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Dạng phổ biến: lập phương tâm khối (Fe α), lập phương tâm diện (Cu, Al), lục phương (Mg, Ti).</li>
-          <li>Ion kim loại dương nằm ở nút, electron tự do chuyển động khắp mạng.</li>
-          <li>Mật độ xếp chặt (FCC, HCP) → dẻo tốt; BCC ít xếp chặt → cứng hơn ở T thấp.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Liên kết kim loại</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Không định hướng; electron tự do gắn kết cation kim loại.</li>
-          <li>Giải thích tính dẫn điện, dẫn nhiệt, ánh kim, dẻo.</li>
-          <li>Tạp chất, sai hỏng mạng (khuyết tật, biên hạt) làm biến đổi độ cứng/dẻo.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ảnh hưởng cấu trúc</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Kích thước hạt nhỏ → tăng độ bền (cản trở chuyển vị) nhưng giảm độ dẻo.</li>
-          <li>Làm nguội nhanh tạo dung dịch rắn quá bão hoà, biến cứng nguội.</li>
-          <li>Trượt mạng (slip) giải thích tính dẻo; kim loại FCC dễ trượt hơn BCC.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">So sánh mạng & tính chất</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>FCC/HCP: xếp chặt, dẻo, nhiều mặt trượt (Cu, Al, Au, Mg); BCC: ít mặt trượt, cứng hơn ở T thấp (Feα, Cr).</li>
-          <li>Ánh kim/dẫn điện: do biển electron; tăng tạp chất → tăng điện trở.</li>
-          <li>Độ cứng tăng khi giảm kích thước hạt (Hall–Petch) đến giới hạn nano.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Thép cán nguội cứng hơn cán nóng do biến cứng nguội; cần ủ để phục hồi dẻo.</li>
-          <li>Vật liệu nano: hạt Cu nano tăng bền nhưng dễ oxy hoá, cần phủ bảo vệ.</li>
-          <li>Dây dẫn điện: cần độ dẫn cao nên dùng Cu tinh khiết, giảm tạp chất và khuyết tật.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Xác định kiểu mạng từ tính chất dẻo/cứng, nhiệt độ chuyển pha (Fe: BCC↔FCC).</li>
-          <li>Giải thích hiện tượng: vì sao Al nhẹ nhưng bền (FCC + màng oxit bảo vệ).</li>
-          <li>Liên hệ sai hỏng mạng (biên hạt, khuyết tật điểm) với khuếch tán và ăn mòn.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Cấu tạo kim loại',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Khám phá "biển electron" trong mạng tinh thể kim loại và cách cấu trúc ảnh hưởng đến tính chất.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Mạng tinh thể',
+            content: 'Dạng phổ biến: lập phương tâm khối (Fe α), lập phương tâm diện (Cu, Al), lục phương (Mg, Ti).\nIon kim loại dương nằm ở nút, electron tự do chuyển động khắp mạng.\nMật độ xếp chặt (FCC, HCP) → dẻo tốt; BCC ít xếp chặt → cứng hơn ở T thấp.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Liên kết kim loại',
+            content: 'Không định hướng; electron tự do gắn kết cation kim loại.\nGiải thích tính dẫn điện, dẫn nhiệt, ánh kim, dẻo.\nTạp chất, sai hỏng mạng (khuyết tật, biên hạt) làm biến đổi độ cứng/dẻo.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ảnh hưởng cấu trúc',
+            content: 'Kích thước hạt nhỏ → tăng độ bền (cản trở chuyển vị) nhưng giảm độ dẻo.\nLàm nguội nhanh tạo dung dịch rắn quá bão hoà, biến cứng nguội.\nTrượt mạng (slip) giải thích tính dẻo; kim loại FCC dễ trượt hơn BCC.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh mạng & tính chất',
+            content: 'FCC/HCP: xếp chặt, dẻo, nhiều mặt trượt (Cu, Al, Au, Mg); BCC: ít mặt trượt, cứng hơn ở T thấp (Feα, Cr).\nÁnh kim/dẫn điện: do biển electron; tăng tạp chất → tăng điện trở.\nĐộ cứng tăng khi giảm kích thước hạt (Hall-Petch) đến giới hạn nano.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & ứng dụng',
+            content: 'Thép cán nguội cứng hơn cán nóng do biến cứng nguội; cần ủ để phục hồi dẻo.\nVật liệu nano: hạt Cu nano tăng bền nhưng dễ oxy hoá, cần phủ bảo vệ.\nDây dẫn điện: cần độ dẫn cao nên dùng Cu tinh khiết, giảm tạp chất và khuyết tật.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Xác định kiểu mạng từ tính chất dẻo/cứng, nhiệt độ chuyển pha (Fe: BCC↔FCC).\nGiải thích hiện tượng: vì sao Al nhẹ nhưng bền (FCC + màng oxit bảo vệ).\nLiên hệ sai hỏng mạng (biên hạt, khuyết tật điểm) với khuếch tán và ăn mòn.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

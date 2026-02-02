@@ -8,64 +8,83 @@ module.exports = {
   description: 'Khái niệm, phân loại, cơ chế trùng hợp/trùng ngưng và thông số đặc trưng.',
   level: 'Intermediate',
   order: 12,
-  theory: `
-    <h2>Đại cương về polymer</h2>
-    <p style="margin:8px 0; color:#334155;">Nền tảng về monomer, phản ứng tạo mạch, phân loại và các thông số đặc trưng của vật liệu polymer.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Khái niệm & phân loại</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Polymer: chất có phân tử khối rất lớn, gồm các mắt xích (đơn vị lặp) từ monomer.</li>
-          <li>Phân loại: tự nhiên (tinh bột, ADN), nhân tạo (tơ visco), tổng hợp (PE, PVC).</li>
-          <li>Cấu trúc: mạch thẳng, nhánh, mạng không gian; ảnh hưởng cơ học và nhiệt.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Phản ứng tạo polymer</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Trùng hợp cộng: monomer chứa liên kết bội (PE, PP, PS).</li>
-          <li>Trùng ngưng: kèm tách nhỏ phân tử (H2O, HCl) giữa monomer đa chức (PA, PET, phenol-formaldehyde).</li>
-          <li>Ghép khối/mẫu: block copolymer, random, alternating.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Thông số đặc trưng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Độ trùng hợp (DP) ≈ M<sub>w</sub>/M<sub>đơn vị lặp</sub>; phân bố khối lượng (PDI).</li>
-          <li>Nhiệt độ hoá thuỷ tinh (Tg), nhiệt độ nóng chảy (Tm) ảnh hưởng gia công.</li>
-          <li>Độ kết tinh: mạch thẳng dễ kết tinh (PE), mạch nhánh khó kết tinh (LDPE).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">So sánh cơ chế</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Trùng hợp gốc → khơi mào, truyền, chấm dứt; dễ PDI rộng.</li>
-          <li>Trùng ngưng → cần nhóm đa chức, tách phân tử nhỏ, DP tăng dần.</li>
-          <li>Ghép khối (block) cải thiện tính chất: đàn hồi (SBS), pha trộn mềm-cứng.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Chọn polymer: cần trong, nhẹ → PP/PC; cần rào cản khí → PET/EVOH.</li>
-          <li>Điều chỉnh Tg: thêm chất hoá dẻo (PVC mềm) hoặc tăng kết tinh (kéo sợi PET).</li>
-          <li>Nhận biết loại phản ứng: có H2O/HCl tách ra → trùng ngưng; không tách → trùng hợp cộng.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Tính DP từ khối lượng: DP ≈ M mẫu / M mắt xích; chú ý đơn vị g/mol.</li>
-          <li>Dự đoán Tg/Tm: mạch cứng, tương tác mạnh (aromatic, H-bond) → Tg/Tm cao.</li>
-          <li>Vẽ đơn vị lặp từ monomer: xoá liên kết bội, giữ khung chính; với trùng ngưng, ghép qua nhóm chức còn lại.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Đại cương về polymer',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Nền tảng về monomer, phản ứng tạo mạch, phân loại và các thông số đặc trưng của vật liệu polymer.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Khái niệm & phân loại',
+            content: 'Polymer: chất có phân tử khối rất lớn, gồm các mắt xích (đơn vị lặp) từ monomer.\nPhân loại: tự nhiên (tinh bột, ADN), nhân tạo (tơ visco), tổng hợp (PE, PVC).\nCấu trúc: mạch thẳng, nhánh, mạng không gian; ảnh hưởng cơ học và nhiệt.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Phản ứng tạo polymer',
+            content: 'Trùng hợp cộng: monomer chứa liên kết bội (PE, PP, PS).\nTrùng ngưng: kèm tách nhỏ phân tử (H2O, HCl) giữa monomer đa chức (PA, PET, phenol-formaldehyde).\nGhép khối/mẫu: block copolymer, random, alternating.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Thông số đặc trưng',
+            content: 'Độ trùng hợp (DP) ≈ M₍w₎/M₍đơn vị lặp₎; phân bố khối lượng (PDI).\nNhiệt độ hoá thuỷ tinh (Tg), nhiệt độ nóng chảy (Tm) ảnh hưởng gia công.\nĐộ kết tinh: mạch thẳng dễ kết tinh (PE), mạch nhánh khó kết tinh (LDPE).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh cơ chế',
+            content: 'Trùng hợp gốc → khơi mào, truyền, chấm dứt; dễ PDI rộng.\nTrùng ngưng → cần nhóm đa chức, tách phân tử nhỏ, DP tăng dần.\nGhép khối (block) cải thiện tính chất: đàn hồi (SBS), pha trộn mềm-cứng.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & ứng dụng',
+            content: 'Chọn polymer: cần trong, nhẹ → PP/PC; cần rào cản khí → PET/EVOH.\nĐiều chỉnh Tg: thêm chất hoá dẻo (PVC mềm) hoặc tăng kết tinh (kéo sợi PET).\nNhận biết loại phản ứng: có H2O/HCl tách ra → trùng ngưng; không tách → trùng hợp cộng.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Tính DP từ khối lượng: DP ≈ M mẫu / M mắt xích; chú ý đơn vị g/mol.\nDự đoán Tg/Tm: mạch cứng, tương tác mạnh (aromatic, H-bond) → Tg/Tm cao.\nVẽ đơn vị lặp từ monomer: xoá liên kết bội, giữ khung chính; với trùng ngưng, ghép qua nhóm chức còn lại.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

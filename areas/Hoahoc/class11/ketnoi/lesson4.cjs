@@ -2,52 +2,69 @@ module.exports = {
   classId: 11,
   curriculumType: 'ketnoi',
   chapterId: 2,
-  chapterName: 'Chương 2: Nitrogen – sulfur',
+  chapterName: 'Chương 2: Nitrogen - sulfur',
   lessonId: 4,
   title: 'Bài 4: Nitrogen',
   description: 'Tính chất vật lí, hoá học của N2; điều chế, ứng dụng.',
   level: 'Intermediate',
   order: 4,
-  theory: `
-    <h2>Nitrogen</h2>
-    <p style="margin:8px 0; color:#334155;">Hiểu tính trơ của N2, điều kiện phản ứng, chu trình điều chế và ứng dụng làm môi trường trơ.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu trúc & tính trơ</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>N≡N ba liên kết, năng lượng liên kết lớn (~941 kJ/mol) → khó phản ứng ở điều kiện thường.</li>
-          <li>Phản ứng khi có T, p cao hoặc xúc tác (Fe-Mo trong Haberman; tia lửa điện tạo NO).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Tính oxi hoá/khử</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Tính oxi hoá khi tác dụng kim loại hoạt động: 6Li + N2 → 2Li3N.</li>
-          <li>Tính khử nhẹ: N2 + O2 ⇌ 2NO (ở 3000°C, tia lửa điện).</li>
-          <li>Chủ yếu trơ, dùng làm dung môi khí trơ, đệm phòng cháy.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Điều chế & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Công nghiệp: chưng cất phân đoạn không khí lỏng.</li>
-          <li>Phòng thí nghiệm: nhiệt phân NaN3 (túi khí) hoặc phân huỷ NH4NO2.</li>
-          <li>Ứng dụng: môi trường trơ (bảo quản thực phẩm, hàn, sản xuất linh kiện), sản xuất NH3.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Lưu ý an toàn & môi trường</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>N2 không độc nhưng có thể gây thiếu oxy trong không gian kín.</li>
-          <li>NOx (sản phẩm oxy hoá N2) gây ô nhiễm không khí, tạo mưa axit.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Nitrogen',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Hiểu tính trơ của N2, điều kiện phản ứng, chu trình điều chế và ứng dụng làm môi trường trơ.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu trúc & tính trơ',
+            content: 'N≡N ba liên kết, năng lượng liên kết lớn (~941 kJ/mol) → khó phản ứng ở điều kiện thường.\nPhản ứng khi có T, p cao hoặc xúc tác (Fe-Mo trong Haberman; tia lửa điện tạo NO).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính oxi hoá/khử',
+            content: 'Tính oxi hoá khi tác dụng kim loại hoạt động: 6Li + N2 → 2Li3N.\nTính khử nhẹ: N2 + O2 ⇌ 2NO (ở 3000°C, tia lửa điện).\nChủ yếu trơ, dùng làm dung môi khí trơ, đệm phòng cháy.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Điều chế & ứng dụng',
+            content: 'Công nghiệp: chưng cất phân đoạn không khí lỏng.\nPhòng thí nghiệm: nhiệt phân NaN3 (túi khí) hoặc phân huỷ NH4NO2.\nỨng dụng: môi trường trơ (bảo quản thực phẩm, hàn, sản xuất linh kiện), sản xuất NH3.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Lưu ý an toàn & môi trường',
+            content: 'N2 không độc nhưng có thể gây thiếu oxy trong không gian kín.\nNOx (sản phẩm oxy hoá N2) gây ô nhiễm không khí, tạo mưa axit.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

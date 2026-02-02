@@ -6,60 +6,73 @@ module.exports = {
   lessonId: 11,
   order: 11,
   title: 'Bài 11: Muối',
-  theory: `
-    <h2>🧂 Bài 11: Muối</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: phân biệt muối trung hòa/acid, tính tan, phản ứng trao đổi và ứng dụng.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Khái niệm & phân loại</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Muối: hợp chất ion giữa cation kim loại/NH₄⁺ và anion gốc acid.</li>
-          <li>Muối trung hòa: NaCl, K₂SO₄.</li>
-          <li>Muối acid: NaHCO₃, KH₂PO₄ (còn H chưa thay thế hết).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Tính chất chính</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Nhiều muối tan; một số không tan (AgCl, BaSO₄).</li>
-          <li>Với acid/bazơ: tạo muối mới + acid/bazơ mới nếu có kết tủa/khí/điện li yếu.</li>
-          <li>Phản ứng trao đổi ion cần điều kiện: kết tủa/khí/điện li yếu sinh ra.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:16px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Ví dụ phương trình</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>NaCl + AgNO₃ → AgCl↓ + NaNO₃ (kết tủa trắng).</li>
-        <li>CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O (sủi bọt CO₂).</li>
-        <li>NaHCO₃ + HCl → NaCl + CO₂↑ + H₂O.</li>
-        <li>NaOH + CuSO₄ → Cu(OH)₂↓ + Na₂SO₄ (kết tủa lam).</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Ứng dụng nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>NaCl: gia vị, điện phân nước muối.</li>
-          <li>CaCO₃: vật liệu xây dựng.</li>
-          <li>KNO₃, NH₄NO₃: phân bón.</li>
-          <li>CuSO₄: nông nghiệp (boóc-đô).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Mini quiz đọc nhanh</h4>
-        <ol style="margin:0; padding-left:18px; color:#334155;">
-          <li>Điều kiện nào làm phản ứng trao đổi xảy ra?</li>
-          <li>Hiện tượng khi Na₂CO₃ gặp HCl?</li>
-          <li>Muối acid khác gì muối trung hòa?</li>
-        </ol>
-        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời trước khi làm test.</p>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🧂 Bài 11: Muối',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: phân biệt muối trung hòa/acid, tính tan, phản ứng trao đổi và ứng dụng.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Khái niệm & phân loại',
+            content: 'Muối: hợp chất ion giữa cation kim loại/NH₄⁺ và anion gốc acid.\nMuối trung hòa: NaCl, K₂SO₄.\nMuối acid: NaHCO₃, KH₂PO₄ (còn H chưa thay thế hết).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính chất chính',
+            content: 'Nhiều muối tan; một số không tan (AgCl, BaSO₄).\nVới acid/bazơ: tạo muối mới + acid/bazơ mới nếu có kết tủa/khí/điện li yếu.\nPhản ứng trao đổi ion cần điều kiện: kết tủa/khí/điện li yếu sinh ra.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ví dụ phương trình',
+            content: 'NaCl + AgNO₃ → AgCl↓ + NaNO₃ (kết tủa trắng).\nCaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O (sủi bọt CO₂).\nNaHCO₃ + HCl → NaCl + CO₂↑ + H₂O.\nNaOH + CuSO₄ → Cu(OH)₂↓ + Na₂SO₄ (kết tủa lam).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng nhanh',
+            content: 'NaCl: gia vị, điện phân nước muối.\nCaCO₃: vật liệu xây dựng.\nKNO₃, NH₄NO₃: phân bón.\nCuSO₄: nông nghiệp (boóc-đô).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Điều kiện nào làm phản ứng trao đổi xảy ra?\nHiện tượng khi Na₂CO₃ gặp HCl?\nMuối acid khác gì muối trung hòa?\nTự trả lời trước khi làm test.',
+            color: 'blue',
+            listType: 'number'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

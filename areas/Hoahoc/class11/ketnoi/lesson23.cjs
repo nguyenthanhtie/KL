@@ -8,46 +8,63 @@ module.exports = {
   description: 'Anđehit và xeton: nhóm C=O, tính oxi hoá/khử, phản ứng đặc trưng.',
   level: 'Intermediate',
   order: 23,
-  theory: `
-    <h2>Hợp chất carbonyl</h2>
-    <p style="margin:8px 0; color:#334155;">So sánh anđehit và xeton về tính oxi hoá/khử, phản ứng cộng nucleophin và phép nhận biết.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Nhóm C=O</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Phân cực: Cδ+ dễ bị tấn công bởi nucleophin; Oδ− có thể bị proton hoá.</li>
-          <li>Phản ứng cộng nucleophin kèm proton hoá: tạo ancol, xianohydrin (HCN), hemiacetal/acetal (ROH, axit).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Anđehit vs Xeton</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Anđehit (R–CHO): dễ bị oxi hoá nhẹ → axit; tham gia tráng bạc/Fehling (trừ HCHO mạnh hơn).</li>
-          <li>Xeton (R2C=O): khó oxi hoá (không tráng bạc), cần chất oxi hoá mạnh mới cắt mạch.</li>
-          <li>Khử bằng H2/Ni → ancol bậc 1 (từ anđehit) hoặc bậc 2 (từ xeton).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Nhận biết</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Thuốc thử Tollens: anđehit → Ag gương bạc.</li>
-          <li>Fehling: anđehit mạch hở (trừ thơm) → kết tủa đỏ gạch Cu2O.</li>
-          <li>Xeton không phản ứng Tollens/Fehling (trừ α-hydroxy xeton đặc biệt).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Formaldehyde: nhựa, chất sát khuẩn; Acetaldehyde: trung gian tổng hợp.</li>
-          <li>Acetone: dung môi công nghiệp, tẩy rửa; methyl ethyl ketone dùng sơn.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Hợp chất carbonyl',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'So sánh anđehit và xeton về tính oxi hoá/khử, phản ứng cộng nucleophin và phép nhận biết.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Nhóm C=O',
+            content: 'Phân cực: Cδ+ dễ bị tấn công bởi nucleophin; Oδ− có thể bị proton hoá.\nPhản ứng cộng nucleophin kèm proton hoá: tạo ancol, xianohydrin (HCN), hemiacetal/acetal (ROH, axit).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Anđehit vs Xeton',
+            content: 'Anđehit (R-CHO): dễ bị oxi hoá nhẹ → axit; tham gia tráng bạc/Fehling (trừ HCHO mạnh hơn).\nXeton (R2C=O): khó oxi hoá (không tráng bạc), cần chất oxi hoá mạnh mới cắt mạch.\nKhử bằng H2/Ni → ancol bậc 1 (từ anđehit) hoặc bậc 2 (từ xeton).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Nhận biết',
+            content: 'Thuốc thử Tollens: anđehit → Ag gương bạc.\nFehling: anđehit mạch hở (trừ thơm) → kết tủa đỏ gạch Cu2O.\nXeton không phản ứng Tollens/Fehling (trừ α-hydroxy xeton đặc biệt).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng',
+            content: 'Formaldehyde: nhựa, chất sát khuẩn; Acetaldehyde: trung gian tổng hợp.\nAcetone: dung môi công nghiệp, tẩy rửa; methyl ethyl ketone dùng sơn.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
@@ -108,7 +125,7 @@ module.exports = {
       question: 'Phản ứng gương bạc của axit fomic (HCOOH):',
       options: ['Không xảy ra', 'Xảy ra vì HCOOH có tính khử như anđehit', 'Cần xúc tác kiềm mạnh', 'Cho kết tủa Cu2O'],
       correctAnswer: 1,
-      explanation: 'HCOOH có nhóm –CHO ẩn nên khử Tollens tạo Ag.',
+      explanation: 'HCOOH có nhóm -CHO ẩn nên khử Tollens tạo Ag.',
       points: 10
     },
     {

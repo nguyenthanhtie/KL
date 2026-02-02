@@ -60,6 +60,7 @@ router.post('/register', async (req, res) => {
       token: token,
       user: {
         id: newUser._id,
+        _id: newUser._id,
         username: newUser.username,
         email: newUser.email,
         displayName: newUser.displayName,
@@ -67,6 +68,7 @@ router.post('/register', async (req, res) => {
         uid: newUser.firebaseUid, // Add uid alias for compatibility
         xp: newUser.xp,
         level: newUser.level,
+        role: newUser.role || 'student',
         programs: newUser.programs
       }
     });
@@ -132,6 +134,7 @@ router.post('/google-login', async (req, res) => {
       token: token,
       user: {
         id: user._id,
+        _id: user._id,
         username: user.username,
         email: user.email,
         displayName: user.displayName,
@@ -139,6 +142,9 @@ router.post('/google-login', async (req, res) => {
         uid: user.firebaseUid, // Add uid alias for compatibility
         xp: user.xp,
         level: user.level,
+        role: user.role || 'student',
+        teacherInfo: user.teacherInfo,
+        adminInfo: user.adminInfo,
         programs: user.programs,
         avatar: user.avatar
       }

@@ -8,75 +8,93 @@ module.exports = {
   description: 'Đặc điểm, tính chất của đường đơn và đường đôi.',
   level: 'Beginner',
   order: 12,
-  theory: `
-    <h2>🍯 Glucose &amp; Saccharose</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: phân biệt đường đơn (glucose) và đường đôi (saccharose), tính chất nhận biết và ứng dụng.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Glucose (C₆H₁₂O₆)</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Đường đơn, tan tốt, vị ngọt dịu; nguồn: quả chín, máu.</li>
-          <li>Có nhóm –CHO dạng mạch hở → tính khử (Fehling/Benedict → đỏ gạch).</li>
-          <li>Lên men rượu: C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂.</li>
-          <li>Vai trò: nhiên liệu trực tiếp của tế bào (hô hấp).</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Saccharose (C₁₂H₂₂O₁₁)</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Đường đôi = glucose + fructose; tinh thể trắng, tan tốt.</li>
-          <li>Không có nhóm –CHO tự do → không khử Fehling khi chưa thuỷ phân.</li>
-          <li>Thuỷ phân (H⁺/enzym) → glucose + fructose (đường nghịch chuyển).</li>
-          <li>Nguồn chính: mía, củ cải đường.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Nhận biết &amp; phản ứng</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Glucose + Cu(OH)₂/kiềm + đun → Cu₂O đỏ gạch.</li>
-          <li>Saccharose không phản ứng trên; nhưng sau thuỷ phân sẽ cho kết quả như glucose.</li>
-          <li>Cả hai đều lên men → etanol + CO₂ (men rượu).</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Ứng dụng &amp; sức khoẻ</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Thực phẩm, tạo ngọt, lên men rượu/bánh mì.</li>
-          <li>Glucose truyền tĩnh mạch cung cấp năng lượng nhanh.</li>
-          <li>Kiểm soát hấp thu đường để tránh tăng đường huyết.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Glucose: đường đơn, có tính khử, lên men rượu.</li>
-        <li>Saccharose: đường đôi, không khử Fehling trừ khi thuỷ phân.</li>
-        <li>Nhận biết: thuốc thử Benedict/Fehling cho glucose; saccharose cần thuỷ phân trước.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
-      <p style="margin:0 0 4px;">Chuỗi phản ứng Fehling với glucose: <em>/images/hoahoc9/lesson29-fehling.png</em></p>
-      <p style="margin:0;">Sơ đồ thuỷ phân saccharose: <em>/images/hoahoc9/lesson29-hydrolysis.png</em></p>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-        <li>Vì sao saccharose không tráng gương nhưng lại tráng gương sau thuỷ phân?</li>
-        <li>Viết PTHH lên men glucose thành etanol.</li>
-        <li>Nguồn thực phẩm giàu saccharose nào phổ biến nhất ở Việt Nam?</li>
-      </ul>
-      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Suy nghĩ nhanh rồi luyện tập bộ câu hỏi.</p>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🍯 Glucose & Saccharose',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: phân biệt đường đơn (glucose) và đường đôi (saccharose), tính chất nhận biết và ứng dụng.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Glucose (C₆H₁₂O₆)',
+            content: 'Đường đơn, tan tốt, vị ngọt dịu; nguồn: quả chín, máu.\nCó nhóm -CHO dạng mạch hở → tính khử (Fehling/Benedict → đỏ gạch).\nLên men rượu: C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂.\nVai trò: nhiên liệu trực tiếp của tế bào (hô hấp).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Saccharose (C₁₂H₂₂O₁₁)',
+            content: 'Đường đôi = glucose + fructose; tinh thể trắng, tan tốt.\nKhông có nhóm -CHO tự do → không khử Fehling khi chưa thuỷ phân.\nThuỷ phân (H⁺/enzym) → glucose + fructose (đường nghịch chuyển).\nNguồn chính: mía, củ cải đường.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Nhận biết & phản ứng',
+            content: 'Glucose + Cu(OH)₂/kiềm + đun → Cu₂O đỏ gạch.\nSaccharose không phản ứng trên; nhưng sau thuỷ phân sẽ cho kết quả như glucose.\nCả hai đều lên men → etanol + CO₂ (men rượu).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & sức khoẻ',
+            content: 'Thực phẩm, tạo ngọt, lên men rượu/bánh mì.\nGlucose truyền tĩnh mạch cung cấp năng lượng nhanh.\nKiểm soát hấp thu đường để tránh tăng đường huyết.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Bảng tóm tắt nhanh',
+            content: 'Glucose: đường đơn, có tính khử, lên men rượu.\nSaccharose: đường đôi, không khử Fehling trừ khi thuỷ phân.\nNhận biết: thuốc thử Benedict/Fehling cho glucose; saccharose cần thuỷ phân trước.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: '',
+            content: '**Gợi ý hình**:\nChuỗi phản ứng Fehling với glucose: */images/hoahoc9/lesson29-fehling.png*\nSơ đồ thuỷ phân saccharose: */images/hoahoc9/lesson29-hydrolysis.png*',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-9',
+        type: 'warningBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Vì sao saccharose không tráng gương nhưng lại tráng gương sau thuỷ phân?\nViết PTHH lên men glucose thành etanol.\nNguồn thực phẩm giàu saccharose nào phổ biến nhất ở Việt Nam?\nSuy nghĩ nhanh rồi luyện tập bộ câu hỏi.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

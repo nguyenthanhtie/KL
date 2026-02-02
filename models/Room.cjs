@@ -56,7 +56,7 @@ const roomSchema = new mongoose.Schema({
   },
   mode: {
     type: String,
-    enum: ['v1v1', 'multiplayer'],
+    enum: ['v1v1', 'multiplayer', 'class'], // Thêm mode 'class' cho phòng PK lớp học
     required: true
   },
   status: {
@@ -68,7 +68,7 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     default: 2,
     min: 2,
-    max: 10
+    max: 500 // Không giới hạn cho phòng PK lớp học
   },
   players: [playerSchema],
   grade: {
@@ -81,6 +81,33 @@ const roomSchema = new mongoose.Schema({
     type: String,
     default: 'chemistry'
   },
+  // Thông tin lớp học (cho mode 'class')
+  classRoom: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ClassRoom'
+  },
+  isClassRoom: {
+    type: Boolean,
+    default: false
+  },
+  // Người quan sát (giáo viên)
+  spectators: [{
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    username: String,
+    displayName: String,
+    role: {
+      type: String,
+      enum: ['teacher', 'admin'],
+      default: 'teacher'
+    },
+    joinedAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   questionCount: {
     type: Number,
     default: 10,

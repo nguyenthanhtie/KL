@@ -8,64 +8,83 @@ module.exports = {
   description: 'Nguyên tắc điện phân, định luật Faraday, tính toán khối lượng chất thoát ra.',
   level: 'Intermediate',
   order: 16,
-  theory: `
-    <h2>Điện phân</h2>
-    <p style="margin:8px 0; color:#334155;">Quá trình phi tự phát dùng dòng điện một chiều để gây oxi hoá/khử tại điện cực, tính toán bằng định luật Faraday.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Nguyên tắc & ưu tiên phóng điện</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Anot: oxi hoá; catot: khử. Dòng electron đi từ nguồn về catot.</li>
-          <li>Ưu tiên phóng điện (dung dịch nước): catot ưu tiên ion kim loại có E° cao hơn H+/H2; anot ưu tiên ion dễ oxi hoá (halogen, H2O → O2).</li>
-          <li>Điện cực trơ (graphit, Pt) vs điện cực tan (Cu trong tinh luyện Cu).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Định luật Faraday</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>m = (AIt)/(nF); V khí = (It)/(nF) · 22.4 ở đktc.</li>
-          <li>1 Faraday (F) = 96500 C ứng với 1 mol e.</li>
-          <li>Ảnh hưởng: cường độ dòng, thời gian, số electron trao đổi n.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Mạ điện (Cu, Ni, Cr) cải thiện chống ăn mòn, thẩm mỹ.</li>
-          <li>Tinh luyện Cu: anot Cu thô → catot Cu tinh khiết, bùn anot chứa Ag, Au.</li>
-          <li>Điện phân NaCl: dung dịch (màng trao đổi ion) → Cl2, H2, NaOH; nóng chảy → Na, Cl2.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">Checklist ưu tiên phóng điện</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Catot dung dịch: cation quý/ít hoạt động (Cu2+, Ag+) &gt; H2O/H+ &gt; kim loại rất âm (Na+, K+ không khử).</li>
-          <li>Anot dung dịch: anion oxi hoá dễ (Cl-, Br-) &gt; H2O/OH- (tạo O2); anion bền (SO4 2-, NO3-) không phóng.</li>
-          <li>Điện cực tan: anot cung cấp kim loại → nồng độ ion giữ ổn định (tinh luyện, mạ điện đồng đều).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & mẹo</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Tính khí thoát: xác định n e/ mol khí (H2: 2e, O2: 4e, Cl2: 2e) rồi áp dụng Faraday.</li>
-          <li>Mạ đều: giữ I ổn định, khuấy dung dịch, chọn anot cùng kim loại để bù ion.</li>
-          <li>Điện phân nhiều ngăn (màng trao đổi ion) để tách sản phẩm, tránh tái hợp Cl2 với NaOH.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Q = I·t (C); n e = Q/F; mol chất = n e / số e trao đổi; m = n·M.</li>
-          <li>Điện phân nối tiếp nhiều ion: ưu tiên phóng → xác định thứ tự sản phẩm theo E°, nồng độ.</li>
-          <li>Kiểm tra bảo toàn điện tích: lượng ion rời/đến điện cực phải phù hợp với số e đã trao đổi.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Điện phân',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Quá trình phi tự phát dùng dòng điện một chiều để gây oxi hoá/khử tại điện cực, tính toán bằng định luật Faraday.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Nguyên tắc & ưu tiên phóng điện',
+            content: 'Anot: oxi hoá; catot: khử. Dòng electron đi từ nguồn về catot.\nƯu tiên phóng điện (dung dịch nước): catot ưu tiên ion kim loại có E° cao hơn H+/H2; anot ưu tiên ion dễ oxi hoá (halogen, H2O → O2).\nĐiện cực trơ (graphit, Pt) vs điện cực tan (Cu trong tinh luyện Cu).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Định luật Faraday',
+            content: 'm = (AIt)/(nF); V khí = (It)/(nF) · 22.4 ở đktc.\n1 Faraday (F) = 96500 C ứng với 1 mol e.\nẢnh hưởng: cường độ dòng, thời gian, số electron trao đổi n.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng',
+            content: 'Mạ điện (Cu, Ni, Cr) cải thiện chống ăn mòn, thẩm mỹ.\nTinh luyện Cu: anot Cu thô → catot Cu tinh khiết, bùn anot chứa Ag, Au.\nĐiện phân NaCl: dung dịch (màng trao đổi ion) → Cl2, H2, NaOH; nóng chảy → Na, Cl2.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Checklist ưu tiên phóng điện',
+            content: 'Catot dung dịch: cation quý/ít hoạt động (Cu2+, Ag+) > H2O/H+ > kim loại rất âm (Na+, K+ không khử).\nAnot dung dịch: anion oxi hoá dễ (Cl-, Br-) > H2O/OH- (tạo O2); anion bền (SO4 2-, NO3-) không phóng.\nĐiện cực tan: anot cung cấp kim loại → nồng độ ion giữ ổn định (tinh luyện, mạ điện đồng đều).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & mẹo',
+            content: 'Tính khí thoát: xác định n e/ mol khí (H2: 2e, O2: 4e, Cl2: 2e) rồi áp dụng Faraday.\nMạ đều: giữ I ổn định, khuấy dung dịch, chọn anot cùng kim loại để bù ion.\nĐiện phân nhiều ngăn (màng trao đổi ion) để tách sản phẩm, tránh tái hợp Cl2 với NaOH.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Q = I·t (C); n e = Q/F; mol chất = n e / số e trao đổi; m = n·M.\nĐiện phân nối tiếp nhiều ion: ưu tiên phóng → xác định thứ tự sản phẩm theo E°, nồng độ.\nKiểm tra bảo toàn điện tích: lượng ion rời/đến điện cực phải phù hợp với số e đã trao đổi.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

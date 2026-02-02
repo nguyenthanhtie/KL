@@ -8,65 +8,83 @@ module.exports = {
   description: 'Phân loại amine, tính bazơ, phản ứng thế, ankyl hoá và điều chế.',
   level: 'Intermediate',
   order: 8,
-  theory: `
-    <h2>Amine</h2>
-    <p style="margin:8px 0; color:#334155;">Nắm cấu trúc, tính bazơ và các phản ứng đặc trưng của amine, đặc biệt anilin và dẫn xuất thơm.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Phân loại & danh pháp</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Bậc 1/2/3 dựa vào số gốc alkyl/aryl gắn N; amoni bậc 4 là muối.</li>
-          <li>Danh pháp: alkyl amine; anilin cho nhân thơm.</li>
-          <li>Tính bazơ: amine béo > amoniac > anilin (do -M của vòng benzene).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Tính chất & phản ứng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Bazơ yếu, tạo muối amoni với axit; tan tốt khi proton hoá.</li>
-          <li>Alkyl hoá/acyl hoá: R–X, anhiđrit/ClOCOR.</li>
-          <li>Anilin dễ bị brom hoá: C6H5NH2 + 3Br2 → 2,4,6-tribromanilin (kết tủa trắng).</li>
-          <li>Diazoni hoá anilin (≤5°C, HCl + NaNO2) → muối diazoni, thuận lợi cho phản ứng ghép azo.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Điều chế & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Khử hợp chất nitro (nitrobenzene → anilin), khử oxime, Hofmann (amide → amine bậc 1).</li>
-          <li>Amine thơm: nguyên liệu thuốc nhuộm azo, dược phẩm, cao su lưu hoá.</li>
-          <li>Phân tích: thử nhóm NH2 bằng nitrit/axit → khí N2 (amine bậc 1 thơm tạo muối diazoni).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">So sánh bazơ & phản ứng</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Bazơ: amine béo > NH3 > anilin; do +I alkyl vs –M vòng benzene.</li>
-          <li>Alkyl hoá dễ quá đà → bậc cao; muốn dừng ở bậc 1 dùng phương pháp Gabriel/Hofmann.</li>
-          <li>Anilin phản ứng điện ly kém → khi cần thế trên vòng, phải bảo vệ NH2 (acyl hoá) rồi brom hoá/chlor hoá.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & mẹo</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Nhận biết anilin: dung dịch Br2 → kết tủa trắng vàng tribromanilin + mất màu.</li>
-          <li>Kiềm yếu: anilin tan tốt trong HCl (tạo muối), tách ra bằng NaOH; mẹo tách hỗn hợp amine béo/anilin.</li>
-          <li>Muối diazoni dùng ngay ở 0–5°C; ghép azo với phenol/amine hoạt hoá tạo phẩm nhuộm.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Tính lượng AgNO2/NaNO2 cần diazoni hóa: 1 mol anilin ↔ 1 mol nitrit.</li>
-          <li>Chuỗi tổng hợp: nitrobenzene → anilin (khử) → acetanilide (bảo vệ) → brom hoá → thu hydrolysis.</li>
-          <li>Phân biệt bậc amine: thử Hinsberg (benzensulfonyl chloride) để tách 1°, 2°, 3°.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Amine',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Nắm cấu trúc, tính bazơ và các phản ứng đặc trưng của amine, đặc biệt anilin và dẫn xuất thơm.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Phân loại & danh pháp',
+            content: 'Bậc 1/2/3 dựa vào số gốc alkyl/aryl gắn N; amoni bậc 4 là muối.\nDanh pháp: alkyl amine; anilin cho nhân thơm.\nTính bazơ: amine béo > amoniac > anilin (do -M của vòng benzene).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Tính chất & phản ứng',
+            content: 'Bazơ yếu, tạo muối amoni với axit; tan tốt khi proton hoá.\nAlkyl hoá/acyl hoá: R-X, anhiđrit/ClOCOR.\nAnilin dễ bị brom hoá: C6H5NH2 + 3Br2 → 2,4,6-tribromanilin (kết tủa trắng).\nDiazoni hoá anilin (≤5°C, HCl + NaNO2) → muối diazoni, thuận lợi cho phản ứng ghép azo.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Điều chế & ứng dụng',
+            content: 'Khử hợp chất nitro (nitrobenzene → anilin), khử oxime, Hofmann (amide → amine bậc 1).\nAmine thơm: nguyên liệu thuốc nhuộm azo, dược phẩm, cao su lưu hoá.\nPhân tích: thử nhóm NH2 bằng nitrit/axit → khí N2 (amine bậc 1 thơm tạo muối diazoni).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh bazơ & phản ứng',
+            content: 'Bazơ: amine béo > NH3 > anilin; do +I alkyl vs -M vòng benzene.\nAlkyl hoá dễ quá đà → bậc cao; muốn dừng ở bậc 1 dùng phương pháp Gabriel/Hofmann.\nAnilin phản ứng điện ly kém → khi cần thế trên vòng, phải bảo vệ NH2 (acyl hoá) rồi brom hoá/chlor hoá.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & mẹo',
+            content: 'Nhận biết anilin: dung dịch Br2 → kết tủa trắng vàng tribromanilin + mất màu.\nKiềm yếu: anilin tan tốt trong HCl (tạo muối), tách ra bằng NaOH; mẹo tách hỗn hợp amine béo/anilin.\nMuối diazoni dùng ngay ở 0-5°C; ghép azo với phenol/amine hoạt hoá tạo phẩm nhuộm.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Tính lượng AgNO2/NaNO2 cần diazoni hóa: 1 mol anilin ↔ 1 mol nitrit.\nChuỗi tổng hợp: nitrobenzene → anilin (khử) → acetanilide (bảo vệ) → brom hoá → thu hydrolysis.\nPhân biệt bậc amine: thử Hinsberg (benzensulfonyl chloride) để tách 1°, 2°, 3°.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
@@ -88,7 +106,7 @@ module.exports = {
       type: 'true-false',
       question: 'Muối diazoni bền ở nhiệt độ phòng.',
       correctAnswer: false,
-      explanation: 'Muối diazoni thơm bền ở 0–5°C, phân huỷ khi nóng.',
+      explanation: 'Muối diazoni thơm bền ở 0-5°C, phân huỷ khi nóng.',
       points: 10
     },
     {

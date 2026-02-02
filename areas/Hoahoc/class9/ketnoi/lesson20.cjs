@@ -8,74 +8,93 @@ module.exports = {
   description: 'Các phương pháp khai thác, chế biến kim loại và vai trò hợp kim.',
   level: 'Intermediate',
   order: 3,
-  theory: `
-    <h2>⛏️ Tách kim loại &amp; hợp kim</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nắm các bước thu kim loại từ quặng, phương pháp khử/điện phân và lợi ích của hợp kim.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Quặng &amp; chuẩn bị</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Kim loại hiếm khi tồn tại tự do, chủ yếu ở dạng oxit, sunfua, cacbonat.</li>
-          <li>Tuyển quặng: đập, tuyển nổi/từ/đãi trọng lực để tăng hàm lượng kim loại.</li>
-          <li>Nung quặng sunfua → oxit, giải phóng SO₂ (cần xử lí khí).</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Khử hoá học</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Khử bằng C/CO/H₂: Fe₂O₃ + 3CO → 2Fe + 3CO₂ (lò cao).</li>
-          <li>Nhiệt luyện cho kim loại trung bình (Fe, Cu, Pb...).</li>
-          <li>Thu hồi kim loại yếu (Cu) bằng xi măng hoá: Fe + CuSO₄ → FeSO₄ + Cu.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Điện phân</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Áp dụng cho kim loại hoạt động mạnh: Na, K, Mg, Al.</li>
-          <li>Điện phân nóng chảy: Al₂O₃/cryolit → Al (catot) + O₂ (anot C).</li>
-          <li>Muối nóng chảy NaCl → Na + Cl₂ (điện phân Downs).</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Hợp kim &amp; ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Trộn kim loại/phi kim để tăng bền, chống ăn mòn, giảm khối lượng.</li>
-          <li>Ví dụ: Thép (Fe+C), Đồng thau (Cu+Zn), Nhôm hợp kim (Al+Mg/Si), Thép không gỉ (Fe-Cr-Ni).</li>
-          <li>Tái chế kim loại/hợp kim giúp giảm năng lượng và ô nhiễm.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Tuyển quặng → nung/khử → tinh luyện (hoá học hoặc điện phân).</li>
-        <li>Kim loại mạnh phải điện phân nóng chảy; kim loại trung bình dùng chất khử.</li>
-        <li>Hợp kim cải thiện cơ tính, chống gỉ; tái chế giảm phát thải.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
-      <p style="margin:0 0 4px;">Sơ đồ lò cao luyện gang/thu Fe: <em>/images/hoahoc9/lesson20-blastfurnace.png</em></p>
-      <p style="margin:0 0 4px;">Điện phân Al₂O₃ trong cryolit: <em>/images/hoahoc9/lesson20-hallheroult.png</em></p>
-      <p style="margin:0;">Cấu trúc hợp kim đồng thau: <em>/images/hoahoc9/lesson20-brass.png</em></p>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-        <li>Vì sao Al không khử được bằng CO mà phải điện phân?</li>
-        <li>Viết PTHH khử Fe₂O₃ bằng CO.</li>
-        <li>Lợi ích chính khi dùng thép không gỉ thay thép cacbon?</li>
-      </ul>
-      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Suy nghĩ trước khi làm bài trắc nghiệm.</p>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '⛏️ Tách kim loại & hợp kim',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nắm các bước thu kim loại từ quặng, phương pháp khử/điện phân và lợi ích của hợp kim.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Quặng & chuẩn bị',
+            content: 'Kim loại hiếm khi tồn tại tự do, chủ yếu ở dạng oxit, sunfua, cacbonat.\nTuyển quặng: đập, tuyển nổi/từ/đãi trọng lực để tăng hàm lượng kim loại.\nNung quặng sunfua → oxit, giải phóng SO₂ (cần xử lí khí).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Khử hoá học',
+            content: 'Khử bằng C/CO/H₂: Fe₂O₃ + 3CO → 2Fe + 3CO₂ (lò cao).\nNhiệt luyện cho kim loại trung bình (Fe, Cu, Pb...).\nThu hồi kim loại yếu (Cu) bằng xi măng hoá: Fe + CuSO₄ → FeSO₄ + Cu.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Điện phân',
+            content: 'Áp dụng cho kim loại hoạt động mạnh: Na, K, Mg, Al.\nĐiện phân nóng chảy: Al₂O₃/cryolit → Al (catot) + O₂ (anot C).\nMuối nóng chảy NaCl → Na + Cl₂ (điện phân Downs).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Hợp kim & ứng dụng',
+            content: 'Trộn kim loại/phi kim để tăng bền, chống ăn mòn, giảm khối lượng.\nVí dụ: Thép (Fe+C), Đồng thau (Cu+Zn), Nhôm hợp kim (Al+Mg/Si), Thép không gỉ (Fe-Cr-Ni).\nTái chế kim loại/hợp kim giúp giảm năng lượng và ô nhiễm.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Bảng tóm tắt nhanh',
+            content: 'Tuyển quặng → nung/khử → tinh luyện (hoá học hoặc điện phân).\nKim loại mạnh phải điện phân nóng chảy; kim loại trung bình dùng chất khử.\nHợp kim cải thiện cơ tính, chống gỉ; tái chế giảm phát thải.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: '',
+            content: '**Gợi ý hình**:\nSơ đồ lò cao luyện gang/thu Fe: */images/hoahoc9/lesson20-blastfurnace.png*\nĐiện phân Al₂O₃ trong cryolit: */images/hoahoc9/lesson20-hallheroult.png*\nCấu trúc hợp kim đồng thau: */images/hoahoc9/lesson20-brass.png*',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-9',
+        type: 'warningBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Vì sao Al không khử được bằng CO mà phải điện phân?\nViết PTHH khử Fe₂O₃ bằng CO.\nLợi ích chính khi dùng thép không gỉ thay thép cacbon?\nSuy nghĩ trước khi làm bài trắc nghiệm.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

@@ -8,74 +8,93 @@ module.exports = {
   description: 'Ôn vai trò proton, nơtron, electron và ý nghĩa số hiệu nguyên tử, số khối.',
   level: 'Beginner',
   order: 1,
-  theory: `
-    <h2>Thành phần và cấu trúc nguyên tử</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận diện ba hạt cơ bản, tính p/n/e, giải thích số hiệu nguyên tử (Z), số khối (A) và liên hệ độ bền hạt nhân.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Hạt proton (p)</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Điện tích +1e, khối lượng xấp xỉ 1u (1u ≈ 1,66 × 10^{-27} kg).</li>
-          <li>Số proton = số hiệu nguyên tử Z → định danh nguyên tố và điện tích hạt nhân +Ze.</li>
-          <li>Tăng Z → lực hút e lớn hơn → bán kính nguyên tử thường giảm trong cùng chu kì.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Hạt nơtron (n)</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Không mang điện; khối lượng xấp xỉ 1u.</li>
-          <li>Số n = A - Z → làm thay đổi số khối, tạo đồng vị.</li>
-          <li>Tỉ lệ n/p ảnh hưởng độ bền hạt nhân: hạt nhân nhẹ bền khi n/p xấp xỉ 1; hạt nhân nặng cần n/p > 1.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Hạt electron (e)</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Điện tích -1e, khối lượng rất nhỏ (~1/1836 proton).</li>
-          <li>Chuyển động quanh hạt nhân theo lớp/phân lớp; quyết định tính chất hoá học.</li>
-          <li>Nguyên tử trung hoà: p = e; khi nhường/nhận e → ion dương/ion âm.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h3 style="margin:0 0 8px; color:#312e81;">Công thức nhanh</h3>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Kí hiệu nuclit: <em>^{A}_{Z}X</em>; n = A - Z; e = Z (trung hoà).</li>
-          <li>Tổng khối lượng xấp xỉ A (đvC); m nguyên tử ≈ A × 1u.</li>
-          <li>Tỉ lệ n/p: nhẹ ~1; trung bình như <em>^{56}Fe</em> ~1,15; lệch xa → dễ phóng xạ.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Cách tính nhanh p, n, e</h4>
-        <ol style="margin:0; padding-left:18px;">
-          <li>Đọc Z từ kí hiệu nuclit → p = Z.</li>
-          <li>Tính n = A - Z.</li>
-          <li>Nguyên tử trung hoà: e = Z; ion: e = Z ± |q|.</li>
-        </ol>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fff7ed; color:#7c2d12;">
-      <p style="margin:0 0 6px;"><strong>Tránh nhầm lẫn</strong>:</p>
-      <ul style="margin:0; padding-left:18px;">
-        <li>Không cộng electron vào số khối: A chỉ gồm p + n.</li>
-        <li>Ion dương không thay đổi Z, chỉ giảm số e.</li>
-        <li>Khi so sánh n/p, dùng giá trị gần 1 hoặc >1 để dự đoán bền/không bền.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-      <h3 style="margin:0 0 8px; color:#0f172a;">Ôn nhanh trước quiz</h3>
-      <ul style="margin:0; padding-left:18px; color:#475569;">
-        <li>Tính n từ kí hiệu nuclit và dự đoán n/p.</li>
-        <li>Liên hệ Z với tên nguyên tố và vị trí trong BTH.</li>
-        <li>Nhận biết khi nào nguyên tử/ion giữ nguyên p nhưng đổi e.</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Thành phần và cấu trúc nguyên tử',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nhận diện ba hạt cơ bản, tính p/n/e, giải thích số hiệu nguyên tử (Z), số khối (A) và liên hệ độ bền hạt nhân.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Hạt proton (p)',
+            content: 'Điện tích +1e, khối lượng xấp xỉ 1u (1u ≈ 1,66 × 10^{-27} kg).\nSố proton = số hiệu nguyên tử Z → định danh nguyên tố và điện tích hạt nhân +Ze.\nTăng Z → lực hút e lớn hơn → bán kính nguyên tử thường giảm trong cùng chu kì.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Hạt nơtron (n)',
+            content: 'Không mang điện; khối lượng xấp xỉ 1u.\nSố n = A - Z → làm thay đổi số khối, tạo đồng vị.\nTỉ lệ n/p ảnh hưởng độ bền hạt nhân: hạt nhân nhẹ bền khi n/p xấp xỉ 1; hạt nhân nặng cần n/p > 1.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Hạt electron (e)',
+            content: 'Điện tích -1e, khối lượng rất nhỏ (~1/1836 proton).\nChuyển động quanh hạt nhân theo lớp/phân lớp; quyết định tính chất hoá học.\nNguyên tử trung hoà: p = e; khi nhường/nhận e → ion dương/ion âm.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Công thức nhanh',
+            content: 'Kí hiệu nuclit: *^{A}_{Z}X*; n = A - Z; e = Z (trung hoà).\nTổng khối lượng xấp xỉ A (đvC); m nguyên tử ≈ A × 1u.\nTỉ lệ n/p: nhẹ ~1; trung bình như *^{56}Fe* ~1,15; lệch xa → dễ phóng xạ.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Cách tính nhanh p, n, e',
+            content: 'Đọc Z từ kí hiệu nuclit → p = Z.\nTính n = A - Z.\nNguyên tử trung hoà: e = Z; ion: e = Z ± |q|.',
+            color: 'gray',
+            listType: 'number'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'warningBox',
+        content: {
+            title: '',
+            content: 'Không cộng electron vào số khối: A chỉ gồm p + n.\nIon dương không thay đổi Z, chỉ giảm số e.\nKhi so sánh n/p, dùng giá trị gần 1 hoặc >1 để dự đoán bền/không bền.\n**Tránh nhầm lẫn**:',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-9',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn nhanh trước quiz',
+            content: 'Tính n từ kí hiệu nuclit và dự đoán n/p.\nLiên hệ Z với tên nguyên tố và vị trí trong BTH.\nNhận biết khi nào nguyên tử/ion giữ nguyên p nhưng đổi e.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: {
     basic: [
       {

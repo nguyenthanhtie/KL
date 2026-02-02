@@ -8,26 +8,46 @@ module.exports = {
   description: 'Axit HX, độ mạnh tăng xuống nhóm; tính chất muối halide, phản ứng nhận biết AgNO3.',
   level: 'Intermediate',
   order: 2,
-  theory: `
-    <h2>Hydrogen halide & muối halide</h2>
-    <h3>Axit HX (HF, HCl, HBr, HI)</h3>
-    <ul>
-      <li>Axit đơn nấc; độ mạnh tăng xuống nhóm do liên kết H–X yếu dần.</li>
-      <li>Tính chất: tan mạnh trong nước; HF ăn mòn thuỷ tinh (tạo SiF4); HCl/HBr/HI là axit mạnh điển hình.</li>
-      <li>Khả năng khử: X- tăng dần (I- khử mạnh, bị oxi hóa tạo I2).</li>
-    </ul>
-    <h3>Muối halide (MX)</h3>
-    <ul>
-      <li>Điều chế bằng trung hòa HX với bazơ hoặc phản ứng thế giữa muối.</li>
-      <li>Độ tan: đa số tan; kết tủa ít tan AgX (AgCl trắng, AgBr vàng nhạt, AgI vàng), PbX2.</li>
-      <li>Phản ứng nhận biết: dung dịch AgNO3 → kết tủa đặc trưng; thêm NH3: AgCl tan, AgBr ít tan, AgI không tan.</li>
-    </ul>
-    <h3>Ứng dụng</h3>
-    <ul>
-      <li>HCl công nghiệp (tẩy gỉ, PVC), NaCl thực phẩm/điện phân clor-kiềm, CaF2 sản xuất HF.</li>
-      <li>Kiểm soát an toàn khi dùng HF và Cl2 (độc, ăn mòn mạnh).</li>
-    </ul>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Hydrogen halide & muối halide',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Axit HX (HF, HCl, HBr, HI)',
+            content: 'Axit đơn nấc; độ mạnh tăng xuống nhóm do liên kết H-X yếu dần.\nTính chất: tan mạnh trong nước; HF ăn mòn thuỷ tinh (tạo SiF4); HCl/HBr/HI là axit mạnh điển hình.\nKhả năng khử: X- tăng dần (I- khử mạnh, bị oxi hóa tạo I2).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Muối halide (MX)',
+            content: 'Điều chế bằng trung hòa HX với bazơ hoặc phản ứng thế giữa muối.\nĐộ tan: đa số tan; kết tủa ít tan AgX (AgCl trắng, AgBr vàng nhạt, AgI vàng), PbX2.\nPhản ứng nhận biết: dung dịch AgNO3 → kết tủa đặc trưng; thêm NH3: AgCl tan, AgBr ít tan, AgI không tan.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng',
+            content: 'HCl công nghiệp (tẩy gỉ, PVC), NaCl thực phẩm/điện phân clor-kiềm, CaF2 sản xuất HF.\nKiểm soát an toàn khi dùng HF và Cl2 (độc, ăn mòn mạnh).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

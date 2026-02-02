@@ -8,23 +8,46 @@ module.exports = {
   description: 'Ôn chương 6: công thức tốc độ, yếu tố ảnh hưởng, vai trò xúc tác và va chạm hiệu quả.',
   level: 'Intermediate',
   order: 2,
-  theory: `
-    <h2>Ôn tập chương 6</h2>
-    <h3>Nhắc nhanh công thức</h3>
-    <ul>
-      <li>v = ΔC/Δt; tính theo chất phản ứng (dấu âm) hay sản phẩm (dấu dương) đều được nếu thống nhất.</li>
-    </ul>
-    <h3>Yếu tố tăng tốc độ</h3>
-    <ul>
-      <li>Tăng nồng độ/áp suất khí, tăng T, tăng diện tích bề mặt, khuấy trộn.</li>
-      <li>Thêm xúc tác: hạ Ea, không làm thay đổi hằng số cân bằng.</li>
-    </ul>
-    <h3>Gợi ý vận dụng</h3>
-    <ul>
-      <li>So sánh hai điều kiện: điều kiện nào tạo nhiều va chạm đủ Ea hơn → tốc độ lớn hơn.</li>
-      <li>Nhận biết ảnh hưởng mạch nhánh vs mạch thẳng (mạch thẳng có diện tích tiếp xúc lớn hơn nếu cùng công thức phân tử ở pha lỏng).</li>
-    </ul>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập chương 6',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Nhắc nhanh công thức',
+            content: 'v = ΔC/Δt; tính theo chất phản ứng (dấu âm) hay sản phẩm (dấu dương) đều được nếu thống nhất.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Yếu tố tăng tốc độ',
+            content: 'Tăng nồng độ/áp suất khí, tăng T, tăng diện tích bề mặt, khuấy trộn.\nThêm xúc tác: hạ Ea, không làm thay đổi hằng số cân bằng.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Gợi ý vận dụng',
+            content: 'So sánh hai điều kiện: điều kiện nào tạo nhiều va chạm đủ Ea hơn → tốc độ lớn hơn.\nNhận biết ảnh hưởng mạch nhánh vs mạch thẳng (mạch thẳng có diện tích tiếp xúc lớn hơn nếu cùng công thức phân tử ở pha lỏng).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

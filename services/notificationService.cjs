@@ -68,7 +68,7 @@ const emailTemplates = {
             ` : ''}
             
             <center>
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/chemistry" class="button">
+              <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/chemistry" class="button">
                 Bắt đầu học ngay 🚀
               </a>
             </center>
@@ -79,7 +79,7 @@ const emailTemplates = {
           </div>
           <div class="footer">
             <p>ChemLearn - Học Hóa học thú vị hơn</p>
-            <p><a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/profile">Quản lý thông báo</a></p>
+            <p><a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/profile">Quản lý thông báo</a></p>
           </div>
         </div>
       </body>
@@ -120,7 +120,7 @@ const emailTemplates = {
             <p style="color: #666; margin: 20px 0;">
               Bạn chưa học hôm nay! Hãy hoàn thành ít nhất 1 bài học để giữ chuỗi nhé.
             </p>
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/chemistry" class="button">
+            <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/chemistry" class="button">
               Bảo vệ chuỗi ngay! 🛡️
             </a>
           </div>
@@ -158,7 +158,7 @@ const emailTemplates = {
           <div class="content">
             <p>Đừng nản chí! Chuỗi ${data.lostStreak || 0} ngày của bạn đã reset, nhưng đây là cơ hội để bắt đầu lại mạnh mẽ hơn!</p>
             <p><strong>Kỷ lục của bạn:</strong> ${data.longestStreak || 0} ngày</p>
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/chemistry" class="button">
+            <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/chemistry" class="button">
               Bắt đầu chuỗi mới! 💪
             </a>
           </div>
@@ -197,7 +197,7 @@ const emailTemplates = {
             <div class="achievement-name">${data.achievementName}</div>
             <p style="color: #666;">${data.achievementDescription || 'Bạn đã đạt được một thành tựu mới!'}</p>
             ${data.xpReward ? `<p><strong>+${data.xpReward} XP</strong></p>` : ''}
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/profile" class="button">
+            <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/profile" class="button">
               Xem thành tựu
             </a>
           </div>
@@ -236,7 +236,7 @@ const emailTemplates = {
             <div class="level-number">Level ${data.newLevel}</div>
             <p style="color: #666;">Tuyệt vời! Bạn đã tiến bộ rất nhiều!</p>
             <p><strong>Tổng XP:</strong> ${data.totalXP || 0}</p>
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/chemistry" class="button">
+            <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/chemistry" class="button">
               Tiếp tục học
             </a>
           </div>
@@ -295,7 +295,7 @@ const emailTemplates = {
             </div>
             
             <center>
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/profile" class="button">
+              <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/profile" class="button">
                 Xem chi tiết
               </a>
             </center>
@@ -334,7 +334,7 @@ const emailTemplates = {
             <p>Xin chào <strong>${data.username || 'bạn'}</strong>!</p>
             <p>${data.body || data.message || 'Bạn có thông báo mới từ ChemLearn.'}</p>
             <center>
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}" class="button">
+              <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}" class="button">
                 Truy cập ChemLearn
               </a>
             </center>
@@ -373,7 +373,7 @@ const emailTemplates = {
           <div class="content">
             <p style="font-size: 18px; color: #333;"><strong>${data.title || 'Bài học mới'}</strong></p>
             <p style="color: #666;">${data.body || 'Có nội dung mới đang chờ bạn khám phá!'}</p>
-            <a href="${data.actionUrl || process.env.FRONTEND_URL || 'http://localhost:5173'}/chemistry" class="button">
+            <a href="${data.actionUrl || process.env.FRONTEND_URL || 'http://localhost:5174'}/chemistry" class="button">
               Khám phá ngay
             </a>
           </div>
@@ -441,7 +441,7 @@ const emailTemplates = {
             <p style="font-size: 48px;">🎮</p>
             <p style="font-size: 18px; color: #333;"><strong>${data.challengeName || 'Thử thách mới'}</strong></p>
             <p style="color: #666;">Bạn đã mở khóa một thử thách mới! Hãy chinh phục nó ngay!</p>
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/challenges" class="button">
+            <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/challenges" class="button">
               Chinh phục ngay
             </a>
           </div>
@@ -476,7 +476,7 @@ const emailTemplates = {
           <div class="content">
             <p>Chuỗi học <strong>${data.lostStreak || 0} ngày</strong> của bạn đã bị mất.</p>
             <p style="color: #666;">Đừng lo, hãy bắt đầu lại ngay hôm nay!</p>
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/chemistry" class="button">
+            <a href="${process.env.FRONTEND_URL || 'http://localhost:5174'}/chemistry" class="button">
               Bắt đầu lại 💪
             </a>
           </div>
@@ -511,7 +511,7 @@ const emailTemplates = {
           <div class="content">
             <p style="font-size: 48px;">🎉</p>
             <p style="color: #333;">${data.body || data.message || 'Bạn có ưu đãi đặc biệt!'}</p>
-            <a href="${data.actionUrl || process.env.FRONTEND_URL || 'http://localhost:5173'}" class="button">
+            <a href="${data.actionUrl || process.env.FRONTEND_URL || 'http://localhost:5174'}" class="button">
               Xem ngay
             </a>
           </div>

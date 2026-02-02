@@ -8,54 +8,76 @@ module.exports = {
   description: 'Diễn biến bán kính, độ âm điện, tính kim loại/phi kim theo chiều nhóm.',
   level: 'Beginner',
   order: 2,
-  theory: `
-    <h2>Xu hướng tính chất trong một nhóm</h2>
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Kích thước & năng lượng</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Bán kính tăng xuống nhóm do thêm lớp e (lực hút hạt nhân hiệu dụng giảm).</li>
-          <li>Năng lượng ion hoá giảm → càng xuống dưới càng dễ mất e.</li>
-          <li>Ái lực electron thường giảm (trừ một vài ngoại lệ halogen nặng).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Độ âm điện & tính chất</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Độ âm điện giảm dần → tính phi kim giảm, tính kim loại tăng.</li>
-          <li>SOX cao nhất của phi kim nhóm (VIIA, VIA) không đổi nhưng tính oxi hóa giảm.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 6px; color:#0e7490;">Cấu hình lớp ngoài</h4>
-        <p style="margin:0; color:#0f172a;">Giữ nguyên dạng ns^a np^b → tính chất hóa học trong nhóm tương tự; thay đổi chủ yếu do bán kính và Z hiệu dụng.</p>
-      </div>
-    </div>
-
-    <div style="margin:12px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#eef2ff;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Oxit/hiđroxit trong nhóm</h4>
-        <ul style="margin:0; padding-left:18px; color:#1e3a8a;">
-          <li>Kim loại: oxit/hiđroxit bazơ mạnh dần xuống dưới (Li2O &lt; Cs2O).</li>
-          <li>Phi kim: oxit axit giảm dần, tính khử tăng (Cl2O7 &gt; Br2O5 &gt; I2O5).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Ví dụ nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Nhóm IA: Li &lt; Na &lt; K &lt; Rb &lt; Cs (kim loại mạnh dần, phản ứng với H2O dữ dội hơn).</li>
-          <li>Nhóm VIIA: F2 oxi hóa mạnh nhất; I2 yếu hơn, dễ bị khử.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Lỗi thường gặp</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Nhầm “kim loại tăng xuống nhóm” với “phi kim tăng”.</li>
-          <li>Bỏ qua ngoại lệ nhẹ của ái lực e/IE1 (O, F có giá trị lệch nhỏ).</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Xu hướng tính chất trong một nhóm',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Kích thước & năng lượng',
+            content: 'Bán kính tăng xuống nhóm do thêm lớp e (lực hút hạt nhân hiệu dụng giảm).\nNăng lượng ion hoá giảm → càng xuống dưới càng dễ mất e.\nÁi lực electron thường giảm (trừ một vài ngoại lệ halogen nặng).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'warningBox',
+        content: {
+            title: 'Độ âm điện & tính chất',
+            content: 'Độ âm điện giảm dần → tính phi kim giảm, tính kim loại tăng.\nSOX cao nhất của phi kim nhóm (VIIA, VIA) không đổi nhưng tính oxi hóa giảm.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu hình lớp ngoài',
+            content: 'Giữ nguyên dạng ns^a np^b → tính chất hóa học trong nhóm tương tự; thay đổi chủ yếu do bán kính và Z hiệu dụng.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Oxit/hiđroxit trong nhóm',
+            content: 'Kim loại: oxit/hiđroxit bazơ mạnh dần xuống dưới (Li2O < Cs2O).\nPhi kim: oxit axit giảm dần, tính khử tăng (Cl2O7 > Br2O5 > I2O5).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Ví dụ nhanh',
+            content: 'Nhóm IA: Li < Na < K < Rb < Cs (kim loại mạnh dần, phản ứng với H2O dữ dội hơn).\nNhóm VIIA: F2 oxi hóa mạnh nhất; I2 yếu hơn, dễ bị khử.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'warningBox',
+        content: {
+            title: 'Lỗi thường gặp',
+            content: 'Nhầm “kim loại tăng xuống nhóm” với “phi kim tăng”.\nBỏ qua ngoại lệ nhẹ của ái lực e/IE1 (O, F có giá trị lệch nhỏ).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

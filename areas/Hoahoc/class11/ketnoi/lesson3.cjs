@@ -8,44 +8,56 @@ module.exports = {
   description: 'Tóm tắt cân bằng động, hằng số K, Q và ứng dụng Le Chatelier.',
   level: 'Intermediate',
   order: 3,
-  theory: `
-    <h2>Ôn tập cân bằng hoá học</h2>
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:10px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Nhận diện & biểu thức K</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Phản ứng thuận nghịch trong hệ kín mới đạt cân bằng động.</li>
-          <li>Viết $K_c, K_p$: đưa hệ số phản ứng thành số mũ, bỏ chất rắn/lỏng tinh khiết.</li>
-          <li>So sánh Q và K để dự đoán chiều dịch chuyển.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Le Chatelier nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Tăng nồng độ chất phản ứng → dịch phải; tăng sản phẩm → dịch trái.</li>
-          <li>Giảm thể tích (tăng áp) → ưu tiên phía có ít mol khí hơn.</li>
-          <li>Nhiệt độ: phản ứng thu nhiệt dịch phải khi tăng T; toả nhiệt dịch trái khi tăng T.</li>
-          <li>Xúc tác: không làm đổi K, chỉ đạt cân bằng nhanh hơn.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 6px; color:#0e7490;">Dung dịch & kết tủa</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>pH: pH + pOH = 14 (25°C); Ka·Kb = Kw.</li>
-          <li>Ksp: so Qsp với Ksp để xét kết tủa; ion chung làm giảm độ tan.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:10px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <h4 style="margin:0 0 6px;">Lỗi thường gặp</h4>
-      <ul style="margin:0; padding-left:18px;">
-        <li>Đưa chất rắn/tinh khiết vào K.</li>
-        <li>Nhầm hướng dịch chuyển áp suất: phải so tổng mol khí hai vế.</li>
-        <li>Hiểu sai vai trò xúc tác: không thay đổi K.</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập cân bằng hoá học',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Nhận diện & biểu thức K',
+            content: 'Phản ứng thuận nghịch trong hệ kín mới đạt cân bằng động.\nViết $K_c, K_p$: đưa hệ số phản ứng thành số mũ, bỏ chất rắn/lỏng tinh khiết.\nSo sánh Q và K để dự đoán chiều dịch chuyển.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'warningBox',
+        content: {
+            title: 'Le Chatelier nhanh',
+            content: 'Tăng nồng độ chất phản ứng → dịch phải; tăng sản phẩm → dịch trái.\nGiảm thể tích (tăng áp) → ưu tiên phía có ít mol khí hơn.\nNhiệt độ: phản ứng thu nhiệt dịch phải khi tăng T; toả nhiệt dịch trái khi tăng T.\nXúc tác: không làm đổi K, chỉ đạt cân bằng nhanh hơn.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Dung dịch & kết tủa',
+            content: 'pH: pH + pOH = 14 (25°C); Ka·Kb = Kw.\nKsp: so Qsp với Ksp để xét kết tủa; ion chung làm giảm độ tan.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Lỗi thường gặp',
+            content: 'Đưa chất rắn/tinh khiết vào K.\nNhầm hướng dịch chuyển áp suất: phải so tổng mol khí hai vế.\nHiểu sai vai trò xúc tác: không thay đổi K.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

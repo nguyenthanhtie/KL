@@ -8,64 +8,83 @@ module.exports = {
   description: 'Tóm tắt ester, lipid, xà phòng và chất giặt rửa; bài tập áp dụng.',
   level: 'Intermediate',
   order: 3,
-  theory: `
-    <h2>Ôn tập chương 1: Ester - lipid</h2>
-    <p style="margin:8px 0; color:#334155;">Hệ thống hoá công thức, phản ứng đặc trưng, chỉ số đánh giá chất béo và kỹ năng nhận biết/giải bài tập.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Nhận diện & danh pháp</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Este đơn chức: RCOOR'; vòng lacton: nội este; trieste (lipid) từ glixerol.</li>
-          <li>Danh pháp: alkyl + anion axit (-ate), ưu tiên đánh số mạch dài trong axit béo.</li>
-          <li>Phân biệt mùi ester nhỏ (hương liệu) vs lipid (không bay hơi, không mùi mạnh).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Phản ứng trọng tâm</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Thuỷ phân axit (thuận nghịch) vs kiềm (một chiều); xà phòng hoá lipid → muối + glixerol.</li>
-          <li>Hydro hoá liên kết đôi axit béo; cháy; khử ester mạnh bằng LiAlH4 → ancol.</li>
-          <li>Chỉ số: xà phòng hoá (KOH/g), axit (KOH trung hoà axit tự do), iot (mức độ không no).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Kỹ năng bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Lập PT xà phòng hoá triglycerid; bảo toàn khối lượng/ion Na<sup>+</sup> để tính hiệu suất.</li>
-          <li>Nhận biết: mùi ester, tạo xà phòng, phản ứng với nước brom (đánh giá không no).</li>
-          <li>So sánh tác dụng tẩy: xà phòng vs chất giặt tổng hợp trong nước cứng.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">Checklist ôn tập nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Nhớ 3 chỉ số: xà phòng hoá, axit, iot; biết ý nghĩa và cách suy mạch dài/ngắn, mức không no.</li>
-          <li>Phân biệt: thuỷ phân axit (thuận nghịch) vs kiềm (một chiều); hydro hoá nối đôi; phản ứng cháy.</li>
-          <li>Nhận dạng mùi: este nhỏ; tính tẩy: muối axit béo; nhũ hoá: chất hoạt động bề mặt.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case áp dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Tính khối lượng xà phòng: bảo toàn mol Na<sup>+</sup>; khối lượng glixerol = 92 g/mol × số mol triglycerid.</li>
-          <li>Xác định chỉ số iot từ lượng Br2 phản ứng; suy số liên kết đôi → đánh giá độ bền khi chiên rán.</li>
-          <li>So sánh hiệu quả tẩy rửa trong nước cứng: giải thích bằng kết tủa Ca/ Mg của xà phòng.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Mẹo trình bày bài thi</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Luôn vẽ mũi tên cân bằng cho este hoá/thuỷ phân axit, ghi rõ xúc tác H<sub>2</sub>SO<sub>4</sub> đặc, đun nóng.</li>
-          <li>Liệt kê số carbon của axit béo khi đặt ẩn, tránh sai tổng carbon trong triglycerid.</li>
-          <li>Với câu trắc nghiệm, nhìn vào “không no/khử/oxi hoá” để loại nhanh phương án.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập chương 1: Ester - lipid',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Hệ thống hoá công thức, phản ứng đặc trưng, chỉ số đánh giá chất béo và kỹ năng nhận biết/giải bài tập.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Nhận diện & danh pháp',
+            content: 'Este đơn chức: RCOOR\\\'; vòng lacton: nội este; trieste (lipid) từ glixerol.\nDanh pháp: alkyl + anion axit (-ate), ưu tiên đánh số mạch dài trong axit béo.\nPhân biệt mùi ester nhỏ (hương liệu) vs lipid (không bay hơi, không mùi mạnh).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Phản ứng trọng tâm',
+            content: 'Thuỷ phân axit (thuận nghịch) vs kiềm (một chiều); xà phòng hoá lipid → muối + glixerol.\nHydro hoá liên kết đôi axit béo; cháy; khử ester mạnh bằng LiAlH4 → ancol.\nChỉ số: xà phòng hoá (KOH/g), axit (KOH trung hoà axit tự do), iot (mức độ không no).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Kỹ năng bài tập',
+            content: 'Lập PT xà phòng hoá triglycerid; bảo toàn khối lượng/ion Na⁽+⁾ để tính hiệu suất.\nNhận biết: mùi ester, tạo xà phòng, phản ứng với nước brom (đánh giá không no).\nSo sánh tác dụng tẩy: xà phòng vs chất giặt tổng hợp trong nước cứng.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Checklist ôn tập nhanh',
+            content: 'Nhớ 3 chỉ số: xà phòng hoá, axit, iot; biết ý nghĩa và cách suy mạch dài/ngắn, mức không no.\nPhân biệt: thuỷ phân axit (thuận nghịch) vs kiềm (một chiều); hydro hoá nối đôi; phản ứng cháy.\nNhận dạng mùi: este nhỏ; tính tẩy: muối axit béo; nhũ hoá: chất hoạt động bề mặt.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case áp dụng',
+            content: 'Tính khối lượng xà phòng: bảo toàn mol Na⁽+⁾; khối lượng glixerol = 92 g/mol × số mol triglycerid.\nXác định chỉ số iot từ lượng Br2 phản ứng; suy số liên kết đôi → đánh giá độ bền khi chiên rán.\nSo sánh hiệu quả tẩy rửa trong nước cứng: giải thích bằng kết tủa Ca/ Mg của xà phòng.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Mẹo trình bày bài thi',
+            content: 'Luôn vẽ mũi tên cân bằng cho este hoá/thuỷ phân axit, ghi rõ xúc tác H₍2₎SO₍4₎ đặc, đun nóng.\nLiệt kê số carbon của axit béo khi đặt ẩn, tránh sai tổng carbon trong triglycerid.\nVới câu trắc nghiệm, nhìn vào “không no/khử/oxi hoá” để loại nhanh phương án.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

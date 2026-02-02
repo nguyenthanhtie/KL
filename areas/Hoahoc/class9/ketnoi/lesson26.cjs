@@ -8,73 +8,93 @@ module.exports = {
   description: 'Tính chất, điều chế và ứng dụng của etanol.',
   level: 'Intermediate',
   order: 9,
-  theory: `
-    <h2>🍶 Ethanol (C₂H₅OH)</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận dạng cấu tạo, tính chất vật lí/hoá học, các phương pháp điều chế và ứng dụng của etanol.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Cấu tạo &amp; vật lí</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>CTPT C₂H₆O; nhóm –OH gắn trên khung C₂H₅ (alcol no, đơn chức).</li>
-          <li>Chất lỏng không màu, mùi đặc trưng, sôi 78,3°C; tan vô hạn trong nước (liên kết H).</li>
-          <li>Nhiệt độ chớp cháy thấp → cần an toàn cháy nổ.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Tính chất hoá học</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li><strong>Cháy:</strong> C₂H₅OH + 3O₂ → 2CO₂ + 3H₂O (ngọn lửa xanh).</li>
-          <li><strong>Tác dụng kim loại kiềm:</strong> 2C₂H₅OH + 2Na → 2C₂H₅ONa + H₂↑.</li>
-          <li><strong>Este hoá:</strong> với CH₃COOH (H₂SO₄ đặc) → CH₃COOC₂H₅ + H₂O.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Điều chế</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li><strong>Lên men:</strong> C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂ (men, 30–35°C).</li>
-          <li><strong>Hiđrat hoá etilen:</strong> CH₂=CH₂ + H₂O (H₂SO₄ loãng, t°) → C₂H₅OH.</li>
-          <li>Tinh chế bằng chưng cất, loại tạp chất để đạt độ cồn mong muốn.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Ứng dụng &amp; lưu ý</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Đồ uống có cồn (cần quản lí nồng độ), sát trùng, dung môi.</li>
-          <li>Nhiên liệu pha xăng (E5/E10) giúp giảm CO, bụi.</li>
-          <li>An toàn: tránh hít hơi lâu, tránh lửa nguồn nhiệt; bảo quản kín.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Nhóm chức: –OH; tính chất đặc trưng: hoà tan, phản ứng với Na, este hoá.</li>
-        <li>Nguồn: sinh học (lên men) và công nghiệp (hiđrat hoá anken).</li>
-        <li>An toàn: cháy xanh, dễ bắt lửa; không dùng cồn công nghiệp làm đồ uống.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
-      <p style="margin:0 0 4px;">Dây chuyền lên men – chưng cất cồn: <em>/images/hoahoc9/lesson26-fermentation.png</em></p>
-      <p style="margin:0;">Cơ chế este hoá ethanol – axit axetic: <em>/images/hoahoc9/lesson26-ester.png</em></p>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-        <li>Vì sao ethanol tan vô hạn trong nước?</li>
-        <li>Viết phương trình lên men glucose thành etanol.</li>
-        <li>Nhận biết nhanh etanol bằng phản ứng nào trong phòng thí nghiệm?</li>
-      </ul>
-      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Tự trả lời trước khi làm bộ 10 câu trắc nghiệm.</p>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🍶 Ethanol (C₂H₅OH)',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nhận dạng cấu tạo, tính chất vật lí/hoá học, các phương pháp điều chế và ứng dụng của etanol.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu tạo & vật lí',
+            content: 'CTPT C₂H₆O; nhóm -OH gắn trên khung C₂H₅ (alcol no, đơn chức).\nChất lỏng không màu, mùi đặc trưng, sôi 78,3°C; tan vô hạn trong nước (liên kết H).\nNhiệt độ chớp cháy thấp → cần an toàn cháy nổ.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Tính chất hoá học',
+            content: '**Cháy:** C₂H₅OH + 3O₂ → 2CO₂ + 3H₂O (ngọn lửa xanh).\n**Tác dụng kim loại kiềm:** 2C₂H₅OH + 2Na → 2C₂H₅ONa + H₂↑.\n**Este hoá:** với CH₃COOH (H₂SO₄ đặc) → CH₃COOC₂H₅ + H₂O.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'warningBox',
+        content: {
+            title: 'Điều chế',
+            content: '**Lên men:** C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂ (men, 30-35°C).\n**Hiđrat hoá etilen:** CH₂=CH₂ + H₂O (H₂SO₄ loãng, t°) → C₂H₅OH.\nTinh chế bằng chưng cất, loại tạp chất để đạt độ cồn mong muốn.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & lưu ý',
+            content: 'Đồ uống có cồn (cần quản lí nồng độ), sát trùng, dung môi.\nNhiên liệu pha xăng (E5/E10) giúp giảm CO, bụi.\nAn toàn: tránh hít hơi lâu, tránh lửa nguồn nhiệt; bảo quản kín.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Bảng tóm tắt nhanh',
+            content: 'Nhóm chức: -OH; tính chất đặc trưng: hoà tan, phản ứng với Na, este hoá.\nNguồn: sinh học (lên men) và công nghiệp (hiđrat hoá anken).\nAn toàn: cháy xanh, dễ bắt lửa; không dùng cồn công nghiệp làm đồ uống.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: '',
+            content: '**Gợi ý hình**:\nDây chuyền lên men - chưng cất cồn: */images/hoahoc9/lesson26-fermentation.png*\nCơ chế este hoá ethanol - axit axetic: */images/hoahoc9/lesson26-ester.png*',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-9',
+        type: 'warningBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Vì sao ethanol tan vô hạn trong nước?\nViết phương trình lên men glucose thành etanol.\nNhận biết nhanh etanol bằng phản ứng nào trong phòng thí nghiệm?\nTự trả lời trước khi làm bộ 10 câu trắc nghiệm.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

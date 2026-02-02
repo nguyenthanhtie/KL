@@ -8,47 +8,63 @@ module.exports = {
   description: 'Cấu tạo, tính chất, phản ứng thế, cracking và ứng dụng của ankan.',
   level: 'Intermediate',
   order: 15,
-  theory: `
-    <h2>Ankan</h2>
-    <p style="margin:8px 0; color:#334155;">Ôn cấu trúc sp3, phản ứng thế gốc tự do, oxi hoá và ứng dụng trong công nghiệp dầu khí.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu tạo & đồng đẳng</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Công thức chung CnH2n+2; C lai hoá sp3, góc ~109,5°.</li>
-          <li>Mạch thẳng/nhánh/cyclo (cycloalkan: CnH2n).</li>
-          <li>Từ C4 bắt đầu có đồng phân mạch; tính chất vật lí: tăng C → tăng T sôi, mạch nhánh làm giảm T sôi.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Tính chất hoá học</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Thế halogen (gốc tự do, ánh sáng/ nhiệt): CH4 + Cl2 → CH3Cl + HCl.</li>
-          <li>Oxi hoá hoàn toàn: cháy toả nhiệt; oxi hoá không hoàn toàn → CO, C.</li>
-          <li>Cracking/pyrolysis: phân cắt C–C tạo anken/ankan nhẹ hơn.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Nguồn & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Khí thiên nhiên (CH4, C2H6) và dầu mỏ (hỗn hợp ankan).</li>
-          <li>Nhiên liệu (gas, LPG, xăng, dầu hoả), dung môi, nguyên liệu cracking sản xuất anken.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Cơ chế thế gốc tự do</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Khơi mào: Cl2 → 2Cl· (ánh sáng).</li>
-          <li>Phát triển: Cl· + RH → R· + HCl; R· + Cl2 → RCl + Cl·.</li>
-          <li>Ngắt mạch: Cl· + Cl· → Cl2; R· + R· → R–R.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ankan',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Ôn cấu trúc sp3, phản ứng thế gốc tự do, oxi hoá và ứng dụng trong công nghiệp dầu khí.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu tạo & đồng đẳng',
+            content: 'Công thức chung CnH2n+2; C lai hoá sp3, góc ~109,5°.\nMạch thẳng/nhánh/cyclo (cycloalkan: CnH2n).\nTừ C4 bắt đầu có đồng phân mạch; tính chất vật lí: tăng C → tăng T sôi, mạch nhánh làm giảm T sôi.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính chất hoá học',
+            content: 'Thế halogen (gốc tự do, ánh sáng/ nhiệt): CH4 + Cl2 → CH3Cl + HCl.\nOxi hoá hoàn toàn: cháy toả nhiệt; oxi hoá không hoàn toàn → CO, C.\nCracking/pyrolysis: phân cắt C-C tạo anken/ankan nhẹ hơn.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Nguồn & ứng dụng',
+            content: 'Khí thiên nhiên (CH4, C2H6) và dầu mỏ (hỗn hợp ankan).\nNhiên liệu (gas, LPG, xăng, dầu hoả), dung môi, nguyên liệu cracking sản xuất anken.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Cơ chế thế gốc tự do',
+            content: 'Khơi mào: Cl2 → 2Cl· (ánh sáng).\nPhát triển: Cl· + RH → R· + HCl; R· + Cl2 → RCl + Cl·.\nNgắt mạch: Cl· + Cl· → Cl2; R· + R· → R-R.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

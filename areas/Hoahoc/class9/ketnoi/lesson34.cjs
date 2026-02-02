@@ -8,74 +8,93 @@ module.exports = {
   description: 'Chu trình khai thác đá vôi, sản xuất vôi sống, xi măng, thuỷ tinh.',
   level: 'Intermediate',
   order: 17,
-  theory: `
-    <h2>🏗️ Đá vôi &amp; công nghiệp silicat</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nắm quy trình nung vôi, sản xuất xi măng, thuỷ tinh và lưu ý môi trường.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Nung vôi &amp; vôi tôi</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>CaCO₃ (đá vôi) nung 900–1000°C → CaO + CO₂.</li>
-          <li>CaO + H₂O → Ca(OH)₂ (vôi tôi), tỏa nhiệt mạnh.</li>
-          <li>Ứng dụng: xây dựng, xử lí nước, điều chỉnh pH đất.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Xi măng</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Nghiền đá vôi + đất sét, nung lò quay → clinker (C₃S, C₂S...).</li>
-          <li>Nghiền clinker + chút thạch cao → xi măng Portland.</li>
-          <li>Thạch cao điều chỉnh thời gian đông kết; cần bảo quản khô.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Thuỷ tinh</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Phối liệu: SiO₂ (cát) + Na₂CO₃ (soda) + CaCO₃ (đá vôi) + phụ gia.</li>
-          <li>Nung chảy → khối thuỷ tinh, tạo hình rồi làm nguội.</li>
-          <li>Điều chỉnh phụ gia để có thuỷ tinh màu, chịu nhiệt, an toàn.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Môi trường &amp; an toàn</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Phát thải CO₂, bụi; cần lọc bụi tay áo/cyclon, thu hồi nhiệt.</li>
-          <li>Tái dùng phế liệu xây dựng, mảnh thuỷ tinh để giảm nguyên liệu.</li>
-          <li>An toàn: tránh hít bụi vôi/xi măng, cẩn thận khi tôi vôi vì toả nhiệt.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Nung vôi: CaCO₃ → CaO + CO₂; tôi vôi: CaO + H₂O → Ca(OH)₂.</li>
-        <li>Xi măng: clinker + thạch cao nghiền mịn.</li>
-        <li>Thuỷ tinh soda-lime: SiO₂ + Na₂CO₃ + CaCO₃ + phụ gia.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
-      <p style="margin:0 0 4px;">Sơ đồ lò quay xi măng và dòng nguyên liệu: <em>/images/hoahoc9/lesson34-cement.png</em></p>
-      <p style="margin:0 0 4px;">Quy trình nấu thuỷ tinh soda-lime: <em>/images/hoahoc9/lesson34-glass.png</em></p>
-      <p style="margin:0;">Chu trình vôi sống → vôi tôi → vôi chết: <em>/images/hoahoc9/lesson34-limecycle.png</em></p>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-        <li>Viết PTHH nung vôi và tôi vôi.</li>
-        <li>Thạch cao có vai trò gì trong xi măng?</li>
-        <li>Biện pháp giảm bụi trong nhà máy xi măng?</li>
-      </ul>
-      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Trả lời nhanh trước khi làm trắc nghiệm.</p>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🏗️ Đá vôi & công nghiệp silicat',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nắm quy trình nung vôi, sản xuất xi măng, thuỷ tinh và lưu ý môi trường.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Nung vôi & vôi tôi',
+            content: 'CaCO₃ (đá vôi) nung 900-1000°C → CaO + CO₂.\nCaO + H₂O → Ca(OH)₂ (vôi tôi), tỏa nhiệt mạnh.\nỨng dụng: xây dựng, xử lí nước, điều chỉnh pH đất.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Xi măng',
+            content: 'Nghiền đá vôi + đất sét, nung lò quay → clinker (C₃S, C₂S...).\nNghiền clinker + chút thạch cao → xi măng Portland.\nThạch cao điều chỉnh thời gian đông kết; cần bảo quản khô.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Thuỷ tinh',
+            content: 'Phối liệu: SiO₂ (cát) + Na₂CO₃ (soda) + CaCO₃ (đá vôi) + phụ gia.\nNung chảy → khối thuỷ tinh, tạo hình rồi làm nguội.\nĐiều chỉnh phụ gia để có thuỷ tinh màu, chịu nhiệt, an toàn.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Môi trường & an toàn',
+            content: 'Phát thải CO₂, bụi; cần lọc bụi tay áo/cyclon, thu hồi nhiệt.\nTái dùng phế liệu xây dựng, mảnh thuỷ tinh để giảm nguyên liệu.\nAn toàn: tránh hít bụi vôi/xi măng, cẩn thận khi tôi vôi vì toả nhiệt.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Bảng tóm tắt nhanh',
+            content: 'Nung vôi: CaCO₃ → CaO + CO₂; tôi vôi: CaO + H₂O → Ca(OH)₂.\nXi măng: clinker + thạch cao nghiền mịn.\nThuỷ tinh soda-lime: SiO₂ + Na₂CO₃ + CaCO₃ + phụ gia.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: '',
+            content: '**Gợi ý hình**:\nSơ đồ lò quay xi măng và dòng nguyên liệu: */images/hoahoc9/lesson34-cement.png*\nQuy trình nấu thuỷ tinh soda-lime: */images/hoahoc9/lesson34-glass.png*\nChu trình vôi sống → vôi tôi → vôi chết: */images/hoahoc9/lesson34-limecycle.png*',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-9',
+        type: 'warningBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Viết PTHH nung vôi và tôi vôi.\nThạch cao có vai trò gì trong xi măng?\nBiện pháp giảm bụi trong nhà máy xi măng?\nTrả lời nhanh trước khi làm trắc nghiệm.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

@@ -8,60 +8,80 @@ module.exports = {
   description: 'Halogenoankan: danh pháp, phản ứng thế, loại H-X, ứng dụng.',
   level: 'Intermediate',
   order: 19,
-  theory: `
-    <h2>Dẫn xuất halogen</h2>
-    <p style="margin:8px 0; color:#334155;">Xác định bậc halogenoankan, phân biệt SN1/SN2, E1/E2 và ứng dụng phản ứng Grignard.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu tạo & phân loại</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Công thức R–X (X = F, Cl, Br, I); bậc 1/2/3 tùy carbon gắn X.</li>
-          <li>Liên kết C–X phân cực (Cδ+, Xδ−); độ bền: C–F > C–Cl > C–Br > C–I.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Phản ứng thay thế nucleophin</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>SN2: 1 bước, nghịch hướng (inversion), ưu tiên bậc 1, tác nhân mạnh, dung môi phân cực kém.</li>
-          <li>SN1: 2 bước qua carbocation, ưu tiên bậc 3, dung môi phân cực, có thể tạo hỗn hợp lập thể.</li>
-          <li>Ví dụ: R–X + OH− → R–OH + X−.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Phản ứng loại (E1/E2)</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>E2: 1 bước, base mạnh, nhiệt → tạo anken theo quy tắc Zaitsev (tạo anken thế hơn).</li>
-          <li>E1: qua carbocation (giống SN1), có thể kèm tái sắp xếp.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Thuốc thử Grignard</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>RMgX tạo từ R–X + Mg khan trong ete khan; là bazơ và nucleophin mạnh.</li>
-          <li>Ứng dụng: cộng vào C=O tạo ancol (R–MgX + HCHO → ancol bậc 1; + aldehyde → ancol bậc 2; + xeton → ancol bậc 3).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="padding:12px; border-radius:12px; border:1px dashed #cbd5e1; background:#f8fafc; color:#475569;">
-      <h4 style="margin:0 0 6px;">Ứng dụng & an toàn</h4>
-      <ul style="margin:0; padding-left:18px;">
-        <li>Dung môi (CH2Cl2), chất làm lạnh (CCl2F2 - hạn chế do phá ozone), thuốc trừ sâu (DDT - bị cấm).</li>
-        <li>Lưu ý độc tính và tác động môi trường; ưu tiên hóa chất thân thiện hơn.</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Dẫn xuất halogen',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Xác định bậc halogenoankan, phân biệt SN1/SN2, E1/E2 và ứng dụng phản ứng Grignard.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu tạo & phân loại',
+            content: 'Công thức R-X (X = F, Cl, Br, I); bậc 1/2/3 tùy carbon gắn X.\nLiên kết C-X phân cực (Cδ+, Xδ−); độ bền: C-F > C-Cl > C-Br > C-I.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Phản ứng thay thế nucleophin',
+            content: 'SN2: 1 bước, nghịch hướng (inversion), ưu tiên bậc 1, tác nhân mạnh, dung môi phân cực kém.\nSN1: 2 bước qua carbocation, ưu tiên bậc 3, dung môi phân cực, có thể tạo hỗn hợp lập thể.\nVí dụ: R-X + OH− → R-OH + X−.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Phản ứng loại (E1/E2)',
+            content: 'E2: 1 bước, base mạnh, nhiệt → tạo anken theo quy tắc Zaitsev (tạo anken thế hơn).\nE1: qua carbocation (giống SN1), có thể kèm tái sắp xếp.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Thuốc thử Grignard',
+            content: 'RMgX tạo từ R-X + Mg khan trong ete khan; là bazơ và nucleophin mạnh.\nỨng dụng: cộng vào C=O tạo ancol (R-MgX + HCHO → ancol bậc 1; + aldehyde → ancol bậc 2; + xeton → ancol bậc 3).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & an toàn',
+            content: 'Dung môi (CH2Cl2), chất làm lạnh (CCl2F2 - hạn chế do phá ozone), thuốc trừ sâu (DDT - bị cấm).\nLưu ý độc tính và tác động môi trường; ưu tiên hóa chất thân thiện hơn.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
-      question: 'Liên kết C–X yếu nhất là với:',
+      question: 'Liên kết C-X yếu nhất là với:',
       options: ['F', 'Cl', 'Br', 'I'],
       correctAnswer: 3,
-      explanation: 'C–I dài và yếu nhất nên phản ứng dễ hơn.',
+      explanation: 'C-I dài và yếu nhất nên phản ứng dễ hơn.',
       points: 10
     },
     {

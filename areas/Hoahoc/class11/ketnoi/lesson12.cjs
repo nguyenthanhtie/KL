@@ -8,44 +8,63 @@ module.exports = {
   description: 'Xác định CTPT từ CT đơn giản, % khối lượng, khối lượng mol và dữ kiện đốt cháy.',
   level: 'Intermediate',
   order: 12,
-  theory: `
-    <h2>Công thức phân tử</h2>
-    <p style="margin:8px 0; color:#334155;">Quy trình chung: CTĐG → CTPT, dùng dữ kiện đốt cháy, khối lượng mol và chỉ số bất bão hoà (IHD).</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Bước 1: Công thức đơn giản</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Từ % khối lượng → số mol tương đối → tỉ lệ tối giản → CTĐG.</li>
-          <li>Nếu có halogen: trừ khối lượng C,H,O rồi suy halogen; N từ chênh lệch.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Bước 2: Khối lượng mol (M)</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>M (thực nghiệm) / M (CTĐG) = n (số lần lặp).</li>
-          <li>Nhân chỉ số trong CTĐG với n → CTPT.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Đốt cháy</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>nC = nCO2, nH = 2·nH2O; tính nO từ khối lượng mẫu: mO = mMẫu - mC - mH - mX - mN...</li>
-          <li>Áp dụng bảo toàn khối lượng, bảo toàn nguyên tố.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Độ bất bão hoà (IHD)</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>IHD = (2C + 2 + N - H - X)/2 (bỏ O, S). Mỗi vòng hoặc liên kết π tăng 1 đơn vị.</li>
-          <li>Gợi ý có vòng hoặc nối đôi/ba; thơm nếu IHD cao phù hợp (ví dụ benzen IHD = 4).</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Công thức phân tử',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Quy trình chung: CTĐG → CTPT, dùng dữ kiện đốt cháy, khối lượng mol và chỉ số bất bão hoà (IHD).'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Bước 1: Công thức đơn giản',
+            content: 'Từ % khối lượng → số mol tương đối → tỉ lệ tối giản → CTĐG.\nNếu có halogen: trừ khối lượng C,H,O rồi suy halogen; N từ chênh lệch.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Bước 2: Khối lượng mol (M)',
+            content: 'M (thực nghiệm) / M (CTĐG) = n (số lần lặp).\nNhân chỉ số trong CTĐG với n → CTPT.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Đốt cháy',
+            content: 'nC = nCO2, nH = 2·nH2O; tính nO từ khối lượng mẫu: mO = mMẫu - mC - mH - mX - mN...\nÁp dụng bảo toàn khối lượng, bảo toàn nguyên tố.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Độ bất bão hoà (IHD)',
+            content: 'IHD = (2C + 2 + N - H - X)/2 (bỏ O, S). Mỗi vòng hoặc liên kết π tăng 1 đơn vị.\nGợi ý có vòng hoặc nối đôi/ba; thơm nếu IHD cao phù hợp (ví dụ benzen IHD = 4).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

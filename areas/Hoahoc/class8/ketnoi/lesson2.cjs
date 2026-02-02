@@ -5,59 +5,73 @@ module.exports = {
   chapterName: "Chương 2: Phản ứng hóa học",
   lessonId: 2,
   title: 'Bài 2: Phản ứng hóa học',
-  theory: `
-    <h2>⚡ Bài 2: Phản ứng hóa học</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận diện phản ứng qua dấu hiệu, phân loại 4 nhóm chính, và ghi nhớ ví dụ tiêu biểu.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Dấu hiệu nhận biết</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Xuất hiện chất mới: khí, kết tủa, dung dịch đổi màu.</li>
-          <li>Thay đổi nhiệt: tỏa/thu nhiệt; có thể phát sáng.</li>
-          <li>Thay đổi mùi, âm thanh (xì khí).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Điều kiện xảy ra</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Tiếp xúc giữa các chất.</li>
-          <li>Nhiệt độ/áp suất phù hợp.</li>
-          <li>Xúc tác (nếu cần) để hạ năng lượng hoạt hóa.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:16px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 10px; color:#312e81;">4 kiểu phản ứng – nhớ nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li><strong>Hóa hợp:</strong> A + B → AB (ghép lại). Ví dụ: 2H₂ + O₂ → 2H₂O.</li>
-        <li><strong>Phân hủy:</strong> AB → A + B (tách ra). Ví dụ: CaCO₃ → CaO + CO₂.</li>
-        <li><strong>Thế:</strong> AB + C → AC + B (C thế B). Ví dụ: Zn + 2HCl → ZnCl₂ + H₂.</li>
-        <li><strong>Trao đổi:</strong> AB + CD → AD + CB (hoán vị). Ví dụ: AgNO₃ + NaCl → AgCl↓ + NaNO₃.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Ghi nhớ nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Nhìn – Nghe – Sờ nhiệt: đổi màu, có khí, ấm/nóng.</li>
-          <li>Trao đổi chỉ xảy ra khi tạo kết tủa/khí/điện li yếu.</li>
-          <li>Phân hủy thường cần nhiệt/xúc tác.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Mini quiz đọc nhanh</h4>
-        <ol style="margin:0; padding-left:18px; color:#334155;">
-          <li>Vì sao phản ứng trao đổi cần kết tủa/khí?</li>
-          <li>Phản ứng Zn + 2HCl thuộc loại gì?</li>
-          <li>Dấu hiệu nhanh nhận ra phản ứng phân hủy CaCO₃?</li>
-        </ol>
-        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời trước khi làm bài test 10 câu.</p>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '⚡ Bài 2: Phản ứng hóa học',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nhận diện phản ứng qua dấu hiệu, phân loại 4 nhóm chính, và ghi nhớ ví dụ tiêu biểu.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Dấu hiệu nhận biết',
+            content: 'Xuất hiện chất mới: khí, kết tủa, dung dịch đổi màu.\nThay đổi nhiệt: tỏa/thu nhiệt; có thể phát sáng.\nThay đổi mùi, âm thanh (xì khí).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Điều kiện xảy ra',
+            content: 'Tiếp xúc giữa các chất.\nNhiệt độ/áp suất phù hợp.\nXúc tác (nếu cần) để hạ năng lượng hoạt hóa.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: '4 kiểu phản ứng - nhớ nhanh',
+            content: '**Hóa hợp:** A + B → AB (ghép lại). Ví dụ: 2H₂ + O₂ → 2H₂O.\n**Phân hủy:** AB → A + B (tách ra). Ví dụ: CaCO₃ → CaO + CO₂.\n**Thế:** AB + C → AC + B (C thế B). Ví dụ: Zn + 2HCl → ZnCl₂ + H₂.\n**Trao đổi:** AB + CD → AD + CB (hoán vị). Ví dụ: AgNO₃ + NaCl → AgCl↓ + NaNO₃.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'warningBox',
+        content: {
+            title: 'Ghi nhớ nhanh',
+            content: 'Nhìn - Nghe - Sờ nhiệt: đổi màu, có khí, ấm/nóng.\nTrao đổi chỉ xảy ra khi tạo kết tủa/khí/điện li yếu.\nPhân hủy thường cần nhiệt/xúc tác.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Vì sao phản ứng trao đổi cần kết tủa/khí?\nPhản ứng Zn + 2HCl thuộc loại gì?\nDấu hiệu nhanh nhận ra phản ứng phân hủy CaCO₃?\nTự trả lời trước khi làm bài test 10 câu.',
+            color: 'blue',
+            listType: 'number'
+        }
+    }
+  ],
   game: [
     {
       question: 'Phản ứng hóa học là gì?',

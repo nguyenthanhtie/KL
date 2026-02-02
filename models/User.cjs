@@ -40,6 +40,61 @@ const userSchema = new mongoose.Schema({
     default: ''
   },
   
+  // ===== HỆ THỐNG PHÂN QUYỀN =====
+  role: {
+    type: String,
+    enum: ['student', 'teacher', 'admin'],
+    default: 'student'
+  },
+  
+  // Thông tin giáo viên (chỉ dùng khi role = 'teacher')
+  teacherInfo: {
+    school: { type: String, default: '' },
+    subject: { type: String, default: 'chemistry' }, // Môn giảng dạy
+    department: { type: String, default: '' }, // Tổ bộ môn
+    yearsOfExperience: { type: Number, default: 0 },
+    qualification: { type: String, default: '' }, // Bằng cấp
+    bio: { type: String, default: '' }, // Giới thiệu
+    verifiedAt: { type: Date }, // Ngày được xác minh là giáo viên
+    verifiedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Admin xác minh
+  },
+  
+  // Thông tin admin (chỉ dùng khi role = 'admin')
+  adminInfo: {
+    permissions: {
+      type: [String],
+      default: ['all'], // all, users, lessons, challenges, classes, reports
+      enum: ['all', 'users', 'lessons', 'challenges', 'classes', 'reports', 'teachers']
+    },
+    assignedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    assignedAt: { type: Date }
+  },
+  
+  // Liên kết giáo viên - học sinh
+  assignedTeacher: { // Học sinh được gán cho giáo viên nào
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
+  
+  // Danh sách học sinh của giáo viên (chỉ dùng khi role = 'teacher')
+  students: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  
+  // Danh sách lớp học của giáo viên (tham chiếu đến ClassRoom model)
+  managedClasses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ClassRoom'
+  }],
+  
+  // Học sinh thuộc lớp học nào
+  enrolledClasses: [{
+    classId: { type: mongoose.Schema.Types.ObjectId, ref: 'ClassRoom' },
+    enrolledAt: { type: Date, default: Date.now }
+  }],
+  
   // XP và Level
   xp: {
     type: Number,

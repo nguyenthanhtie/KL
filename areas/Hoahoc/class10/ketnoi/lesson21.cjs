@@ -8,30 +8,56 @@ module.exports = {
   description: 'Nhóm halogen: cấu hình ns2np5, xu hướng nhận e, biến đổi tính chất và ứng dụng/chú ý an toàn.',
   level: 'Intermediate',
   order: 1,
-  theory: `
-    <h2>Nhóm halogen (VIIA)</h2>
-    <h3>Cấu hình & độ âm điện</h3>
-    <ul>
-      <li>Cấu hình lớp ngoài ns2 np5 → cần 1e để đạt bão hòa, tính oxi hoá rất mạnh (đặc biệt F).</li>
-      <li>Độ âm điện giảm từ F → I; bán kính tăng; năng lượng ion hóa giảm.</li>
-    </ul>
-    <h3>Tính chất vật lí</h3>
-    <ul>
-      <li>Trạng thái/màu: F2 khí vàng lục, Cl2 khí vàng lục nhạt, Br2 lỏng nâu đỏ, I2 rắn tím.</li>
-      <li>Nhiệt độ sôi tăng dần xuống nhóm (phân tử lớn, lực London tăng).</li>
-    </ul>
-    <h3>Tính chất hoá học</h3>
-    <ul>
-      <li>Phi kim mạnh, oxi hoá được nhiều kim loại (tạo muối halogenua) và phi kim (S, P).</li>
-      <li>Phản ứng thế trong dung dịch muối: halogen mạnh đẩy halogen yếu hơn ra khỏi muối.</li>
-      <li>Phản ứng tự oxi hoá - khử: Cl2 + NaOH (lạnh) → NaCl + NaClO (nước Javen).</li>
-    </ul>
-    <h3>Ứng dụng & an toàn</h3>
-    <ul>
-      <li>Cl2 khử trùng nước; Br2/I2 trong y học; F- trong kem đánh răng (nồng độ kiểm soát).</li>
-      <li>Độc tính: Cl2, F2 ăn mòn mạnh; cần thông gió và bảo hộ khi thí nghiệm.</li>
-    </ul>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Nhóm halogen (VIIA)',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu hình & độ âm điện',
+            content: 'Cấu hình lớp ngoài ns2 np5 → cần 1e để đạt bão hòa, tính oxi hoá rất mạnh (đặc biệt F).\nĐộ âm điện giảm từ F → I; bán kính tăng; năng lượng ion hóa giảm.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Tính chất vật lí',
+            content: 'Trạng thái/màu: F2 khí vàng lục, Cl2 khí vàng lục nhạt, Br2 lỏng nâu đỏ, I2 rắn tím.\nNhiệt độ sôi tăng dần xuống nhóm (phân tử lớn, lực London tăng).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Tính chất hoá học',
+            content: 'Phi kim mạnh, oxi hoá được nhiều kim loại (tạo muối halogenua) và phi kim (S, P).\nPhản ứng thế trong dung dịch muối: halogen mạnh đẩy halogen yếu hơn ra khỏi muối.\nPhản ứng tự oxi hoá - khử: Cl2 + NaOH (lạnh) → NaCl + NaClO (nước Javen).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & an toàn',
+            content: 'Cl2 khử trùng nước; Br2/I2 trong y học; F- trong kem đánh răng (nồng độ kiểm soát).\nĐộc tính: Cl2, F2 ăn mòn mạnh; cần thông gió và bảo hộ khi thí nghiệm.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

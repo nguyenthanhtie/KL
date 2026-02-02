@@ -8,69 +8,88 @@ module.exports = {
   description: 'Cấu tạo lưỡng tính, điểm đẳng điện, phản ứng tạo muối/este, hình thành peptide.',
   level: 'Intermediate',
   order: 9,
-  theory: `
-    <h2>Amino acid và peptide</h2>
-    <p style="margin:8px 0; color:#334155;">Khám phá tính lưỡng tính, điểm đẳng điện của amino acid và liên kết peptide tạo nên protein.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu tạo & tính lưỡng tính</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Chứa –NH2 và –COOH trên cùng mạch → tồn tại dạng ion lưỡng cực <sup>+</sup>H3N–CHR–COO<sup>-</sup>.</li>
-          <li>Điểm đẳng điện (pI): pH tại đó amino acid có điện tích tổng bằng 0, ít tan, dễ kết tinh.</li>
-          <li>Danh pháp: alpha-amino acid (gly, ala, val...); góc quay quang học (trừ gly) do C*.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Phản ứng đặc trưng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Tạo muối với axit/bazơ; tạo este (–COOH) với ancol/H<sub>2</sub>SO<sub>4</sub> đặc.</li>
-          <li>Phản ứng ninhydrin → màu tím (trừ proline cho vàng) dùng định tính/định lượng.</li>
-          <li>Liên kết peptide: –CO–NH– giữa nhóm –COOH và –NH2; đầu N (N-terminus) và đầu C.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Peptide & sinh học</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Dipeptide/tripeptide đặt tên từ trái sang phải: glycyl-alanine...</li>
-          <li>Thuỷ phân: axit/bazơ/enzyme → giải phóng amino acid; thử biuret (+) nếu ≥2 liên kết peptide.</li>
-          <li>Peptide hormone nhỏ: oxytocin, vasopressin; thuốc: aspartam (chất ngọt). </li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">So sánh & ghi nhớ</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Dạng tồn tại: pH &lt; pI → cation (tăng tan); pH ~ pI → lưỡng cực (ít tan); pH &gt; pI → anion.</li>
-          <li>Biuret (+) khi ≥2 liên kết peptide; Ninhydrin tím (trừ Pro vàng).</li>
-          <li>Peptide đặt tên: đầu N đọc trước, hậu tố -yl cho tất cả trừ amino acid cuối. </li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Điện di: ở pH = pI peptide đứng yên; pH &gt; pI → chạy về cực dương.</li>
-          <li>Bảo quản amino acid dạng muối (HCl) để ổn định và tan tốt.</li>
-          <li>Chất ngọt aspartam: dipeptide, nên tránh nhiệt cao để không phân huỷ mất vị.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Tính pI amino acid trung tính: (pKa1 + pKa2)/2; amino acid có nhóm ion hoá bên cạnh cần cân nhắc thêm.</li>
-          <li>Thuỷ phân peptide: xác định số mol liên kết = số mol nước tiêu thụ; đếm số mắt xích = số liên kết + 1.</li>
-          <li>Đặt tên dipeptide cụ thể, xác định đầu N/C và viết trình tự đúng hướng.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Amino acid và peptide',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Khám phá tính lưỡng tính, điểm đẳng điện của amino acid và liên kết peptide tạo nên protein.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu tạo & tính lưỡng tính',
+            content: 'Chứa -NH2 và -COOH trên cùng mạch → tồn tại dạng ion lưỡng cực ⁽+⁾H3N-CHR-COO⁽-⁾.\nĐiểm đẳng điện (pI): pH tại đó amino acid có điện tích tổng bằng 0, ít tan, dễ kết tinh.\nDanh pháp: alpha-amino acid (gly, ala, val...); góc quay quang học (trừ gly) do C*.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Phản ứng đặc trưng',
+            content: 'Tạo muối với axit/bazơ; tạo este (-COOH) với ancol/H₍2₎SO₍4₎ đặc.\nPhản ứng ninhydrin → màu tím (trừ proline cho vàng) dùng định tính/định lượng.\nLiên kết peptide: -CO-NH- giữa nhóm -COOH và -NH2; đầu N (N-terminus) và đầu C.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Peptide & sinh học',
+            content: 'Dipeptide/tripeptide đặt tên từ trái sang phải: glycyl-alanine...\nThuỷ phân: axit/bazơ/enzyme → giải phóng amino acid; thử biuret (+) nếu ≥2 liên kết peptide.\nPeptide hormone nhỏ: oxytocin, vasopressin; thuốc: aspartam (chất ngọt).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh & ghi nhớ',
+            content: 'Dạng tồn tại: pH pI → anion.\nBiuret (+) khi ≥2 liên kết peptide; Ninhydrin tím (trừ Pro vàng).\nPeptide đặt tên: đầu N đọc trước, hậu tố -yl cho tất cả trừ amino acid cuối.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & ứng dụng',
+            content: 'Điện di: ở pH = pI peptide đứng yên; pH > pI → chạy về cực dương.\nBảo quản amino acid dạng muối (HCl) để ổn định và tan tốt.\nChất ngọt aspartam: dipeptide, nên tránh nhiệt cao để không phân huỷ mất vị.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Tính pI amino acid trung tính: (pKa1 + pKa2)/2; amino acid có nhóm ion hoá bên cạnh cần cân nhắc thêm.\nThuỷ phân peptide: xác định số mol liên kết = số mol nước tiêu thụ; đếm số mắt xích = số liên kết + 1.\nĐặt tên dipeptide cụ thể, xác định đầu N/C và viết trình tự đúng hướng.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
       question: 'Dạng chủ yếu của amino acid trong nước gần pH trung tính là:',
-      options: ['Phân tử không ion', 'Ion lưỡng cực +H3N–CHR–COO-', 'Ion âm', 'Ion dương'],
+      options: ['Phân tử không ion', 'Ion lưỡng cực +H3N-CHR-COO-', 'Ion âm', 'Ion dương'],
       correctAnswer: 1,
       explanation: 'Tồn tại dạng zwitterion nên tan tốt, nhiệt độ nóng chảy cao.',
       points: 10
@@ -80,14 +99,14 @@ module.exports = {
       question: 'Phản ứng tạo màu tím với ninhydrin dùng để phát hiện:',
       options: ['Axit béo', 'Amino acid/peptide', 'Ester', 'Ancol'],
       correctAnswer: 1,
-      explanation: 'Ninhydrin phản ứng với nhóm –NH2 α cho màu tím.',
+      explanation: 'Ninhydrin phản ứng với nhóm -NH2 α cho màu tím.',
       points: 10
     },
     {
       type: 'true-false',
-      question: 'Liên kết peptide là liên kết –CO–NH–.',
+      question: 'Liên kết peptide là liên kết -CO-NH-.',
       correctAnswer: true,
-      explanation: 'Hình thành giữa –COOH của acid amin này và –NH2 của acid amin kia.',
+      explanation: 'Hình thành giữa -COOH của acid amin này và -NH2 của acid amin kia.',
       points: 10
     },
     {
@@ -133,7 +152,7 @@ module.exports = {
       question: 'Sản phẩm este hoá alanine với CH3OH/H2SO4 đặc:',
       options: ['Alanine metyl este hydrochloride', 'Alanine ethyl ester', 'Axit lactic', 'Anhydrit alanin'],
       correctAnswer: 0,
-      explanation: '–COOH este hoá; –NH2 bị proton hoá thành muối.',
+      explanation: '-COOH este hoá; -NH2 bị proton hoá thành muối.',
       points: 10
     },
     {

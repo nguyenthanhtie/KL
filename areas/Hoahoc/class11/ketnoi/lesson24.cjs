@@ -49,6 +49,79 @@ module.exports = {
       </div>
     </div>
   `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Axit cacboxylic',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Hiểu tính axit, liên kết hidro dimer, phản ứng muối/este hoá và tính khử/oxi hoá của nhóm –COOH.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'warningBox',
+        content: {
+            title: 'Cấu tạo & tính axit',
+            content: `Nhóm –COOH có cộng hưởng giữa C=O và C–O, làm H axit (pKa ~4–5 với axit béo).
+      Tạo dimer bằng H-bond trong pha khí/lỏng, tăng T sôi.
+      Hiệu ứng -I của nhóm carbonyl và O làm ổn định anion carboxylat.
+      Tạo muối với bazơ/carbonat: RCOOH + NaHCO3 → RCOONa + CO2 + H2O.
+      Este hoá (Fischer): RCOOH + R'OH (H2SO4 đặc, t°) ⇌ RCOOR' + H2O.
+      Thế –OH bằng Cl: RCOOH + SOCl2 → RCOCl + SO2 + HCl (hoạt hoá để tiếp tục phản ứng).
+      Khử mạnh (LiAlH4) → ancol bậc 1.`,
+            color: 'orange'
+          }
+    },
+    {
+        id: 'mod-4',
+        type: 'heading',
+        content: {
+            text: 'Cấu tạo & tính axit',
+            level: 'h4'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'heading',
+        content: {
+            text: 'Phản ứng đặc trưng',
+            level: 'h4'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & nguồn',
+            content: 'Axit fomic: thuộc da, dệt; axit axetic: giấm, dung môi, vinyl acetate.\nAxit benzoic: bảo quản; axit lactic: thực phẩm, mỹ phẩm.\nPhản ứng với NaHCO3 giải phóng CO2 sủi bọt (phân biệt với ancol/phenol).\nMùi chua, ăn mòn nhẹ; làm việc nơi thoáng, tránh tiếp xúc trực tiếp axit đậm đặc.',
+            color: 'blue'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'heading',
+        content: {
+            text: 'Ứng dụng & nguồn',
+            level: 'h4'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'heading',
+        content: {
+            text: 'Nhận biết & an toàn',
+            level: 'h4'
+        }
+    }
+],
   game: [
     {
       type: 'multiple-choice',

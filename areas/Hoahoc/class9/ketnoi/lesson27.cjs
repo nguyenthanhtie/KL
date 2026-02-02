@@ -8,73 +8,93 @@ module.exports = {
   description: 'Tính chất, điều chế và ứng dụng của CH3COOH.',
   level: 'Intermediate',
   order: 10,
-  theory: `
-    <h2>🥤 Axit axetic (CH₃COOH)</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: nhận biết tính chất vật lí/hoá học, cách điều chế và ứng dụng an toàn của axit axetic.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Vật lí &amp; nhận dạng</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Lỏng không màu, mùi giấm; Tnc 16,6°C → đông đặc nhẹ trong tủ lạnh.</li>
-          <li>Tan vô hạn trong nước; có tính hút ẩm nhẹ.</li>
-          <li>Giấm ăn ~2–6% CH₃COOH; băng giấm ≥ 98%.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Tính axit yếu</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Làm quỳ tím → đỏ, pKa ≈ 4,76.</li>
-          <li>Phản ứng kim loại hoạt động: 2CH₃COOH + Zn → (CH₃COO)₂Zn + H₂↑.</li>
-          <li>Phản ứng bazơ/oxit bazơ/muối carbonat: tạo muối acetat + nước (+ CO₂ nếu có CO₃²⁻).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Phản ứng đặc trưng</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li><strong>Este hoá:</strong> CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O (H₂SO₄ đặc, t°).</li>
-          <li><strong>Trùng ngưng tạo anhydride:</strong> 2CH₃COOH ⇌ (CH₃CO)₂O + H₂O (công nghiệp).</li>
-          <li><strong>Oxi hoá khử:</strong> bị oxi hoá sâu → CO₂ + H₂O.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Điều chế</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li><strong>Lên men giấm:</strong> C₂H₅OH + O₂ (vi khuẩn Acetobacter) → CH₃COOH + H₂O.</li>
-          <li><strong>Công nghiệp:</strong> oxi hoá butan/etanol; hoặc carbonyl hoá metanol (Monsanto/Cativa).</li>
-          <li>Tinh chế bằng chưng cất phân đoạn.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Axit yếu, tạo muối acetat, este hoá dễ.</li>
-        <li>Nguồn chủ yếu: lên men giấm; sản xuất lớn: carbonyl hoá metanol.</li>
-        <li>Ứng dụng: giấm ăn, chất tẩy cặn CaCO₃, nguyên liệu vinyl acetat polymer.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
-      <p style="margin:0 0 4px;">Sơ đồ lên men giấm từ ethanol: <em>/images/hoahoc9/lesson27-vinegar.png</em></p>
-      <p style="margin:0;">Phản ứng este hoá etyl acetat: <em>/images/hoahoc9/lesson27-ester.png</em></p>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-        <li>Vì sao axit axetic là axit yếu nhưng vẫn ăn mòn kim loại kẽm?</li>
-        <li>Viết PTHH làm sạch cặn CaCO₃ bằng giấm.</li>
-        <li>Giải thích vì sao giấm ăn cần đóng kín và bảo quản mát.</li>
-      </ul>
-      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Tự trả lời trước khi vào bộ câu hỏi trắc nghiệm.</p>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🥤 Axit axetic (CH₃COOH)',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: nhận biết tính chất vật lí/hoá học, cách điều chế và ứng dụng an toàn của axit axetic.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Vật lí & nhận dạng',
+            content: 'Lỏng không màu, mùi giấm; Tnc 16,6°C → đông đặc nhẹ trong tủ lạnh.\nTan vô hạn trong nước; có tính hút ẩm nhẹ.\nGiấm ăn ~2-6% CH₃COOH; băng giấm ≥ 98%.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính axit yếu',
+            content: 'Làm quỳ tím → đỏ, pKa ≈ 4,76.\nPhản ứng kim loại hoạt động: 2CH₃COOH + Zn → (CH₃COO)₂Zn + H₂↑.\nPhản ứng bazơ/oxit bazơ/muối carbonat: tạo muối acetat + nước (+ CO₂ nếu có CO₃²⁻).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Phản ứng đặc trưng',
+            content: '**Este hoá:** CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O (H₂SO₄ đặc, t°).\n**Trùng ngưng tạo anhydride:** 2CH₃COOH ⇌ (CH₃CO)₂O + H₂O (công nghiệp).\n**Oxi hoá khử:** bị oxi hoá sâu → CO₂ + H₂O.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Điều chế',
+            content: '**Lên men giấm:** C₂H₅OH + O₂ (vi khuẩn Acetobacter) → CH₃COOH + H₂O.\n**Công nghiệp:** oxi hoá butan/etanol; hoặc carbonyl hoá metanol (Monsanto/Cativa).\nTinh chế bằng chưng cất phân đoạn.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Bảng tóm tắt nhanh',
+            content: 'Axit yếu, tạo muối acetat, este hoá dễ.\nNguồn chủ yếu: lên men giấm; sản xuất lớn: carbonyl hoá metanol.\nỨng dụng: giấm ăn, chất tẩy cặn CaCO₃, nguyên liệu vinyl acetat polymer.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: '',
+            content: '**Gợi ý hình**:\nSơ đồ lên men giấm từ ethanol: */images/hoahoc9/lesson27-vinegar.png*\nPhản ứng este hoá etyl acetat: */images/hoahoc9/lesson27-ester.png*',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-9',
+        type: 'warningBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Vì sao axit axetic là axit yếu nhưng vẫn ăn mòn kim loại kẽm?\nViết PTHH làm sạch cặn CaCO₃ bằng giấm.\nGiải thích vì sao giấm ăn cần đóng kín và bảo quản mát.\nTự trả lời trước khi vào bộ câu hỏi trắc nghiệm.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

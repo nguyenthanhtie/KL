@@ -8,25 +8,46 @@ module.exports = {
   description: 'Ôn chương 4: tính SOX nhanh, phân vai oxi hóa/khử, cân bằng e theo bước.',
   level: 'Intermediate',
   order: 2,
-  theory: `
-    <h2>Ôn tập chương 4</h2>
-    <h3>SOX nhanh & phân vai</h3>
-    <ul>
-      <li>Nhớ giá trị cố định: F = -1; O ≈ -2 (trừ peroxit -1, OF2: +2); H = +1 (trừ hydrua kim loại: -1); kim loại kiềm/kiềm thổ: +1/+2.</li>
-      <li>Xác định nguyên tố đổi SOX → gán vai: tăng SOX → chất khử; giảm SOX → chất oxi hóa.</li>
-    </ul>
-    <h3>Cân bằng e theo bước</h3>
-    <ul>
-      <li>Viết bán phản ứng oxi hóa/khử, thêm e, H2O, H+, OH- tuỳ môi trường.</li>
-      <li>Nhân hệ số để e nhường = e nhận, ghép hai bán phản ứng.</li>
-      <li>Cân bằng nguyên tử còn lại, kiểm tra điện tích cuối.</li>
-    </ul>
-    <h3>Ứng dụng & lỗi thường gặp</h3>
-    <ul>
-      <li>Ứng dụng: ăn mòn kim loại, luyện kim, pin điện hoá, xử lý nước thải (Cl2, O3).</li>
-      <li>Lỗi: quên cân bằng điện tích, dùng sai môi trường (axit vs bazơ), bỏ sót e khi ghép bán phản ứng.</li>
-    </ul>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập chương 4',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'SOX nhanh & phân vai',
+            content: 'Nhớ giá trị cố định: F = -1; O ≈ -2 (trừ peroxit -1, OF2: +2); H = +1 (trừ hydrua kim loại: -1); kim loại kiềm/kiềm thổ: +1/+2.\nXác định nguyên tố đổi SOX → gán vai: tăng SOX → chất khử; giảm SOX → chất oxi hóa.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cân bằng e theo bước',
+            content: 'Viết bán phản ứng oxi hóa/khử, thêm e, H2O, H+, OH- tuỳ môi trường.\nNhân hệ số để e nhường = e nhận, ghép hai bán phản ứng.\nCân bằng nguyên tử còn lại, kiểm tra điện tích cuối.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & lỗi thường gặp',
+            content: 'Ứng dụng: ăn mòn kim loại, luyện kim, pin điện hoá, xử lý nước thải (Cl2, O3).\nLỗi: quên cân bằng điện tích, dùng sai môi trường (axit vs bazơ), bỏ sót e khi ghép bán phản ứng.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

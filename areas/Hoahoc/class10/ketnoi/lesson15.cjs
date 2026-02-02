@@ -8,28 +8,46 @@ module.exports = {
   description: 'Hiểu oxi hóa/khử, chất oxi hóa/khử, quy tắc số oxi hóa và cân bằng e.',
   level: 'Intermediate',
   order: 1,
-  theory: `
-    <h2>Phản ứng oxi hóa - khử</h2>
-    <h3>Khái niệm & nhận diện</h3>
-    <ul>
-      <li>Oxi hóa: số oxi hóa (SOX) tăng → mất e. Khử: SOX giảm → nhận e.</li>
-      <li>Chất oxi hóa nhận e (bị khử), chất khử nhường e (bị oxi hóa).</li>
-      <li>Nhận diện bằng biến thiên SOX của nguyên tố trước/sau phản ứng.</li>
-      <li>SOX nhanh: nhóm IA, IIA thường +1, +2; F = -1; O ≈ -2 (trừ trong peroxit), H = +1 (trừ khi với kim loại → -1).</li>
-    </ul>
-    <h3>Cân bằng phản ứng (phương pháp electron)</h3>
-    <ul>
-      <li>B1: Xác định nguyên tố thay đổi SOX, viết bán phản ứng oxi hóa/khử với e.</li>
-      <li>B2: Nhân hệ số để e nhường = e nhận.</li>
-      <li>B3: Cân bằng nguyên tử khác (H, O), cuối cùng cân bằng điện tích (thêm H2O, H+, OH- nếu môi trường dung dịch).</li>
-      <li>B4: Kiểm tra nguyên tử và điện tích toàn phương trình.</li>
-    </ul>
-    <h3>Tác nhân thường gặp</h3>
-    <ul>
-      <li>Oxi hóa: KMnO4, K2Cr2O7, Cl2, O2, HNO3 đặc, H2SO4 đặc nóng.</li>
-      <li>Khử: kim loại hoạt động (Zn, Fe), SO2, H2S, I-, S2O3^{2-}.</li>
-    </ul>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Phản ứng oxi hóa - khử',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Khái niệm & nhận diện',
+            content: 'Oxi hóa: số oxi hóa (SOX) tăng → mất e. Khử: SOX giảm → nhận e.\nChất oxi hóa nhận e (bị khử), chất khử nhường e (bị oxi hóa).\nNhận diện bằng biến thiên SOX của nguyên tố trước/sau phản ứng.\nSOX nhanh: nhóm IA, IIA thường +1, +2; F = -1; O ≈ -2 (trừ trong peroxit), H = +1 (trừ khi với kim loại → -1).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cân bằng phản ứng (phương pháp electron)',
+            content: 'B1: Xác định nguyên tố thay đổi SOX, viết bán phản ứng oxi hóa/khử với e.\nB2: Nhân hệ số để e nhường = e nhận.\nB3: Cân bằng nguyên tử khác (H, O), cuối cùng cân bằng điện tích (thêm H2O, H+, OH- nếu môi trường dung dịch).\nB4: Kiểm tra nguyên tử và điện tích toàn phương trình.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Tác nhân thường gặp',
+            content: 'Oxi hóa: KMnO4, K2Cr2O7, Cl2, O2, HNO3 đặc, H2SO4 đặc nóng.\nKhử: kim loại hoạt động (Zn, Fe), SO2, H2S, I-, S2O3^{2-}.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

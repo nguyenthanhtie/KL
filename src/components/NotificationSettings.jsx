@@ -7,7 +7,7 @@ import {
   Flame, Trophy, Sparkles, FileText, Send,
   Check, AlertCircle, Loader2, Trash2
 } from 'lucide-react';
-import useNotifications from '../hooks/useNotifications';
+import { useNotifications } from '../hooks/useNotifications';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../config/api';
 

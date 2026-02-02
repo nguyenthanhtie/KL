@@ -6,66 +6,83 @@ module.exports = {
   lessonId: 8,
   order: 8,
   title: 'Bài 8: Acid',
-  theory: `
-    <h2>🌋 Bài 8: Acid</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu acid, tính chất, phản ứng đặc trưng và an toàn pha loãng.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:14px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Khái niệm</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Acid phân li ra H⁺ trong nước.</li>
-          <li>Công thức thường bắt đầu bằng H (HCl, H₂SO₄...).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Tính chất chính</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Vị chua (không nếm!), quỳ tím → đỏ.</li>
-          <li>Với kim loại trước H: tạo muối + H₂.</li>
-          <li>Với bazơ/oxide bazơ: muối + nước (trung hòa).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:16px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Phương trình tiêu biểu</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Zn + 2HCl → ZnCl₂ + H₂↑ (kim loại + acid loãng).</li>
-        <li>2HCl + CuO → CuCl₂ + H₂O (acid + oxide bazơ).</li>
-        <li>H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O (trung hòa).</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">An toàn & pha loãng</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Luôn rót <strong>axit vào nước</strong>, khuấy nhẹ.</li>
-          <li>Đeo kính, găng; tránh hít hơi.</li>
-          <li>Trung hòa tràn đổ nhẹ bằng NaHCO₃.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Ứng dụng nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>HCl: sản xuất muối, tẩy gỉ.</li>
-          <li>H₂SO₄: ắc quy, phân bón.</li>
-          <li>HNO₃: phân bón, thuốc nổ.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-      <h4 style="margin:0 0 8px; color:#0f172a;">Mini quiz đọc nhanh</h4>
-      <ol style="margin:0; padding-left:18px; color:#334155;">
-        <li>Ion đặc trưng của acid là gì?</li>
-        <li>Khi pha loãng H₂SO₄ đặc, rót theo chiều nào?</li>
-        <li>Hiện tượng khi CaCO₃ gặp HCl loãng?</li>
-      </ol>
-      <p style="margin:8px 0 0; font-size:13px; color:#475569;">Tự trả lời trước khi làm test 10 câu.</p>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🌋 Bài 8: Acid',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: hiểu acid, tính chất, phản ứng đặc trưng và an toàn pha loãng.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Khái niệm',
+            content: 'Acid phân li ra H⁺ trong nước.\nCông thức thường bắt đầu bằng H (HCl, H₂SO₄...).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính chất chính',
+            content: 'Vị chua (không nếm!), quỳ tím → đỏ.\nVới kim loại trước H: tạo muối + H₂.\nVới bazơ/oxide bazơ: muối + nước (trung hòa).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Phương trình tiêu biểu',
+            content: 'Zn + 2HCl → ZnCl₂ + H₂↑ (kim loại + acid loãng).\n2HCl + CuO → CuCl₂ + H₂O (acid + oxide bazơ).\nH₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O (trung hòa).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'An toàn & pha loãng',
+            content: 'Luôn rót **axit vào nước**, khuấy nhẹ.\nĐeo kính, găng; tránh hít hơi.\nTrung hòa tràn đổ nhẹ bằng NaHCO₃.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng nhanh',
+            content: 'HCl: sản xuất muối, tẩy gỉ.\nH₂SO₄: ắc quy, phân bón.\nHNO₃: phân bón, thuốc nổ.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'Ion đặc trưng của acid là gì?\nKhi pha loãng H₂SO₄ đặc, rót theo chiều nào?\nHiện tượng khi CaCO₃ gặp HCl loãng?\nTự trả lời trước khi làm test 10 câu.',
+            color: 'blue',
+            listType: 'number'
+        }
+    }
+  ],
   game: [
     {
       question: 'Acid làm quỳ tím:',

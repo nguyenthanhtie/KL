@@ -84,11 +84,13 @@ router.post('/register', async (req, res) => {
       token,
       user: {
         id: newUser._id,
+        _id: newUser._id,
         username: newUser.username,
         email: newUser.email,
         displayName: newUser.displayName,
         xp: newUser.xp,
         level: newUser.level,
+        role: newUser.role || 'student',
         learningPrograms: newUser.learningPrograms
       }
     });
@@ -166,18 +168,22 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    console.log('✅ Login successful:', { id: user._id, email: user.email });
+    console.log('✅ Login successful:', { id: user._id, email: user.email, role: user.role });
 
     res.json({
       message: 'Login successful',
       token,
       user: {
         id: user._id,
+        _id: user._id,
         username: user.username,
         email: user.email,
         displayName: user.displayName,
         xp: user.xp,
         level: user.level,
+        role: user.role || 'student',
+        teacherInfo: user.teacherInfo,
+        adminInfo: user.adminInfo,
         learningPrograms: user.learningPrograms
       }
     });
@@ -237,11 +243,15 @@ router.post('/auth/google', async (req, res) => {
       token,
       user: {
         id: user._id,
+        _id: user._id,
         username: user.username,
         email: user.email,
         displayName: user.displayName,
         xp: user.xp,
         level: user.level,
+        role: user.role || 'student',
+        teacherInfo: user.teacherInfo,
+        adminInfo: user.adminInfo,
         learningPrograms: user.learningPrograms
       }
     });
@@ -633,6 +643,9 @@ router.get('/firebase/:firebaseUid', async (req, res) => {
       avatar: user.avatar || '',
       xp: user.xp,
       level: user.level,
+      role: user.role || 'student',
+      teacherInfo: user.teacherInfo,
+      adminInfo: user.adminInfo,
       programs: user.programs,
       profile: user.profile,
       firebaseUid: user.firebaseUid,
@@ -983,6 +996,558 @@ router.post('/:userId/missions/claim', async (req, res) => {
   } catch (error) {
     console.error('❌ Claim mission error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// ==================== STUDENT CLASSROOM ROUTES ====================
+const ClassRoom = require('../models/ClassRoom.cjs');
+
+// POST /api/users/classes/join - Học sinh tham gia lớp bằng mã lớp
+router.post('/classes/join', async (req, res) => {
+  try {
+    const { classCode } = req.body;
+    const userId = req.body.userId;
+
+    if (!classCode) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng nhập mã lớp học'
+      });
+    }
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Vui lòng đăng nhập'
+      });
+    }
+
+    // Tìm user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy người dùng'
+      });
+    }
+
+    // Chỉ học sinh mới có thể tham gia lớp
+    if (user.role !== 'student') {
+      return res.status(403).json({
+        success: false,
+        message: 'Chỉ học sinh mới có thể tham gia lớp học'
+      });
+    }
+
+    // Tìm lớp học bằng mã
+    const classRoom = await ClassRoom.findOne({ 
+      code: classCode.toUpperCase().trim(),
+      status: 'active'
+    });
+
+    if (!classRoom) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy lớp học với mã này'
+      });
+    }
+
+    // Kiểm tra xem đã tham gia chưa
+    const isAlreadyEnrolled = classRoom.students.some(
+      s => s.student.toString() === userId && s.status === 'active'
+    );
+
+    if (isAlreadyEnrolled) {
+      return res.status(400).json({
+        success: false,
+        message: 'Bạn đã tham gia lớp học này rồi'
+      });
+    }
+
+    // Kiểm tra số lượng học sinh tối đa
+    const activeStudents = classRoom.students.filter(s => s.status === 'active').length;
+    if (activeStudents >= classRoom.settings.maxStudents) {
+      return res.status(400).json({
+        success: false,
+        message: `Lớp học đã đầy (tối đa ${classRoom.settings.maxStudents} học sinh)`
+      });
+    }
+
+    // Kiểm tra xem có cần duyệt không
+    const enrollStatus = classRoom.settings.requireApproval ? 'pending' : 'active';
+
+    // Kiểm tra xem user đã có trong danh sách chưa (có thể là inactive/pending)
+    const existingEntry = classRoom.students.find(
+      s => s.student.toString() === userId
+    );
+
+    if (existingEntry) {
+      // Cập nhật status
+      existingEntry.status = enrollStatus;
+      existingEntry.enrolledAt = new Date();
+    } else {
+      // Thêm mới
+      classRoom.students.push({
+        student: userId,
+        enrolledAt: new Date(),
+        status: enrollStatus
+      });
+    }
+
+    await classRoom.save();
+
+    // Cập nhật enrolledClasses của học sinh
+    const existingEnrollment = user.enrolledClasses?.find(
+      e => e.classId.toString() === classRoom._id.toString()
+    );
+
+    if (!existingEnrollment) {
+      if (!user.enrolledClasses) {
+        user.enrolledClasses = [];
+      }
+      user.enrolledClasses.push({
+        classId: classRoom._id,
+        enrolledAt: new Date()
+      });
+      
+      // Cập nhật assignedTeacher
+      if (!user.assignedTeacher) {
+        user.assignedTeacher = classRoom.teacher;
+      }
+      
+      await user.save();
+    }
+
+    // Populate để lấy thông tin giáo viên
+    await classRoom.populate('teacher', 'username displayName email');
+
+    const message = enrollStatus === 'pending' 
+      ? 'Đã gửi yêu cầu tham gia lớp. Vui lòng chờ giáo viên duyệt.'
+      : 'Tham gia lớp học thành công!';
+
+    res.json({
+      success: true,
+      message,
+      data: {
+        classId: classRoom._id,
+        className: classRoom.name,
+        classCode: classRoom.code,
+        grade: classRoom.grade,
+        teacher: classRoom.teacher,
+        status: enrollStatus
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Join class error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi server',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/users/classes - Lấy danh sách lớp học của học sinh
+router.get('/classes', async (req, res) => {
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Vui lòng đăng nhập'
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy người dùng'
+      });
+    }
+
+    // Lấy danh sách lớp học của học sinh
+    const classes = await ClassRoom.find({
+      'students.student': userId,
+      'students.status': { $in: ['active', 'pending'] }
+    })
+      .populate('teacher', 'username displayName email avatar')
+      .select('name code description grade subject curriculumType teacher settings statistics students announcements createdAt')
+      .sort({ createdAt: -1 });
+
+    // Format response với thông tin enrollment của user
+    const formattedClasses = classes.map(classRoom => {
+      const studentEntry = classRoom.students.find(
+        s => s.student.toString() === userId
+      );
+      
+      return {
+        _id: classRoom._id,
+        name: classRoom.name,
+        code: classRoom.code,
+        description: classRoom.description,
+        grade: classRoom.grade,
+        subject: classRoom.subject,
+        curriculumType: classRoom.curriculumType,
+        teacher: classRoom.teacher,
+        studentCount: classRoom.students.filter(s => s.status === 'active').length,
+        announcements: classRoom.announcements?.slice(0, 3) || [], // 3 thông báo gần nhất
+        statistics: classRoom.statistics,
+        enrolledAt: studentEntry?.enrolledAt,
+        enrollmentStatus: studentEntry?.status,
+        createdAt: classRoom.createdAt
+      };
+    });
+
+    res.json({
+      success: true,
+      data: formattedClasses
+    });
+
+  } catch (error) {
+    console.error('❌ Get student classes error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi server',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/users/classes/:classId - Lấy chi tiết lớp học (cho học sinh)
+router.get('/classes/:classId', async (req, res) => {
+  try {
+    const { classId } = req.params;
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Vui lòng đăng nhập'
+      });
+    }
+
+    const classRoom = await ClassRoom.findById(classId)
+      .populate('teacher', 'username displayName email avatar')
+      .populate('students.student', 'username displayName avatar xp level');
+
+    if (!classRoom) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy lớp học'
+      });
+    }
+
+    // Kiểm tra xem học sinh có trong lớp không
+    const studentEntry = classRoom.students.find(
+      s => s.student._id.toString() === userId && ['active', 'pending'].includes(s.status)
+    );
+
+    if (!studentEntry) {
+      return res.status(403).json({
+        success: false,
+        message: 'Bạn không phải thành viên của lớp học này'
+      });
+    }
+
+    // Nếu đang pending, chỉ trả về thông tin cơ bản
+    if (studentEntry.status === 'pending') {
+      return res.json({
+        success: true,
+        data: {
+          _id: classRoom._id,
+          name: classRoom.name,
+          code: classRoom.code,
+          grade: classRoom.grade,
+          teacher: classRoom.teacher,
+          enrollmentStatus: 'pending',
+          message: 'Đang chờ giáo viên duyệt'
+        }
+      });
+    }
+
+    // Lấy danh sách bạn học (chỉ active students, ẩn thông tin nhạy cảm)
+    const classmates = classRoom.students
+      .filter(s => s.status === 'active' && s.student._id.toString() !== userId)
+      .map(s => ({
+        _id: s.student._id,
+        displayName: s.student.displayName,
+        avatar: s.student.avatar,
+        level: s.student.level
+      }));
+
+    // Lấy bài tập được giao (chỉ active)
+    const assignments = classRoom.assignments
+      ?.filter(a => a.isActive)
+      .map(a => {
+        const myCompletion = a.completedBy?.find(
+          c => c.student.toString() === userId
+        );
+        return {
+          _id: a._id,
+          title: a.title,
+          description: a.description,
+          type: a.type,
+          lessonId: a.lessonId,
+          challengeSlug: a.challengeSlug,
+          dueDate: a.dueDate,
+          points: a.points,
+          isCompleted: !!myCompletion,
+          myScore: myCompletion?.score,
+          myStars: myCompletion?.stars,
+          completedAt: myCompletion?.completedAt,
+          createdAt: a.createdAt
+        };
+      }) || [];
+
+    res.json({
+      success: true,
+      data: {
+        _id: classRoom._id,
+        name: classRoom.name,
+        code: classRoom.code,
+        description: classRoom.description,
+        grade: classRoom.grade,
+        subject: classRoom.subject,
+        curriculumType: classRoom.curriculumType,
+        teacher: classRoom.teacher,
+        studentCount: classRoom.students.filter(s => s.status === 'active').length,
+        classmates,
+        announcements: classRoom.announcements?.slice(0, 10) || [],
+        assignments,
+        statistics: classRoom.statistics,
+        enrollmentStatus: 'active',
+        enrolledAt: studentEntry.enrolledAt
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Get class detail error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi server',
+      error: error.message
+    });
+  }
+});
+
+// DELETE /api/users/classes/:classId/leave - Học sinh rời khỏi lớp
+router.delete('/classes/:classId/leave', async (req, res) => {
+  try {
+    const { classId } = req.params;
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Vui lòng đăng nhập'
+      });
+    }
+
+    const classRoom = await ClassRoom.findById(classId);
+    if (!classRoom) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy lớp học'
+      });
+    }
+
+    // Tìm học sinh trong lớp
+    const studentIndex = classRoom.students.findIndex(
+      s => s.student.toString() === userId
+    );
+
+    if (studentIndex === -1) {
+      return res.status(400).json({
+        success: false,
+        message: 'Bạn không phải thành viên của lớp học này'
+      });
+    }
+
+    // Đánh dấu inactive
+    classRoom.students[studentIndex].status = 'inactive';
+    await classRoom.save();
+
+    // Xóa khỏi enrolledClasses của học sinh
+    await User.findByIdAndUpdate(userId, {
+      $pull: { enrolledClasses: { classId: classRoom._id } }
+    });
+
+    res.json({
+      success: true,
+      message: 'Đã rời khỏi lớp học'
+    });
+
+  } catch (error) {
+    console.error('❌ Leave class error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi server',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/users/classes/:classId/assignments - Lấy bài tập của lớp (cho học sinh)
+router.get('/classes/:classId/assignments', async (req, res) => {
+  try {
+    const { classId } = req.params;
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Vui lòng đăng nhập'
+      });
+    }
+
+    const classRoom = await ClassRoom.findById(classId);
+    if (!classRoom) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy lớp học'
+      });
+    }
+
+    // Kiểm tra học sinh có trong lớp không
+    const isEnrolled = classRoom.students.some(
+      s => s.student.toString() === userId && s.status === 'active'
+    );
+
+    if (!isEnrolled) {
+      return res.status(403).json({
+        success: false,
+        message: 'Bạn không phải thành viên của lớp học này'
+      });
+    }
+
+    // Lấy bài tập
+    const assignments = classRoom.assignments
+      ?.filter(a => a.isActive)
+      .map(a => {
+        const myCompletion = a.completedBy?.find(
+          c => c.student.toString() === userId
+        );
+        return {
+          _id: a._id,
+          title: a.title,
+          description: a.description,
+          type: a.type,
+          lessonId: a.lessonId,
+          challengeSlug: a.challengeSlug,
+          dueDate: a.dueDate,
+          points: a.points,
+          isCompleted: !!myCompletion,
+          myScore: myCompletion?.score,
+          myStars: myCompletion?.stars,
+          completedAt: myCompletion?.completedAt,
+          createdAt: a.createdAt,
+          // Thống kê hoàn thành của lớp
+          totalCompleted: a.completedBy?.length || 0
+        };
+      }) || [];
+
+    // Sắp xếp: chưa hoàn thành + sắp đến hạn lên đầu
+    assignments.sort((a, b) => {
+      // Ưu tiên chưa hoàn thành
+      if (a.isCompleted !== b.isCompleted) {
+        return a.isCompleted ? 1 : -1;
+      }
+      // Ưu tiên deadline gần
+      if (a.dueDate && b.dueDate) {
+        return new Date(a.dueDate) - new Date(b.dueDate);
+      }
+      return 0;
+    });
+
+    res.json({
+      success: true,
+      data: assignments
+    });
+
+  } catch (error) {
+    console.error('❌ Get class assignments error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi server',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/users/classes/:classId/pk-rooms - Lấy danh sách phòng PK của lớp (cho học sinh)
+router.get('/classes/:classId/pk-rooms', async (req, res) => {
+  try {
+    const { classId } = req.params;
+    const { userId } = req.query;
+    const Room = require('../models/Room.cjs');
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng cung cấp userId'
+      });
+    }
+
+    // Kiểm tra học sinh có trong lớp không
+    const classroom = await ClassRoom.findById(classId);
+    if (!classroom) {
+      return res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy lớp học'
+      });
+    }
+
+    const isEnrolled = classroom.students.some(
+      s => s.student.toString() === userId && s.status === 'active'
+    );
+
+    if (!isEnrolled) {
+      return res.status(403).json({
+        success: false,
+        message: 'Bạn không phải là học sinh của lớp này'
+      });
+    }
+
+    // Lấy các phòng PK đang hoạt động của lớp
+    const rooms = await Room.find({
+      classRoom: classId,
+      isClassRoom: true,
+      status: { $in: ['waiting', 'playing'] }
+    })
+    .populate('host', 'displayName username')
+    .sort({ createdAt: -1 });
+
+    const roomData = rooms.map(room => ({
+      _id: room._id,
+      code: room.code,
+      name: room.name,
+      status: room.status,
+      mode: room.mode,
+      host: {
+        displayName: room.host?.displayName || room.host?.username,
+      },
+      playerCount: room.players?.length || 0,
+      maxPlayers: room.maxPlayers,
+      questionCount: room.questionCount,
+      timePerQuestion: room.timePerQuestion,
+      createdAt: room.createdAt
+    }));
+
+    res.json({
+      success: true,
+      data: roomData
+    });
+
+  } catch (error) {
+    console.error('❌ Get class PK rooms error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi server',
+      error: error.message
+    });
   }
 });
 

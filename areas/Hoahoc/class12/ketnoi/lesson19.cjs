@@ -8,63 +8,83 @@ module.exports = {
   description: 'Dãy điện hoá, phản ứng thế, khử, điều chế; xu hướng oxi hoá.',
   level: 'Intermediate',
   order: 19,
-  theory: `
-    <h2>Tính chất vật lí và hoá học của kim loại</h2>
-    <p style="margin:8px 0; color:#334155;">Liên hệ vị trí trong dãy điện hoá với tính khử, phản ứng thế và phương pháp điều chế.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Tính chất vật lí</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Dẫn điện, dẫn nhiệt, ánh kim, dẻo; khối lượng riêng đa dạng (Li nhẹ, Os nặng).</li>
-          <li>Nhiệt độ nóng chảy cao (trừ Hg); độ cứng phụ thuộc cấu trúc mạng.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Tính khử & phản ứng</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Dãy điện hoá: kim loại càng âm càng khử mạnh (K, Na, Ca) phản ứng mãnh liệt với nước.</li>
-          <li>Phản ứng với phi kim: 2Al + 3Cl2 → 2AlCl3; với axit: Fe + 2HCl → FeCl2 + H2.</li>
-          <li>Phản ứng thế: kim loại mạnh đẩy kim loại yếu khỏi dung dịch muối (Fe + CuSO4 → FeSO4 + Cu).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ứng dụng dãy điện hoá</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Dự đoán chiều phản ứng oxi hoá/khử; chọn chất khử phù hợp.</li>
-          <li>Bảo vệ kim loại: mạ, bảo vệ catot bằng kim loại hi sinh (Zn cho tàu thép).</li>
-          <li>Chọn điều chế: điện phân nóng chảy (Na, Al), khử oxit (Fe, Cu), thuỷ luyện.</li>
-        </ul>
-      </div>
-    </div>
-
-        <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-          <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#f0f9ff,#f8fafc); color:#0f172a;">
-            <h4 style="margin:0 0 6px;">So sánh từ tính</h4>
-            <ul style="margin:0; padding-left:18px; color:#334155;">
-              <li>Thuận từ: χ nhỏ dương, chỉ mạnh khi có từ trường (Al, O2 lỏng).</li>
-              <li>Đối từ: χ nhỏ âm, đẩy nhẹ khỏi vùng từ trường (Cu, Zn, H2O).</li>
-              <li>Ferromag: χ lớn, có trễ từ, đômen song song (Fe, Co, Ni) → dễ bị khử từ nếu nung trên Curie.</li>
-            </ul>
-          </div>
-          <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-            <h4 style="margin:0 0 6px;">Case & lưu ý</h4>
-            <ul style="margin:0; padding-left:18px;">
-              <li>Thép mềm (nhiều Feα BCC) dễ nhiễm từ, dùng làm lõi biến áp; thép cứng (thêm C, Cr) giữ từ lâu → nam châm vĩnh cửu.</li>
-              <li>Siêu dẫn loại I mất từ tính hoàn toàn (hiệu ứng Meissner); loại II cho từ thông đi qua dạng sợi (vortex).</li>
-              <li>Giảm nhiễu từ bằng che chắn mu-metal (hợp kim Ni-Fe có độ từ thẩm cao).</li>
-            </ul>
-          </div>
-          <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-            <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-            <ul style="margin:0; padding-left:18px;">
-              <li>Nhận biết mẫu từ tính qua thí nghiệm đơn giản: hút nam châm, cân từ (Gouy), hoặc quan sát đường sức.</li>
-              <li>Giải thích sự khử từ khi nung qua nhiệt độ Curie, liên hệ sắp xếp spin.</li>
-              <li>Bài toán ứng dụng: chọn vật liệu lõi cuộn cảm để giảm tổn hao (tổn hao trễ + dòng Fu-cô).</li>
-            </ul>
-          </div>
-        </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Tính chất vật lí và hoá học của kim loại',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Liên hệ vị trí trong dãy điện hoá với tính khử, phản ứng thế và phương pháp điều chế.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Tính chất vật lí',
+            content: 'Dẫn điện, dẫn nhiệt, ánh kim, dẻo; khối lượng riêng đa dạng (Li nhẹ, Os nặng).\nNhiệt độ nóng chảy cao (trừ Hg); độ cứng phụ thuộc cấu trúc mạng.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Tính khử & phản ứng',
+            content: 'Dãy điện hoá: kim loại càng âm càng khử mạnh (K, Na, Ca) phản ứng mãnh liệt với nước.\nPhản ứng với phi kim: 2Al + 3Cl2 → 2AlCl3; với axit: Fe + 2HCl → FeCl2 + H2.\nPhản ứng thế: kim loại mạnh đẩy kim loại yếu khỏi dung dịch muối (Fe + CuSO4 → FeSO4 + Cu).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng dãy điện hoá',
+            content: 'Dự đoán chiều phản ứng oxi hoá/khử; chọn chất khử phù hợp.\nBảo vệ kim loại: mạ, bảo vệ catot bằng kim loại hi sinh (Zn cho tàu thép).\nChọn điều chế: điện phân nóng chảy (Na, Al), khử oxit (Fe, Cu), thuỷ luyện.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh từ tính',
+            content: 'Thuận từ: χ nhỏ dương, chỉ mạnh khi có từ trường (Al, O2 lỏng).\nĐối từ: χ nhỏ âm, đẩy nhẹ khỏi vùng từ trường (Cu, Zn, H2O).\nFerromag: χ lớn, có trễ từ, đômen song song (Fe, Co, Ni) → dễ bị khử từ nếu nung trên Curie.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & lưu ý',
+            content: 'Thép mềm (nhiều Feα BCC) dễ nhiễm từ, dùng làm lõi biến áp; thép cứng (thêm C, Cr) giữ từ lâu → nam châm vĩnh cửu.\nSiêu dẫn loại I mất từ tính hoàn toàn (hiệu ứng Meissner); loại II cho từ thông đi qua dạng sợi (vortex).\nGiảm nhiễu từ bằng che chắn mu-metal (hợp kim Ni-Fe có độ từ thẩm cao).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Nhận biết mẫu từ tính qua thí nghiệm đơn giản: hút nam châm, cân từ (Gouy), hoặc quan sát đường sức.\nGiải thích sự khử từ khi nung qua nhiệt độ Curie, liên hệ sắp xếp spin.\nBài toán ứng dụng: chọn vật liệu lõi cuộn cảm để giảm tổn hao (tổn hao trễ + dòng Fu-cô).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

@@ -8,48 +8,63 @@ module.exports = {
   description: 'Khái niệm hệ cân bằng, hằng số cân bằng K và điều kiện thiết lập.',
   level: 'Intermediate',
   order: 1,
-  theory: `
-    <h2>Khái niệm cân bằng hoá học</h2>
-    <p style="margin:8px 0; color:#334155;">Trạng thái cân bằng động: tốc độ thuận = tốc độ nghịch, nồng độ cân bằng không đổi. Hằng số K mô tả mức độ tiến triển của phản ứng, chỉ phụ thuộc nhiệt độ.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cân bằng động</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Hệ phải kín; phản ứng thuận nghịch (ví dụ: N2 + 3H2 ⇌ 2NH3).</li>
-          <li>Ở cân bằng: tốc độ thuận = tốc độ nghịch, đại lượng vĩ mô (nồng độ, áp suất) ổn định.</li>
-          <li>Không phải “dừng phản ứng” mà vẫn có chuyển hoá hai chiều liên tục.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Hằng số cân bằng</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Phản ứng aA + bB ⇌ cC + dD: $K_c = \dfrac{[C]^c[D]^d}{[A]^a[B]^b}$ (không ghi chất rắn/tinh khiết).</li>
-          <li>Khí: $K_p$ tính theo áp suất riêng phần; liên hệ $K_p = K_c(RT)^{\Delta n}$.</li>
-          <li>K chỉ đổi khi nhiệt độ đổi; không đổi theo nồng độ ban đầu.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Đánh giá vị trí cân bằng</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Tính thương số phản ứng $Q = \dfrac{[C]^c[D]^d}{[A]^a[B]^b}$ tại thời điểm bất kì.</li>
-          <li>So sánh: Q &lt; K → chuyển dịch thuận; Q &gt; K → chuyển dịch nghịch; Q = K → cân bằng.</li>
-          <li>K rất lớn (\(K \gg 1\)) → sản phẩm ưu thế; K rất nhỏ → chất phản ứng ưu thế.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Lưu ý & ngoại lệ</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Không đưa chất rắn, lỏng tinh khiết vào biểu thức K (hoạt độ = 1).</li>
-          <li>Nhân/chia phương trình phản ứng → số mũ của K thay đổi tương ứng.</li>
-          <li>Khi cộng phản ứng, nhân các K (hệ quả từ log). Đây là cách suy K tổng từ K thành phần.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Khái niệm cân bằng hoá học',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Trạng thái cân bằng động: tốc độ thuận = tốc độ nghịch, nồng độ cân bằng không đổi. Hằng số K mô tả mức độ tiến triển của phản ứng, chỉ phụ thuộc nhiệt độ.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cân bằng động',
+            content: 'Hệ phải kín; phản ứng thuận nghịch (ví dụ: N2 + 3H2 ⇌ 2NH3).\nỞ cân bằng: tốc độ thuận = tốc độ nghịch, đại lượng vĩ mô (nồng độ, áp suất) ổn định.\nKhông phải “dừng phản ứng” mà vẫn có chuyển hoá hai chiều liên tục.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Hằng số cân bằng',
+            content: 'Phản ứng aA + bB ⇌ cC + dD: $K_c = \\dfrac{[C]^c[D]^d}{[A]^a[B]^b}$ (không ghi chất rắn/tinh khiết).\nKhí: $K_p$ tính theo áp suất riêng phần; liên hệ $K_p = K_c(RT)^{\\Delta n}$.\nK chỉ đổi khi nhiệt độ đổi; không đổi theo nồng độ ban đầu.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Đánh giá vị trí cân bằng',
+            content: 'Tính thương số phản ứng $Q = \\dfrac{[C]^c[D]^d}{[A]^a[B]^b}$ tại thời điểm bất kì.\nSo sánh: Q K → chuyển dịch nghịch; Q = K → cân bằng.\nK rất lớn (\\(K \\gg 1\\)) → sản phẩm ưu thế; K rất nhỏ → chất phản ứng ưu thế.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Lưu ý & ngoại lệ',
+            content: 'Không đưa chất rắn, lỏng tinh khiết vào biểu thức K (hoạt độ = 1).\nNhân/chia phương trình phản ứng → số mũ của K thay đổi tương ứng.\nKhi cộng phản ứng, nhân các K (hệ quả từ log). Đây là cách suy K tổng từ K thành phần.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

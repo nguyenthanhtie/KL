@@ -8,64 +8,83 @@ module.exports = {
   description: 'Cơ chế tẩy rửa, thành phần, điều chế xà phòng và chất hoạt động bề mặt.',
   level: 'Intermediate',
   order: 2,
-  theory: `
-    <h2>Xà phòng và chất giặt rửa</h2>
-    <p style="margin:8px 0; color:#334155;">Hiểu cấu tạo chất hoạt động bề mặt, cơ chế micelle, khác biệt xà phòng và chất tẩy tổng hợp để chọn sản phẩm thân thiện.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Xà phòng</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Muối natri/kali của axit béo (RCOO<sup>-</sup>Na<sup>+</sup>/K<sup>+</sup>); sản xuất bằng xà phòng hoá mỡ/dầu.</li>
-          <li>Cơ chế micelle: đuôi kị nước bám chất bẩn, đầu ưa nước hướng ra ngoài → nhũ hoá, cuốn trôi.</li>
-          <li>Hạn chế: kết tủa với Ca<sup>2+</sup>, Mg<sup>2+</sup> trong nước cứng tạo "cặn xà phòng".</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #fde68a; border-radius:10px; background:#fffbeb; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Chất giặt rửa tổng hợp</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Hoạt chất: anion (alkylbenzen sulfonat), cation, lưỡng cực; dùng được trong nước cứng.</li>
-          <li>Phụ gia: chất độn (Na2SO4), builders (polyphosphate, zeolit), enzyme, chất tẩy trắng quang học.</li>
-          <li>Ưu tiên công thức dễ phân huỷ sinh học (ABS tuyến tính), giảm phosphate để hạn chế phú dưỡng.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">An toàn & môi trường</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Tránh pha trộn hoá chất tẩy chứa clo với axit → khí độc Cl2.</li>
-          <li>Chọn sản phẩm nhãn sinh học, giảm bao bì nhựa; dùng đúng liều để giảm COD/BOD nước thải.</li>
-          <li>Xử lý nước thải: bể hiếu khí, keo tụ, than hoạt tính để loại tenside và phosphate.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">Case thực tế</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Giặt nước cứng: ưu tiên bột giặt anion + zeolit, hạn chế xà phòng để tránh cặn.</li>
-          <li>Vết dầu mỡ: ngâm ấm + chất hoạt động bề mặt không ion (Tween) ít bọt, ít kích ứng.</li>
-          <li>Đồ trẻ em/da nhạy cảm: chọn công thức không hương liệu mạnh, không chất tẩy quang.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Mẹo ghi nhớ nhanh</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>“Xà phòng sợ cứng” → Ca/Mg kết tủa; “tổng hợp kệ cứng” → LAS vẫn hoạt động.</li>
-          <li>CMC: càng thấp → tạo micelle dễ → bọt nhanh; nhưng ít bọt ≠ kém tẩy (do công thức ít tạo bọt).</li>
-          <li>Builders = bắt Ca/Mg + đệm pH: phosphate (mạnh nhưng ô nhiễm) → thay bằng zeolit, citrate.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập nhanh</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Cân bằng xà phòng hoá: 1 triglycerid + 3 kiềm → 3 muối + glixerol; bảo toàn Na<sup>+</sup> để tính khối lượng.</li>
-          <li>Nhận biết nước cứng: tạo cặn, ít bọt; xử lý: đun sôi (tạm thời) hoặc trao đổi ion.</li>
-          <li>So sánh hiệu quả tẩy: dựa chuỗi alkyl (C12–C18 tối ưu) và đầu phân cực (anion > không ion ~ cation cho khử khuẩn).</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Xà phòng và chất giặt rửa',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Hiểu cấu tạo chất hoạt động bề mặt, cơ chế micelle, khác biệt xà phòng và chất tẩy tổng hợp để chọn sản phẩm thân thiện.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Xà phòng',
+            content: 'Muối natri/kali của axit béo (RCOO⁽-⁾Na⁽+⁾/K⁽+⁾); sản xuất bằng xà phòng hoá mỡ/dầu.\nCơ chế micelle: đuôi kị nước bám chất bẩn, đầu ưa nước hướng ra ngoài → nhũ hoá, cuốn trôi.\nHạn chế: kết tủa với Ca⁽2+⁾, Mg⁽2+⁾ trong nước cứng tạo "cặn xà phòng".',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Chất giặt rửa tổng hợp',
+            content: 'Hoạt chất: anion (alkylbenzen sulfonat), cation, lưỡng cực; dùng được trong nước cứng.\nPhụ gia: chất độn (Na2SO4), builders (polyphosphate, zeolit), enzyme, chất tẩy trắng quang học.\nƯu tiên công thức dễ phân huỷ sinh học (ABS tuyến tính), giảm phosphate để hạn chế phú dưỡng.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'An toàn & môi trường',
+            content: 'Tránh pha trộn hoá chất tẩy chứa clo với axit → khí độc Cl2.\nChọn sản phẩm nhãn sinh học, giảm bao bì nhựa; dùng đúng liều để giảm COD/BOD nước thải.\nXử lý nước thải: bể hiếu khí, keo tụ, than hoạt tính để loại tenside và phosphate.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Case thực tế',
+            content: 'Giặt nước cứng: ưu tiên bột giặt anion + zeolit, hạn chế xà phòng để tránh cặn.\nVết dầu mỡ: ngâm ấm + chất hoạt động bề mặt không ion (Tween) ít bọt, ít kích ứng.\nĐồ trẻ em/da nhạy cảm: chọn công thức không hương liệu mạnh, không chất tẩy quang.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Mẹo ghi nhớ nhanh',
+            content: '“Xà phòng sợ cứng” → Ca/Mg kết tủa; “tổng hợp kệ cứng” → LAS vẫn hoạt động.\nCMC: càng thấp → tạo micelle dễ → bọt nhanh; nhưng ít bọt ≠ kém tẩy (do công thức ít tạo bọt).\nBuilders = bắt Ca/Mg + đệm pH: phosphate (mạnh nhưng ô nhiễm) → thay bằng zeolit, citrate.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập nhanh',
+            content: 'Cân bằng xà phòng hoá: 1 triglycerid + 3 kiềm → 3 muối + glixerol; bảo toàn Na⁽+⁾ để tính khối lượng.\nNhận biết nước cứng: tạo cặn, ít bọt; xử lý: đun sôi (tạm thời) hoặc trao đổi ion.\nSo sánh hiệu quả tẩy: dựa chuỗi alkyl (C12-C18 tối ưu) và đầu phân cực (anion > không ion ~ cation cho khử khuẩn).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

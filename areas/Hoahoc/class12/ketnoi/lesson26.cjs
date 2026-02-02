@@ -8,64 +8,83 @@ module.exports = {
   description: 'So sánh kim loại kiềm và kiềm thổ, nhận biết và bài tập áp dụng.',
   level: 'Intermediate',
   order: 26,
-  theory: `
-    <h2>Ôn tập kim loại nhóm IA, IIA</h2>
-    <p style="margin:8px 0; color:#334155;">So sánh tính chất, nhận biết ion và luyện tập phản ứng đặc trưng của kim loại kiềm và kiềm thổ.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">So sánh tính chất</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>IA có 1e (ns1) khử mạnh hơn IIA (ns2).</li>
-          <li>Hiđroxit: IA kiềm mạnh, tan; IIA bazơ mạnh nhưng Mg(OH)2 ít tan.</li>
-          <li>Phản ứng với nước: IA (mạnh) > Ca,Sr,Ba > Mg (nóng).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #cbd5e1; border-radius:10px; background:#fff7ed; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Nhận biết ion</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Màu ngọn lửa: Li đỏ, Na vàng, K tím; Ca đỏ gạch, Sr đỏ, Ba xanh lục.</li>
-          <li>Kết tủa: BaSO4 trắng không tan; CaCO3 trắng ít tan; Mg(OH)2 trắng keo.</li>
-          <li>Độ tan cacbonat: IA bền nhiệt; IIA dễ nhiệt phân.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ứng dụng & bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Chu trình vôi-soda: CaCO3 → CaO → Ca(OH)2; Na2CO3 từ Solvay.</li>
-          <li>Định tính nước cứng, làm mềm bằng Na2CO3, trao đổi ion.</li>
-          <li>Viết phương trình với nước, axit, nhiệt phân muối, nhận biết mẫu.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#0f172a;">
-        <h4 style="margin:0 0 6px;">Bảng nhớ</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Màu ngọn lửa: Li đỏ, Na vàng, K tím; Ca đỏ gạch, Sr đỏ, Ba xanh lục.</li>
-          <li>Độ tan hiđroxit: IA đều tan; IIA tăng Mg → Ba.</li>
-          <li>Cacbonat: IA bền nhiệt; IIA phân huỷ tạo oxit + CO2.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#fffaf0; color:#92400e;">
-        <h4 style="margin:0 0 6px;">Case & bẫy</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Mg không phản ứng nước lạnh; đừng quên lớp oxit bảo vệ.</li>
-          <li>BaSO4 không tan cả trong axit loãng, khác với CaCO3 tan trong HCl.</li>
-          <li>Chọn chất làm mềm: tạm thời (đun sôi), vĩnh cửu (Na2CO3/trao đổi ion).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ôn bài tập</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Viết chuỗi phản ứng nhận biết mẫu hỗn hợp muối IA/IIA bằng ngọn lửa + kết tủa.</li>
-          <li>Tính khối lượng kết tủa khi thêm Na2CO3/NaOH vào dung dịch Ca2+, Ba2+.</li>
-          <li>So sánh tốc độ phản ứng với nước của K, Na, Ca; giải thích bằng thế điện cực và năng lượng hoá hơi.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập kim loại nhóm IA, IIA',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'So sánh tính chất, nhận biết ion và luyện tập phản ứng đặc trưng của kim loại kiềm và kiềm thổ.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh tính chất',
+            content: 'IA có 1e (ns1) khử mạnh hơn IIA (ns2).\nHiđroxit: IA kiềm mạnh, tan; IIA bazơ mạnh nhưng Mg(OH)2 ít tan.\nPhản ứng với nước: IA (mạnh) > Ca,Sr,Ba > Mg (nóng).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Nhận biết ion',
+            content: 'Màu ngọn lửa: Li đỏ, Na vàng, K tím; Ca đỏ gạch, Sr đỏ, Ba xanh lục.\nKết tủa: BaSO4 trắng không tan; CaCO3 trắng ít tan; Mg(OH)2 trắng keo.\nĐộ tan cacbonat: IA bền nhiệt; IIA dễ nhiệt phân.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & bài tập',
+            content: 'Chu trình vôi-soda: CaCO3 → CaO → Ca(OH)2; Na2CO3 từ Solvay.\nĐịnh tính nước cứng, làm mềm bằng Na2CO3, trao đổi ion.\nViết phương trình với nước, axit, nhiệt phân muối, nhận biết mẫu.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Bảng nhớ',
+            content: 'Màu ngọn lửa: Li đỏ, Na vàng, K tím; Ca đỏ gạch, Sr đỏ, Ba xanh lục.\nĐộ tan hiđroxit: IA đều tan; IIA tăng Mg → Ba.\nCacbonat: IA bền nhiệt; IIA phân huỷ tạo oxit + CO2.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Case & bẫy',
+            content: 'Mg không phản ứng nước lạnh; đừng quên lớp oxit bảo vệ.\nBaSO4 không tan cả trong axit loãng, khác với CaCO3 tan trong HCl.\nChọn chất làm mềm: tạm thời (đun sôi), vĩnh cửu (Na2CO3/trao đổi ion).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: 'Ôn bài tập',
+            content: 'Viết chuỗi phản ứng nhận biết mẫu hỗn hợp muối IA/IIA bằng ngọn lửa + kết tủa.\nTính khối lượng kết tủa khi thêm Na2CO3/NaOH vào dung dịch Ca2+, Ba2+.\nSo sánh tốc độ phản ứng với nước của K, Na, Ca; giải thích bằng thế điện cực và năng lượng hoá hơi.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

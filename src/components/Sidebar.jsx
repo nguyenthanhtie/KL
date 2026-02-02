@@ -20,7 +20,11 @@ import {
   X,
   Sparkles,
   GraduationCap,
-  Scale
+  Scale,
+  Shield,
+  School,
+  Users,
+  ClipboardList
 } from 'lucide-react';
 
 const Sidebar = ({ children }) => {
@@ -70,6 +74,12 @@ const Sidebar = ({ children }) => {
       gradient: 'from-purple-500 to-pink-500'
     },
     {
+      title: 'Lớp học của tôi',
+      icon: School,
+      path: '/student/classes',
+      gradient: 'from-blue-500 to-cyan-500'
+    },
+    {
       title: 'Thử thách',
       icon: Trophy,
       path: '/advanced-challenge',
@@ -86,6 +96,56 @@ const Sidebar = ({ children }) => {
       icon: Beaker,
       path: '/chemistry-lab',
       gradient: 'from-indigo-500 to-purple-500'
+    }
+  ];
+
+  // Menu items cho giáo viên
+  const teacherMenuItems = [
+    {
+      title: 'Dashboard GV',
+      icon: School,
+      path: '/teacher',
+      gradient: 'from-purple-500 to-violet-500'
+    },
+    {
+      title: 'Quản lý lớp',
+      icon: Users,
+      path: '/teacher/classes',
+      gradient: 'from-blue-500 to-cyan-500'
+    },
+    {
+      title: 'Quản lý bài học',
+      icon: BookOpen,
+      path: '/teacher/lessons',
+      gradient: 'from-emerald-500 to-teal-500'
+    },
+    {
+      title: 'Bài tập',
+      icon: ClipboardList,
+      path: '/teacher/assignments',
+      gradient: 'from-green-500 to-emerald-500'
+    }
+  ];
+
+  // Menu items cho admin
+  const adminMenuItems = [
+    {
+      title: 'Admin Dashboard',
+      icon: Shield,
+      path: '/admin',
+      gradient: 'from-red-500 to-rose-500'
+    },
+    {
+      title: 'Quản lý người dùng',
+      icon: Users,
+      path: '/admin/users',
+      gradient: 'from-blue-500 to-indigo-500'
+    },
+    {
+      title: 'Quản lý lớp học',
+      icon: School,
+      path: '/admin/classes',
+      gradient: 'from-purple-500 to-violet-500'
     }
   ];
 
@@ -223,13 +283,42 @@ const Sidebar = ({ children }) => {
 
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto scrollbar-thin">
-          <div className={`text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 ${isCollapsed ? 'text-center' : 'px-3'}`}>
-            {isCollapsed ? '•••' : 'Menu chính'}
-          </div>
-          
-          {menuItems.map((item) => (
-            <NavLink key={item.path} item={item} />
-          ))}
+          {/* Menu cho học sinh (không hiển thị cho giáo viên) */}
+          {user?.role !== 'teacher' && (
+            <>
+              <div className={`text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 ${isCollapsed ? 'text-center' : 'px-3'}`}>
+                {isCollapsed ? '•••' : 'Menu chính'}
+              </div>
+              
+              {menuItems.map((item) => (
+                <NavLink key={item.path} item={item} />
+              ))}
+            </>
+          )}
+
+          {/* Teacher Menu */}
+          {(user?.role === 'teacher' || user?.role === 'admin') && (
+            <>
+              <div className={`text-xs font-semibold text-gray-400 uppercase tracking-wider ${user?.role === 'teacher' ? 'mb-4' : 'my-4 pt-4 border-t border-gray-200'} ${isCollapsed ? 'text-center' : 'px-3'}`}>
+                {isCollapsed ? '👨‍🏫' : 'Giáo viên'}
+              </div>
+              {teacherMenuItems.map((item) => (
+                <NavLink key={item.path} item={item} />
+              ))}
+            </>
+          )}
+
+          {/* Admin Menu */}
+          {user?.role === 'admin' && (
+            <>
+              <div className={`text-xs font-semibold text-gray-400 uppercase tracking-wider my-4 pt-4 border-t border-gray-200 ${isCollapsed ? 'text-center' : 'px-3'}`}>
+                {isCollapsed ? '🛡️' : 'Admin'}
+              </div>
+              {adminMenuItems.map((item) => (
+                <NavLink key={item.path} item={item} />
+              ))}
+            </>
+          )}
         </nav>
 
         {/* User Info & Logout */}

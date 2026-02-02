@@ -8,57 +8,83 @@ module.exports = {
   description: 'Khái niệm nguyên tố, số hiệu nguyên tử, kí hiệu nuclit và đồng vị.',
   level: 'Beginner',
   order: 2,
-  theory: `
-    <h2>Nguyên tố hóa học và kí hiệu</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: phân biệt Z, A, đồng vị; đọc/viết kí hiệu nuclit, tính khối lượng nguyên tử trung bình và liên hệ vị trí trong bảng tuần hoàn.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Định nghĩa & Z</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Nguyên tố: tập hợp nguyên tử cùng số proton (Z).</li>
-          <li>Z = p = e (nguyên tử trung hòa) → quyết định vị trí trong BTH và cấu hình e.</li>
-          <li>Z tăng → tính kim loại giảm dần trong cùng chu kì (do lực hút hạt nhân mạnh hơn).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Kí hiệu nuclit</h4>
-        <p style="margin:0; color:#7c2d12;">^{A}_{Z}X với A = Z + n. Đồng vị: cùng Z, khác A (khác n). Ví dụ: ^{35}_{17}Cl và ^{37}_{17}Cl.</p>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 6px; color:#0e7490;">Ý nghĩa hóa học</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Dự đoán số e hoá trị, hoá trị phổ biến từ Z và cấu hình e.</li>
-          <li>Tính chất hoá học của đồng vị gần như giống nhau vì Z giống nhau.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 8px; color:#312e81;">Khối lượng nguyên tử trung bình</h4>
-        <p style="margin:0 0 6px; color:#334155;">Nếu có các đồng vị A1 (t1%), A2 (t2%), ...:</p>
-        <p style="margin:0; color:#334155;"><em>M</em> = (A1×t1 + A2×t2 + ...)/100.</p>
-        <p style="margin:6px 0 0; color:#475569;">Giá trị trung bình lệch về đồng vị có % cao hơn.</p>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Liên hệ BTH</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Z quyết định ô, chu kì, nhóm; A chỉ dùng để tính khối lượng.</li>
-          <li>Nguyên tố cùng nhóm có số e hoá trị giống nhau → hoá tính tương tự.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:12px 0; padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed; color:#7c2d12;">
-      <h4 style="margin:0 0 6px;">Tránh nhầm lẫn</h4>
-      <ul style="margin:0; padding-left:18px;">
-        <li>Không dùng A để xác định nhóm/chu kì; dùng Z và cấu hình e.</li>
-        <li>Đồng vị phóng xạ thường có n/p lệch xa vùng bền.</li>
-        <li>Tính M phải quy đổi t% về dạng phân số (t/100).</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Nguyên tố hóa học và kí hiệu',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: phân biệt Z, A, đồng vị; đọc/viết kí hiệu nuclit, tính khối lượng nguyên tử trung bình và liên hệ vị trí trong bảng tuần hoàn.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Định nghĩa & Z',
+            content: 'Nguyên tố: tập hợp nguyên tử cùng số proton (Z).\nZ = p = e (nguyên tử trung hòa) → quyết định vị trí trong BTH và cấu hình e.\nZ tăng → tính kim loại giảm dần trong cùng chu kì (do lực hút hạt nhân mạnh hơn).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Kí hiệu nuclit',
+            content: '^{A}_{Z}X với A = Z + n. Đồng vị: cùng Z, khác A (khác n). Ví dụ: ^{35}_{17}Cl và ^{37}_{17}Cl.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Ý nghĩa hóa học',
+            content: 'Dự đoán số e hoá trị, hoá trị phổ biến từ Z và cấu hình e.\nTính chất hoá học của đồng vị gần như giống nhau vì Z giống nhau.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Khối lượng nguyên tử trung bình',
+            content: 'Nếu có các đồng vị A1 (t1%), A2 (t2%), ...:\n*M* = (A1×t1 + A2×t2 + ...)/100.\nGiá trị trung bình lệch về đồng vị có % cao hơn.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Liên hệ BTH',
+            content: 'Z quyết định ô, chu kì, nhóm; A chỉ dùng để tính khối lượng.\nNguyên tố cùng nhóm có số e hoá trị giống nhau → hoá tính tương tự.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'warningBox',
+        content: {
+            title: 'Tránh nhầm lẫn',
+            content: 'Không dùng A để xác định nhóm/chu kì; dùng Z và cấu hình e.\nĐồng vị phóng xạ thường có n/p lệch xa vùng bền.\nTính M phải quy đổi t% về dạng phân số (t/100).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

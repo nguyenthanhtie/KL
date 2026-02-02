@@ -8,25 +8,46 @@ module.exports = {
   description: 'Hiểu ΔH, phản ứng thu/tỏa nhiệt, phương trình nhiệt hóa học, Hess và enthalpy chuẩn.',
   level: 'Intermediate',
   order: 1,
-  theory: `
-    <h2>Enthalpy (H) và ΔH</h2>
-    <h3>Khái niệm & dấu</h3>
-    <ul>
-      <li>ΔH = H_sản phẩm - H_phản ứng; ΔH &lt; 0 tỏa nhiệt, ΔH &gt; 0 thu nhiệt.</li>
-      <li>Phương trình nhiệt hóa học: ghi ΔH (kJ/mol) kèm phương trình, chú ý trạng thái (r, l, g, dd).</li>
-    </ul>
-    <h3>Enthalpy chuẩn</h3>
-    <ul>
-      <li>ΔH_f°: enthalpy tạo thành 1 mol chất từ đơn chất ở trạng thái chuẩn.</li>
-      <li>ΔH_c°: enthalpy cháy hoàn toàn 1 mol chất.</li>
-      <li>Điều kiện chuẩn: 25°C, 1 atm, nồng độ 1 M (dung dịch).</li>
-    </ul>
-    <h3>Định luật Hess & biểu đồ năng lượng</h3>
-    <ul>
-      <li>ΔH chỉ phụ thuộc trạng thái đầu-cuối → có thể cộng/ trừ các phương trình để tìm ΔH mong muốn.</li>
-      <li>Biểu đồ năng lượng: mức năng lượng của hệ giảm (tỏa nhiệt) hay tăng (thu nhiệt); độ chênh chính là ΔH.</li>
-    </ul>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Enthalpy (H) và ΔH',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Khái niệm & dấu',
+            content: 'ΔH = H_sản phẩm - H_phản ứng; ΔH 0 thu nhiệt.\nPhương trình nhiệt hóa học: ghi ΔH (kJ/mol) kèm phương trình, chú ý trạng thái (r, l, g, dd).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Enthalpy chuẩn',
+            content: 'ΔH_f°: enthalpy tạo thành 1 mol chất từ đơn chất ở trạng thái chuẩn.\nΔH_c°: enthalpy cháy hoàn toàn 1 mol chất.\nĐiều kiện chuẩn: 25°C, 1 atm, nồng độ 1 M (dung dịch).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Định luật Hess & biểu đồ năng lượng',
+            content: 'ΔH chỉ phụ thuộc trạng thái đầu-cuối → có thể cộng/ trừ các phương trình để tìm ΔH mong muốn.\nBiểu đồ năng lượng: mức năng lượng của hệ giảm (tỏa nhiệt) hay tăng (thu nhiệt); độ chênh chính là ΔH.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

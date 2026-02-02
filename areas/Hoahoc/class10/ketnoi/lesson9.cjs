@@ -8,36 +8,53 @@ module.exports = {
   description: 'Củng cố cấu trúc BTH và xu hướng tính chất theo chu kỳ/nhóm để dự đoán hoá trị.',
   level: 'Intermediate',
   order: 5,
-  theory: `
-    <h2>Ôn tập chương 2</h2>
-    <p style="margin:8px 0; color:#334155;">Tóm tắt: cấu tạo BTH (Z tăng, khối s/p/d/f), xu hướng theo chu kỳ/nhóm, suy luận cấu hình e và hoá trị.</p>
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:10px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Theo chu kỳ</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Bán kính giảm; IE, độ âm điện tăng (ngoại lệ nhỏ nhóm III, VI).</li>
-          <li>Tính kim loại giảm, phi kim tăng; oxit: bazơ → lưỡng tính → axit.</li>
-          <li>Số oxi hóa cao nhất tăng theo số e hoá trị (1 → 7).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Theo nhóm</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Bán kính tăng; IE, độ âm điện giảm; tính kim loại tăng (phi kim giảm).</li>
-          <li>Oxit/hiđroxit kim loại bazơ mạnh dần; phi kim axit yếu dần, tính khử tăng.</li>
-          <li>Cấu hình ngoài giữ dạng ns^a np^b → hoá tính tương tự.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 6px; color:#0e7490;">Suy luận nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Từ vị trí nhóm/chu kỳ → viết cấu hình e, xác định e hoá trị.</li>
-          <li>Nhóm càng phải → oxit càng axit; càng trái → oxit bazơ mạnh.</li>
-          <li>Khối d bắt đầu chu kỳ 4; khối f nằm tách dưới (lanthan/actini).</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập chương 2',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Tóm tắt: cấu tạo BTH (Z tăng, khối s/p/d/f), xu hướng theo chu kỳ/nhóm, suy luận cấu hình e và hoá trị.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Theo chu kỳ',
+            content: 'Bán kính giảm; IE, độ âm điện tăng (ngoại lệ nhỏ nhóm III, VI).\nTính kim loại giảm, phi kim tăng; oxit: bazơ → lưỡng tính → axit.\nSố oxi hóa cao nhất tăng theo số e hoá trị (1 → 7).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Theo nhóm',
+            content: 'Bán kính tăng; IE, độ âm điện giảm; tính kim loại tăng (phi kim giảm).\nOxit/hiđroxit kim loại bazơ mạnh dần; phi kim axit yếu dần, tính khử tăng.\nCấu hình ngoài giữ dạng ns^a np^b → hoá tính tương tự.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Suy luận nhanh',
+            content: 'Từ vị trí nhóm/chu kỳ → viết cấu hình e, xác định e hoá trị.\nNhóm càng phải → oxit càng axit; càng trái → oxit bazơ mạnh.\nKhối d bắt đầu chu kỳ 4; khối f nằm tách dưới (lanthan/actini).',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

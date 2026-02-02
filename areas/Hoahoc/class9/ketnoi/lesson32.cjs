@@ -8,73 +8,93 @@ module.exports = {
   description: 'Khái niệm polime, ví dụ và ứng dụng thông dụng.',
   level: 'Beginner',
   order: 15,
-  theory: `
-    <h2>🧵 Polime</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu khái niệm, phân loại, phương pháp tạo, tính chất và tác động môi trường của polime.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Khái niệm &amp; phân loại</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Phân tử rất lớn từ nhiều monome lặp lại.</li>
-          <li>Tự nhiên: xenlulozơ, protein, tinh bột.</li>
-          <li>Nhân tạo/tổng hợp: PE, PP, PVC, PS, nylon; bán tổng hợp: cao su buna-N.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 8px; color:#9a3412;">Phản ứng tạo polime</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li><strong>Trùng hợp:</strong> mở liên kết đôi/ba của monome không no (CH₂=CH₂ → –CH₂–CH₂–)ₙ.</li>
-          <li><strong>Trùng ngưng:</strong> monome có nhóm –COOH, –NH₂... tách nhỏ H₂O/HCl (VD: hexametylen điamin + axit adipic → nylon-6,6).</li>
-          <li>Đồng trùng hợp: ghép 2+ monome khác nhau (butadien + acrylonitrin → buna-N).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 8px; color:#0e7490;">Tính chất &amp; ví dụ</h4>
-        <ul style="margin:0; padding-left:18px; color:#0f172a;">
-          <li>Thường bền, nhẹ, cách điện, không tan nước.</li>
-          <li>PE mềm, dẻo; PVC bền, chống cháy; PS cứng, trong; cao su đàn hồi.</li>
-          <li>PLA từ tinh bột: có thể phân huỷ sinh học.</li>
-        </ul>
-      </div>
-      <div style="padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#f0f9ff;">
-        <h4 style="margin:0 0 8px; color:#0f172a;">Môi trường &amp; ứng dụng</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Vấn đề: rác nhựa khó phân huỷ → cần tái chế, phân loại, dùng vật liệu sinh học.</li>
-          <li>Ứng dụng: nhựa bao bì, sợi (nylon, polyester), cao su, keo dán, y sinh.</li>
-          <li>Giải pháp: giảm dùng nhựa dùng một lần, tăng tái chế, phát triển biopolymer.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-      <h3 style="margin:0 0 8px; color:#312e81;">Bảng tóm tắt nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#334155;">
-        <li>Polime = chuỗi monome; có trùng hợp, trùng ngưng, đồng trùng hợp.</li>
-        <li>Tính chất: bền, nhẹ, cách điện; một số khó phân huỷ → rác nhựa.</li>
-        <li>Ưu tiên tái chế, chọn vật liệu sinh học khi có thể.</li>
-      </ul>
-    </div>
-
-    <div style="margin:14px 0; padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <p style="margin:0 0 6px;"><strong>Gợi ý hình</strong>:</p>
-      <p style="margin:0 0 4px;">So sánh trùng hợp vs trùng ngưng: <em>/images/hoahoc9/lesson32-polymerization.png</em></p>
-      <p style="margin:0;">Vòng đời nhựa và tái chế: <em>/images/hoahoc9/lesson32-recycle.png</em></p>
-    </div>
-
-    <div style="margin:14px 0; padding:14px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-      <h3 style="margin:0 0 8px; color:#9a3412;">Mini quiz đọc nhanh</h3>
-      <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-        <li>PE sinh ra từ monome nào và thuộc phản ứng gì?</li>
-        <li>Vì sao nhựa PVC không nên đốt bừa bãi?</li>
-        <li>Biện pháp nào giúp giảm rác nhựa khó phân huỷ?</li>
-      </ul>
-      <p style="margin:8px 0 0; font-size:13px; color:#854d0e;">Tự trả lời rồi luyện bộ trắc nghiệm.</p>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: '🧵 Polime',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: hiểu khái niệm, phân loại, phương pháp tạo, tính chất và tác động môi trường của polime.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Khái niệm & phân loại',
+            content: 'Phân tử rất lớn từ nhiều monome lặp lại.\nTự nhiên: xenlulozơ, protein, tinh bột.\nNhân tạo/tổng hợp: PE, PP, PVC, PS, nylon; bán tổng hợp: cao su buna-N.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Phản ứng tạo polime',
+            content: '**Trùng hợp:** mở liên kết đôi/ba của monome không no (CH₂=CH₂ → -CH₂-CH₂-)ₙ.\n**Trùng ngưng:** monome có nhóm -COOH, -NH₂... tách nhỏ H₂O/HCl (VD: hexametylen điamin + axit adipic → nylon-6,6).\nĐồng trùng hợp: ghép 2+ monome khác nhau (butadien + acrylonitrin → buna-N).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Tính chất & ví dụ',
+            content: 'Thường bền, nhẹ, cách điện, không tan nước.\nPE mềm, dẻo; PVC bền, chống cháy; PS cứng, trong; cao su đàn hồi.\nPLA từ tinh bột: có thể phân huỷ sinh học.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Môi trường & ứng dụng',
+            content: 'Vấn đề: rác nhựa khó phân huỷ → cần tái chế, phân loại, dùng vật liệu sinh học.\nỨng dụng: nhựa bao bì, sợi (nylon, polyester), cao su, keo dán, y sinh.\nGiải pháp: giảm dùng nhựa dùng một lần, tăng tái chế, phát triển biopolymer.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'infoBox',
+        content: {
+            title: 'Bảng tóm tắt nhanh',
+            content: 'Polime = chuỗi monome; có trùng hợp, trùng ngưng, đồng trùng hợp.\nTính chất: bền, nhẹ, cách điện; một số khó phân huỷ → rác nhựa.\nƯu tiên tái chế, chọn vật liệu sinh học khi có thể.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-8',
+        type: 'infoBox',
+        content: {
+            title: '',
+            content: '**Gợi ý hình**:\nSo sánh trùng hợp vs trùng ngưng: */images/hoahoc9/lesson32-polymerization.png*\nVòng đời nhựa và tái chế: */images/hoahoc9/lesson32-recycle.png*',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-9',
+        type: 'warningBox',
+        content: {
+            title: 'Mini quiz đọc nhanh',
+            content: 'PE sinh ra từ monome nào và thuộc phản ứng gì?\nVì sao nhựa PVC không nên đốt bừa bãi?\nBiện pháp nào giúp giảm rác nhựa khó phân huỷ?\nTự trả lời rồi luyện bộ trắc nghiệm.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

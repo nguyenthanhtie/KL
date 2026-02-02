@@ -280,5 +280,3 @@ export const useNotifications = () => {
     sendTestNotification
   };
 };
-
-export default useNotifications;

@@ -2,54 +2,69 @@ module.exports = {
   classId: 11,
   curriculumType: 'ketnoi',
   chapterId: 2,
-  chapterName: 'Chương 2: Nitrogen – sulfur',
+  chapterName: 'Chương 2: Nitrogen - sulfur',
   lessonId: 8,
   title: 'Bài 8: Sulfuric acid và muối sulfate',
   description: 'H2SO4 loãng/đặc, tính chất hoá học, điều chế, nhận biết muối sunfat.',
   level: 'Intermediate',
   order: 8,
-  theory: `
-    <h2>H2SO4 và muối sunfat</h2>
-    <p style="margin:8px 0; color:#334155;">So sánh hành vi của H2SO4 loãng/đặc, tính oxi hoá, háo nước và cách nhận biết ion SO4^{2-}.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">H2SO4 loãng</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Axit mạnh, điện li hoàn toàn; phản ứng với bazơ, oxit bazơ, muối → tạo sunfat.</li>
-          <li>Oxi hoá yếu: hiếm khi oxi hoá kim loại thường; giải phóng H2 với kim loại đứng trước H2.</li>
-          <li>Ứng dụng: xử lí nước, điện phân, làm dung dịch chuẩn.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">H2SO4 đặc</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Háo nước mạnh: làm than hoá C6H12O6; hút ẩm khí.</li>
-          <li>Oxi hoá mạnh ở nóng: Cu + 2H2SO4(đ) → CuSO4 + SO2↑ + 2H2O; không giải phóng H2.</li>
-          <li>Tính axit vẫn mạnh, có thể proton hoá nhiều chất hữu cơ (este hoá).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155; margin:12px 0;">
-      <h4 style="margin:0 0 6px; color:#312e81;">Quy trình tiếp xúc (Contact)</h4>
-      <ol style="margin:0; padding-left:20px;">
-        <li>Đốt lưu huỳnh/quặng → SO2, làm sạch khí.</li>
-        <li>Oxi hoá xúc tác V2O5: 2SO2 + O2 ⇌ 2SO3 (450°C, 1-2 atm).</li>
-        <li>Hấp thụ SO3 vào H2SO4 đặc → oleum; pha loãng tạo H2SO4 mong muốn.</li>
-      </ol>
-      <p style="margin:6px 0 0;">Tránh hấp thụ trực tiếp SO3 vào nước vì tạo sương H2SO4 khó ngưng tụ.</p>
-    </div>
-
-    <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-      <h4 style="margin:0 0 6px;">Muối sunfat</h4>
-      <ul style="margin:0; padding-left:18px;">
-        <li>Độ tan: BaSO4, PbSO4 kết tủa trắng; CaSO4 ít tan; còn lại phần lớn tan.</li>
-        <li>Nhận biết SO4^{2-}: thêm BaCl2 trong môi trường axit loãng → BaSO4 trắng, bền với axit.</li>
-        <li>Ứng dụng: thạch cao (CaSO4·2H2O), phân superphosphate Ca(H2PO4)2 + CaSO4.</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'H2SO4 và muối sunfat',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'So sánh hành vi của H2SO4 loãng/đặc, tính oxi hoá, háo nước và cách nhận biết ion SO4^{2-}.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'H2SO4 loãng',
+            content: 'Axit mạnh, điện li hoàn toàn; phản ứng với bazơ, oxit bazơ, muối → tạo sunfat.\nOxi hoá yếu: hiếm khi oxi hoá kim loại thường; giải phóng H2 với kim loại đứng trước H2.\nỨng dụng: xử lí nước, điện phân, làm dung dịch chuẩn.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'H2SO4 đặc',
+            content: 'Háo nước mạnh: làm than hoá C6H12O6; hút ẩm khí.\nOxi hoá mạnh ở nóng: Cu + 2H2SO4(đ) → CuSO4 + SO2↑ + 2H2O; không giải phóng H2.\nTính axit vẫn mạnh, có thể proton hoá nhiều chất hữu cơ (este hoá).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Quy trình tiếp xúc (Contact)',
+            content: 'Đốt lưu huỳnh/quặng → SO2, làm sạch khí.\nOxi hoá xúc tác V2O5: 2SO2 + O2 ⇌ 2SO3 (450°C, 1-2 atm).\nHấp thụ SO3 vào H2SO4 đặc → oleum; pha loãng tạo H2SO4 mong muốn.\nTránh hấp thụ trực tiếp SO3 vào nước vì tạo sương H2SO4 khó ngưng tụ.',
+            color: 'purple',
+            listType: 'number'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Muối sunfat',
+            content: 'Độ tan: BaSO4, PbSO4 kết tủa trắng; CaSO4 ít tan; còn lại phần lớn tan.\nNhận biết SO4^{2-}: thêm BaCl2 trong môi trường axit loãng → BaSO4 trắng, bền với axit.\nỨng dụng: thạch cao (CaSO4·2H2O), phân superphosphate Ca(H2PO4)2 + CaSO4.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

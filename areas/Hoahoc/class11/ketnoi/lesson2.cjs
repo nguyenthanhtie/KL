@@ -8,47 +8,63 @@ module.exports = {
   description: 'Cân bằng axit-bazơ, tích số tan Ksp, cân bằng trong dung dịch.',
   level: 'Intermediate',
   order: 2,
-  theory: `
-    <h2>Cân bằng trong dung dịch nước</h2>
-    <p style="margin:8px 0; color:#334155;">Các cân bằng chính: tự ion hoá nước (Kw), axit-bazơ (Ka, Kb, pH), kết tủa (Ksp), cùng các yếu tố ion chung và pha loãng theo Le Chatelier.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cân bằng nước & pH</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>$Kw = [H^+][OH^-] = 1,0\times10^{-14}$ (25°C); $pH + pOH = 14$.</li>
-          <li>pH = -log[H<sup>+</sup>]; dung dịch axit: pH &lt; 7; bazơ: pH &gt; 7.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Axit - bazơ yếu</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>$K_a = \dfrac{[H^+][A^-]}{[HA]}$, $K_b = \dfrac{[OH^-][BH^+]}{[B]}$.</li>
-          <li>Quan hệ: $K_a K_b = K_w$ cho cặp liên hợp.</li>
-          <li>Đệm: hỗn hợp axit yếu - bazơ liên hợp (hoặc bazơ yếu - axit liên hợp) giữ pH ổn định.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Cân bằng kết tủa (Ksp)</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Muối ít tan: $K_{sp} = [M^{m+}]^m[A^{n-}]^n$ tại trạng thái bão hoà.</li>
-          <li>Tính chất: Ksp nhỏ → tan rất ít; so Qsp với Ksp để dự đoán kết tủa.</li>
-          <li>Ion chung làm giảm độ tan (dịch cân bằng về chất rắn).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Le Chatelier trong dung dịch</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Thêm ion chung → cân bằng dịch chuyển để giảm nồng độ ion đó.</li>
-          <li>Pha loãng: ưu tiên tạo thêm ion (tăng điện li, giảm kết tủa nhẹ nếu tan ít).</li>
-          <li>Nhiệt độ: tuỳ phản ứng thu/toả nhiệt mà cân bằng dịch chuyển khác nhau.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Cân bằng trong dung dịch nước',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Các cân bằng chính: tự ion hoá nước (Kw), axit-bazơ (Ka, Kb, pH), kết tủa (Ksp), cùng các yếu tố ion chung và pha loãng theo Le Chatelier.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cân bằng nước & pH',
+            content: '$Kw = [H^+][OH^-] = 1,0\\times10^{-14}$ (25°C); $pH + pOH = 14$.\npH = -log[H⁽+⁾]; dung dịch axit: pH 7.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Axit - bazơ yếu',
+            content: '$K_a = \\dfrac{[H^+][A^-]}{[HA]}$, $K_b = \\dfrac{[OH^-][BH^+]}{[B]}$.\nQuan hệ: $K_a K_b = K_w$ cho cặp liên hợp.\nĐệm: hỗn hợp axit yếu - bazơ liên hợp (hoặc bazơ yếu - axit liên hợp) giữ pH ổn định.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Cân bằng kết tủa (Ksp)',
+            content: 'Muối ít tan: $K_{sp} = [M^{m+}]^m[A^{n-}]^n$ tại trạng thái bão hoà.\nTính chất: Ksp nhỏ → tan rất ít; so Qsp với Ksp để dự đoán kết tủa.\nIon chung làm giảm độ tan (dịch cân bằng về chất rắn).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Le Chatelier trong dung dịch',
+            content: 'Thêm ion chung → cân bằng dịch chuyển để giảm nồng độ ion đó.\nPha loãng: ưu tiên tạo thêm ion (tăng điện li, giảm kết tủa nhẹ nếu tan ít).\nNhiệt độ: tuỳ phản ứng thu/toả nhiệt mà cân bằng dịch chuyển khác nhau.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

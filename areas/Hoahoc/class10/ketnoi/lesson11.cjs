@@ -8,47 +8,63 @@ module.exports = {
   description: 'Liên kết ion: hình thành, tính chất tinh thể, điều kiện tạo thành.',
   level: 'Beginner',
   order: 2,
-  theory: `
-    <h2>Liên kết ion</h2>
-    <p style="margin:10px 0; color:#334155;">Mục tiêu: hiểu điều kiện hình thành, đặc điểm tinh thể ion, yếu tố ảnh hưởng độ bền (lattice) và tính tan/dẫn điện.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Hình thành</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Kim loại (ΔEN thấp) nhường e → cation; phi kim nhận e → anion.</li>
-          <li>Lực hút tĩnh điện đa hướng giữa ion trái dấu tạo mạng tinh thể ion (không hướng).</li>
-          <li>Tỉ lệ ion theo hoá trị tối giản: NaCl 1:1, CaCl2 1:2, Al2O3 2:3.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Tính chất chính</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Rắn kết tinh, nóng chảy/sôi cao, giòn (trượt lớp → ion cùng dấu đẩy nhau).</li>
-          <li>Tan tốt trong dung môi phân cực (H2O); dẫn điện khi nóng chảy/hoà tan do ion tự do.</li>
-          <li>Không dẫn điện ở trạng thái rắn (ion cố định). Không bay hơi dễ.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Độ bền mạng (lattice energy)</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>Điện tích ion lớn, bán kính nhỏ → lực hút mạnh → bền hơn (MgO > NaCl).</li>
-          <li>Độ bền tăng → nhiệt độ nóng chảy cao, ít tan hơn.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Tránh nhầm lẫn</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Liên kết ion không chia sẻ cặp e (khác cộng hoá trị).</li>
-          <li>Chất ion rắn không dẫn; cần ion di động (nóng chảy hoặc dung dịch).</li>
-          <li>Muối ít tan (BaSO4, CaCO3) vẫn là ion, chỉ khác độ tan do năng lượng mạng/hydrat hóa.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Liên kết ion',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Mục tiêu: hiểu điều kiện hình thành, đặc điểm tinh thể ion, yếu tố ảnh hưởng độ bền (lattice) và tính tan/dẫn điện.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Hình thành',
+            content: 'Kim loại (ΔEN thấp) nhường e → cation; phi kim nhận e → anion.\nLực hút tĩnh điện đa hướng giữa ion trái dấu tạo mạng tinh thể ion (không hướng).\nTỉ lệ ion theo hoá trị tối giản: NaCl 1:1, CaCl2 1:2, Al2O3 2:3.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Tính chất chính',
+            content: 'Rắn kết tinh, nóng chảy/sôi cao, giòn (trượt lớp → ion cùng dấu đẩy nhau).\nTan tốt trong dung môi phân cực (H2O); dẫn điện khi nóng chảy/hoà tan do ion tự do.\nKhông dẫn điện ở trạng thái rắn (ion cố định). Không bay hơi dễ.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Độ bền mạng (lattice energy)',
+            content: 'Điện tích ion lớn, bán kính nhỏ → lực hút mạnh → bền hơn (MgO > NaCl).\nĐộ bền tăng → nhiệt độ nóng chảy cao, ít tan hơn.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Tránh nhầm lẫn',
+            content: 'Liên kết ion không chia sẻ cặp e (khác cộng hoá trị).\nChất ion rắn không dẫn; cần ion di động (nóng chảy hoặc dung dịch).\nMuối ít tan (BaSO4, CaCO3) vẫn là ion, chỉ khác độ tan do năng lượng mạng/hydrat hóa.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',

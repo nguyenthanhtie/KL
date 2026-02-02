@@ -8,38 +8,53 @@ module.exports = {
   description: 'Tổng hợp ankan, anken, ankin, arene: cấu trúc, phản ứng đặc trưng, ứng dụng.',
   level: 'Intermediate',
   order: 18,
-  theory: `
-    <h2>Ôn tập Hydrocarbon</h2>
-    <p style="margin:8px 0; color:#334155;">Hệ thống hoá cấu trúc, phản ứng đặc trưng và chuỗi chuyển hoá giữa ankan, anken, ankin, arene.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">So sánh nhanh</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Ankan (sp3, no): phản ứng thế gốc tự do, cháy, cracking.</li>
-          <li>Anken/ankin (sp2/sp): cộng điện tử, trùng hợp; ankin đầu mạch phản ứng bạc.</li>
-          <li>Arene (thơm): SEAr thế electrophin, định hướng o,p/m tuỳ nhóm thế.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Chuỗi chuyển hoá</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Ankan → (cracking) anken/ankin; anken → (cộng H2) ankan; anken → (trùng hợp) polyme.</li>
-          <li>Anken → (cộng HX) halogenoalkan → (KOH alc) anken; ankin → (hydro hoá) anken/alkan.</li>
-          <li>Benzen → (Friedel–Crafts) dẫn xuất alkyl/acy; → (nitro hoá/ sulfo hoá) dẫn xuất nitro/sulfo.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="padding:12px; border-radius:12px; border:1px dashed #cbd5e1; background:#f8fafc; color:#475569;">
-      <h4 style="margin:0 0 6px;">Nhận biết</h4>
-      <ul style="margin:0; padding-left:18px;">
-        <li>Anken/ankin: làm mất màu Br2/CCl4.</li>
-        <li>Ankin đầu mạch: kết tủa AgC≡C–R (tráng bạc/Fehling).</li>
-        <li>Arene: khó phản ứng cộng, ưu tiên thế; khó nhận biết đơn giản → so sánh tính trơ tương đối.</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ôn tập Hydrocarbon',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Hệ thống hoá cấu trúc, phản ứng đặc trưng và chuỗi chuyển hoá giữa ankan, anken, ankin, arene.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'So sánh nhanh',
+            content: 'Ankan (sp3, no): phản ứng thế gốc tự do, cháy, cracking.\nAnken/ankin (sp2/sp): cộng điện tử, trùng hợp; ankin đầu mạch phản ứng bạc.\nArene (thơm): SEAr thế electrophin, định hướng o,p/m tuỳ nhóm thế.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Chuỗi chuyển hoá',
+            content: 'Ankan → (cracking) anken/ankin; anken → (cộng H2) ankan; anken → (trùng hợp) polyme.\nAnken → (cộng HX) halogenoalkan → (KOH alc) anken; ankin → (hydro hoá) anken/alkan.\nBenzen → (Friedel-Crafts) dẫn xuất alkyl/acy; → (nitro hoá/ sulfo hoá) dẫn xuất nitro/sulfo.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Nhận biết',
+            content: 'Anken/ankin: làm mất màu Br2/CCl4.\nAnkin đầu mạch: kết tủa AgC≡C-R (tráng bạc/Fehling).\nArene: khó phản ứng cộng, ưu tiên thế; khó nhận biết đơn giản → so sánh tính trơ tương đối.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
@@ -90,9 +105,9 @@ module.exports = {
     {
       type: 'multiple-choice',
       question: 'Định hướng o,p là đặc trưng của nhóm thế:',
-      options: ['–NO2', '–COOH', '–SO3H', '–CH3'],
+      options: ['-NO2', '-COOH', '-SO3H', '-CH3'],
       correctAnswer: 3,
-      explanation: '–CH3 hoạt hoá và định hướng o,p.',
+      explanation: '-CH3 hoạt hoá và định hướng o,p.',
       points: 10
     },
     {

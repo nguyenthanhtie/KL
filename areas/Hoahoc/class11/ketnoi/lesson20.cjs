@@ -5,48 +5,66 @@ module.exports = {
   chapterName: 'Chương 5: Dẫn xuất halogen - alcohol - phenol',
   lessonId: 20,
   title: 'Bài 20: Alcohol',
-  description: 'R–OH: phân loại mono/đa chức, no/không no, phản ứng đặc trưng.',
+  description: 'R-OH: phân loại mono/đa chức, no/không no, phản ứng đặc trưng.',
   level: 'Intermediate',
   order: 20,
-  theory: `
-    <h2>Ancol</h2>
-    <p style="margin:8px 0; color:#334155;">Phân loại ancol theo bậc và số nhóm –OH, tính chất H-bond và các phản ứng đặc trưng.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu tạo & tính chất vật lí</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Liên kết O–H phân cực; H-bond làm tăng T sôi, độ tan (ancol mạch ngắn tan tốt).</li>
-          <li>Bậc ancol: bậc 1 (–CH2OH), bậc 2 (–CHOH–), bậc 3 (–C(OH)–).</li>
-          <li>Đa chức: glyxerin (propane-1,2,3-triol) sánh, hút ẩm mạnh.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Phản ứng thế & tách</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Thế –OH: ROH + HX (ZnCl2) → RX + H2O; PCl3/SOCl2 thay –OH bằng halogen.</li>
-          <li>Tách nước: 140°C (H2SO4) → ete đối xứng; 170–180°C → anken (quy tắc Zaitsev).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Phản ứng oxi hoá</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Ancol bậc 1: oxi hoá nhẹ → anđehit, mạnh → axit (KMnO4/K2Cr2O7, t°, axit).</li>
-          <li>Ancol bậc 2: → xeton; bậc 3: khó oxi hoá (phân huỷ mạch).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Ứng dụng & sản xuất</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Ethanol: lên men tinh bột/đường; dùng làm dung môi, nhiên liệu sinh học.</li>
-          <li>Metanol: tổng hợp từ CO + 2H2 (xúc tác CuO/ZnO/Cr2O3); nhiên liệu, nguyên liệu sản xuất formaldehyde.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Ancol',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'paragraph',
+        content: {
+            text: 'Phân loại ancol theo bậc và số nhóm -OH, tính chất H-bond và các phản ứng đặc trưng.'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'infoBox',
+        content: {
+            title: 'Cấu tạo & tính chất vật lí',
+            content: 'Liên kết O-H phân cực; H-bond làm tăng T sôi, độ tan (ancol mạch ngắn tan tốt).\nBậc ancol: bậc 1 (-CH2OH), bậc 2 (-CHOH-), bậc 3 (-C(OH)-).\nĐa chức: glyxerin (propane-1,2,3-triol) sánh, hút ẩm mạnh.',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'warningBox',
+        content: {
+            title: 'Phản ứng thế & tách',
+            content: 'Thế -OH: ROH + HX (ZnCl2) → RX + H2O; PCl3/SOCl2 thay -OH bằng halogen.\nTách nước: 140°C (H2SO4) → ete đối xứng; 170-180°C → anken (quy tắc Zaitsev).',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Phản ứng oxi hoá',
+            content: 'Ancol bậc 1: oxi hoá nhẹ → anđehit, mạnh → axit (KMnO4/K2Cr2O7, t°, axit).\nAncol bậc 2: → xeton; bậc 3: khó oxi hoá (phân huỷ mạch).',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Ứng dụng & sản xuất',
+            content: 'Ethanol: lên men tinh bột/đường; dùng làm dung môi, nhiên liệu sinh học.\nMetanol: tổng hợp từ CO + 2H2 (xúc tác CuO/ZnO/Cr2O3); nhiên liệu, nguyên liệu sản xuất formaldehyde.',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
@@ -58,7 +76,7 @@ module.exports = {
     },
     {
       type: 'multiple-choice',
-      question: 'Phản ứng tách nước ở 170–180°C của ancol cho chủ yếu:',
+      question: 'Phản ứng tách nước ở 170-180°C của ancol cho chủ yếu:',
       options: ['Ete', 'Anken', 'Axetilen', 'Halogenoankan'],
       correctAnswer: 1,
       explanation: 'Nhiệt độ cao → tách nội phân tử tạo anken.',
@@ -68,15 +86,15 @@ module.exports = {
       type: 'true-false',
       question: 'Ancol bậc 3 khó bị oxi hoá thành xeton.',
       correctAnswer: true,
-      explanation: 'Không có H α gắn với C mang –OH, bị oxi hoá sẽ phân huỷ mạch.',
+      explanation: 'Không có H α gắn với C mang -OH, bị oxi hoá sẽ phân huỷ mạch.',
       points: 10
     },
     {
       type: 'multiple-choice',
-      question: 'Điều kiện thay –OH bằng Cl dùng:',
+      question: 'Điều kiện thay -OH bằng Cl dùng:',
       options: ['HBr', 'SOCl2 hoặc PCl5', 'KMnO4', 'Na'],
       correctAnswer: 1,
-      explanation: 'SOCl2/PCl5/PCl3 chuyển –OH thành Cl.',
+      explanation: 'SOCl2/PCl5/PCl3 chuyển -OH thành Cl.',
       points: 10
     },
     {
@@ -114,7 +132,7 @@ module.exports = {
       type: 'true-false',
       question: 'Glyxerin hút ẩm mạnh.',
       correctAnswer: true,
-      explanation: 'Ba nhóm –OH tạo nhiều H-bond, dùng làm chất giữ ẩm.',
+      explanation: 'Ba nhóm -OH tạo nhiều H-bond, dùng làm chất giữ ẩm.',
       points: 10
     },
     {

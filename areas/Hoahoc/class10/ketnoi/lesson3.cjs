@@ -8,61 +8,76 @@ module.exports = {
   description: 'Phân bố electron theo lớp/phân lớp và ba nguyên tắc Aufbau - Pauli - Hund.',
   level: 'Beginner',
   order: 3,
-  theory: `
-    <h2>Cấu trúc lớp vỏ electron</h2>
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Lớp & phân lớp</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Sức chứa lớp n: 2n^2 e.</li>
-          <li>Phân lớp: s(2), p(6), d(10), f(14); số obitan: s(1), p(3), d(5), f(7).</li>
-          <li>Thứ tự năng lượng: 1s < 2s < 2p < 3s < 3p < 4s < 3d < 4p < 5s ...</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Ba nguyên tắc</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Aufbau: điền từ mức năng lượng thấp → cao.</li>
-          <li>Pauli: mỗi obitan tối đa 2e, spin ngược.</li>
-          <li>Hund: obitan suy biến điền e đơn với spin song song trước.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#ecfeff;">
-        <h4 style="margin:0 0 6px; color:#0e7490;">Ví dụ cấu hình</h4>
-        <p style="margin:0; color:#0f172a;">O (Z=8): 1s^2 2s^2 2p^4. Na (Z=11): 1s^2 2s^2 2p^6 3s^1.</p>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc);">
-        <h4 style="margin:0 0 6px; color:#312e81;">Số lượng tử (tóm tắt)</h4>
-        <ul style="margin:0; padding-left:18px; color:#334155;">
-          <li>n: số lớp chính (1,2,3,...).</li>
-          <li>l: dạng obitan (0=s, 1=p, 2=d, 3=f).</li>
-          <li>m: định hướng obitan (từ -l đến +l).</li>
-          <li>ms: spin (+1/2 hoặc -1/2).</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Mẹo viết cấu hình</h4>
-        <ol style="margin:0; padding-left:18px;">
-          <li>Điền theo thứ tự năng lượng (sơ đồ chéo 1s → 7p).</li>
-          <li>Kiểm tổng e = Z; nếu ion: điều chỉnh e.</li>
-          <li>Viết rút gọn theo khí hiếm gần nhất: [Ne], [Ar]...</li>
-        </ol>
-        <p style="margin:8px 0 0;">Ngoại lệ thường gặp: Cr ([Ar] 3d5 4s1), Cu ([Ar] 3d10 4s1).</p>
-      </div>
-    </div>
-
-    <div style="margin:12px 0; padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed; color:#7c2d12;">
-      <h4 style="margin:0 0 6px;">Liên hệ nhóm/chu kì</h4>
-      <ul style="margin:0; padding-left:18px;">
-        <li>Chu kì = số lớp e đã điền (giá trị n lớn nhất có e).</li>
-        <li>Nhóm chính (A): số e hoá trị = tổng e lớp ngoài cùng (ns, np).</li>
-        <li>Hóa tính: nhiều e hoá trị → phi kim; ít e hoá trị → kim loại.</li>
-      </ul>
-    </div>
-  `,
+  theoryModules: [
+    {
+        id: 'mod-1',
+        type: 'heading',
+        content: {
+            text: 'Cấu trúc lớp vỏ electron',
+            level: 'h2'
+        }
+    },
+    {
+        id: 'mod-2',
+        type: 'infoBox',
+        content: {
+            title: 'Lớp & phân lớp',
+            content: 'Sức chứa lớp n: 2n^2 e.\nPhân lớp: s(2), p(6), d(10), f(14); số obitan: s(1), p(3), d(5), f(7).\nThứ tự năng lượng: 1s < 2s < 2p < 3s < 3p < 4s < 3d < 4p < 5s ...',
+            color: 'gray',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-3',
+        type: 'warningBox',
+        content: {
+            title: 'Ba nguyên tắc',
+            content: 'Aufbau: điền từ mức năng lượng thấp → cao.\nPauli: mỗi obitan tối đa 2e, spin ngược.\nHund: obitan suy biến điền e đơn với spin song song trước.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-4',
+        type: 'infoBox',
+        content: {
+            title: 'Ví dụ cấu hình',
+            content: 'O (Z=8): 1s^2 2s^2 2p^4. Na (Z=11): 1s^2 2s^2 2p^6 3s^1.',
+            color: 'blue',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-5',
+        type: 'infoBox',
+        content: {
+            title: 'Số lượng tử (tóm tắt)',
+            content: 'n: số lớp chính (1,2,3,...).\nl: dạng obitan (0=s, 1=p, 2=d, 3=f).\nm: định hướng obitan (từ -l đến +l).\nms: spin (+1/2 hoặc -1/2).',
+            color: 'purple',
+            listType: 'bullet'
+        }
+    },
+    {
+        id: 'mod-6',
+        type: 'infoBox',
+        content: {
+            title: 'Mẹo viết cấu hình',
+            content: 'Điền theo thứ tự năng lượng (sơ đồ chéo 1s → 7p).\nKiểm tổng e = Z; nếu ion: điều chỉnh e.\nViết rút gọn theo khí hiếm gần nhất: [Ne], [Ar]...\nNgoại lệ thường gặp: Cr ([Ar] 3d5 4s1), Cu ([Ar] 3d10 4s1).',
+            color: 'gray',
+            listType: 'number'
+        }
+    },
+    {
+        id: 'mod-7',
+        type: 'warningBox',
+        content: {
+            title: 'Liên hệ nhóm/chu kì',
+            content: 'Chu kì = số lớp e đã điền (giá trị n lớn nhất có e).\nNhóm chính (A): số e hoá trị = tổng e lớp ngoài cùng (ns, np).\nHóa tính: nhiều e hoá trị → phi kim; ít e hoá trị → kim loại.',
+            color: 'orange',
+            listType: 'bullet'
+        }
+    }
+  ],
   game: [
     {
       type: 'multiple-choice',
