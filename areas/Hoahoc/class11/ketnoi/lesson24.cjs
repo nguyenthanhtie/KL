@@ -8,47 +8,7 @@ module.exports = {
   description: 'R–COOH: tính axit, phản ứng thế ở nhóm chức, este hoá, ứng dụng.',
   level: 'Intermediate',
   order: 24,
-  theory: `
-    <h2>Axit cacboxylic</h2>
-    <p style="margin:8px 0; color:#334155;">Hiểu tính axit, liên kết hidro dimer, phản ứng muối/este hoá và tính khử/oxi hoá của nhóm –COOH.</p>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#f8fafc;">
-        <h4 style="margin:0 0 6px; color:#0f172a;">Cấu tạo & tính axit</h4>
-        <ul style="margin:0; padding-left:18px; color:#475569;">
-          <li>Nhóm –COOH có cộng hưởng giữa C=O và C–O, làm H axit (pKa ~4–5 với axit béo).</li>
-          <li>Tạo dimer bằng H-bond trong pha khí/lỏng, tăng T sôi.</li>
-          <li>Hiệu ứng -I của nhóm carbonyl và O làm ổn định anion carboxylat.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff7ed;">
-        <h4 style="margin:0 0 6px; color:#9a3412;">Phản ứng đặc trưng</h4>
-        <ul style="margin:0; padding-left:18px; color:#7c2d12;">
-          <li>Tạo muối với bazơ/carbonat: RCOOH + NaHCO3 → RCOONa + CO2 + H2O.</li>
-          <li>Este hoá (Fischer): RCOOH + R'OH (H2SO4 đặc, t°) ⇌ RCOOR' + H2O.</li>
-          <li>Thế –OH bằng Cl: RCOOH + SOCl2 → RCOCl + SO2 + HCl (hoạt hoá để tiếp tục phản ứng).</li>
-          <li>Khử mạnh (LiAlH4) → ancol bậc 1.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:12px 0;">
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569;">
-        <h4 style="margin:0 0 6px;">Ứng dụng & nguồn</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Axit fomic: thuộc da, dệt; axit axetic: giấm, dung môi, vinyl acetate.</li>
-          <li>Axit benzoic: bảo quản; axit lactic: thực phẩm, mỹ phẩm.</li>
-        </ul>
-      </div>
-      <div style="padding:12px; border-radius:12px; border:1px solid #cbd5e1; background:linear-gradient(135deg,#eef2ff,#f8fafc); color:#334155;">
-        <h4 style="margin:0 0 6px; color:#312e81;">Nhận biết & an toàn</h4>
-        <ul style="margin:0; padding-left:18px;">
-          <li>Phản ứng với NaHCO3 giải phóng CO2 sủi bọt (phân biệt với ancol/phenol).</li>
-          <li>Mùi chua, ăn mòn nhẹ; làm việc nơi thoáng, tránh tiếp xúc trực tiếp axit đậm đặc.</li>
-        </ul>
-      </div>
-    </div>
-  `,
+ 
   theoryModules: [
     {
         id: 'mod-1',
