@@ -444,11 +444,12 @@ const TongKetLop8 = () => {
         );
         break;
       
-      case 'calculation':
+      case 'calculation': {
         userAnswer = parseFloat(userInput);
         const correctVal = question.correctAnswer;
         isCorrect = Math.abs(userAnswer - correctVal) <= question.tolerance;
         break;
+      }
       
       case 'balance-equation':
         userAnswer = coefficients.join(', ');

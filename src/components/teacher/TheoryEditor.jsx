@@ -41,16 +41,6 @@ const parseFormatting = (text) => {
     .replace(/\n/g, '<br/>');
 };
 
-// Helper: Insert text at cursor position
-const insertTextAtCursor = (textarea, before, after = '') => {
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const text = textarea.value;
-  const selectedText = text.substring(start, end);
-  const newText = text.substring(0, start) + before + selectedText + after + text.substring(end);
-  return { newText, newCursor: start + before.length + selectedText.length + after.length };
-};
-
 // Rich Text Toolbar Component
 const FormattingToolbar = ({ textareaRef, value, onChange }) => {
   const applyFormat = (before, after = '') => {
@@ -274,6 +264,7 @@ const getDefaultContent = (type) => {
 const ModuleRenderer = ({ module, onChange, onRemove, onMove, index, total }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const textareaRef = useRef(null);
+  const boxContentRef = useRef(null);
   
   const updateContent = (field, value) => {
     onChange({ ...module, content: { ...module.content, [field]: value } });
@@ -424,7 +415,7 @@ const ModuleRenderer = ({ module, onChange, onRemove, onMove, index, total }) =>
 
       case 'infoBox':
       case 'warningBox':
-      case 'tipBox':
+      case 'tipBox': {
         const colorOptions = [
           { value: 'blue', label: 'Xanh dương', bg: 'bg-blue-50', border: 'border-blue-200' },
           { value: 'green', label: 'Xanh lá', bg: 'bg-green-50', border: 'border-green-200' },
@@ -433,7 +424,6 @@ const ModuleRenderer = ({ module, onChange, onRemove, onMove, index, total }) =>
           { value: 'purple', label: 'Tím', bg: 'bg-purple-50', border: 'border-purple-200' },
           { value: 'gray', label: 'Xám', bg: 'bg-gray-50', border: 'border-gray-200' }
         ];
-        const boxContentRef = useRef(null);
         return (
           <div className="space-y-3">
             <div>
@@ -493,6 +483,7 @@ const ModuleRenderer = ({ module, onChange, onRemove, onMove, index, total }) =>
             )}
           </div>
         );
+      }
 
       case 'formula':
         return (
@@ -674,7 +665,7 @@ const ModuleRenderer = ({ module, onChange, onRemove, onMove, index, total }) =>
           </div>
         );
 
-      case 'video':
+      case 'video': {
         const getVideoId = (url) => {
           if (!url) return null;
           const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&?/]+)/);
@@ -730,6 +721,7 @@ const ModuleRenderer = ({ module, onChange, onRemove, onMove, index, total }) =>
             )}
           </div>
         );
+      }
 
       case 'code':
         return (
@@ -911,21 +903,23 @@ const TheoryEditor = ({ value, onChange }) => {
 
     return mods.map(mod => {
       switch (mod.type) {
-        case 'heading':
+        case 'heading': {
           const Tag = mod.content.level || 'h2';
           return `<${Tag} style="margin:16px 0 8px; color:#0f172a; font-weight:600;">${formatText(mod.content.text)}</${Tag}>`;
+        }
         
         case 'paragraph':
           return `<p style="margin:10px 0; color:#334155; line-height:1.6;">${formatText(mod.content.text)}</p>`;
         
-        case 'list':
+        case 'list': {
           const listTag = mod.content.type === 'number' ? 'ol' : 'ul';
           const items = mod.content.items.map(item => `<li>${formatText(item)}</li>`).join('');
           return `<${listTag} style="margin:10px 0; padding-left:24px; color:#334155;">${items}</${listTag}>`;
+        }
         
         case 'infoBox':
         case 'warningBox':
-        case 'tipBox':
+        case 'tipBox': {
           const colors = {
             blue: { bg: '#eff6ff', border: '#bfdbfe', text: '#1e40af' },
             green: { bg: '#f0fdf4', border: '#bbf7d0', text: '#166534' },
@@ -945,6 +939,8 @@ const TheoryEditor = ({ value, onChange }) => {
             ${mod.content.title ? `<h4 style="margin:0 0 8px; color:${c.text}; font-weight:600;">${formatText(mod.content.title)}</h4>` : ''}
             <div style="color:${c.text};">${contentHtml}</div>
           </div>`;
+        }
+
         
         case 'formula':
           return `<div style="padding:16px; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:10px; margin:14px 0; text-align:center;">
@@ -952,7 +948,7 @@ const TheoryEditor = ({ value, onChange }) => {
             ${mod.content.description ? `<p style="margin:8px 0 0; color:#64748b; font-size:0.875rem;">${formatText(mod.content.description)}</p>` : ''}
           </div>`;
         
-        case 'table':
+        case 'table': {
           const headerCells = mod.content.headers.map(h => `<th style="padding:10px; border:1px solid #e2e8f0; background:#f1f5f9; font-weight:600;">${formatText(h)}</th>`).join('');
           const bodyRows = mod.content.rows.map(row => 
             `<tr>${row.map(cell => `<td style="padding:10px; border:1px solid #e2e8f0;">${formatText(cell)}</td>`).join('')}</tr>`
@@ -961,16 +957,18 @@ const TheoryEditor = ({ value, onChange }) => {
             <thead><tr>${headerCells}</tr></thead>
             <tbody>${bodyRows}</tbody>
           </table>`;
+        }
         
-        case 'image':
+        case 'image': {
           const sizeMap = { small: '25%', medium: '50%', large: '75%', full: '100%' };
           const imgSize = sizeMap[mod.content.size] || '100%';
           return `<figure style="margin:14px 0; text-align:center;">
             <img src="${mod.content.url}" alt="${mod.content.alt || ''}" style="max-width:${imgSize}; border-radius:8px;" />
             ${mod.content.caption ? `<figcaption style="margin-top:8px; color:#64748b; font-size:0.875rem;">${formatText(mod.content.caption)}</figcaption>` : ''}
           </figure>`;
+        }
         
-        case 'video':
+        case 'video': {
           const videoId = mod.content.url?.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&?/]+)/)?.[1];
           if (!videoId) return '';
           return `<div style="margin:14px 0;">
@@ -979,6 +977,7 @@ const TheoryEditor = ({ value, onChange }) => {
             </div>
             ${mod.content.caption ? `<p style="margin-top:8px; color:#64748b; font-size:0.875rem; text-align:center;">${formatText(mod.content.caption)}</p>` : ''}
           </div>`;
+        }
         
         case 'code':
           return `<pre style="padding:14px; background:#1e293b; color:#e2e8f0; border-radius:8px; margin:14px 0; overflow-x:auto; font-family:monospace;"><code>${mod.content.code}</code></pre>`;

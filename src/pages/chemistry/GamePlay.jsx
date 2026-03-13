@@ -21,7 +21,7 @@ const GamePlay = () => {
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [allLessons, setAllLessons] = useState([]);
+  const [_allLessons, setAllLessons] = useState([]);
   const [nextLesson, setNextLesson] = useState(null);
   
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
@@ -75,11 +75,11 @@ const GamePlay = () => {
   const fetchAllLessons = async () => {
     try {
       const response = await axios.get(`${API_URL}/lessons`);
-      const allLessons = response.data;
-      setAllLessons(allLessons);
+      const fetchedLessons = response.data;
+      setAllLessons(fetchedLessons);
       
       // Lọc chỉ lấy bài học trong CÙNG LỚP hiện tại
-      const currentClassLessons = allLessons.filter(
+      const currentClassLessons = fetchedLessons.filter(
         (l) => l.classId === parseInt(classId)
       );
       
@@ -307,12 +307,13 @@ const GamePlay = () => {
         isCorrect = userAnswer === currentQuiz.correctAnswer;
         break;
         
-      case 'fill-in-blank':
+      case 'fill-in-blank': {
         // Handle both string and numeric answers
         const userAnswerStr = userAnswer?.toString().trim().toLowerCase() ?? '';
         const correctAnswerStr = currentQuiz.correctAnswer?.toString().trim().toLowerCase() ?? '';
         isCorrect = userAnswerStr === correctAnswerStr;
         break;
+      }
         
       case 'matching':
         isCorrect = currentQuiz.pairs.every(pair => 
@@ -377,11 +378,12 @@ const GamePlay = () => {
           case 'true-false':
             currentQuestionCorrect = userAnswer === currentQuiz.correctAnswer;
             break;
-          case 'fill-in-blank':
+          case 'fill-in-blank': {
             const userAnswerStr = userAnswer?.toString().trim().toLowerCase() ?? '';
             const correctAnswerStr = currentQuiz.correctAnswer?.toString().trim().toLowerCase() ?? '';
             currentQuestionCorrect = userAnswerStr === correctAnswerStr;
             break;
+          }
           case 'matching':
             currentQuestionCorrect = currentQuiz.pairs.every(pair => matchingAnswers[pair.left] === pair.right);
             break;

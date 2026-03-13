@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Target, Lightbulb, Atom, CheckCircle, XCircle, RotateCcw } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
@@ -280,11 +280,50 @@ const XayDungPhanTu = () => {
   const [availableAtoms, setAvailableAtoms] = useState({});
   
   const buildAreaRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const [_isDragging, setIsDragging] = useState(false);
   const [draggedAtom, setDraggedAtom] = useState(null);
 
   const currentMolecules = moleculesByLevel[currentLevel];
   const targetMolecule = currentMolecules[currentMoleculeIndex];
+
+  // Hiển thị hộp thoại tiếp tục khi có tiến trình đã lưu
+  useEffect(() => {
+    if (hasProgress && !gameStarted && !gameCompleted) {
+      setShowResumeDialog(true);
+    }
+  }, [hasProgress, gameStarted, gameCompleted]);
+
+  // Bắt đầu hoặc tiếp tục game
+  const startGame = (fromBeginning = false) => {
+    if (fromBeginning) {
+      clearProgress();
+      setCurrentLevel(1);
+      setCurrentMoleculeIndex(0);
+      setScore(0);
+      setTotalScore(0);
+      setCompletedMolecules([]);
+      setGameCompleted(false);
+    } else {
+      const saved = getProgress();
+      if (saved) {
+        setCurrentLevel(saved.currentLevel || 1);
+        setCurrentMoleculeIndex(saved.currentMoleculeIndex || 0);
+        setScore(saved.score || 0);
+        setTotalScore(saved.totalScore || 0);
+        setCompletedMolecules(saved.completedMolecules || []);
+      } else {
+        startGame(true);
+        return;
+      }
+    }
+    setPlacedAtoms([]);
+    setBonds([]);
+    setSelectedAtom(null);
+    setShowResult(false);
+    setShowHint(false);
+    setGameStarted(true);
+    setShowResumeDialog(false);
+  };
 
   // Khởi tạo các nguyên tử có sẵn khi câu hỏi thay đổi
   useEffect(() => {
@@ -349,8 +388,11 @@ const XayDungPhanTu = () => {
       // Tạo liên kết giữa hai nguyên tử
       const atom1 = placedAtoms.find(a => a.id === selectedAtom);
       const atom2 = placedAtoms.find(a => a.id === atomId);
-      
-      // Kiểm tra xem đã có liên kết chưa
+      if (!atom1 || !atom2) {
+        setSelectedAtom(null);
+        return;
+      }
+            // Kiểm tra xem đã có liên kết chưa
       const existingBond = bonds.find(
         b => (b.from === selectedAtom && b.to === atomId) || 
              (b.from === atomId && b.to === selectedAtom)

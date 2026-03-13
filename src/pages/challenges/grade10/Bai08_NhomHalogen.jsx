@@ -526,10 +526,11 @@ const Bai08_NhomHalogen = () => {
 
     switch (q.type) {
       case 'multiple-choice':
-      case 'reaction-predict':
+      case 'reaction-predict': {
         const correctOpt = q.options.find(o => o.correct);
         isCorrect = mcAnswer === correctOpt?.id;
         break;
+      }
 
       case 'color-match':
         isCorrect = q.items.every(item => colorMatches[item.id] === item.correctColor);
