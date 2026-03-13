@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API_URL } from '../../config/api';
+import api from '../../config/api';
 import { useAuth } from '../../contexts/AuthContext';
 
 const StudentClassDetail = () => {
@@ -29,9 +28,9 @@ const StudentClassDetail = () => {
     const fetchClassDetail = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_URL}/users/classes/${classId}`, {
-          params: { userId: user?._id || user?.id }
-        });
+      const response = await api.get(`/users/classes/${classId}`, {
+        params: { userId: user?._id || user?.id }
+      });
         
         if (response.data.success) {
           setClassData(response.data.data);
@@ -52,7 +51,7 @@ const StudentClassDetail = () => {
   // Fetch PK rooms
   const fetchPKRooms = async () => {
     try {
-      const response = await axios.get(`${API_URL}/users/classes/${classId}/pk-rooms`, {
+      const response = await api.get(`/users/classes/${classId}/pk-rooms`, {
         params: { userId: user?._id || user?.id }
       });
       
@@ -132,15 +131,23 @@ const StudentClassDetail = () => {
   };
 
   // Handle start assignment
-  const handleStartAssignment = (assignment) => {
+  const handleStartAssignment = async (assignment) => {
     if (assignment.type === 'lesson' && assignment.lessonId) {
-      // Navigate to lesson
+      // lessonId is composite: classId*1000 + lessonId
       const lessonClassId = Math.floor(assignment.lessonId / 1000);
       const lessonId = assignment.lessonId % 1000;
-      navigate(`/lesson/${lessonClassId}/1/${lessonId}`);
+      try {
+        // Look up the lesson to find its chapterId
+        const res = await api.get(`/lessons/class/${lessonClassId}/lesson/${lessonId}`);
+        const chapterId = res.data?.chapterId || 1;
+        navigate(`/lesson/${lessonClassId}/${chapterId}/${lessonId}`);
+      } catch (err) {
+        // Log error and fallback to chapterId=1
+        console.warn('Could not look up lesson chapter, using fallback:', err.message);
+        navigate(`/lesson/${lessonClassId}/1/${lessonId}`);
+      }
     } else if (assignment.type === 'challenge' && assignment.challengeSlug) {
-      // Navigate to challenge
-      navigate(`/chemistry/challenge/${assignment.challengeSlug}`);
+      navigate(`/advanced-challenge/${assignment.challengeSlug}`);
     }
   };
 

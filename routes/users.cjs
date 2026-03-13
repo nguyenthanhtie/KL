@@ -1,9 +1,17 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.cjs');
 const Lesson = require('../models/Lesson.cjs');
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 // Register route
 router.post('/register', async (req, res) => {
@@ -1548,6 +1556,70 @@ router.get('/classes/:classId/pk-rooms', async (req, res) => {
       message: 'Lỗi server',
       error: error.message
     });
+  }
+});
+
+// POST /api/users/classes/:classId/assignments/:assignmentId/submit - Học sinh nộp/hoàn thành bài tập
+router.post('/classes/:classId/assignments/:assignmentId/submit', apiLimiter, async (req, res) => {
+  try {
+    const { classId, assignmentId } = req.params;
+    const { userId, score, stars } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập' });
+    }
+
+    const classRoom = await ClassRoom.findById(classId);
+    if (!classRoom) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy lớp học' });
+    }
+
+    // Kiểm tra học sinh có trong lớp không
+    const isEnrolled = classRoom.students.some(
+      s => s.student.toString() === userId && s.status === 'active'
+    );
+    if (!isEnrolled) {
+      return res.status(403).json({ success: false, message: 'Bạn không phải thành viên của lớp học này' });
+    }
+
+    // Tìm bài tập
+    const assignment = classRoom.assignments.id(assignmentId);
+    if (!assignment || !assignment.isActive) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy bài tập' });
+    }
+
+    // Kiểm tra đã nộp chưa
+    const alreadyCompleted = assignment.completedBy?.some(
+      c => c.student.toString() === userId
+    );
+    if (alreadyCompleted) {
+      return res.status(400).json({ success: false, message: 'Bạn đã hoàn thành bài tập này rồi' });
+    }
+
+    // Thêm vào completedBy
+    if (!assignment.completedBy) assignment.completedBy = [];
+    assignment.completedBy.push({
+      student: userId,
+      completedAt: new Date(),
+      score: score || 0,
+      stars: stars || 0
+    });
+
+    await classRoom.save();
+
+    res.json({
+      success: true,
+      message: 'Đã ghi nhận hoàn thành bài tập',
+      data: {
+        assignmentId,
+        score: score || 0,
+        stars: stars || 0,
+        completedAt: new Date()
+      }
+    });
+  } catch (error) {
+    console.error('❌ Submit assignment error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
   }
 });
 

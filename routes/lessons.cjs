@@ -1,7 +1,14 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const Lesson = require('../models/Lesson.cjs');
 const router = express.Router();
 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false
+});
 // Get all lessons
 router.get('/', async (req, res) => {
   try {
@@ -112,6 +119,32 @@ router.get('/class/:classId/chapter/:chapterId', async (req, res) => {
     res.json(lessons);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+// Get specific lesson by classId and lessonId only (looks up chapterId automatically)
+router.get('/class/:classId/lesson/:lessonId', apiLimiter, async (req, res) => {
+  try {
+    const { curriculumType } = req.query;
+
+    const filter = {
+      classId: parseInt(req.params.classId),
+      lessonId: parseInt(req.params.lessonId)
+    };
+
+    if (curriculumType) {
+      filter.curriculumType = curriculumType;
+    }
+
+    const lesson = await Lesson.findOne(filter).lean();
+
+    if (!lesson) {
+      return res.status(404).json({ success: false, message: 'Lesson not found' });
+    }
+
+    res.json(lesson);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 

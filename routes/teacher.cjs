@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
 const User = require('../models/User.cjs');
 const ClassRoom = require('../models/ClassRoom.cjs');
@@ -6,6 +7,13 @@ const Assignment = require('../models/Assignment.cjs');
 const Lesson = require('../models/Lesson.cjs');
 const Challenge = require('../models/Challenge.cjs');
 const { authMiddleware, teacherMiddleware, checkClassOwnership } = require('../middleware/roleAuth.cjs');
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 // Tất cả routes đều yêu cầu đăng nhập và là giáo viên
 router.use(authMiddleware);
@@ -459,6 +467,78 @@ router.get('/classes/:classId/students', checkClassOwnership, async (req, res) =
     res.json({ success: true, data: studentsWithProgress });
   } catch (error) {
     console.error('Get students progress error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// GET /api/teacher/classes/:classId/pending-students - Lấy danh sách học sinh chờ duyệt
+router.get('/classes/:classId/pending-students', apiLimiter, checkClassOwnership, async (req, res) => {
+  try {
+    const classRoom = await ClassRoom.findById(req.params.classId)
+      .populate('students.student', 'username displayName email avatar');
+
+    const pendingStudents = classRoom.students
+      .filter(s => s.status === 'pending')
+      .map(s => ({
+        _id: s.student._id,
+        username: s.student.username,
+        displayName: s.student.displayName,
+        email: s.student.email,
+        avatar: s.student.avatar,
+        requestedAt: s.enrolledAt
+      }));
+
+    res.json({ success: true, data: pendingStudents });
+  } catch (error) {
+    console.error('Get pending students error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// PUT /api/teacher/classes/:classId/students/:studentId/approve - Duyệt học sinh vào lớp
+router.put('/classes/:classId/students/:studentId/approve', apiLimiter, checkClassOwnership, async (req, res) => {
+  try {
+    const classRoom = req.classRoom;
+    const { studentId } = req.params;
+
+    const studentEntry = classRoom.students.find(
+      s => s.student.toString() === studentId && s.status === 'pending'
+    );
+
+    if (!studentEntry) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy yêu cầu tham gia' });
+    }
+
+    studentEntry.status = 'active';
+    await classRoom.save();
+
+    res.json({ success: true, message: 'Đã duyệt học sinh vào lớp' });
+  } catch (error) {
+    console.error('Approve student error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// PUT /api/teacher/classes/:classId/students/:studentId/reject - Từ chối học sinh
+router.put('/classes/:classId/students/:studentId/reject', apiLimiter, checkClassOwnership, async (req, res) => {
+  try {
+    const classRoom = req.classRoom;
+    const { studentId } = req.params;
+
+    const studentIndex = classRoom.students.findIndex(
+      s => s.student.toString() === studentId && s.status === 'pending'
+    );
+
+    if (studentIndex === -1) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy yêu cầu tham gia' });
+    }
+
+    classRoom.students.splice(studentIndex, 1);
+    await classRoom.save();
+
+    res.json({ success: true, message: 'Đã từ chối yêu cầu tham gia' });
+  } catch (error) {
+    console.error('Reject student error:', error);
     res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
   }
 });

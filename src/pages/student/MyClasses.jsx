@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API_URL } from '../../config/api';
+import api from '../../config/api';
 import { useAuth } from '../../contexts/AuthContext';
 
 const MyClasses = () => {
@@ -32,7 +31,7 @@ const MyClasses = () => {
   const fetchClasses = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/users/classes`, {
+      const response = await api.get('/users/classes', {
         params: { userId: user?._id || user?.id }
       });
       
@@ -66,7 +65,7 @@ const MyClasses = () => {
       setJoining(true);
       setError('');
       
-      const response = await axios.post(`${API_URL}/users/classes/join`, {
+      const response = await api.post('/users/classes/join', {
         classCode: classCode.trim(),
         userId: user?._id || user?.id
       });
@@ -91,8 +90,8 @@ const MyClasses = () => {
     if (!selectedClass) return;
 
     try {
-      const response = await axios.delete(
-        `${API_URL}/users/classes/${selectedClass._id}/leave`,
+      const response = await api.delete(
+        `/users/classes/${selectedClass._id}/leave`,
         { data: { userId: user?._id || user?.id } }
       );
 

@@ -16,6 +16,7 @@ const ClassManagement = () => {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [students, setStudents] = useState([]);
+  const [pendingStudents, setPendingStudents] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -94,6 +95,17 @@ const ClassManagement = () => {
     }
   }, []);
 
+  const fetchPendingStudents = useCallback(async (id) => {
+    try {
+      const response = await api.get(`/teacher/classes/${id}/pending-students`);
+      if (response.data.success) {
+        setPendingStudents(response.data.data);
+      }
+    } catch (err) {
+      console.error('Fetch pending students error:', err);
+    }
+  }, []);
+
   useEffect(() => {
     if (!user || (user.role !== 'teacher' && user.role !== 'admin')) {
       navigate('/');
@@ -107,8 +119,9 @@ const ClassManagement = () => {
       fetchClassDetail(classId);
       fetchStudents(classId);
       fetchAssignments(classId);
+      fetchPendingStudents(classId);
     }
-  }, [classId, fetchClassDetail, fetchStudents, fetchAssignments]);
+  }, [classId, fetchClassDetail, fetchStudents, fetchAssignments, fetchPendingStudents]);
 
   const handleCreateClass = async (e) => {
     e.preventDefault();
@@ -231,6 +244,33 @@ const ClassManagement = () => {
       }
     } catch (err) {
       setMessage({ type: 'error', text: err.response?.data?.message || 'Không thể xóa học sinh' });
+    }
+  };
+
+  const handleApproveStudent = async (studentId) => {
+    if (!selectedClass) return;
+    try {
+      const response = await api.put(`/teacher/classes/${selectedClass._id}/students/${studentId}/approve`);
+      if (response.data.success) {
+        setMessage({ type: 'success', text: 'Đã duyệt học sinh vào lớp' });
+        fetchStudents(selectedClass._id);
+        fetchPendingStudents(selectedClass._id);
+      }
+    } catch (err) {
+      setMessage({ type: 'error', text: err.response?.data?.message || 'Không thể duyệt học sinh' });
+    }
+  };
+
+  const handleRejectStudent = async (studentId) => {
+    if (!selectedClass || !window.confirm('Bạn có chắc muốn từ chối yêu cầu tham gia này?')) return;
+    try {
+      const response = await api.put(`/teacher/classes/${selectedClass._id}/students/${studentId}/reject`);
+      if (response.data.success) {
+        setMessage({ type: 'success', text: 'Đã từ chối yêu cầu tham gia' });
+        fetchPendingStudents(selectedClass._id);
+      }
+    } catch (err) {
+      setMessage({ type: 'error', text: err.response?.data?.message || 'Không thể từ chối yêu cầu' });
     }
   };
 
@@ -533,7 +573,9 @@ const ClassManagement = () => {
             }`}
           >
             <Users className="h-4 w-4" />
-            Học sinh ({students.length})
+            Học sinh ({students.length}){pendingStudents.length > 0 && (
+              <span className="ml-1 px-1.5 py-0.5 bg-yellow-500 text-white text-xs rounded-full">{pendingStudents.length}</span>
+            )}
           </button>
           <button
             onClick={() => setActiveTab('assignments')}
@@ -548,7 +590,53 @@ const ClassManagement = () => {
 
         {/* Students List */}
         {activeTab === 'students' && (
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="space-y-4">
+          {/* Pending Students */}
+          {pendingStudents.length > 0 && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl overflow-hidden">
+              <div className="px-6 py-4 border-b border-yellow-200 flex items-center justify-between">
+                <h2 className="font-semibold text-yellow-800 flex items-center gap-2">
+                  <AlertCircle className="h-5 w-5" />
+                  Yêu cầu tham gia ({pendingStudents.length})
+                </h2>
+              </div>
+              <div className="divide-y divide-yellow-100">
+                {pendingStudents.map(student => (
+                  <div key={student._id} className="px-6 py-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                        <span className="text-yellow-700 font-medium">
+                          {student.displayName?.[0] || student.username?.[0]}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-800">{student.displayName || student.username}</p>
+                        <p className="text-sm text-gray-500">{student.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleApproveStudent(student._id)}
+                        className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm flex items-center gap-1"
+                      >
+                        <CheckCircle className="h-4 w-4" />
+                        Duyệt
+                      </button>
+                      <button
+                        onClick={() => handleRejectStudent(student._id)}
+                        className="px-3 py-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 text-sm flex items-center gap-1"
+                      >
+                        <X className="h-4 w-4" />
+                        Từ chối
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b flex items-center justify-between">
             <h2 className="font-semibold text-gray-800">Danh sách học sinh</h2>
             <span className="text-sm text-gray-500">{students.length} học sinh</span>
@@ -635,6 +723,7 @@ const ClassManagement = () => {
               </table>
             </div>
           )}
+        </div>
         </div>
         )}
 
@@ -849,6 +938,40 @@ const ClassManagement = () => {
                     />
                   </div>
                 </div>
+
+                {/* Lesson ID (for 'lesson' type) */}
+                {newAssignment.type === 'lesson' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      ID bài học <span className="text-gray-400 font-normal">(tùy chọn)</span>
+                    </label>
+                    <input
+                      type="number"
+                      value={newAssignment.lessonId}
+                      onChange={(e) => setNewAssignment(prev => ({ ...prev, lessonId: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                      placeholder="VD: 8001 (lớp 8, bài 1)"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Định dạng: classId × 1000 + lessonId (ví dụ: lớp 8 bài 5 = 8005)</p>
+                  </div>
+                )}
+
+                {/* Challenge slug (for 'challenge' type) */}
+                {newAssignment.type === 'challenge' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Thử thách <span className="text-gray-400 font-normal">(tùy chọn)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={newAssignment.challengeSlug}
+                      onChange={(e) => setNewAssignment(prev => ({ ...prev, challengeSlug: e.target.value }))}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                      placeholder="VD: can-bang, cau-truc-nguyen-tu"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Slug của thử thách (phần cuối URL /advanced-challenge/...)</p>
+                  </div>
+                )}
                 
                 <div className="border-t pt-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
