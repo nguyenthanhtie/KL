@@ -442,7 +442,7 @@ const Profile = () => {
 
                   {/* Name & Email */}
                   <h2 className="text-2xl font-bold text-gray-800 mb-1">
-                    {userData?.displayName || userData?.username || 'Học viên'}
+                    {userData?.displayName || userData?.username || (userData?.role === 'teacher' ? 'Giáo viên' : (userData?.role === 'admin' ? 'Quản trị viên' : 'Học viên'))}
                   </h2>
                   <p className="text-gray-500 text-sm flex items-center justify-center gap-2 mb-6">
                     <Mail className="w-4 h-4" />
@@ -450,6 +450,7 @@ const Profile = () => {
                   </p>
 
                   {/* XP Progress - New Mission-based EXP System */}
+                  {userData?.role !== 'teacher' && userData?.role !== 'admin' && (
                   <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-4 mb-6">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-gray-700">🎯 Kinh nghiệm</span>
@@ -473,6 +474,7 @@ const Profile = () => {
                       </p>
                     </div>
                   </div>
+                  )}
 
                   {/* Current Program Info */}
                   {currentProgram && (
@@ -499,6 +501,7 @@ const Profile = () => {
 
             {/* Stats Cards */}
             <div className="lg:col-span-2">
+              {userData?.role !== 'teacher' && userData?.role !== 'admin' && (
               <div className="grid grid-cols-2 gap-4">
                 {/* Lessons Completed */}
                 <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-6 border border-white/50 group hover:shadow-2xl transition-all duration-300">
@@ -567,10 +570,12 @@ const Profile = () => {
                   <p className="text-gray-500 text-sm">Điểm trung bình</p>
                 </div>
               </div>
+              )}
             </div>
           </div>
 
           {/* Progress by Level */}
+          {userData?.role !== 'teacher' && userData?.role !== 'admin' && (
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8 border border-white/50 mb-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
@@ -619,8 +624,10 @@ const Profile = () => {
               ))}
             </div>
           </div>
+          )}
 
           {/* Achievements */}
+          {userData?.role !== 'teacher' && userData?.role !== 'admin' && (
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8 border border-white/50">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center">
@@ -655,6 +662,7 @@ const Profile = () => {
               ))}
             </div>
           </div>
+          )}
 
         {/* Show Mission Bubble Button */}
         <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">

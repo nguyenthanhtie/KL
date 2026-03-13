@@ -368,11 +368,28 @@ router.post('/classes/:classId/students', checkClassOwnership, async (req, res) 
     
     await classRoom.save();
     
-    // Thêm vào danh sách students của giáo viên
-    const studentObjectIds = classRoom.students.map(s => s.student);
-    await User.findByIdAndUpdate(req.user._id, {
-      $addToSet: { students: { $each: studentObjectIds } }
-    });
+    // Thêm chỉ các học sinh MỚI vào danh sách students của giáo viên
+    const newStudentIds = addedStudents.length > 0 
+      ? classRoom.students
+          .filter(s => s.status === 'active')
+          .map(s => s.student)
+          .filter(id => {
+            // Chỉ lấy ID của students vừa được thêm mới
+            return addedStudents.some(email => true); // addToSet sẽ tự xử lý trùng
+          })
+      : [];
+    
+    if (addedStudents.length > 0) {
+      // Lấy ID của các students vừa thêm thành công
+      const newlyAddedUsers = await User.find({ 
+        email: { $in: addedStudents } 
+      }).select('_id');
+      const newlyAddedIds = newlyAddedUsers.map(u => u._id);
+      
+      await User.findByIdAndUpdate(req.user._id, {
+        $addToSet: { students: { $each: newlyAddedIds } }
+      });
+    }
     
     res.json({
       success: true,
@@ -420,6 +437,150 @@ router.delete('/classes/:classId/students/:studentId', checkClassOwnership, asyn
     });
   } catch (error) {
     console.error('Remove student error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// PUT /api/teacher/classes/:classId/students/:studentId/approve - Duyệt học sinh pending
+router.put('/classes/:classId/students/:studentId/approve', checkClassOwnership, async (req, res) => {
+  try {
+    const classRoom = req.classRoom;
+    const studentId = req.params.studentId;
+    
+    const studentEntry = classRoom.students.find(
+      s => s.student.toString() === studentId
+    );
+    
+    if (!studentEntry) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Học sinh không trong lớp này' 
+      });
+    }
+    
+    if (studentEntry.status !== 'pending') {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Học sinh không ở trạng thái chờ duyệt' 
+      });
+    }
+
+    // Kiểm tra số lượng tối đa
+    if (classRoom.students.filter(s => s.status === 'active').length >= classRoom.settings.maxStudents) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `Lớp đã đầy (tối đa ${classRoom.settings.maxStudents} học sinh)` 
+      });
+    }
+    
+    // Duyệt - đổi trạng thái thành active và cập nhật thời gian
+    studentEntry.status = 'active';
+    studentEntry.enrolledAt = new Date();
+    await classRoom.save();
+    
+    // Đảm bảo học sinh có enrolledClasses tương ứng
+    const student = await User.findById(studentId);
+    if (student) {
+      const existingEnrollment = student.enrolledClasses?.find(
+        e => e.classId.toString() === classRoom._id.toString()
+      );
+      
+      if (!existingEnrollment) {
+        if (!student.enrolledClasses) {
+          student.enrolledClasses = [];
+        }
+        student.enrolledClasses.push({
+          classId: classRoom._id,
+          enrolledAt: new Date()
+        });
+        
+        // Cập nhật assignedTeacher nếu chưa có
+        if (!student.assignedTeacher) {
+          student.assignedTeacher = classRoom.teacher;
+        }
+        
+        await student.save();
+      }
+    }
+    
+    // Thêm vào danh sách students lưu trong User model của giáo viên nếu chưa có
+    await User.findByIdAndUpdate(req.user._id, {
+      $addToSet: { students: studentId }
+    });
+    
+    res.json({ 
+      success: true, 
+      message: 'Đã duyệt học sinh vào lớp' 
+    });
+  } catch (error) {
+    console.error('Approve student error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// PUT /api/teacher/classes/:classId/students/:studentId/reject - Từ chối học sinh pending
+router.put('/classes/:classId/students/:studentId/reject', checkClassOwnership, async (req, res) => {
+  try {
+    const classRoom = req.classRoom;
+    const studentId = req.params.studentId;
+    
+    const studentIndex = classRoom.students.findIndex(
+      s => s.student.toString() === studentId
+    );
+    
+    if (studentIndex === -1) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Học sinh không trong lớp này' 
+      });
+    }
+    
+    if (classRoom.students[studentIndex].status !== 'pending') {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Học sinh không ở trạng thái chờ duyệt' 
+      });
+    }
+    
+    // Từ chối - đánh dấu là rejected hoặc xóa khỏi list (chọn xóa khỏi list cho đơn giản)
+    classRoom.students.splice(studentIndex, 1);
+    await classRoom.save();
+    
+    // Xóa classId khỏi enrolledClasses của học sinh để cleanup
+    await User.findByIdAndUpdate(studentId, {
+      $pull: { enrolledClasses: { classId: classRoom._id } }
+    });
+    
+    res.json({ 
+      success: true, 
+      message: 'Đã từ chối học sinh' 
+    });
+  } catch (error) {
+    console.error('Reject student error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// GET /api/teacher/classes/:classId/pending-students - Lấy danh sách học sinh chờ duyệt
+router.get('/classes/:classId/pending-students', checkClassOwnership, async (req, res) => {
+  try {
+    const classRoom = await ClassRoom.findById(req.params.classId)
+      .populate('students.student', 'username displayName email avatar createdAt');
+    
+    const pendingStudents = classRoom.students
+      .filter(s => s.status === 'pending')
+      .map(s => ({
+        _id: s.student._id,
+        username: s.student.username,
+        displayName: s.student.displayName,
+        email: s.student.email,
+        avatar: s.student.avatar,
+        requestedAt: s.enrolledAt
+      }));
+    
+    res.json({ success: true, data: pendingStudents });
+  } catch (error) {
+    console.error('Get pending students error:', error);
     res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
   }
 });
@@ -597,6 +758,7 @@ router.get('/assignments/:assignmentId', async (req, res) => {
     
     // Cập nhật thống kê
     assignment.updateStatistics();
+    await assignment.save();
     
     res.json({ success: true, data: assignment });
   } catch (error) {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API_URL } from '../../config/api';
+import api from '../../config/api';
 import { useAuth } from '../../contexts/AuthContext';
 
 const StudentClassDetail = () => {
@@ -29,9 +28,7 @@ const StudentClassDetail = () => {
     const fetchClassDetail = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_URL}/users/classes/${classId}`, {
-          params: { userId: user?._id || user?.id }
-        });
+        const response = await api.get(`/users/classes/${classId}`);
         
         if (response.data.success) {
           setClassData(response.data.data);
@@ -52,9 +49,7 @@ const StudentClassDetail = () => {
   // Fetch PK rooms
   const fetchPKRooms = async () => {
     try {
-      const response = await axios.get(`${API_URL}/users/classes/${classId}/pk-rooms`, {
-        params: { userId: user?._id || user?.id }
-      });
+      const response = await api.get(`/users/classes/${classId}/pk-rooms`);
       
       if (response.data.success) {
         setPkRooms(response.data.data);
@@ -541,7 +536,7 @@ const StudentClassDetail = () => {
                       
                       {room.status === 'waiting' && (
                         <button
-                          onClick={() => navigate(`/pk?code=${room.code}`)}
+                        onClick={() => navigate(`/chemistry/pk/room/${room.code}`)}
                           className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-lg font-medium transition-all shadow-lg shadow-red-500/25"
                         >
                           Vào phòng

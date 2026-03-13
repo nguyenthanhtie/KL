@@ -16,6 +16,7 @@ const ClassManagement = () => {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [students, setStudents] = useState([]);
+  const [pendingStudents, setPendingStudents] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -77,6 +78,11 @@ const ClassManagement = () => {
       const response = await api.get(`/teacher/classes/${id}/students`);
       if (response.data.success) {
         setStudents(response.data.data);
+      }
+      
+      const pendingResponse = await api.get(`/teacher/classes/${id}/pending-students`);
+      if (pendingResponse.data.success) {
+        setPendingStudents(pendingResponse.data.data);
       }
     } catch (err) {
       console.error('Fetch students error:', err);
@@ -231,6 +237,32 @@ const ClassManagement = () => {
       }
     } catch (err) {
       setMessage({ type: 'error', text: err.response?.data?.message || 'Không thể xóa học sinh' });
+    }
+  };
+
+  const handleApproveStudent = async (studentId) => {
+    if (!selectedClass) return;
+    try {
+      const response = await api.put(`/teacher/classes/${selectedClass._id}/students/${studentId}/approve`);
+      if (response.data.success) {
+        setMessage({ type: 'success', text: 'Đã duyệt học sinh thành công' });
+        fetchStudents(selectedClass._id);
+      }
+    } catch (err) {
+      setMessage({ type: 'error', text: err.response?.data?.message || 'Không thể duyệt học sinh' });
+    }
+  };
+
+  const handleRejectStudent = async (studentId) => {
+    if (!selectedClass || !window.confirm('Bạn có chắc muốn từ chối học sinh này?')) return;
+    try {
+      const response = await api.put(`/teacher/classes/${selectedClass._id}/students/${studentId}/reject`);
+      if (response.data.success) {
+        setMessage({ type: 'success', text: 'Đã từ chối học sinh' });
+        fetchStudents(selectedClass._id);
+      }
+    } catch (err) {
+      setMessage({ type: 'error', text: err.response?.data?.message || 'Không thể từ chối học sinh' });
     }
   };
 
@@ -546,9 +578,80 @@ const ClassManagement = () => {
           </button>
         </div>
 
+        {/* Pending Students List */}
+        {activeTab === 'students' && pendingStudents.length > 0 && (
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6 border border-yellow-200">
+            <div className="px-6 py-4 border-b bg-yellow-50 flex items-center justify-between">
+              <h2 className="font-semibold text-yellow-800 flex items-center gap-2">
+                <AlertCircle className="h-5 w-5" />
+                Học sinh chờ duyệt
+              </h2>
+              <span className="text-sm text-yellow-700 bg-yellow-200 px-2 py-0.5 rounded-full font-medium">
+                {pendingStudents.length} học sinh
+              </span>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Học sinh</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Thời gian yêu cầu</th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {pendingStudents.map(student => (
+                    <tr key={student._id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                            {student.avatar ? (
+                              <img src={student.avatar} alt="" className="w-10 h-10 rounded-full" />
+                            ) : (
+                              <span className="text-yellow-600 font-medium">
+                                {student.displayName?.[0] || student.username?.[0]}
+                              </span>
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800">{student.displayName || student.username}</p>
+                            <p className="text-sm text-gray-500">{student.email}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-600">
+                        {student.requestedAt ? new Date(student.requestedAt).toLocaleDateString('vi-VN') : '-'}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-2">
+                          <button
+                            onClick={() => handleApproveStudent(student._id)}
+                            className="flex items-center gap-1 px-3 py-1.5 bg-green-100 text-green-700 hover:bg-green-200 rounded-lg text-sm font-medium transition-colors"
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                            Duyệt
+                          </button>
+                          <button
+                            onClick={() => handleRejectStudent(student._id)}
+                            className="flex items-center gap-1 px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg text-sm font-medium transition-colors"
+                          >
+                            <X className="h-4 w-4" />
+                            Từ chối
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         {/* Students List */}
         {activeTab === 'students' && (
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
           <div className="px-6 py-4 border-b flex items-center justify-between">
             <h2 className="font-semibold text-gray-800">Danh sách học sinh</h2>
             <span className="text-sm text-gray-500">{students.length} học sinh</span>

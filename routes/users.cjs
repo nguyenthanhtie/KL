@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.cjs');
 const Lesson = require('../models/Lesson.cjs');
+const { authMiddleware } = require('../middleware/roleAuth.cjs');
 
 // Register route
 router.post('/register', async (req, res) => {
@@ -262,10 +263,15 @@ router.post('/auth/google', async (req, res) => {
 });
 
 // Update user profile (displayName, avatar)
-router.put('/:userId', async (req, res) => {
+router.put('/:userId', authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params;
     const { displayName, avatar } = req.body;
+
+    // Kiểm tra user chỉ có thể sửa profile của chính mình
+    if (req.user._id.toString() !== userId && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Bạn không có quyền sửa profile này' });
+    }
 
     const user = await User.findById(userId);
     if (!user) {
@@ -891,7 +897,7 @@ router.post('/select-curriculum', async (req, res) => {
 // ==================== MISSION SYSTEM ====================
 
 // Get user's completed missions
-router.get('/:userId/missions', async (req, res) => {
+router.get('/:userId/missions', authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params;
     
@@ -919,7 +925,7 @@ router.get('/:userId/missions', async (req, res) => {
 });
 
 // Claim a mission reward
-router.post('/:userId/missions/claim', async (req, res) => {
+router.post('/:userId/missions/claim', authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params;
     const { missionId, missionExp, isDaily } = req.body;
@@ -1003,22 +1009,15 @@ router.post('/:userId/missions/claim', async (req, res) => {
 const ClassRoom = require('../models/ClassRoom.cjs');
 
 // POST /api/users/classes/join - Học sinh tham gia lớp bằng mã lớp
-router.post('/classes/join', async (req, res) => {
+router.post('/classes/join', authMiddleware, async (req, res) => {
   try {
     const { classCode } = req.body;
-    const userId = req.body.userId;
+    const userId = req.user._id.toString();
 
     if (!classCode) {
       return res.status(400).json({
         success: false,
         message: 'Vui lòng nhập mã lớp học'
-      });
-    }
-
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Vui lòng đăng nhập'
       });
     }
 
@@ -1149,29 +1148,18 @@ router.post('/classes/join', async (req, res) => {
 });
 
 // GET /api/users/classes - Lấy danh sách lớp học của học sinh
-router.get('/classes', async (req, res) => {
+router.get('/classes', authMiddleware, async (req, res) => {
   try {
-    const { userId } = req.query;
+    const userId = req.user._id.toString();
 
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Vui lòng đăng nhập'
-      });
-    }
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'Không tìm thấy người dùng'
-      });
-    }
-
-    // Lấy danh sách lớp học của học sinh
+    // Lấy danh sách lớp học của học sinh - sử dụng $elemMatch để đảm bảo match đúng student
     const classes = await ClassRoom.find({
-      'students.student': userId,
-      'students.status': { $in: ['active', 'pending'] }
+      students: {
+        $elemMatch: {
+          student: userId,
+          status: { $in: ['active', 'pending'] }
+        }
+      }
     })
       .populate('teacher', 'username displayName email avatar')
       .select('name code description grade subject curriculumType teacher settings statistics students announcements createdAt')
@@ -1217,17 +1205,10 @@ router.get('/classes', async (req, res) => {
 });
 
 // GET /api/users/classes/:classId - Lấy chi tiết lớp học (cho học sinh)
-router.get('/classes/:classId', async (req, res) => {
+router.get('/classes/:classId', authMiddleware, async (req, res) => {
   try {
     const { classId } = req.params;
-    const { userId } = req.query;
-
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Vui lòng đăng nhập'
-      });
-    }
+    const userId = req.user._id.toString();
 
     const classRoom = await ClassRoom.findById(classId)
       .populate('teacher', 'username displayName email avatar')
@@ -1334,17 +1315,10 @@ router.get('/classes/:classId', async (req, res) => {
 });
 
 // DELETE /api/users/classes/:classId/leave - Học sinh rời khỏi lớp
-router.delete('/classes/:classId/leave', async (req, res) => {
+router.delete('/classes/:classId/leave', authMiddleware, async (req, res) => {
   try {
     const { classId } = req.params;
-    const { userId } = req.body;
-
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Vui lòng đăng nhập'
-      });
-    }
+    const userId = req.user._id.toString();
 
     const classRoom = await ClassRoom.findById(classId);
     if (!classRoom) {
@@ -1391,17 +1365,10 @@ router.delete('/classes/:classId/leave', async (req, res) => {
 });
 
 // GET /api/users/classes/:classId/assignments - Lấy bài tập của lớp (cho học sinh)
-router.get('/classes/:classId/assignments', async (req, res) => {
+router.get('/classes/:classId/assignments', authMiddleware, async (req, res) => {
   try {
     const { classId } = req.params;
-    const { userId } = req.query;
-
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Vui lòng đăng nhập'
-      });
-    }
+    const userId = req.user._id.toString();
 
     const classRoom = await ClassRoom.findById(classId);
     if (!classRoom) {
@@ -1478,18 +1445,11 @@ router.get('/classes/:classId/assignments', async (req, res) => {
 });
 
 // GET /api/users/classes/:classId/pk-rooms - Lấy danh sách phòng PK của lớp (cho học sinh)
-router.get('/classes/:classId/pk-rooms', async (req, res) => {
+router.get('/classes/:classId/pk-rooms', authMiddleware, async (req, res) => {
   try {
     const { classId } = req.params;
-    const { userId } = req.query;
+    const userId = req.user._id.toString();
     const Room = require('../models/Room.cjs');
-
-    if (!userId) {
-      return res.status(400).json({
-        success: false,
-        message: 'Vui lòng cung cấp userId'
-      });
-    }
 
     // Kiểm tra học sinh có trong lớp không
     const classroom = await ClassRoom.findById(classId);
