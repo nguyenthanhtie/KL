@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [lessonsProgress, setLessonsProgress] = useState({}); // Store progress by lessonId
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
-  const [userGrade, setUserGrade] = useState(8); // Add missing state for userGrade
+  const [_userGrade, setUserGrade] = useState(8); // Track user grade (used to initialize selectedClass)
 
   useEffect(() => {
     if (user) {
@@ -179,6 +179,10 @@ const Dashboard = () => {
     return '📖'; // default icon
   };
 
+  // Function to get chapter title from chapterId
+  const getChapterTitle = (chapterId) => {
+    return `Chương ${chapterId}`;
+  };
 
   // Compute current-class specific statistics (used by UI cards)
   const currentClassData = classes.find(c => c.classId === selectedClass) || null;

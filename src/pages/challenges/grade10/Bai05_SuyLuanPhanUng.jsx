@@ -297,38 +297,6 @@ export default function SuyLuanPhanUng() {
     };
   }, []);
 
-  if (renderError) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-600 to-red-600">
-        <div className="container mx-auto px-4 py-8">
-          <div className="bg-white rounded-2xl shadow-2xl p-12 text-center">
-            <h2 style={{color:'#b91c1c'}}>Lỗi khi hiển thị trò chơi</h2>
-            <pre style={{background:'#f8fafc',padding:12,borderRadius:8,overflowX:'auto'}}>{String(renderError)}</pre>
-            <div style={{marginTop:12}}>
-              <button className="btn-start" onClick={() => window.location.reload()}>Tải lại</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Start game - either from beginning or resume
-  const startGame = (fromBeginning = false) => {
-    setShowResumeDialog(false);
-    if (fromBeginning) {
-      clearProgress();
-      setGameStarted(true);
-    } else {
-      // Resume from saved progress
-      const savedData = getProgress();
-      if (savedData) {
-        setLevel(savedData.level || 0);
-        setCompletedLevels(savedData.completedLevels || 0);
-      }
-      setGameStarted(true);
-    }
-  };
 
   const currentLevel = levels[level] || levels[0];
 
@@ -372,6 +340,40 @@ export default function SuyLuanPhanUng() {
       setProducts([]);
     }
   }, [placements, reactantSlots]);
+
+  if (renderError) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-600 to-red-600">
+        <div className="container mx-auto px-4 py-8">
+          <div className="bg-white rounded-2xl shadow-2xl p-12 text-center">
+            <h2 style={{color:'#b91c1c'}}>Lỗi khi hiển thị trò chơi</h2>
+            <pre style={{background:'#f8fafc',padding:12,borderRadius:8,overflowX:'auto'}}>{String(renderError)}</pre>
+            <div style={{marginTop:12}}>
+              <button className="btn-start" onClick={() => window.location.reload()}>Tải lại</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Start game - either from beginning or resume
+  const startGame = (fromBeginning = false) => {
+    setShowResumeDialog(false);
+    if (fromBeginning) {
+      clearProgress();
+      setGameStarted(true);
+    } else {
+      // Resume from saved progress
+      const savedData = getProgress();
+      if (savedData) {
+        setLevel(savedData.level || 0);
+        setCompletedLevels(savedData.completedLevels || 0);
+      }
+      setGameStarted(true);
+    }
+  };
+
 
   const handleDragStart = (e, formula) => {
     e.dataTransfer.setData('text/plain', formula);

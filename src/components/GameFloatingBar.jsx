@@ -76,8 +76,8 @@ const GameFloatingBar = () => {
   const notificationDropdownRef = useRef(null);
   
   // Time tracking states
-  const [sessionMinutes, setSessionMinutes] = useState(0);
-  const [showTimeWarning, setShowTimeWarning] = useState(false);
+  const [_sessionMinutes, setSessionMinutes] = useState(0);
+  const [_showTimeWarning, setShowTimeWarning] = useState(false);
   
   const {
     notifications,
@@ -98,7 +98,7 @@ const GameFloatingBar = () => {
         if (settings.showMissionBubble === false) {
           setIsVisible(false);
         }
-      } catch (e) {}
+      } catch { /* ignore invalid settings data */ }
     }
   }, []);
 
@@ -229,11 +229,11 @@ const GameFloatingBar = () => {
         if (lessonStars instanceof Map) {
           perfectLessons = [...lessonStars.values()].filter(s => s === 3).length;
         } else if (Array.isArray(lessonStars)) {
-          perfectLessons = lessonStars.filter(([_, s]) => s === 3).length;
+          perfectLessons = lessonStars.filter(([, s]) => s === 3).length;
         } else if (typeof lessonStars === 'object') {
           perfectLessons = Object.values(lessonStars).filter(s => s === 3).length;
         }
-      } catch (e) {
+      } catch {
         perfectLessons = 0;
       }
     }
@@ -747,6 +747,7 @@ const GameFloatingBar = () => {
 };
 
 // Export function to show bubble from other components
+// eslint-disable-next-line react-refresh/only-export-components
 export const showMissionBubble = () => {
   window.dispatchEvent(new Event('showMissionBubble'));
 };

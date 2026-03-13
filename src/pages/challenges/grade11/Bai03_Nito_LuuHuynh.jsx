@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Trophy, Play, RotateCcw, ChevronRight, ChevronLeft,
@@ -921,11 +921,12 @@ export default function Nito_LuuHuynh() {
       case 'true-false':
         return userAnswer === currentChallenge.correctAnswer;
       case 'fill-blank':
-      case 'calculation':
+      case 'calculation': {
         const acceptedAnswers = currentChallenge.acceptedAnswers || [currentChallenge.correctAnswer];
         return acceptedAnswers.some(ans => 
           ans.toLowerCase().trim() === String(userAnswer).toLowerCase().trim()
         );
+      }
       case 'ordering':
         if (!userAnswer || !currentChallenge.correctOrder) return false;
         return JSON.stringify(userAnswer) === JSON.stringify(currentChallenge.correctOrder);

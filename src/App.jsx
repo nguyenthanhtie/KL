@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { PKRoomProvider } from './contexts/PKRoomContext';
 import Sidebar from './components/Sidebar';
@@ -95,8 +95,6 @@ import GameFloatingBar from './components/GameFloatingBar';
 
 
 const AppContent = () => {
-  const location = useLocation();
-
   return (
     <Sidebar>
       <div className="min-h-screen">

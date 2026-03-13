@@ -18,7 +18,7 @@ const DuoiHinhBatChu = () => {
     },
     {
       id: 2,
-      ten: "Muối ăn" && "Muối",
+      ten: "Muối",
       congThuc: "NaCl",
       hinhAnh: "🧂",
       moTa: "Tinh thể trắng, vị mặn, tan trong nước, dùng trong nấu ăn",

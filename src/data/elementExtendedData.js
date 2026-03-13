@@ -901,20 +901,6 @@ export const elementExtendedData = {
     discoveredBy: 'William Hyde Wollaston',
     facts: ['Tên từ tiểu hành tinh Pallas', 'Hấp thụ 900 lần thể tích khí hydro của nó', 'Thành phần chính của "vàng trắng"']
   },
-  Ag: {
-    category: 'transition-metal',
-    color: '#C0C0C0',
-    meltingPoint: 961.78,
-    boilingPoint: 2162,
-    density: 10.49,
-    electronConfig: '[Kr] 4d¹⁰ 5s¹',
-    oxidationStates: [1],
-    description: 'Kim loại quý có độ dẫn điện và dẫn nhiệt tốt nhất.',
-    applications: ['Trang sức', 'Điện tử', 'Gương', 'Kháng khuẩn y tế'],
-    discoveryYear: -3000,
-    discoveredBy: 'Người cổ đại',
-    facts: ['Ký hiệu Ag từ "argentum"', 'Phản xạ ánh sáng mạnh nhất', 'Có tính kháng khuẩn tự nhiên']
-  },
   Cd: {
     category: 'transition-metal',
     color: '#FFD394',
@@ -1349,20 +1335,6 @@ export const elementExtendedData = {
     discoveryYear: 1735,
     discoveredBy: 'Antonio de Ulloa',
     facts: ['Tên từ "platina" - bạc nhỏ', 'Hiếm hơn vàng 30 lần', 'Dùng trong các đạo cụ phòng thí nghiệm cao cấp']
-  },
-  Au: {
-    category: 'transition-metal',
-    color: '#FFD700',
-    meltingPoint: 1064.18,
-    boilingPoint: 2856,
-    density: 19.3,
-    electronConfig: '[Xe] 4f¹⁴ 5d¹⁰ 6s¹',
-    oxidationStates: [1, 3],
-    description: 'Kim loại dẻo nhất, dẫn điện tốt và không bao giờ bị gỉ.',
-    applications: ['Tiền tệ', 'Trang sức', 'Kết nối điện tử tin cậy', 'Nha khoa'],
-    discoveryYear: -3000,
-    discoveredBy: 'Người cổ đại',
-    facts: ['Ký hiệu Au từ "aurum"', '1 ounce vàng có thể kéo thành sợi dài 80km', 'Ăn được (lá vàng trang trí)']
   },
   Hg: {
     category: 'transition-metal',

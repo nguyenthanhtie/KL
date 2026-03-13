@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Trophy, Lightbulb, TestTube, FlaskConical, AlertCircle, RotateCcw, Check, X } from 'lucide-react';
 import useChallengeProgress from '../../../hooks/useChallengeProgress';
