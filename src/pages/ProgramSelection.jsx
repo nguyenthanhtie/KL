@@ -71,7 +71,7 @@ const ProgramSelection = () => {
 
     // Kiểm tra xem user đã đăng ký chương trình này chưa
     const userProgram = user.programs?.find(p => p.programId === program.id);
-    
+
     if (userProgram && userProgram.placementTestCompleted) {
       // Đã làm placement test và đăng ký -> chuyển đến trang học
       navigate(`/program/${program.id}`);
@@ -112,13 +112,12 @@ const ProgramSelection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mx-auto">
           {programs.map((program) => {
             const isEnrolled = user?.programs?.some(p => p.programId === program.id && p.isActive);
-            
+
             return (
               <div
                 key={program.id}
-                className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group ${
-                  !program.available ? 'opacity-75' : ''
-                }`}
+                className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group ${!program.available ? 'opacity-75' : ''
+                  }`}
               >
                 <div className="p-8">
                   {/* Icon and Badge */}
@@ -179,9 +178,8 @@ const ProgramSelection = () => {
                   {/* Action Button */}
                   <Button
                     onClick={() => handleProgramSelect(program)}
-                    className={`w-full bg-gradient-to-r ${program.gradient} hover:${program.hoverGradient} text-white py-3 px-6 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 ${
-                      !program.available ? 'cursor-not-allowed opacity-50' : ''
-                    }`}
+                    className={`w-full bg-gradient-to-r ${program.gradient} hover:${program.hoverGradient} text-white py-3 px-6 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 ${!program.available ? 'cursor-not-allowed opacity-50' : ''
+                      }`}
                     disabled={!program.available}
                   >
                     {!program.available ? (

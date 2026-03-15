@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../config/api';
-import { 
-  Users, Search, Filter, MoreVertical, Edit2, Trash2, 
+import {
+  Users, Search, Filter, MoreVertical, Edit2, Trash2,
   Shield, UserCheck, GraduationCap, ChevronLeft, ChevronRight,
-  AlertCircle, X, Check
+  AlertCircle, X, Check, Lock, Unlock
 } from 'lucide-react';
 
 const UserManagement = () => {
@@ -23,6 +23,7 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(''); // 'edit', 'delete', 'changeRole'
+  const [editForm, setEditForm] = useState({ displayName: '', email: '' });
 
   const fetchUsers = useCallback(async (page = 1) => {
     try {
@@ -65,6 +66,12 @@ const UserManagement = () => {
   const openModal = (type, userData) => {
     setSelectedUser(userData);
     setModalType(type);
+    if (type === 'edit') {
+      setEditForm({
+        displayName: userData.displayName || '',
+        email: userData.email || ''
+      });
+    }
     setShowModal(true);
   };
 
@@ -101,6 +108,30 @@ const UserManagement = () => {
       }
     } catch (err) {
       alert(err.response?.data?.message || 'Không thể thay đổi role');
+    }
+  };
+
+  const handleEditUser = async () => {
+    if (!selectedUser) return;
+    try {
+      const response = await api.put(`/admin/users/${selectedUser._id}`, editForm);
+      if (response.data.success) {
+        fetchUsers(pagination.page);
+        closeModal();
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Không thể cập nhật người dùng');
+    }
+  };
+
+  const handleUnlockUser = async (userId) => {
+    try {
+      const response = await api.post(`/admin/users/${userId}/unlock`);
+      if (response.data.success) {
+        fetchUsers(pagination.page);
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Không thể mở khóa tài khoản');
     }
   };
 
@@ -248,6 +279,22 @@ const UserManagement = () => {
                         <div className="flex items-center gap-2">
                           {getRoleIcon(u.role)}
                           {getRoleBadge(u.role)}
+                          {u.role === 'teacher' && u.teacherStatus && u.teacherStatus !== 'none' && (
+                            <span className={`px-1.5 py-0.5 rounded text-xs ${
+                              u.teacherStatus === 'pending' ? 'bg-amber-100 text-amber-700' :
+                              u.teacherStatus === 'approved' ? 'bg-green-100 text-green-700' :
+                              'bg-red-100 text-red-700'
+                            }`}>
+                              {u.teacherStatus === 'pending' ? 'Chờ duyệt' :
+                               u.teacherStatus === 'approved' ? 'Đã duyệt' : 'Từ chối'}
+                            </span>
+                          )}
+                          {u.isLocked && (
+                            <span className="px-1.5 py-0.5 rounded text-xs bg-red-100 text-red-700 flex items-center gap-1">
+                              <Lock className="h-3 w-3" />
+                              Khóa
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -273,6 +320,15 @@ const UserManagement = () => {
                           >
                             <Shield className="h-4 w-4" />
                           </button>
+                          {u.isLocked && (
+                            <button
+                              onClick={() => handleUnlockUser(u._id)}
+                              className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 hover:text-green-600"
+                              title="Mở khóa"
+                            >
+                              <Unlock className="h-4 w-4" />
+                            </button>
+                          )}
                           {u._id !== user.id && (
                             <button
                               onClick={() => openModal('delete', u)}
@@ -384,6 +440,80 @@ const UserManagement = () => {
                         )}
                       </button>
                     ))}
+                  </div>
+                </>
+              )}
+
+              {modalType === 'edit' && (
+                <>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Tên hiển thị</label>
+                      <input
+                        type="text"
+                        value={editForm.displayName}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, displayName: e.target.value }))}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                      <input
+                        type="email"
+                        value={editForm.email}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, email: e.target.value }))}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    {/* Lock status info */}
+                    {selectedUser.isLocked && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                        <div className="flex items-center gap-2 text-red-700 text-sm font-medium mb-1">
+                          <Lock className="h-4 w-4" />
+                          Tài khoản đang bị khóa
+                        </div>
+                        {selectedUser.lockReason && (
+                          <p className="text-red-600 text-sm">{selectedUser.lockReason}</p>
+                        )}
+                        <button
+                          onClick={() => { handleUnlockUser(selectedUser._id); closeModal(); }}
+                          className="mt-2 px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 flex items-center gap-1"
+                        >
+                          <Unlock className="h-3 w-3" />
+                          Mở khóa tài khoản
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Teacher status info */}
+                    {selectedUser.role === 'teacher' && selectedUser.teacherStatus && selectedUser.teacherStatus !== 'none' && (
+                      <div className={`rounded-lg p-3 text-sm ${
+                        selectedUser.teacherStatus === 'pending' ? 'bg-amber-50 border border-amber-200 text-amber-700' :
+                        selectedUser.teacherStatus === 'approved' ? 'bg-green-50 border border-green-200 text-green-700' :
+                        'bg-red-50 border border-red-200 text-red-700'
+                      }`}>
+                        Trạng thái giáo viên: {
+                          selectedUser.teacherStatus === 'pending' ? 'Chờ duyệt' :
+                          selectedUser.teacherStatus === 'approved' ? 'Đã duyệt' : 'Đã từ chối'
+                        }
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex gap-3 justify-end mt-4">
+                    <button
+                      onClick={closeModal}
+                      className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+                    >
+                      Hủy
+                    </button>
+                    <button
+                      onClick={handleEditUser}
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                    >
+                      Lưu thay đổi
+                    </button>
                   </div>
                 </>
               )}

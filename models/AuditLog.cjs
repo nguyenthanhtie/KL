@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const auditLogSchema = new mongoose.Schema({
-  userId: {
+  performedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
@@ -9,10 +9,11 @@ const auditLogSchema = new mongoose.Schema({
   action: {
     type: String,
     required: true,
-    enum: ['delete_user', 'change_role', 'verify_teacher', 'update_user', 'transfer_class']
+    enum: ['delete_user', 'change_role', 'verify_teacher', 'update_user', 'transfer_class', 'approve_teacher', 'reject_teacher', 'system_settings_change', 'resubmit_teacher']
   },
-  targetId: {
+  targetUser: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   details: {
@@ -29,7 +30,7 @@ const auditLogSchema = new mongoose.Schema({
   }
 });
 
-auditLogSchema.index({ userId: 1, timestamp: -1 });
+auditLogSchema.index({ performedBy: 1, timestamp: -1 });
 auditLogSchema.index({ action: 1, timestamp: -1 });
 auditLogSchema.index({ timestamp: -1 });
 

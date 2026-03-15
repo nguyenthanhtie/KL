@@ -24,7 +24,8 @@ import {
   Shield,
   School,
   Users,
-  ClipboardList
+  ClipboardList,
+  UserCheck
 } from 'lucide-react';
 
 const Sidebar = ({ children }) => {
@@ -134,6 +135,12 @@ const Sidebar = ({ children }) => {
       icon: Shield,
       path: '/admin',
       gradient: 'from-red-500 to-rose-500'
+    },
+    {
+      title: 'Duyệt giáo viên',
+      icon: UserCheck,
+      path: '/admin/teacher-requests',
+      gradient: 'from-amber-500 to-orange-500'
     },
     {
       title: 'Quản lý người dùng',

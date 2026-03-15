@@ -829,7 +829,7 @@ router.put('/assignments/:assignmentId', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Không tìm thấy bài tập' });
     }
     
-    const allowedUpdates = ['title', 'description', 'schedule', 'grading', 'visibility', 'status'];
+    const allowedUpdates = ['title', 'description', 'content', 'schedule', 'grading', 'visibility', 'status'];
     const updates = {};
     
     for (const key of allowedUpdates) {
@@ -1038,84 +1038,76 @@ router.post('/assignments/parse-file', upload.single('file'), async (req, res) =
 
 // Helper: Parse text content into structured questions
 function parseTextToQuestions(text) {
-  const questions = [];
-  const lines = text.split(/\n/).map(l => l.trim()).filter(l => l);
+  const qs = [];
+  // Tách các khối bắt đầu bằng "Câu X:", "Bài X:", "X.", hoặc "X\n"
+  const blocks = text.split(/(?=^C[aâ]u\s*\d+|^Bài\s*\d+|^\d+[.:)\/]?\s|^(?:[A-Z]{2,}\s*)?\d+\r?\n)/gmi);
+  
+  for (let b of blocks) {
+    b = b.trim();
+    if (!b) continue;
+    
+    // Check if the block actually starts with a question identifier.
+    // If it doesn't, it's likely a header/title.
+    const isQuestionBlock = /^(?:C[aâ]u\s*\d+|Bài\s*\d+|^\d+[.:)\/]?\s|^(?:[A-Z]{2,}\s*)?\d+\r?\n)/i.test(b);
+    if (!isQuestionBlock) {
+      continue;
+    }
+    
+    // Tìm đáp án (Ví dụ: "Đáp án: A", "ĐA: B", "=> C", "Key: A")
+    const ansMatch = b.match(/(?:Đ[aá]p\s*[aá]n|ĐA|=>|Trả lời|Key)[.:)\s]*([A-Da-d])/i);
+    let ans = ansMatch ? ansMatch[1].toUpperCase() : null;
+    if (ansMatch) b = b.replace(ansMatch[0], '').trim(); // Bỏ phần đáp án khỏi khối text
+    
+    // Tìm các lựa chọn (A., B., C., D.)
+    // Dùng regex linh hoạt cho cả trường hợp các lựa chọn dính liền: A. textB. text
+    const optRegex = /([A-Da-d])[.)]\s+([\s\S]*?)(?=\s*[A-Da-d][.)]\s+|$)/gi;
+    const options = [];
+    let qText = b;
+    let firstOptIdx = b.length;
+    let m;
+    
+    while ((m = optRegex.exec(b)) !== null) {
+      if (firstOptIdx === b.length) firstOptIdx = m.index;
+      options.push(m[2].trim());
+    }
+    
+    // Phần trước lựa chọn đầu tiên là nội dung câu hỏi
+    if (firstOptIdx < b.length) {
+      qText = b.substring(0, firstOptIdx).trim();
+    }
+    
+    // Bỏ tiếp đầu ngữ "Câu 1:", "1.", "1" ...
+    qText = qText.replace(/^(?:C[aâ]u\s*\d+|Bài\s*\d+|^\d+)[.:)\/]?\s*/i, '').trim();
+    
+    if (!qText) continue;
 
-  // Pattern: "Câu 1:", "Câu 1.", "1.", "1)", "1/"
-  const qPattern = /^(?:C[aâ]u\s*)(\d+)[.:)\s]/i;
-  const qNumPattern = /^(\d+)[.):\/]\s+/;
-  // Option pattern: "A.", "A)", "a.", "a)"
-  const optPattern = /^([A-Da-d])[.):]\s*/;
-  // Answer pattern: "Đáp án: A", "ĐA: B", "=> A"
-  const ansPattern = /^(?:Đ[aá]p\s*[aá]n|ĐA|=>|Trả lời)[.:)\s]*([A-Da-d])/i;
+    const currentQ = {
+      question: qText,
+      type: 'multiple-choice',
+      options: options,
+      correctAnswer: ans ? ans.charCodeAt(0) - 65 : 0,
+      points: 10,
+      explanation: ''
+    };
 
-  let current = null;
-
-  const pushCurrent = () => {
-    if (current && current.question.trim()) {
-      // Determine type
-      if (current.options.length >= 2) {
-        current.type = 'multiple-choice';
-      } else if (/đúng.*sai|true.*false/i.test(current.question)) {
-        current.type = 'true-false';
-        if (current.options.length === 0) {
-          current.options = ['Đúng', 'Sai'];
-        }
-      } else if (/điền|fill/i.test(current.question)) {
-        current.type = 'fill-in';
-      } else if (current.options.length === 0) {
-        current.type = 'essay';
+    // Phân loại thêm nếu cần
+    if (options.length >= 2) {
+      currentQ.type = 'multiple-choice';
+    } else if (/đúng.*sai|true.*false/i.test(qText)) {
+      currentQ.type = 'true-false';
+      if (options.length === 0) {
+        currentQ.options = ['Đúng', 'Sai'];
       }
-      questions.push({
-        question: current.question.trim(),
-        type: current.type,
-        options: current.options,
-        correctAnswer: current.correctAnswer,
-        points: 10,
-        explanation: ''
-      });
-    }
-  };
-
-  for (const line of lines) {
-    // Check if this line starts a new question
-    const qMatch = line.match(qPattern) || line.match(qNumPattern);
-    if (qMatch) {
-      pushCurrent();
-      const questionText = line.replace(qPattern, '').replace(qNumPattern, '').trim();
-      current = {
-        question: questionText,
-        type: 'multiple-choice',
-        options: [],
-        correctAnswer: 0
-      };
-      continue;
+    } else if (/điền|fill/i.test(qText)) {
+      currentQ.type = 'fill-in';
+    } else if (options.length === 0) {
+      currentQ.type = 'essay';
     }
 
-    // Check if this is an option
-    const optMatch = line.match(optPattern);
-    if (optMatch && current) {
-      const optText = line.replace(optPattern, '').trim();
-      current.options.push(optText);
-      continue;
-    }
-
-    // Check if this is an answer line
-    const ansMatch = line.match(ansPattern);
-    if (ansMatch && current) {
-      const letter = ansMatch[1].toUpperCase();
-      current.correctAnswer = letter.charCodeAt(0) - 65;
-      continue;
-    }
-
-    // Otherwise append to current question text
-    if (current) {
-      current.question += ' ' + line;
-    }
+    qs.push(currentQ);
   }
-
-  pushCurrent();
-  return questions;
+  
+  return qs;
 }
 
 

@@ -5,6 +5,9 @@ const ClassRoom = require('../models/ClassRoom.cjs');
 const Assignment = require('../models/Assignment.cjs');
 const Lesson = require('../models/Lesson.cjs');
 const Challenge = require('../models/Challenge.cjs');
+const AuditLog = require('../models/AuditLog.cjs');
+const Notification = require('../models/Notification.cjs');
+const SystemSettings = require('../models/SystemSettings.cjs');
 const { authMiddleware, adminMiddleware, checkAdminPermission } = require('../middleware/roleAuth.cjs');
 
 // Tất cả routes đều yêu cầu đăng nhập và là admin
@@ -21,11 +24,12 @@ router.get('/dashboard', async (req, res) => {
     const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     
     // Đếm số lượng users theo role
-    const [totalUsers, totalStudents, totalTeachers, totalAdmins] = await Promise.all([
+    const [totalUsers, totalStudents, totalTeachers, totalAdmins, pendingTeachers] = await Promise.all([
       User.countDocuments(),
       User.countDocuments({ role: 'student' }),
       User.countDocuments({ role: 'teacher' }),
-      User.countDocuments({ role: 'admin' })
+      User.countDocuments({ role: 'admin' }),
+      User.countDocuments({ teacherStatus: 'pending' })
     ]);
     
     // Người dùng mới trong 30 ngày
@@ -98,6 +102,7 @@ router.get('/dashboard', async (req, res) => {
           students: totalStudents,
           teachers: totalTeachers,
           admins: totalAdmins,
+          pendingTeachers: pendingTeachers,
           newThisMonth: newUsersThisMonth,
           activeThisWeek: activeUsers
         },
@@ -467,6 +472,233 @@ router.post('/teachers/:teacherId/verify', checkAdminPermission('teachers'), asy
   }
 });
 
+// ==================== TEACHER APPROVAL (DUYỆT GIÁO VIÊN) ====================
+
+// GET /api/admin/teacher-requests/count - Đếm yêu cầu pending (cho badge)
+router.get('/teacher-requests/count', async (req, res) => {
+  try {
+    const pendingCount = await User.countDocuments({ teacherStatus: 'pending' });
+    res.json({ success: true, data: { pendingCount } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Lỗi server' });
+  }
+});
+
+// GET /api/admin/teacher-requests - Danh sách yêu cầu giáo viên
+router.get('/teacher-requests', checkAdminPermission('teachers'), async (req, res) => {
+  try {
+    const { page = 1, limit = 20, search, status = 'pending' } = req.query;
+
+    const query = {};
+    if (status && status !== 'all') {
+      query.teacherStatus = status;
+    } else {
+      query.teacherStatus = { $in: ['pending', 'approved', 'rejected'] };
+    }
+
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { displayName: { $regex: search, $options: 'i' } },
+        { 'teacherInfo.school': { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const [requests, total] = await Promise.all([
+      User.find(query)
+        .select('-password')
+        .sort({ 'teacherInfo.requestedAt': -1, createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit))
+        .lean(),
+      User.countDocuments(query)
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        requests,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get teacher requests error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// POST /api/admin/teacher-requests/:userId/approve - Phê duyệt giáo viên
+router.post('/teacher-requests/:userId/approve', checkAdminPermission('teachers'), async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+    }
+    if (user.teacherStatus !== 'pending') {
+      return res.status(400).json({ success: false, message: 'Yêu cầu này không ở trạng thái chờ duyệt' });
+    }
+
+    user.teacherStatus = 'approved';
+    user.teacherInfo.verifiedAt = new Date();
+    user.teacherInfo.verifiedBy = req.user._id;
+    user.students = user.students || [];
+    user.managedClasses = user.managedClasses || [];
+
+    await user.save();
+
+    // Gửi thông báo cho giáo viên
+    try {
+      const Notification = require('../models/Notification.cjs');
+      await Notification.create({
+        userId: user._id,
+        type: 'teacher_approved',
+        title: 'Yêu cầu giáo viên đã được phê duyệt!',
+        body: 'Chúc mừng! Tài khoản giáo viên của bạn đã được phê duyệt. Bạn có thể bắt đầu sử dụng các tính năng giáo viên.'
+      });
+    } catch (notifErr) {
+      console.error('Notification error:', notifErr);
+    }
+
+    // Ghi audit log
+    try {
+      const AuditLog = require('../models/AuditLog.cjs');
+      await AuditLog.create({
+        action: 'verify_teacher',
+        performedBy: req.user._id,
+        targetUser: user._id,
+        details: { teacherStatus: 'approved' }
+      });
+    } catch (auditErr) {
+      console.error('Audit log error:', auditErr);
+    }
+
+    res.json({
+      success: true,
+      message: 'Đã phê duyệt giáo viên thành công',
+      data: user
+    });
+  } catch (error) {
+    console.error('Approve teacher error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// POST /api/admin/teacher-requests/:userId/reject - Từ chối giáo viên
+router.post('/teacher-requests/:userId/reject', checkAdminPermission('teachers'), async (req, res) => {
+  try {
+    const { reason } = req.body;
+    if (!reason || !reason.trim()) {
+      return res.status(400).json({ success: false, message: 'Vui lòng nhập lý do từ chối' });
+    }
+
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+    }
+    if (user.teacherStatus !== 'pending') {
+      return res.status(400).json({ success: false, message: 'Yêu cầu này không ở trạng thái chờ duyệt' });
+    }
+
+    user.teacherStatus = 'rejected';
+    user.teacherInfo.rejectionReason = reason;
+    user.isLocked = true;
+    user.lockReason = `Yêu cầu giáo viên bị từ chối: ${reason}`;
+    user.lockedAt = new Date();
+    user.lockedBy = req.user._id;
+
+    await user.save();
+
+    // Gửi thông báo cho người dùng
+    try {
+      const Notification = require('../models/Notification.cjs');
+      await Notification.create({
+        userId: user._id,
+        type: 'teacher_rejected',
+        title: 'Yêu cầu giáo viên bị từ chối',
+        body: `Yêu cầu tài khoản giáo viên của bạn đã bị từ chối. Lý do: ${reason}`
+      });
+    } catch (notifErr) {
+      console.error('Notification error:', notifErr);
+    }
+
+    // Ghi audit log
+    try {
+      const AuditLog = require('../models/AuditLog.cjs');
+      await AuditLog.create({
+        action: 'verify_teacher',
+        performedBy: req.user._id,
+        targetUser: user._id,
+        details: { teacherStatus: 'rejected', reason }
+      });
+    } catch (auditErr) {
+      console.error('Audit log error:', auditErr);
+    }
+
+    res.json({
+      success: true,
+      message: 'Đã từ chối yêu cầu giáo viên',
+      data: user
+    });
+  } catch (error) {
+    console.error('Reject teacher error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// POST /api/admin/users/:userId/unlock - Mở khóa tài khoản
+router.post('/users/:userId/unlock', checkAdminPermission('users'), async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+    }
+    if (!user.isLocked) {
+      return res.status(400).json({ success: false, message: 'Tài khoản này không bị khóa' });
+    }
+
+    user.isLocked = false;
+    user.lockReason = '';
+    user.lockedAt = undefined;
+    user.lockedBy = undefined;
+
+    // Nếu là giáo viên bị từ chối, reset về student
+    if (user.teacherStatus === 'rejected') {
+      user.role = 'student';
+      user.teacherStatus = 'none';
+    }
+
+    await user.save();
+
+    // Ghi audit log
+    try {
+      const AuditLog = require('../models/AuditLog.cjs');
+      await AuditLog.create({
+        action: 'update_user',
+        performedBy: req.user._id,
+        targetUser: user._id,
+        details: { action: 'unlock' }
+      });
+    } catch (auditErr) {
+      console.error('Audit log error:', auditErr);
+    }
+
+    res.json({
+      success: true,
+      message: 'Đã mở khóa tài khoản',
+      data: user
+    });
+  } catch (error) {
+    console.error('Unlock user error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
 // ==================== CLASS MANAGEMENT ====================
 
 // GET /api/admin/classes - Lấy danh sách tất cả lớp học
@@ -676,36 +908,351 @@ router.get('/reports/activity', checkAdminPermission('reports'), async (req, res
 router.post('/create-admin', async (req, res) => {
   try {
     const { userId, permissions } = req.body;
-    
+
     // Kiểm tra người tạo có quyền 'all' không
     if (!req.user.adminInfo?.permissions?.includes('all')) {
-      return res.status(403).json({ 
-        success: false, 
-        message: 'Chỉ Super Admin mới có quyền tạo admin mới' 
+      return res.status(403).json({
+        success: false,
+        message: 'Chỉ Super Admin mới có quyền tạo admin mới'
       });
     }
-    
+
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
     }
-    
+
     user.role = 'admin';
     user.adminInfo = {
       permissions: permissions || ['users', 'lessons', 'classes'],
       assignedBy: req.user._id,
       assignedAt: new Date()
     };
-    
+
     await user.save();
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       message: 'Tạo admin thành công',
-      data: user 
+      data: user
     });
   } catch (error) {
     console.error('Create admin error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// ==================== AUDIT LOG VIEWER ====================
+
+// GET /api/admin/audit-logs - Xem nhật ký hoạt động
+router.get('/audit-logs', checkAdminPermission('all'), async (req, res) => {
+  try {
+    const {
+      page = 1, limit = 20,
+      action, search,
+      startDate, endDate,
+      sortOrder = 'desc'
+    } = req.query;
+
+    const query = {};
+    if (action && action !== 'all') query.action = action;
+    if (startDate || endDate) {
+      query.timestamp = {};
+      if (startDate) query.timestamp.$gte = new Date(startDate);
+      if (endDate) query.timestamp.$lte = new Date(endDate);
+    }
+
+    // Nếu có search, tìm users trước rồi filter
+    if (search) {
+      const matchedUsers = await User.find({
+        $or: [
+          { username: { $regex: search, $options: 'i' } },
+          { email: { $regex: search, $options: 'i' } },
+          { displayName: { $regex: search, $options: 'i' } }
+        ]
+      }).select('_id');
+      const userIds = matchedUsers.map(u => u._id);
+      query.$or = [
+        { performedBy: { $in: userIds } },
+        { targetUser: { $in: userIds } }
+      ];
+    }
+
+    const [logs, total] = await Promise.all([
+      AuditLog.find(query)
+        .populate('performedBy', 'username displayName email avatar')
+        .populate('targetUser', 'username displayName email avatar')
+        .sort({ timestamp: sortOrder === 'desc' ? -1 : 1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit))
+        .lean(),
+      AuditLog.countDocuments(query)
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        logs,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get audit logs error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// ==================== SYSTEM SETTINGS (CÀI ĐẶT HỆ THỐNG) ====================
+
+// GET /api/admin/settings - Lấy tất cả cài đặt
+router.get('/settings', checkAdminPermission('all'), async (req, res) => {
+  try {
+    await SystemSettings.initDefaults();
+    const settings = await SystemSettings.find()
+      .populate('updatedBy', 'username displayName')
+      .sort({ category: 1, key: 1 })
+      .lean();
+
+    // Nhóm theo category
+    const grouped = {};
+    settings.forEach(s => {
+      if (!grouped[s.category]) grouped[s.category] = [];
+      grouped[s.category].push(s);
+    });
+
+    res.json({ success: true, data: { settings, grouped } });
+  } catch (error) {
+    console.error('Get settings error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// PUT /api/admin/settings - Cập nhật cài đặt (bulk)
+router.put('/settings', checkAdminPermission('all'), async (req, res) => {
+  try {
+    const { updates } = req.body; // [{key, value}, ...]
+    if (!Array.isArray(updates) || updates.length === 0) {
+      return res.status(400).json({ success: false, message: 'Dữ liệu không hợp lệ' });
+    }
+
+    const results = [];
+    for (const { key, value } of updates) {
+      const setting = await SystemSettings.findOneAndUpdate(
+        { key },
+        { value, updatedBy: req.user._id, updatedAt: new Date() },
+        { new: true, upsert: true }
+      );
+      results.push(setting);
+    }
+
+    // Ghi audit log
+    try {
+      await AuditLog.create({
+        action: 'system_settings_change',
+        performedBy: req.user._id,
+        targetUser: req.user._id,
+        details: { changes: updates },
+        ip: req.ip
+      });
+    } catch (auditErr) {
+      console.error('Audit log error:', auditErr);
+    }
+
+    res.json({ success: true, message: 'Cập nhật cài đặt thành công', data: results });
+  } catch (error) {
+    console.error('Update settings error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// ==================== CONTENT MANAGEMENT (QUẢN LÝ NỘI DUNG) ====================
+
+// GET /api/admin/content/overview - Tổng quan nội dung
+router.get('/content/overview', checkAdminPermission('content'), async (req, res) => {
+  try {
+    const [
+      lessonsByClass,
+      challengesByGrade,
+      challengesByStatus,
+      totalLessons,
+      totalChallenges,
+      recentLessons,
+      recentChallenges
+    ] = await Promise.all([
+      Lesson.aggregate([
+        { $group: { _id: '$classId', count: { $sum: 1 } } },
+        { $sort: { _id: 1 } }
+      ]),
+      Challenge.aggregate([
+        { $group: { _id: '$grade', count: { $sum: 1 } } },
+        { $sort: { _id: 1 } }
+      ]),
+      Challenge.aggregate([
+        { $group: { _id: '$status', count: { $sum: 1 } } }
+      ]),
+      Lesson.countDocuments(),
+      Challenge.countDocuments(),
+      Lesson.find().sort({ createdAt: -1 }).limit(5)
+        .populate('createdBy', 'username displayName')
+        .select('title classId chapterName curriculumType createdAt')
+        .lean(),
+      Challenge.find().sort({ createdAt: -1 }).limit(5)
+        .select('name grade category status difficulty createdAt')
+        .lean()
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        totalLessons,
+        totalChallenges,
+        lessonsByClass,
+        challengesByGrade,
+        challengesByStatus,
+        recentLessons,
+        recentChallenges
+      }
+    });
+  } catch (error) {
+    console.error('Content overview error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// GET /api/admin/content/lessons - Danh sách bài học
+router.get('/content/lessons', checkAdminPermission('content'), async (req, res) => {
+  try {
+    const { page = 1, limit = 20, classId, curriculumType, search } = req.query;
+    const query = {};
+    if (classId) query.classId = parseInt(classId);
+    if (curriculumType) query.curriculumType = curriculumType;
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { chapterName: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const [lessons, total] = await Promise.all([
+      Lesson.find(query)
+        .populate('createdBy', 'username displayName')
+        .sort({ classId: 1, chapterId: 1, order: 1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit))
+        .select('title classId chapterId chapterName curriculumType lessonId order createdBy createdAt')
+        .lean(),
+      Lesson.countDocuments(query)
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        lessons,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get lessons error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// GET /api/admin/content/challenges - Danh sách thử thách
+router.get('/content/challenges', checkAdminPermission('content'), async (req, res) => {
+  try {
+    const { page = 1, limit = 20, grade, category, status, search } = req.query;
+    const query = {};
+    if (grade) query.grade = parseInt(grade);
+    if (category) query.category = category;
+    if (status) query.status = status;
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const [challenges, total] = await Promise.all([
+      Challenge.find(query)
+        .sort({ grade: 1, category: 1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit))
+        .select('id name grade category status difficulty difficultyLevel points time createdAt')
+        .lean(),
+      Challenge.countDocuments(query)
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        challenges,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get challenges error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// ==================== TEACHER NOTES ====================
+
+// POST /api/admin/teacher-requests/:userId/notes - Thêm ghi chú admin
+router.post('/teacher-requests/:userId/notes', checkAdminPermission('teachers'), async (req, res) => {
+  try {
+    const { note } = req.body;
+    if (!note || !note.trim()) {
+      return res.status(400).json({ success: false, message: 'Vui lòng nhập nội dung ghi chú' });
+    }
+
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy người dùng' });
+    }
+
+    if (!user.teacherInfo) {
+      return res.status(400).json({ success: false, message: 'Người dùng này không phải giáo viên' });
+    }
+
+    if (!user.teacherInfo.adminNotes) {
+      user.teacherInfo.adminNotes = [];
+    }
+
+    user.teacherInfo.adminNotes.push({
+      note: note.trim(),
+      addedBy: req.user._id,
+      addedAt: new Date()
+    });
+
+    await user.save();
+
+    // Populate admin notes để trả về
+    const updatedUser = await User.findById(req.params.userId)
+      .populate('teacherInfo.adminNotes.addedBy', 'username displayName')
+      .select('teacherInfo.adminNotes');
+
+    res.json({
+      success: true,
+      message: 'Đã thêm ghi chú',
+      data: updatedUser.teacherInfo.adminNotes
+    });
+  } catch (error) {
+    console.error('Add teacher note error:', error);
     res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
   }
 });

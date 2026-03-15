@@ -24,10 +24,20 @@ const authMiddleware = async (req, res, next) => {
       });
     }
     
+    // Kiểm tra tài khoản bị khóa
+    if (user.isLocked) {
+      return res.status(403).json({
+        success: false,
+        message: 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin.',
+        code: 'ACCOUNT_LOCKED',
+        lockReason: user.lockReason || ''
+      });
+    }
+
     req.userId = decoded.userId;
     req.email = decoded.email;
     req.user = user;
-    
+
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
@@ -74,24 +84,50 @@ const adminMiddleware = async (req, res, next) => {
 const teacherMiddleware = async (req, res, next) => {
   try {
     if (!req.user) {
-      return res.status(401).json({ 
+      return res.status(401).json({
         success: false,
-        message: 'Vui lòng đăng nhập' 
+        message: 'Vui lòng đăng nhập'
       });
     }
-    
-    if (req.user.role !== 'teacher' && req.user.role !== 'admin') {
-      return res.status(403).json({ 
+
+    // Admin bypass
+    if (req.user.role === 'admin') {
+      return next();
+    }
+
+    if (req.user.role !== 'teacher') {
+      return res.status(403).json({
         success: false,
-        message: 'Bạn không có quyền truy cập. Chỉ Giáo viên hoặc Admin mới được phép.' 
+        message: 'Bạn không có quyền truy cập. Chỉ Giáo viên hoặc Admin mới được phép.'
       });
     }
-    
-    next();
-  } catch (error) {
-    res.status(500).json({ 
+
+    // Kiểm tra trạng thái duyệt giáo viên
+    // Backward compatibility: GV cũ chưa có teacherStatus -> coi như approved nếu có verifiedAt
+    const status = req.user.teacherStatus;
+    const isLegacyApproved = (!status || status === 'none') && req.user.teacherInfo?.verifiedAt;
+
+    if (status === 'approved' || isLegacyApproved) {
+      return next();
+    }
+
+    if (status === 'pending') {
+      return res.status(403).json({
+        success: false,
+        message: 'Tài khoản giáo viên của bạn đang chờ phê duyệt.',
+        code: 'TEACHER_NOT_APPROVED'
+      });
+    }
+
+    return res.status(403).json({
       success: false,
-      message: 'Lỗi kiểm tra quyền Giáo viên' 
+      message: 'Tài khoản giáo viên của bạn chưa được phê duyệt.',
+      code: 'TEACHER_NOT_APPROVED'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi kiểm tra quyền Giáo viên'
     });
   }
 };

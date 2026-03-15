@@ -46,6 +46,30 @@ const userSchema = new mongoose.Schema({
     enum: ['student', 'teacher', 'admin'],
     default: 'student'
   },
+
+  // Trạng thái duyệt giáo viên
+  teacherStatus: {
+    type: String,
+    enum: ['none', 'pending', 'approved', 'rejected'],
+    default: 'none'
+  },
+
+  // Khóa tài khoản
+  isLocked: {
+    type: Boolean,
+    default: false
+  },
+  lockReason: {
+    type: String,
+    default: ''
+  },
+  lockedAt: {
+    type: Date
+  },
+  lockedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   
   // Thông tin giáo viên (chỉ dùng khi role = 'teacher')
   teacherInfo: {
@@ -56,15 +80,30 @@ const userSchema = new mongoose.Schema({
     qualification: { type: String, default: '' }, // Bằng cấp
     bio: { type: String, default: '' }, // Giới thiệu
     verifiedAt: { type: Date }, // Ngày được xác minh là giáo viên
-    verifiedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Admin xác minh
+    verifiedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Admin xác minh
+    documents: [{
+      originalName: { type: String },
+      fileName: { type: String },
+      filePath: { type: String },
+      fileType: { type: String },
+      fileSize: { type: Number },
+      uploadedAt: { type: Date, default: Date.now }
+    }],
+    rejectionReason: { type: String, default: '' },
+    requestedAt: { type: Date },
+    adminNotes: [{
+      note: { type: String, required: true },
+      addedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      addedAt: { type: Date, default: Date.now }
+    }]
   },
   
   // Thông tin admin (chỉ dùng khi role = 'admin')
   adminInfo: {
     permissions: {
       type: [String],
-      default: ['all'], // all, users, lessons, challenges, classes, reports
-      enum: ['all', 'users', 'lessons', 'challenges', 'classes', 'reports', 'teachers']
+      default: ['all'], // all, users, lessons, challenges, classes, reports, teachers, settings, content, audit_logs
+      enum: ['all', 'users', 'lessons', 'challenges', 'classes', 'reports', 'teachers', 'settings', 'content', 'audit_logs']
     },
     assignedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     assignedAt: { type: Date }

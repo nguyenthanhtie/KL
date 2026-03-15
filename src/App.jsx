@@ -13,6 +13,7 @@ import Register from './pages/Register';
 // Admin pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import UserManagement from './pages/admin/UserManagement';
+import TeacherApproval from './pages/admin/TeacherApproval';
 
 // Teacher pages
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
@@ -187,7 +188,8 @@ const AppContent = () => {
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
         <Route path="/admin/users" element={<AdminRoute><UserManagement /></AdminRoute>} />
-        <Route path="/admin/teachers" element={<AdminRoute><UserManagement /></AdminRoute>} />
+        <Route path="/admin/teachers" element={<AdminRoute><TeacherApproval /></AdminRoute>} />
+        <Route path="/admin/teacher-requests" element={<AdminRoute><TeacherApproval /></AdminRoute>} />
         <Route path="/admin/classes" element={<AdminRoute><ClassManagement /></AdminRoute>} />
         
         {/* Teacher Routes */}

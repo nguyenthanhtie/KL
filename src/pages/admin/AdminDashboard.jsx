@@ -90,6 +90,29 @@ const AdminDashboard = () => {
           <p className="text-gray-600">Quản lý hệ thống học tập Hóa học</p>
         </div>
 
+        {/* Pending Teacher Requests Alert */}
+        {stats?.users?.pendingTeachers > 0 && (
+          <div
+            className="mb-8 bg-amber-50 border border-amber-200 rounded-xl p-6 cursor-pointer hover:bg-amber-100 transition-colors"
+            onClick={() => navigate('/admin/teacher-requests')}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-full bg-amber-100">
+                  <AlertCircle className="h-6 w-6 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-amber-800 text-lg">
+                    {stats.users.pendingTeachers} yêu cầu giáo viên đang chờ duyệt
+                  </h3>
+                  <p className="text-sm text-amber-600">Nhấn để xem và xử lý các yêu cầu</p>
+                </div>
+              </div>
+              <ChevronRight className="h-6 w-6 text-amber-400" />
+            </div>
+          </div>
+        )}
+
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard 
@@ -248,7 +271,25 @@ const AdminDashboard = () => {
               <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-blue-600" />
             </button>
             
-            <button 
+            <button
+              onClick={() => navigate('/admin/teacher-requests')}
+              className="flex items-center justify-between p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors group"
+            >
+              <div className="flex items-center gap-3">
+                <UserCheck className="h-5 w-5 text-amber-600" />
+                <span className="font-medium text-gray-700">Duyệt giáo viên</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {stats?.users?.pendingTeachers > 0 && (
+                  <span className="bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    {stats.users.pendingTeachers}
+                  </span>
+                )}
+                <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-amber-600" />
+              </div>
+            </button>
+
+            <button
               onClick={() => navigate('/admin/teachers')}
               className="flex items-center justify-between p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors group"
             >

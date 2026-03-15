@@ -2,113 +2,213 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const User = require('../models/User.cjs');
 const Lesson = require('../models/Lesson.cjs');
 const { authMiddleware } = require('../middleware/roleAuth.cjs');
 
-// Register route
-router.post('/register', async (req, res) => {
-  try {
-    console.log('📝 Register request received:', { 
-      username: req.body.username, 
-      email: req.body.email 
-    });
-    
-    const { username, email, password, isGoogleAuth } = req.body;
+// ===== MULTER CONFIG CHO TEACHER DOCUMENTS =====
+const teacherDocsDir = path.join(__dirname, '..', 'uploads', 'teacher-documents');
+if (!fs.existsSync(teacherDocsDir)) {
+  fs.mkdirSync(teacherDocsDir, { recursive: true });
+}
 
-    // Validation
-    if (!username || !email || (!password && !isGoogleAuth)) {
-      console.log('❌ Validation failed: Missing required fields');
-      return res.status(400).json({ 
-        message: 'Vui lòng điền đầy đủ thông tin' 
-      });
-    }
-
-    // Check if user exists in MongoDB
-    const existingUser = await User.findOne({ 
-      $or: [{ email }, { username }] 
-    });
-    
-    if (existingUser) {
-      console.log('❌ User already exists:', email);
-      const field = existingUser.email === email ? 'Email' : 'Tên người dùng';
-      return res.status(400).json({ 
-        message: `${field} đã được sử dụng` 
-      });
-    }
-
-    // Hash password if not Google auth
-    let hashedPassword = '';
-    if (!isGoogleAuth && password) {
-      hashedPassword = await bcrypt.hash(password, 10);
-    }
-
-    // Create new user in MongoDB
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-      displayName: username,
-      xp: 0,
-      level: 1,
-      progress: {
-        completedLessons: [],
-        currentStreak: 0,
-        totalPoints: 0,
-        totalStudyTime: 0
-      },
-      learningPrograms: [],
-      achievements: [],
-      settings: {
-        notifications: true,
-        soundEffects: true,
-        dailyGoal: 30
-      }
-    });
-
-    await newUser.save();
-    
-    console.log('✅ User registered successfully:', { 
-      id: newUser._id, 
-      email: newUser.email
-    });
-
-    // Generate token
-    const token = jwt.sign(
-      { userId: newUser._id.toString(), email: newUser.email },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '7d' }
-    );
-
-    res.status(201).json({
-      message: 'User registered successfully',
-      token,
-      user: {
-        id: newUser._id,
-        _id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-        displayName: newUser.displayName,
-        xp: newUser.xp,
-        level: newUser.level,
-        role: newUser.role || 'student',
-        learningPrograms: newUser.learningPrograms
-      }
-    });
-  } catch (error) {
-    console.error('❌ Register error:', error);
-    
-    // Handle MongoDB duplicate key error
-    if (error.code === 11000) {
-      const field = Object.keys(error.keyPattern)[0];
-      const fieldName = field === 'email' ? 'Email' : 'Tên người dùng';
-      return res.status(400).json({ 
-        message: `${fieldName} đã được sử dụng` 
-      });
-    }
-    
-    res.status(500).json({ message: 'Lỗi server', error: error.message });
+const teacherDocStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, teacherDocsDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext);
   }
+});
+
+const teacherDocFilter = (req, file, cb) => {
+  const allowedTypes = [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp'
+  ];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Loại file không được hỗ trợ. Chỉ chấp nhận PDF, DOCX, và hình ảnh.'), false);
+  }
+};
+
+const uploadTeacherDocs = multer({
+  storage: teacherDocStorage,
+  fileFilter: teacherDocFilter,
+  limits: { fileSize: 10 * 1024 * 1024 }
+}).array('documents', 5);
+
+// Register route
+router.post('/register', (req, res) => {
+  uploadTeacherDocs(req, res, async (uploadErr) => {
+    if (uploadErr instanceof multer.MulterError) {
+      return res.status(400).json({ message: `Lỗi upload: ${uploadErr.message}` });
+    }
+    if (uploadErr) {
+      return res.status(400).json({ message: uploadErr.message });
+    }
+
+    try {
+      const { username, email, password, isGoogleAuth } = req.body;
+      const requestedRole = req.body.role;
+
+      console.log('📝 Register request received:', { username, email, role: requestedRole || 'student' });
+
+      // Validation
+      if (!username || !email || (!password && !isGoogleAuth)) {
+        console.log('❌ Validation failed: Missing required fields');
+        return res.status(400).json({
+          message: 'Vui lòng điền đầy đủ thông tin'
+        });
+      }
+
+      // Check if user exists in MongoDB
+      const existingUser = await User.findOne({
+        $or: [{ email }, { username }]
+      });
+
+      if (existingUser) {
+        console.log('❌ User already exists:', email);
+        const field = existingUser.email === email ? 'Email' : 'Tên người dùng';
+        return res.status(400).json({
+          message: `${field} đã được sử dụng`
+        });
+      }
+
+      // Hash password if not Google auth
+      let hashedPassword = '';
+      if (!isGoogleAuth && password) {
+        hashedPassword = await bcrypt.hash(password, 10);
+      }
+
+      // Create new user in MongoDB
+      const userData = {
+        username,
+        email,
+        password: hashedPassword,
+        displayName: username,
+        xp: 0,
+        level: 1,
+        role: 'student',
+        teacherStatus: 'none',
+        progress: {
+          completedLessons: [],
+          currentStreak: 0,
+          totalPoints: 0,
+          totalStudyTime: 0
+        },
+        learningPrograms: [],
+        achievements: [],
+        settings: {
+          notifications: true,
+          soundEffects: true,
+          dailyGoal: 30
+        }
+      };
+
+      // Nếu đăng ký với vai trò giáo viên
+      if (requestedRole === 'teacher') {
+        userData.role = 'teacher';
+        userData.teacherStatus = 'pending';
+        userData.teacherInfo = {
+          school: req.body.school || '',
+          subject: req.body.subject || 'chemistry',
+          department: req.body.department || '',
+          yearsOfExperience: parseInt(req.body.yearsOfExperience) || 0,
+          qualification: req.body.qualification || '',
+          bio: req.body.bio || '',
+          requestedAt: new Date(),
+          documents: (req.files || []).map(file => ({
+            originalName: file.originalname,
+            fileName: file.filename,
+            filePath: `/uploads/teacher-documents/${file.filename}`,
+            fileType: file.mimetype,
+            fileSize: file.size,
+            uploadedAt: new Date()
+          }))
+        };
+      }
+
+      const newUser = new User(userData);
+      await newUser.save();
+
+      console.log('✅ User registered successfully:', {
+        id: newUser._id,
+        email: newUser.email,
+        role: newUser.role,
+        teacherStatus: newUser.teacherStatus
+      });
+
+      // Nếu đăng ký giáo viên, gửi thông báo cho admin
+      if (requestedRole === 'teacher') {
+        try {
+          const admins = await User.find({ role: 'admin' }).select('email');
+          const Notification = require('../models/Notification.cjs');
+          for (const admin of admins) {
+            await Notification.create({
+              userId: admin._id,
+              type: 'teacher_request',
+              title: 'Yêu cầu giáo viên mới',
+              body: `${username} (${email}) đã đăng ký tài khoản giáo viên và đang chờ phê duyệt.`,
+              data: { requesterId: newUser._id }
+            });
+          }
+        } catch (notifErr) {
+          console.error('Notification error:', notifErr);
+        }
+      }
+
+      // Generate token
+      const token = jwt.sign(
+        { userId: newUser._id.toString(), email: newUser.email },
+        process.env.JWT_SECRET || 'your-secret-key',
+        { expiresIn: '7d' }
+      );
+
+      res.status(201).json({
+        message: requestedRole === 'teacher'
+          ? 'Đăng ký thành công! Tài khoản giáo viên đang chờ phê duyệt.'
+          : 'User registered successfully',
+        token,
+        user: {
+          id: newUser._id,
+          _id: newUser._id,
+          username: newUser.username,
+          email: newUser.email,
+          displayName: newUser.displayName,
+          xp: newUser.xp,
+          level: newUser.level,
+          role: newUser.role,
+          teacherStatus: newUser.teacherStatus,
+          learningPrograms: newUser.learningPrograms
+        }
+      });
+    } catch (error) {
+      console.error('❌ Register error:', error);
+
+      // Handle MongoDB duplicate key error
+      if (error.code === 11000) {
+        const field = Object.keys(error.keyPattern)[0];
+        const fieldName = field === 'email' ? 'Email' : 'Tên người dùng';
+        return res.status(400).json({
+          message: `${fieldName} đã được sử dụng`
+        });
+      }
+
+      res.status(500).json({ message: 'Lỗi server', error: error.message });
+    }
+  });
 });
 
 // Login route
@@ -131,6 +231,20 @@ router.post('/login', async (req, res) => {
     if (!user) {
       console.log('❌ User not found:', email);
       return res.status(400).json({ message: 'Email hoặc mật khẩu không đúng' });
+    }
+
+    // Kiểm tra tài khoản bị khóa
+    if (user.isLocked) {
+      const isTeacherRejected = user.teacherStatus === 'rejected';
+      return res.status(403).json({
+        message: isTeacherRejected
+          ? 'Tài khoản giáo viên của bạn đã bị từ chối. Bạn có thể nộp lại hồ sơ để được xem xét lại.'
+          : 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin.',
+        code: 'ACCOUNT_LOCKED',
+        lockReason: user.lockReason || '',
+        isTeacherRejected,
+        rejectionReason: isTeacherRejected ? (user.teacherInfo?.rejectionReason || '') : ''
+      });
     }
 
     // Check password
@@ -183,6 +297,7 @@ router.post('/login', async (req, res) => {
         xp: user.xp,
         level: user.level,
         role: user.role || 'student',
+        teacherStatus: user.teacherStatus || 'none',
         teacherInfo: user.teacherInfo,
         adminInfo: user.adminInfo,
         learningPrograms: user.learningPrograms
@@ -192,6 +307,80 @@ router.post('/login', async (req, res) => {
     console.error('❌ Login error:', error);
     res.status(500).json({ message: 'Lỗi server', error: error.message });
   }
+});
+
+// ===== YÊU CẦU NÂNG CẤP LÊN GIÁO VIÊN (student hiện tại) =====
+router.post('/request-teacher', authMiddleware, (req, res) => {
+  uploadTeacherDocs(req, res, async (uploadErr) => {
+    if (uploadErr instanceof multer.MulterError) {
+      return res.status(400).json({ success: false, message: `Lỗi upload: ${uploadErr.message}` });
+    }
+    if (uploadErr) {
+      return res.status(400).json({ success: false, message: uploadErr.message });
+    }
+
+    try {
+      const user = req.user;
+
+      if (user.role === 'teacher' && user.teacherStatus === 'approved') {
+        return res.status(400).json({ success: false, message: 'Bạn đã là giáo viên' });
+      }
+      if (user.role === 'teacher' && user.teacherStatus === 'pending') {
+        return res.status(400).json({ success: false, message: 'Yêu cầu của bạn đang được xem xét' });
+      }
+
+      user.role = 'teacher';
+      user.teacherStatus = 'pending';
+      user.teacherInfo = {
+        school: req.body.school || '',
+        subject: req.body.subject || 'chemistry',
+        department: req.body.department || '',
+        yearsOfExperience: parseInt(req.body.yearsOfExperience) || 0,
+        qualification: req.body.qualification || '',
+        bio: req.body.bio || '',
+        requestedAt: new Date(),
+        documents: (req.files || []).map(file => ({
+          originalName: file.originalname,
+          fileName: file.filename,
+          filePath: `/uploads/teacher-documents/${file.filename}`,
+          fileType: file.mimetype,
+          fileSize: file.size,
+          uploadedAt: new Date()
+        }))
+      };
+
+      await user.save();
+
+      // Gửi thông báo cho admin
+      try {
+        const admins = await User.find({ role: 'admin' }).select('email');
+        const Notification = require('../models/Notification.cjs');
+        for (const admin of admins) {
+          await Notification.create({
+            userId: admin._id,
+            type: 'teacher_request',
+            title: 'Yêu cầu giáo viên mới',
+            body: `${user.username} (${user.email}) yêu cầu nâng cấp tài khoản lên giáo viên.`,
+            data: { requesterId: user._id }
+          });
+        }
+      } catch (notifErr) {
+        console.error('Notification error:', notifErr);
+      }
+
+      res.json({
+        success: true,
+        message: 'Yêu cầu trở thành giáo viên đã được gửi. Vui lòng chờ admin phê duyệt.',
+        data: {
+          teacherStatus: user.teacherStatus,
+          role: user.role
+        }
+      });
+    } catch (error) {
+      console.error('Request teacher error:', error);
+      res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+    }
+  });
 });
 
 // Google OAuth login/register
@@ -1509,6 +1698,116 @@ router.get('/classes/:classId/pk-rooms', authMiddleware, async (req, res) => {
       error: error.message
     });
   }
+});
+
+// ==================== RESUBMIT TEACHER (NỘP LẠI HỒ SƠ GV) ====================
+
+// POST /api/users/resubmit-teacher - Nộp lại hồ sơ giáo viên (không cần auth vì tài khoản bị khóa)
+router.post('/resubmit-teacher', (req, res) => {
+  uploadTeacherDocs(req, res, async (uploadErr) => {
+    if (uploadErr instanceof multer.MulterError) {
+      return res.status(400).json({ success: false, message: `Lỗi upload: ${uploadErr.message}` });
+    }
+    if (uploadErr) {
+      return res.status(400).json({ success: false, message: uploadErr.message });
+    }
+
+    try {
+      const { email, password, school, subject, department, yearsOfExperience, qualification, bio } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ success: false, message: 'Vui lòng nhập email và mật khẩu' });
+      }
+
+      // Tìm user
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'Không tìm thấy tài khoản với email này' });
+      }
+
+      // Xác thực mật khẩu
+      const isMatch = await user.comparePassword(password);
+      if (!isMatch) {
+        return res.status(400).json({ success: false, message: 'Mật khẩu không đúng' });
+      }
+
+      // Kiểm tra trạng thái
+      if (user.teacherStatus !== 'rejected') {
+        return res.status(400).json({ success: false, message: 'Tài khoản này không ở trạng thái bị từ chối' });
+      }
+
+      // Cập nhật thông tin giáo viên
+      if (school) user.teacherInfo.school = school;
+      if (subject) user.teacherInfo.subject = subject;
+      if (department) user.teacherInfo.department = department;
+      if (yearsOfExperience) user.teacherInfo.yearsOfExperience = parseInt(yearsOfExperience);
+      if (qualification) user.teacherInfo.qualification = qualification;
+      if (bio) user.teacherInfo.bio = bio;
+
+      // Xử lý documents mới
+      if (req.files && req.files.length > 0) {
+        const newDocuments = req.files.map(file => ({
+          originalName: file.originalname,
+          fileName: file.filename,
+          filePath: `/uploads/teacher-documents/${file.filename}`,
+          fileType: file.mimetype,
+          fileSize: file.size,
+          uploadedAt: new Date()
+        }));
+        user.teacherInfo.documents = newDocuments;
+      }
+
+      // Cập nhật trạng thái
+      user.teacherInfo.requestedAt = new Date();
+      user.teacherInfo.rejectionReason = '';
+      user.teacherStatus = 'pending';
+      user.isLocked = false;
+      user.lockReason = '';
+      user.lockedAt = undefined;
+      user.lockedBy = undefined;
+
+      await user.save();
+
+      // Gửi notification cho admins
+      try {
+        const Notification = require('../models/Notification.cjs');
+        const admins = await User.find({ role: 'admin' });
+        for (const admin of admins) {
+          await Notification.create({
+            userId: admin._id,
+            type: 'teacher_request',
+            title: 'Yêu cầu giáo viên nộp lại',
+            body: `${user.displayName || user.username} đã nộp lại hồ sơ giáo viên sau khi bị từ chối.`,
+            data: { userId: user._id, isResubmission: true }
+          });
+        }
+      } catch (notifErr) {
+        console.error('Notification error:', notifErr);
+      }
+
+      // Ghi audit log
+      try {
+        const AuditLog = require('../models/AuditLog.cjs');
+        await AuditLog.create({
+          action: 'resubmit_teacher',
+          performedBy: user._id,
+          targetUser: user._id,
+          details: { resubmission: true },
+          ip: req.ip
+        });
+      } catch (auditErr) {
+        console.error('Audit log error:', auditErr);
+      }
+
+      res.json({
+        success: true,
+        message: 'Hồ sơ giáo viên đã được nộp lại. Vui lòng chờ admin phê duyệt.'
+      });
+    } catch (error) {
+      console.error('Resubmit teacher error:', error);
+      res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+    }
+  });
 });
 
 module.exports = router;

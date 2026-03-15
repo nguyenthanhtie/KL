@@ -22,7 +22,10 @@ const notificationSchema = new mongoose.Schema({
       'challenge_unlock',    // Mở khóa challenge mới
       'weekly_report',       // Báo cáo tuần
       'system',              // Thông báo hệ thống
-      'promotion'            // Khuyến mãi/sự kiện
+      'promotion',            // Khuyến mãi/sự kiện
+      'teacher_request',      // Yêu cầu giáo viên mới (gửi cho admin)
+      'teacher_approved',     // Giáo viên đã được phê duyệt
+      'teacher_rejected'      // Giáo viên bị từ chối
     ],
     required: true
   },
