@@ -1,11 +1,61 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const pdfParse = require('pdf-parse');
+const mammoth = require('mammoth');
 const User = require('../models/User.cjs');
 const ClassRoom = require('../models/ClassRoom.cjs');
 const Assignment = require('../models/Assignment.cjs');
 const Lesson = require('../models/Lesson.cjs');
 const Challenge = require('../models/Challenge.cjs');
 const { authMiddleware, teacherMiddleware, checkClassOwnership } = require('../middleware/roleAuth.cjs');
+
+// Multer configuration for file uploads
+const uploadsDir = path.join(__dirname, '..', 'uploads', 'assignments');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'text/plain'
+  ];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Loại file không được hỗ trợ. Chỉ chấp nhận PDF, Word, Excel, PowerPoint, hình ảnh và text.'), false);
+  }
+};
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB max
+});
 
 // Tất cả routes đều yêu cầu đăng nhập và là giáo viên
 router.use(authMiddleware);
@@ -851,7 +901,223 @@ router.post('/assignments/:assignmentId/grade', async (req, res) => {
   }
 });
 
-// ==================== ANNOUNCEMENTS ====================
+// ==================== FILE UPLOAD ====================
+
+// POST /api/teacher/assignments/:assignmentId/upload - Upload file đính kèm
+router.post('/assignments/:assignmentId/upload', upload.array('files', 5), async (req, res) => {
+  try {
+    const assignment = await Assignment.findOne({
+      _id: req.params.assignmentId,
+      createdBy: req.user._id
+    });
+    
+    if (!assignment) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy bài tập' });
+    }
+    
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ success: false, message: 'Không có file nào được tải lên' });
+    }
+    
+    const attachments = req.files.map(file => ({
+      originalName: file.originalname,
+      fileName: file.filename,
+      filePath: `/uploads/assignments/${file.filename}`,
+      fileType: file.mimetype,
+      fileSize: file.size,
+      uploadedAt: new Date()
+    }));
+    
+    if (!assignment.content) assignment.content = {};
+    if (!assignment.content.attachments) assignment.content.attachments = [];
+    assignment.content.attachments.push(...attachments);
+    
+    await assignment.save();
+    
+    res.json({
+      success: true,
+      message: `Đã tải lên ${attachments.length} file`,
+      data: attachments
+    });
+  } catch (error) {
+    console.error('Upload file error:', error);
+    res.status(500).json({ success: false, message: error.message || 'Lỗi server' });
+  }
+});
+
+// DELETE /api/teacher/assignments/:assignmentId/attachments/:fileName - Xóa file đính kèm
+router.delete('/assignments/:assignmentId/attachments/:fileName', async (req, res) => {
+  try {
+    const assignment = await Assignment.findOne({
+      _id: req.params.assignmentId,
+      createdBy: req.user._id
+    });
+    
+    if (!assignment) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy bài tập' });
+    }
+    
+    // Remove from DB
+    if (assignment.content?.attachments) {
+      assignment.content.attachments = assignment.content.attachments.filter(
+        a => a.fileName !== req.params.fileName
+      );
+      await assignment.save();
+    }
+    
+    // Remove file from disk
+    const filePath = path.join(uploadsDir, req.params.fileName);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+    
+    res.json({ success: true, message: 'Đã xóa file' });
+  } catch (error) {
+    console.error('Delete file error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server' });
+  }
+});
+
+// POST /api/teacher/assignments/parse-file - Upload & parse file thành câu hỏi
+router.post('/assignments/parse-file', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Không có file nào được tải lên' });
+    }
+
+    const filePath = req.file.path;
+    const mimeType = req.file.mimetype;
+    let text = '';
+
+    // Extract text based on file type
+    if (mimeType === 'application/pdf') {
+      const dataBuffer = fs.readFileSync(filePath);
+      const pdfData = await pdfParse(dataBuffer);
+      text = pdfData.text;
+    } else if (
+      mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+      mimeType === 'application/msword'
+    ) {
+      const result = await mammoth.extractRawText({ path: filePath });
+      text = result.value;
+    } else if (mimeType === 'text/plain') {
+      text = fs.readFileSync(filePath, 'utf-8');
+    } else {
+      // Clean up
+      fs.unlinkSync(filePath);
+      return res.status(400).json({ success: false, message: 'Chỉ hỗ trợ parse PDF, Word (.docx) và text (.txt)' });
+    }
+
+    // Clean up uploaded file
+    fs.unlinkSync(filePath);
+
+    if (!text.trim()) {
+      return res.json({ success: true, data: { rawText: '', questions: [] }, message: 'File trống' });
+    }
+
+    // Parse text into questions
+    const questions = parseTextToQuestions(text);
+
+    res.json({
+      success: true,
+      message: `Đã phân tích ${questions.length} câu hỏi từ file`,
+      data: {
+        rawText: text.substring(0, 5000),
+        questions
+      }
+    });
+  } catch (error) {
+    console.error('Parse file error:', error);
+    // Clean up on error
+    if (req.file?.path && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    res.status(500).json({ success: false, message: 'Lỗi phân tích file: ' + error.message });
+  }
+});
+
+// Helper: Parse text content into structured questions
+function parseTextToQuestions(text) {
+  const questions = [];
+  const lines = text.split(/\n/).map(l => l.trim()).filter(l => l);
+
+  // Pattern: "Câu 1:", "Câu 1.", "1.", "1)", "1/"
+  const qPattern = /^(?:C[aâ]u\s*)(\d+)[.:)\s]/i;
+  const qNumPattern = /^(\d+)[.):\/]\s+/;
+  // Option pattern: "A.", "A)", "a.", "a)"
+  const optPattern = /^([A-Da-d])[.):]\s*/;
+  // Answer pattern: "Đáp án: A", "ĐA: B", "=> A"
+  const ansPattern = /^(?:Đ[aá]p\s*[aá]n|ĐA|=>|Trả lời)[.:)\s]*([A-Da-d])/i;
+
+  let current = null;
+
+  const pushCurrent = () => {
+    if (current && current.question.trim()) {
+      // Determine type
+      if (current.options.length >= 2) {
+        current.type = 'multiple-choice';
+      } else if (/đúng.*sai|true.*false/i.test(current.question)) {
+        current.type = 'true-false';
+        if (current.options.length === 0) {
+          current.options = ['Đúng', 'Sai'];
+        }
+      } else if (/điền|fill/i.test(current.question)) {
+        current.type = 'fill-in';
+      } else if (current.options.length === 0) {
+        current.type = 'essay';
+      }
+      questions.push({
+        question: current.question.trim(),
+        type: current.type,
+        options: current.options,
+        correctAnswer: current.correctAnswer,
+        points: 10,
+        explanation: ''
+      });
+    }
+  };
+
+  for (const line of lines) {
+    // Check if this line starts a new question
+    const qMatch = line.match(qPattern) || line.match(qNumPattern);
+    if (qMatch) {
+      pushCurrent();
+      const questionText = line.replace(qPattern, '').replace(qNumPattern, '').trim();
+      current = {
+        question: questionText,
+        type: 'multiple-choice',
+        options: [],
+        correctAnswer: 0
+      };
+      continue;
+    }
+
+    // Check if this is an option
+    const optMatch = line.match(optPattern);
+    if (optMatch && current) {
+      const optText = line.replace(optPattern, '').trim();
+      current.options.push(optText);
+      continue;
+    }
+
+    // Check if this is an answer line
+    const ansMatch = line.match(ansPattern);
+    if (ansMatch && current) {
+      const letter = ansMatch[1].toUpperCase();
+      current.correctAnswer = letter.charCodeAt(0) - 65;
+      continue;
+    }
+
+    // Otherwise append to current question text
+    if (current) {
+      current.question += ' ' + line;
+    }
+  }
+
+  pushCurrent();
+  return questions;
+}
+
 
 // POST /api/teacher/classes/:classId/announcements - Đăng thông báo
 router.post('/classes/:classId/announcements', checkClassOwnership, async (req, res) => {
@@ -1031,6 +1297,7 @@ router.get('/lessons', async (req, res) => {
     
     const [lessons, total] = await Promise.all([
       Lesson.find(query)
+        .populate('createdBy', 'displayName username email')
         .sort({ classId: 1, chapterId: 1, order: 1 })
         .skip(skip)
         .limit(parseInt(limit))
@@ -1057,7 +1324,9 @@ router.get('/lessons', async (req, res) => {
 // GET /api/teacher/lessons/:id - Lấy chi tiết một bài học
 router.get('/lessons/:id', async (req, res) => {
   try {
-    const lesson = await Lesson.findById(req.params.id).lean();
+    const lesson = await Lesson.findById(req.params.id)
+      .populate('createdBy', 'displayName username email')
+      .lean();
     
     if (!lesson) {
       return res.status(404).json({ success: false, message: 'Không tìm thấy bài học' });
@@ -1265,8 +1534,7 @@ router.post('/lessons/:id/duplicate', async (req, res) => {
     // Tìm lessonId mới
     const maxLesson = await Lesson.findOne({
       classId: originalLesson.classId,
-      curriculumType: originalLesson.curriculumType,
-      chapterId: originalLesson.chapterId
+      curriculumType: originalLesson.curriculumType
     }).sort({ lessonId: -1 });
     
     const newLessonId = (maxLesson?.lessonId || 0) + 1;

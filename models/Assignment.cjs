@@ -36,6 +36,15 @@ const assignmentSchema = new mongoose.Schema({
       correctAnswer: mongoose.Schema.Types.Mixed,
       points: { type: Number, default: 10 },
       explanation: String
+    }],
+    // File đính kèm (Word, PDF, hình ảnh...)
+    attachments: [{
+      originalName: String,
+      fileName: String,
+      filePath: String,
+      fileType: String,
+      fileSize: Number,
+      uploadedAt: { type: Date, default: Date.now }
     }]
   },
   

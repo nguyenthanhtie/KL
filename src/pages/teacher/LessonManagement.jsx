@@ -252,9 +252,10 @@ const LessonManagement = () => {
                       <th className="w-[25%] px-4 py-3 text-left text-sm font-semibold text-gray-600">Bài học</th>
                       <th className="w-[8%] px-4 py-3 text-left text-sm font-semibold text-gray-600">Lớp</th>
                       <th className="w-[12%] px-4 py-3 text-left text-sm font-semibold text-gray-600">Bộ sách</th>
-                      <th className="w-[20%] px-4 py-3 text-left text-sm font-semibold text-gray-600">Chương</th>
+                      <th className="w-[15%] px-4 py-3 text-left text-sm font-semibold text-gray-600">Chương</th>
                       <th className="w-[10%] px-4 py-3 text-left text-sm font-semibold text-gray-600">Độ khó</th>
-                      <th className="w-[10%] px-4 py-3 text-center text-sm font-semibold text-gray-600">Câu hỏi</th>
+                      <th className="w-[8%] px-4 py-3 text-center text-sm font-semibold text-gray-600">Câu hỏi</th>
+                      <th className="w-[12%] px-4 py-3 text-left text-sm font-semibold text-gray-600">Người tạo</th>
                       <th className="w-[15%] px-4 py-3 text-right text-sm font-semibold text-gray-600">Thao tác</th>
                     </tr>
                   </thead>
@@ -286,15 +287,11 @@ const LessonManagement = () => {
                             {getQuizCount(lesson)} câu
                           </span>
                         </td>
+                        <td className="px-4 py-3 text-sm text-gray-600 truncate">
+                          {lesson.createdBy?.displayName || lesson.createdBy?.username || 'Hệ thống'}
+                        </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center justify-end gap-1">
-                            <button
-                              onClick={() => navigate(`/lesson/${lesson.classId}/${lesson.chapterId}/${lesson.lessonId}`)}
-                              className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                              title="Xem trước"
-                            >
-                              <Eye className="w-4 h-4" />
-                            </button>
                             <button
                               onClick={() => navigate(`/teacher/lessons/${lesson._id}/edit`)}
                               className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"

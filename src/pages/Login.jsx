@@ -54,7 +54,11 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', data.token || '');
         
-        if (data.user.programs && data.user.programs.length > 0) {
+        if (data.user.role === 'teacher') {
+          navigate('/teacher');
+        } else if (data.user.role === 'admin') {
+          navigate('/admin');
+        } else if (data.user.programs && data.user.programs.length > 0) {
           const activeProgram = data.user.programs.find(p => p.isActive);
           if (activeProgram) {
             navigate(`/program/${activeProgram.programId}`);
@@ -88,8 +92,21 @@ const Login = () => {
     setLoading(true);
 
     try {
-      await login(formData.email, formData.password);
-      navigate('/');
+      const userData = await login(formData.email, formData.password);
+      if (userData.role === 'teacher') {
+        navigate('/teacher');
+      } else if (userData.role === 'admin') {
+        navigate('/admin');
+      } else if (userData.programs && userData.programs.length > 0) {
+        const activeProgram = userData.programs.find(p => p.isActive) || userData.programs[0];
+        if (activeProgram) {
+          navigate(`/program/${activeProgram.programId}`);
+        } else {
+          navigate('/');
+        }
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
     } finally {

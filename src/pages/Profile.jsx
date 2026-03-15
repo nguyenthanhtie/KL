@@ -477,7 +477,7 @@ const Profile = () => {
                   )}
 
                   {/* Current Program Info */}
-                  {currentProgram && (
+                  {currentProgram && userData?.role !== 'teacher' && userData?.role !== 'admin' && (
                     <div className="text-left space-y-3">
                       <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                         <span className="text-sm text-gray-600">Chương trình</span>
@@ -665,6 +665,7 @@ const Profile = () => {
           )}
 
         {/* Show Mission Bubble Button */}
+        {userData?.role !== 'teacher' && userData?.role !== 'admin' && (
         <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -685,6 +686,7 @@ const Profile = () => {
             </button>
           </div>
         </div>
+        )}
         </>
         )}
         </div>

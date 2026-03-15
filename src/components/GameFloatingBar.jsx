@@ -457,8 +457,8 @@ const GameFloatingBar = () => {
     return () => window.removeEventListener('showMissionBubble', handleShowBubble);
   }, []);
 
-  // Don't render if not logged in or hidden
-  if (!user || !isVisible) return null;
+  // Don't render if not logged in, hidden, or user is teacher/admin
+  if (!user || !isVisible || user.role === 'teacher' || user.role === 'admin') return null;
 
   return (
     <>

@@ -313,7 +313,7 @@ const TeacherDashboard = () => {
             </button>
             
             <button 
-              onClick={() => navigate('/teacher/classes')}
+              onClick={() => navigate('/teacher/assignments')}
               className="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors text-left"
             >
               <ClipboardList className="h-6 w-6 text-blue-600 mb-2" />

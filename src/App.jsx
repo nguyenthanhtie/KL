@@ -19,6 +19,7 @@ import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import ClassManagement from './pages/teacher/ClassManagement';
 import LessonManagement from './pages/teacher/LessonManagement';
 import LessonEditor from './pages/teacher/LessonEditor';
+import AssignmentManagement from './pages/teacher/AssignmentManagement';
 
 // Student pages
 import MyClasses from './pages/student/MyClasses';
@@ -197,6 +198,7 @@ const AppContent = () => {
         <Route path="/teacher/lessons" element={<TeacherRoute><LessonManagement /></TeacherRoute>} />
         <Route path="/teacher/lessons/new" element={<TeacherRoute><LessonEditor /></TeacherRoute>} />
         <Route path="/teacher/lessons/:lessonId/edit" element={<TeacherRoute><LessonEditor /></TeacherRoute>} />
+        <Route path="/teacher/assignments" element={<TeacherRoute><AssignmentManagement /></TeacherRoute>} />
         
         {/* Student Classroom Routes */}
         <Route path="/student/classes" element={<MyClasses />} />
