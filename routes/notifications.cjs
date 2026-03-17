@@ -144,7 +144,15 @@ router.get('/settings', async (req, res) => {
       return res.status(400).json({ error: 'userId is required' });
     }
 
-    const user = await User.findById(userId).select('notificationSettings fcmTokens');
+    const mongoose = require('mongoose');
+    let user;
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      user = await User.findById(userId).select('notificationSettings fcmTokens');
+    } else {
+      user = await User.findOne({ 
+        $or: [{ firebaseUid: userId }, { email: userId }] 
+      }).select('notificationSettings fcmTokens');
+    }
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });

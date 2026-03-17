@@ -13,6 +13,7 @@ const StudentClassDetail = () => {
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('overview');
   const [pkRooms, setPkRooms] = useState([]);
+  const [classAnnouncements, setClassAnnouncements] = useState([]);
 
   // Grade info
   const gradeInfo = {
@@ -59,10 +60,22 @@ const StudentClassDetail = () => {
     }
   };
 
-  // Fetch PK rooms when tab changes to pkroom
   useEffect(() => {
     if (activeTab === 'pkroom' && user) {
       fetchPKRooms();
+    }
+    if (activeTab === 'announcements' && user) {
+      const fetchAnnouncements = async () => {
+        try {
+          const res = await api.get(`/users/classes/${classId}/announcements`);
+          if (res.data.success) {
+            setClassAnnouncements(res.data.data);
+          }
+        } catch (err) {
+          console.error('Error fetching class announcements:', err);
+        }
+      };
+      fetchAnnouncements();
     }
   }, [activeTab, classId, user]);
 
@@ -568,39 +581,42 @@ const StudentClassDetail = () => {
         {activeTab === 'announcements' && (
           <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
             <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-              <span>📢</span> Thông báo từ giáo viên
+              <span>&#128226;</span> Th&#244;ng b&#225;o t&#7915; gi&#225;o vi&#234;n
             </h3>
             
-            {classData.announcements?.length > 0 ? (
+            {classAnnouncements.length > 0 ? (
               <div className="space-y-4">
-                {classData.announcements.map((announcement, index) => (
-                  <div
-                    key={index}
-                    className={`rounded-xl p-4 border ${
-                      announcement.isPinned
-                        ? 'bg-yellow-500/10 border-yellow-500/30'
-                        : 'bg-white/5 border-white/10'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      {announcement.isPinned && (
-                        <span className="text-xl">📌</span>
-                      )}
-                      <div className="flex-1">
-                        <h4 className="text-white font-semibold">{announcement.title}</h4>
-                        <p className="text-white/70 mt-2 whitespace-pre-wrap">{announcement.content}</p>
-                        <p className="text-sm text-white/40 mt-3">
-                          {formatDate(announcement.createdAt)}
-                        </p>
+                {classAnnouncements.map((announcement) => {
+                  const borderClass = announcement.priority === 'urgent' ? 'bg-red-500/10 border-red-500/30' :
+                    announcement.priority === 'high' ? 'bg-orange-500/10 border-orange-500/30' :
+                    'bg-white/5 border-white/10';
+                  return (
+                    <div
+                      key={announcement._id}
+                      className={`rounded-xl p-4 border ${borderClass}`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-white font-semibold">{announcement.title}</h4>
+                            {announcement.priority === 'urgent' && <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-xs rounded-full font-medium">Kh&#7849;n c&#7845;p</span>}
+                            {announcement.priority === 'high' && <span className="px-2 py-0.5 bg-orange-500/20 text-orange-400 text-xs rounded-full font-medium">Cao</span>}
+                          </div>
+                          <p className="text-white/70 mt-2 whitespace-pre-wrap">{announcement.content}</p>
+                          <p className="text-sm text-white/40 mt-3">
+                            {announcement.author?.displayName && <span>B&#7903;i {announcement.author.displayName} &bull; </span>}
+                            {formatDate(announcement.createdAt)}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div className="text-center py-12">
-                <div className="text-5xl mb-4">🔔</div>
-                <p className="text-white/60">Chưa có thông báo nào</p>
+                <div className="text-5xl mb-4">&#128276;</div>
+                <p className="text-white/60">Ch&#432;a c&#243; th&#244;ng b&#225;o n&#224;o</p>
               </div>
             )}
           </div>

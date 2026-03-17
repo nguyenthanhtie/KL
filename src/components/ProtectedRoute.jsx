@@ -40,6 +40,10 @@ export const TeacherRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
+  if (user.role === 'teacher' && user.teacherStatus !== 'approved') {
+    return <Navigate to="/" replace />;
+  }
+
   if (user.role !== 'teacher' && user.role !== 'admin') {
     return <Navigate to="/" replace />;
   }

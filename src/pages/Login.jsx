@@ -54,19 +54,21 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', data.token || '');
         
-        if (data.user.role === 'teacher') {
+        if (data.user.role === 'teacher' && data.user.teacherStatus === 'approved') {
           navigate('/teacher');
+        } else if (data.user.role === 'teacher' && data.user.teacherStatus === 'pending') {
+          navigate('/');
         } else if (data.user.role === 'admin') {
           navigate('/admin');
         } else if (data.user.programs && data.user.programs.length > 0) {
-          const activeProgram = data.user.programs.find(p => p.isActive);
+          const activeProgram = data.user.programs.find(p => p.isActive) || data.user.programs[0];
           if (activeProgram) {
             navigate(`/program/${activeProgram.programId}`);
           } else {
-            navigate('/');
+            navigate('/student/classes');
           }
         } else {
-          navigate('/home');
+          navigate('/student/classes');
         }
       } else {
         setError(data.message || 'Đăng nhập thất bại');
@@ -93,8 +95,10 @@ const Login = () => {
 
     try {
       const userData = await login(formData.email, formData.password);
-      if (userData.role === 'teacher') {
+      if (userData.role === 'teacher' && userData.teacherStatus === 'approved') {
         navigate('/teacher');
+      } else if (userData.role === 'teacher' && userData.teacherStatus === 'pending') {
+        navigate('/');
       } else if (userData.role === 'admin') {
         navigate('/admin');
       } else if (userData.programs && userData.programs.length > 0) {
@@ -102,10 +106,10 @@ const Login = () => {
         if (activeProgram) {
           navigate(`/program/${activeProgram.programId}`);
         } else {
-          navigate('/');
+          navigate('/student/classes');
         }
       } else {
-        navigate('/');
+        navigate('/student/classes');
       }
     } catch (err) {
       setError(err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
@@ -280,18 +284,8 @@ const Login = () => {
                 </div>
               </div>
 
-              {/* Remember & Forgot */}
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                  />
-                  <span className="text-gray-600">Ghi nhớ đăng nhập</span>
-                </label>
-                <a href="#" className="text-purple-600 hover:text-purple-700 font-medium">
-                  Quên mật khẩu?
-                </a>
+              <div className="flex items-center justify-end text-sm">
+                <span className="text-sm text-gray-500">Chức năng quên mật khẩu đang được phát triển</span>
               </div>
 
               {/* Submit Button */}

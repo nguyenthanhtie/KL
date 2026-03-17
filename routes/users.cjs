@@ -7,47 +7,12 @@ const path = require('path');
 const fs = require('fs');
 const User = require('../models/User.cjs');
 const Lesson = require('../models/Lesson.cjs');
+const Announcement = require('../models/Announcement.cjs');
 const { authMiddleware } = require('../middleware/roleAuth.cjs');
 
 // ===== MULTER CONFIG CHO TEACHER DOCUMENTS =====
-const teacherDocsDir = path.join(__dirname, '..', 'uploads', 'teacher-documents');
-if (!fs.existsSync(teacherDocsDir)) {
-  fs.mkdirSync(teacherDocsDir, { recursive: true });
-}
-
-const teacherDocStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, teacherDocsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, uniqueSuffix + ext);
-  }
-});
-
-const teacherDocFilter = (req, file, cb) => {
-  const allowedTypes = [
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/webp'
-  ];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Loại file không được hỗ trợ. Chỉ chấp nhận PDF, DOCX, và hình ảnh.'), false);
-  }
-};
-
-const uploadTeacherDocs = multer({
-  storage: teacherDocStorage,
-  fileFilter: teacherDocFilter,
-  limits: { fileSize: 10 * 1024 * 1024 }
-}).array('documents', 5);
+const { uploadTeacherDocsCloudinary } = require('../config/cloudinary.cjs');
+const uploadTeacherDocs = uploadTeacherDocsCloudinary.array('documents', 5);
 
 // Register route
 router.post('/register', (req, res) => {
@@ -131,8 +96,8 @@ router.post('/register', (req, res) => {
           requestedAt: new Date(),
           documents: (req.files || []).map(file => ({
             originalName: file.originalname,
-            fileName: file.filename,
-            filePath: `/uploads/teacher-documents/${file.filename}`,
+            fileName: file.filename, // This becomes the Cloudinary public_id
+            filePath: file.path,     // This becomes the Cloudinary secure URL
             fileType: file.mimetype,
             fileSize: file.size,
             uploadedAt: new Date()
@@ -294,13 +259,16 @@ router.post('/login', async (req, res) => {
         username: user.username,
         email: user.email,
         displayName: user.displayName,
+        firebaseUid: user.firebaseUid,
+        uid: user.firebaseUid,
         xp: user.xp,
         level: user.level,
         role: user.role || 'student',
         teacherStatus: user.teacherStatus || 'none',
         teacherInfo: user.teacherInfo,
         adminInfo: user.adminInfo,
-        learningPrograms: user.learningPrograms
+        programs: user.programs,
+        avatar: user.avatar
       }
     });
   } catch (error) {
@@ -341,8 +309,8 @@ router.post('/request-teacher', authMiddleware, (req, res) => {
         requestedAt: new Date(),
         documents: (req.files || []).map(file => ({
           originalName: file.originalname,
-          fileName: file.filename,
-          filePath: `/uploads/teacher-documents/${file.filename}`,
+          fileName: file.filename, // This becomes the Cloudinary public_id
+          filePath: file.path,     // This becomes the Cloudinary secure URL
           fileType: file.mimetype,
           fileSize: file.size,
           uploadedAt: new Date()
@@ -494,7 +462,7 @@ router.put('/:userId', authMiddleware, async (req, res) => {
 });
 
 // Submit lesson completion and update progress
-router.post('/submit-lesson', async (req, res) => {
+router.post('/submit-lesson', authMiddleware, async (req, res) => {
   try {
     const { firebaseUid, programId, pathId, lessonId, score, totalQuestions, studyDuration } = req.body;
 
@@ -602,7 +570,7 @@ router.post('/submit-lesson', async (req, res) => {
 });
 
 // Update learning progress (legacy - kept for backward compatibility)
-router.post('/progress', async (req, res) => {
+router.post('/progress', authMiddleware, async (req, res) => {
   try {
     const { userId, program, grade, lesson } = req.body;
 
@@ -655,7 +623,7 @@ router.post('/progress', async (req, res) => {
 });
 
 // Update user grade after placement test
-router.post('/update-grade', async (req, res) => {
+router.post('/update-grade', authMiddleware, async (req, res) => {
   try {
     const { userId, grade } = req.body;
 
@@ -689,7 +657,7 @@ router.post('/update-grade', async (req, res) => {
 });
 
 // Enroll user in a program after placement test
-router.post('/enroll-program', async (req, res) => {
+router.post('/enroll-program', authMiddleware, async (req, res) => {
   try {
     const { userId, programId, programName, initialClassId, placementTestScore, placementTestTotal, curriculumType } = req.body;
 
@@ -1748,8 +1716,8 @@ router.post('/resubmit-teacher', (req, res) => {
       if (req.files && req.files.length > 0) {
         const newDocuments = req.files.map(file => ({
           originalName: file.originalname,
-          fileName: file.filename,
-          filePath: `/uploads/teacher-documents/${file.filename}`,
+          fileName: file.filename, // Cloudinary public_id
+          filePath: file.path,     // Cloudinary secure URL
           fileType: file.mimetype,
           fileSize: file.size,
           uploadedAt: new Date()
@@ -1808,6 +1776,46 @@ router.post('/resubmit-teacher', (req, res) => {
       res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
     }
   });
+});
+
+// ==================== ANNOUNCEMENTS (PUBLIC READ) ====================
+
+// GET /api/users/announcements/system - Lấy thông báo hệ thống đang active
+router.get('/announcements/system', async (req, res) => {
+  try {
+    const announcements = await Announcement.find({
+      type: 'system',
+      isActive: true
+    })
+      .populate('author', 'displayName email')
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .lean();
+    
+    res.json({ success: true, data: announcements });
+  } catch (error) {
+    console.error('Get system announcements error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// GET /api/users/classes/:classId/announcements - Lấy thông báo của lớp (cho học sinh)
+router.get('/classes/:classId/announcements', authMiddleware, async (req, res) => {
+  try {
+    const announcements = await Announcement.find({
+      type: 'class',
+      classId: req.params.classId,
+      isActive: true
+    })
+      .populate('author', 'displayName email')
+      .sort({ createdAt: -1 })
+      .lean();
+    
+    res.json({ success: true, data: announcements });
+  } catch (error) {
+    console.error('Get class announcements error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
 });
 
 module.exports = router;

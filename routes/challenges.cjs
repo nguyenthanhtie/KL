@@ -3,10 +3,10 @@ const router = express.Router();
 const Challenge = require('../models/Challenge.cjs');
 // ChallengeAttempt không cần nữa - tiến trình lưu trong User.programs
 
-// Get all challenges
+// Get all challenges (for students - hide drafts)
 router.get('/', async (req, res) => {
   try {
-    const challenges = await Challenge.find().sort({ id: 1 });
+    const challenges = await Challenge.find({ status: { $ne: 'draft' } }).sort({ id: 1 });
     res.json(challenges);
   } catch (error) {
     console.error('Error fetching challenges:', error);
@@ -26,8 +26,8 @@ router.get('/user/:userId', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     
-    // Get all challenges
-    const challenges = await Challenge.find().sort({ id: 1 });
+    // Get all challenges (hide drafts)
+    const challenges = await Challenge.find({ status: { $ne: 'draft' } }).sort({ id: 1 });
     
     // Find chemistry program progress
     const chemistryProgram = user.programs.find(p => p.programId === 'chemistry');

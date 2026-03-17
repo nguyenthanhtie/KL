@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     strictPort: false, // Allow Vite to automatically find an available port
     headers: {
-      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+      'Cross-Origin-Opener-Policy': 'unsafe-none',
       'Cross-Origin-Embedder-Policy': 'unsafe-none'
     },
     proxy: {

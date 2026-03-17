@@ -25,7 +25,8 @@ import {
   School,
   Users,
   ClipboardList,
-  UserCheck
+  UserCheck,
+  Megaphone
 } from 'lucide-react';
 
 const Sidebar = ({ children }) => {
@@ -97,6 +98,12 @@ const Sidebar = ({ children }) => {
       icon: Beaker,
       path: '/chemistry-lab',
       gradient: 'from-indigo-500 to-purple-500'
+    },
+    {
+      title: 'Trải Nghiệm 3D',
+      icon: Sparkles,
+      path: '/magic-lab-3d',
+      gradient: 'from-fuchsia-500 to-cyan-500'
     }
   ];
 
@@ -153,6 +160,12 @@ const Sidebar = ({ children }) => {
       icon: School,
       path: '/admin/classes',
       gradient: 'from-purple-500 to-violet-500'
+    },
+    {
+      title: 'Thông báo',
+      icon: Megaphone,
+      path: '/admin/announcements',
+      gradient: 'from-amber-500 to-orange-500'
     }
   ];
 
@@ -212,10 +225,12 @@ const Sidebar = ({ children }) => {
   };
 
   // Don't show sidebar on login/register pages or if user hasn't selected a program
-  const hideSidebar = ['/login', '/register'].includes(location.pathname);
+  // Show sidebar for teachers and admins regardless of program status
+  const isTeacherOrAdmin = user?.role === 'teacher' || user?.role === 'admin';
+  const hideSidebar = ['/login', '/register', '/placement-test'].some(path => location.pathname.startsWith(path));
   const hasActiveProgram = user?.programs?.some(p => p.isActive);
   
-  if (hideSidebar || !user || !hasActiveProgram) {
+  if (hideSidebar || !user || (!hasActiveProgram && !isTeacherOrAdmin)) {
     return <>{children}</>;
   }
 
@@ -290,8 +305,8 @@ const Sidebar = ({ children }) => {
 
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto scrollbar-thin">
-          {/* Menu cho học sinh (không hiển thị cho giáo viên) */}
-          {user?.role !== 'teacher' && (
+          {/* Menu cho học sinh (không hiển thị cho giáo viên và admin) */}
+          {user?.role !== 'teacher' && user?.role !== 'admin' && (
             <>
               <div className={`text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 ${isCollapsed ? 'text-center' : 'px-3'}`}>
                 {isCollapsed ? '•••' : 'Menu chính'}

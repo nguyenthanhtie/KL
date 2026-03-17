@@ -188,7 +188,7 @@ const Profile = () => {
     currentStreak: currentProgram.studyStreak?.currentStreak || 0,
     longestStreak: currentProgram.studyStreak?.longestStreak || 0,
     averageScore: currentProgram.progress?.completedLessons?.length > 0
-      ? Math.round(currentProgram.progress.totalScore / currentProgram.progress.completedLessons.length)
+      ? Math.min(100, Math.round(currentProgram.progress.totalScore / currentProgram.progress.completedLessons.length))
       : 0,
     studyTime: currentProgram.studyTime || 0 // Thời gian học (phút)
   } : {
@@ -459,7 +459,7 @@ const Profile = () => {
                     <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
                       <div 
                         className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-500"
-                        style={{ width: `${(userData?.xp || 0) % 100}%` }}
+                        style={{ width: `${Math.max(1, (userData?.xp || 0) % 100)}%` }}
                       />
                     </div>
                     <p className="text-xs text-gray-500 mt-2 text-center">

@@ -8,14 +8,14 @@ import {
   AlertCircle, X, Check, Lock, Unlock
 } from 'lucide-react';
 
-const UserManagement = () => {
+const UserManagement = ({ initialRole = 'all' }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 });
   const [filters, setFilters] = useState({
-    role: 'all',
+    role: initialRole,
     search: '',
     sortBy: 'createdAt',
     sortOrder: 'desc'
@@ -53,6 +53,10 @@ const UserManagement = () => {
     }
     fetchUsers();
   }, [user, navigate, fetchUsers]);
+
+  useEffect(() => {
+    setFilters(prev => ({ ...prev, role: initialRole }));
+  }, [initialRole]);
 
   const handleSearch = (e) => {
     e.preventDefault();

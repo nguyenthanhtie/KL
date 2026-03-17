@@ -145,7 +145,8 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    refreshUser
+    refreshUser,
+    updateUserProfile: refreshUser
   };
 
   return (

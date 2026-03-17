@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -33,7 +33,12 @@ app.use((req, res, next) => {
 });
 
 // Database connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://2200002540_db_user:Luan123@dan-1211.epxn7qi.mongodb.net/chemlearn?retryWrites=true&w=majority';
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) {
+  console.error('❌ MONGODB_URI is not set in environment variables');
+  console.error('⚠️  Please create a .env file with MONGODB_URI=your-connection-string');
+  process.exit(1);
+}
 
 // Set mongoose options
 mongoose.set('strictQuery', false);
@@ -95,7 +100,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`✓ Server is running on port ${PORT}`);
   console.log(`✓ Environment: ${process.env.NODE_ENV || 'development'}`);
-  
+
   // Start notification scheduler
   try {
     const notificationScheduler = require('./services/notificationScheduler.cjs');
@@ -105,3 +110,4 @@ app.listen(PORT, () => {
     console.log('⚠️  Notification scheduler not started:', error.message);
   }
 });
+// Trigger nodemon restarthjkljkhl

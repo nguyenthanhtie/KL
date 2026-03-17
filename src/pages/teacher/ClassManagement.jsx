@@ -47,6 +47,10 @@ const ClassManagement = () => {
   const [studentEmails, setStudentEmails] = useState('');
   const [message, setMessage] = useState({ type: '', text: '' });
   const [activeTab, setActiveTab] = useState('students');
+  const [classAnnouncements, setClassAnnouncements] = useState([]);
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const [editingAnnouncement, setEditingAnnouncement] = useState(null);
+  const [newAnnouncement, setNewAnnouncement] = useState({ title: '', content: '', priority: 'normal' });
 
   const fetchClasses = useCallback(async () => {
     try {
@@ -100,6 +104,17 @@ const ClassManagement = () => {
     }
   }, []);
 
+  const fetchClassAnnouncements = useCallback(async (id) => {
+    try {
+      const response = await api.get(`/teacher/classes/${id}/announcements`);
+      if (response.data.success) {
+        setClassAnnouncements(response.data.data);
+      }
+    } catch (err) {
+      console.error('Fetch class announcements error:', err);
+    }
+  }, []);
+
   useEffect(() => {
     if (!user || (user.role !== 'teacher' && user.role !== 'admin')) {
       navigate('/');
@@ -113,8 +128,9 @@ const ClassManagement = () => {
       fetchClassDetail(classId);
       fetchStudents(classId);
       fetchAssignments(classId);
+      fetchClassAnnouncements(classId);
     }
-  }, [classId, fetchClassDetail, fetchStudents, fetchAssignments]);
+  }, [classId, fetchClassDetail, fetchStudents, fetchAssignments, fetchClassAnnouncements]);
 
   const handleCreateClass = async (e) => {
     e.preventDefault();
@@ -280,7 +296,7 @@ const ClassManagement = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <button onClick={() => navigate('/teacher')} className="p-2 hover:bg-gray-100 rounded-lg">
+              <button onClick={() => navigate(user.role === 'admin' ? '/admin' : '/teacher')} className="p-2 hover:bg-gray-100 rounded-lg">
                 <ChevronLeft className="h-5 w-5 text-gray-600" />
               </button>
               <div>
@@ -472,7 +488,7 @@ const ClassManagement = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <button onClick={() => navigate('/teacher/classes')} className="p-2 hover:bg-gray-100 rounded-lg">
+            <button onClick={() => navigate(user.role === 'admin' ? '/admin/classes' : '/teacher/classes')} className="p-2 hover:bg-gray-100 rounded-lg">
               <ChevronLeft className="h-5 w-5 text-gray-600" />
             </button>
             <div>
@@ -549,7 +565,10 @@ const ClassManagement = () => {
             <p className="font-medium text-gray-800">Báo cáo</p>
             <p className="text-xs text-gray-500">Xem thống kê</p>
           </button>
-          <button className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow text-left">
+          <button
+            onClick={() => setActiveTab('announcements')}
+            className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow text-left border-2 border-transparent hover:border-orange-500"
+          >
             <Bell className="h-6 w-6 text-orange-600 mb-2" />
             <p className="font-medium text-gray-800">Thông báo</p>
             <p className="text-xs text-gray-500">Gửi thông báo</p>
@@ -575,6 +594,15 @@ const ClassManagement = () => {
           >
             <ClipboardList className="h-4 w-4" />
             Bài tập ({assignments.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('announcements')}
+            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors flex items-center justify-center gap-2 ${
+              activeTab === 'announcements' ? 'bg-orange-100 text-orange-700' : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            <Bell className="h-4 w-4" />
+            Thông báo ({classAnnouncements.length})
           </button>
         </div>
 
@@ -838,6 +866,175 @@ const ClassManagement = () => {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Announcements Tab */}
+        {activeTab === 'announcements' && (
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+            <div className="px-6 py-4 border-b flex items-center justify-between">
+              <h2 className="font-semibold text-gray-800">Thông báo lớp học</h2>
+              <button
+                onClick={() => {
+                  setEditingAnnouncement(null);
+                  setNewAnnouncement({ title: '', content: '', priority: 'normal' });
+                  setShowAnnouncementModal(true);
+                }}
+                className="flex items-center gap-2 px-3 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 text-sm"
+              >
+                <Plus className="h-4 w-4" />
+                Tạo thông báo
+              </button>
+            </div>
+
+            {classAnnouncements.length === 0 ? (
+              <div className="p-12 text-center">
+                <Bell className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500">Chưa có thông báo nào cho lớp này</p>
+                <button
+                  onClick={() => {
+                    setEditingAnnouncement(null);
+                    setNewAnnouncement({ title: '', content: '', priority: 'normal' });
+                    setShowAnnouncementModal(true);
+                  }}
+                  className="mt-3 text-orange-600 hover:text-orange-700 font-medium"
+                >
+                  Tạo thông báo đầu tiên
+                </button>
+              </div>
+            ) : (
+              <div className="divide-y">
+                {classAnnouncements.map(ann => (
+                  <div key={ann._id} className={`p-5 hover:bg-gray-50 ${!ann.isActive ? 'opacity-60' : ''}`}>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-semibold text-gray-800">{ann.title}</h3>
+                          {ann.priority === 'high' && <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">Cao</span>}
+                          {ann.priority === 'urgent' && <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full font-medium">Khẩn cấp</span>}
+                          {!ann.isActive && <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded-full">Đã ẩn</span>}
+                        </div>
+                        <p className="text-sm text-gray-600 mb-2 whitespace-pre-wrap">{ann.content}</p>
+                        <p className="text-xs text-gray-400">
+                          {new Date(ann.createdAt).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            setEditingAnnouncement(ann);
+                            setNewAnnouncement({ title: ann.title, content: ann.content, priority: ann.priority });
+                            setShowAnnouncementModal(true);
+                          }}
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={async () => {
+                            if (!window.confirm('Xóa thông báo này?')) return;
+                            try {
+                              await api.delete(`/teacher/announcements/${ann._id}`);
+                              setMessage({ type: 'success', text: 'Đã xóa thông báo' });
+                              fetchClassAnnouncements(classId);
+                            } catch (err) {
+                              setMessage({ type: 'error', text: 'Không thể xóa thông báo' });
+                            }
+                          }}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Announcement Modal */}
+        {showAnnouncementModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">{editingAnnouncement ? 'Sửa thông báo' : 'Tạo thông báo mới'}</h3>
+                <button onClick={() => setShowAnnouncementModal(false)} className="p-1 hover:bg-gray-100 rounded">
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Tiêu đề *</label>
+                  <input
+                    type="text"
+                    value={newAnnouncement.title}
+                    onChange={(e) => setNewAnnouncement(prev => ({ ...prev, title: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+                    placeholder="Nhập tiêu đề thông báo..."
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nội dung *</label>
+                  <textarea
+                    value={newAnnouncement.content}
+                    onChange={(e) => setNewAnnouncement(prev => ({ ...prev, content: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+                    rows="4"
+                    placeholder="Nhập nội dung thông báo..."
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Mức độ</label>
+                  <select
+                    value={newAnnouncement.priority}
+                    onChange={(e) => setNewAnnouncement(prev => ({ ...prev, priority: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+                  >
+                    <option value="low">Thấp</option>
+                    <option value="normal">Bình thường</option>
+                    <option value="high">Cao</option>
+                    <option value="urgent">Khẩn cấp</option>
+                  </select>
+                </div>
+                <div className="flex gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowAnnouncementModal(false)}
+                    className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50"
+                  >
+                    Hủy
+                  </button>
+                  <button
+                    onClick={async () => {
+                      if (!newAnnouncement.title || !newAnnouncement.content) {
+                        setMessage({ type: 'error', text: 'Vui lòng nhập đầy đủ thông tin' });
+                        return;
+                      }
+                      try {
+                        if (editingAnnouncement) {
+                          await api.put(`/teacher/announcements/${editingAnnouncement._id}`, newAnnouncement);
+                          setMessage({ type: 'success', text: 'Cập nhật thông báo thành công' });
+                        } else {
+                          await api.post(`/teacher/classes/${classId}/announcements`, newAnnouncement);
+                          setMessage({ type: 'success', text: 'Tạo thông báo thành công' });
+                        }
+                        setShowAnnouncementModal(false);
+                        fetchClassAnnouncements(classId);
+                      } catch (err) {
+                        setMessage({ type: 'error', text: err.response?.data?.message || 'Có lỗi xảy ra' });
+                      }
+                    }}
+                    className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+                  >
+                    {editingAnnouncement ? 'Cập nhật' : 'Đăng thông báo'}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 

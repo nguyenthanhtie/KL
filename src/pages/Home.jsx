@@ -7,19 +7,29 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect logic based on user state
-    if (user && user.programs && user.programs.length > 0) {
-      // User has enrolled programs - redirect to the active program
-      const activeProgram = user.programs.find(p => p.isActive);
-      if (activeProgram) {
-        navigate(`/program/${activeProgram.programId}`);
-      } else {
-        // No active program, go to selection
-        navigate('/');
-      }
-    } else {
-      // No programs enrolled, redirect to program selection
+    if (!user) {
       navigate('/');
+      return;
+    }
+
+    if (user.role === 'admin') {
+      navigate('/admin', { replace: true });
+    } else if (user.role === 'teacher' && user.teacherStatus === 'approved') {
+      navigate('/teacher', { replace: true });
+    } else if (user.role === 'teacher' && user.teacherStatus === 'pending') {
+      navigate('/', { replace: true }); // Stay on landing page/info
+    } else {
+      // Student logic
+      if (user.programs && user.programs.length > 0) {
+        const activeProgram = user.programs.find(p => p.isActive) || user.programs[0];
+        if (activeProgram) {
+          navigate(`/program/${activeProgram.programId}`, { replace: true });
+        } else {
+          navigate('/student/classes', { replace: true });
+        }
+      } else {
+        navigate('/student/classes', { replace: true });
+      }
     }
   }, [user, navigate]);
 

@@ -663,3 +663,44 @@ img {
   background-size: 200% 200%;
   animation: gradient-shift 3s ease infinite;
 }
+/* ============================================
+   COSMIC & GALAXY ANIMATIONS
+   ============================================ */
+
+@keyframes cosmic-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.1); opacity: 0.6; }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes nebula-drift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-20px, 10px) rotate(5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.animate-cosmic-pulse {
+  animation: cosmic-pulse 10s ease-in-out infinite;
+}
+
+.animate-star-twinkle {
+  animation: star-twinkle 3s ease-in-out infinite;
+}
+
+.animate-nebula-drift {
+  animation: nebula-drift 20s ease-in-out infinite;
+}
+
+/* AI Assistant Animations */
+@keyframes slide-in-top {
+  0% { transform: translateY(-10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-in-top {
+  animation: slide-in-top 0.3s ease-out;
+}

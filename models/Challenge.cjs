@@ -56,7 +56,7 @@ const challengeSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ['available', 'coming-soon', 'locked'],
+    enum: ['available', 'coming-soon', 'locked', 'active', 'draft'],
     default: 'available'
   },
   link: {

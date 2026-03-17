@@ -129,6 +129,7 @@ const AdminDashboard = () => {
             value={stats?.users?.students}
             subtitle={`${stats?.users?.activeThisWeek || 0} hoạt động tuần này`}
             color="border-green-500"
+            onClick={() => navigate('/admin/student')}
           />
           <StatCard 
             icon={School} 
@@ -154,12 +155,14 @@ const AdminDashboard = () => {
             title="Bài học" 
             value={stats?.content?.lessons}
             color="border-cyan-500"
+            onClick={() => navigate('/admin/lessons')}
           />
           <StatCard 
             icon={Trophy} 
             title="Thử thách" 
             value={stats?.content?.challenges}
             color="border-yellow-500"
+            onClick={() => navigate('/admin/challenges')}
           />
           <StatCard 
             icon={Clock} 
@@ -167,6 +170,7 @@ const AdminDashboard = () => {
             value={stats?.assignments?.total}
             subtitle={`${stats?.assignments?.active || 0} đang hoạt động`}
             color="border-pink-500"
+            onClick={() => navigate('/admin/assignments')}
           />
         </div>
 

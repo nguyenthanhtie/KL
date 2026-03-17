@@ -2,51 +2,49 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { API_BASE_URL } from '../config/api';
-import { Sparkles, Trophy, Zap, Clock, Target, ChevronRight, Star, CheckCircle, XCircle, Award } from 'lucide-react';
+import { Sparkles, Trophy, Zap, Clock, Target, ChevronRight, Star, CheckCircle, XCircle, Award, Lightbulb, ArrowRight, BookOpen, Timer } from 'lucide-react';
 
 // True/False Quiz Component
 const TrueFalseQuiz = ({ question, userAnswer, isAnswered, onAnswer }) => {
   return (
     <div className="flex gap-4 justify-center">
-      <button
-        onClick={() => onAnswer(true)}
-        disabled={isAnswered}
-        className={`px-8 py-4 text-lg font-bold rounded-2xl border-2 transition-all transform ${
-          userAnswer === true
-            ? isAnswered
-              ? question.answer === true
-                ? 'border-green-500 bg-green-500 text-white scale-105 shadow-lg shadow-green-500/30'
-                : 'border-red-500 bg-red-500 text-white shake'
-              : 'border-blue-500 bg-blue-500 text-white'
-            : isAnswered && question.answer === true
-            ? 'border-green-500 bg-green-50 text-green-700'
-            : 'border-gray-300 hover:border-blue-300 bg-white/10 text-white hover:bg-white/20'
-        }`}
-      >
-        ✓ Đúng
-      </button>
-      <button
-        onClick={() => onAnswer(false)}
-        disabled={isAnswered}
-        className={`px-8 py-4 text-lg font-bold rounded-2xl border-2 transition-all transform ${
-          userAnswer === false
-            ? isAnswered
-              ? question.answer === false
-                ? 'border-green-500 bg-green-500 text-white scale-105 shadow-lg shadow-green-500/30'
-                : 'border-red-500 bg-red-500 text-white shake'
-              : 'border-blue-500 bg-blue-500 text-white'
-            : isAnswered && question.answer === false
-            ? 'border-green-500 bg-green-50 text-green-700'
-            : 'border-gray-300 hover:border-blue-300 bg-white/10 text-white hover:bg-white/20'
-        }`}
-      >
-        ✗ Sai
-      </button>
+      {[
+        { value: true, label: '✓ Đúng', color: 'emerald' },
+        { value: false, label: '✗ Sai', color: 'rose' }
+      ].map(({ value, label, color }) => {
+        const isSelected = userAnswer === value;
+        const isCorrectAnswer = question.answer === value;
+        const showCorrect = isAnswered && isCorrectAnswer;
+        const showWrong = isAnswered && isSelected && !isCorrectAnswer;
+
+        return (
+          <button
+            key={String(value)}
+            onClick={() => onAnswer(value)}
+            disabled={isAnswered}
+            className={`flex-1 max-w-[200px] py-5 text-lg font-bold rounded-2xl border transition-all duration-300 ${
+              showCorrect
+                ? 'border-emerald-400 bg-emerald-500/20 text-emerald-300 scale-105 shadow-lg shadow-emerald-500/20'
+                : showWrong
+                ? 'border-red-400 bg-red-500/20 text-red-300 shake'
+                : isSelected && !isAnswered
+                ? 'border-blue-400 bg-blue-500/20 text-blue-300'
+                : 'border-white/10 bg-white/[0.03] text-white/80 hover:bg-white/[0.08] hover:border-white/20'
+            }`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              {showCorrect && <CheckCircle className="w-5 h-5" />}
+              {showWrong && <XCircle className="w-5 h-5" />}
+              <span>{label}</span>
+            </div>
+          </button>
+        );
+      })}
     </div>
   );
 };
 
-// Questions data với emoji và hints
+// Questions data
 const questions = [
   // Lớp 8 (5 câu)
   {
@@ -56,7 +54,7 @@ const questions = [
     level: 8,
     emoji: "🧪",
     hint: "Đơn chất chỉ chứa một loại nguyên tố",
-    type: "multiple" // Trắc nghiệm
+    type: "multiple"
   },
   {
     question: "Axit sunfuric có công thức là H2SO4",
@@ -64,7 +62,7 @@ const questions = [
     level: 8,
     emoji: "⚗️",
     hint: "Axit mạnh chứa lưu huỳnh",
-    type: "truefalse" // Đúng/Sai
+    type: "truefalse"
   },
   {
     question: "Phản ứng hóa học là gì?",
@@ -143,7 +141,8 @@ const questions = [
     answer: "18",
     level: 10,
     emoji: "⚛️",
-    hint: "Công thức 2n²"
+    hint: "Công thức 2n²",
+    type: "multiple"
   },
   {
     question: "Nguyên tử của nguyên tố X có Z=11. Cấu hình electron của X là?",
@@ -194,7 +193,8 @@ const questions = [
     answer: "Màu sắc chất",
     level: 10,
     emoji: "⏱️",
-    hint: "Màu sắc là tính chất vật lý"
+    hint: "Màu sắc là tính chất vật lý",
+    type: "multiple"
   },
   {
     question: "Chất nào sau đây là chất điện li mạnh?",
@@ -202,7 +202,8 @@ const questions = [
     answer: "HCl",
     level: 10,
     emoji: "⚡",
-    hint: "Axit mạnh phân li hoàn toàn"
+    hint: "Axit mạnh phân li hoàn toàn",
+    type: "multiple"
   },
   {
     question: "Halogen nào có tính oxi hóa mạnh nhất?",
@@ -241,7 +242,7 @@ const questions = [
   },
   {
     question: "Cloroform (CHCl3) được dùng làm chất gây mê",
-    options: ["Đúng, dùng làm mê\", \"Sai, dùng Freon\", \"Sai, dùng DDT\", \"Sai, dùng Teflon"],
+    options: ["Đúng, dùng làm mê", "Sai, dùng Freon", "Sai, dùng DDT", "Sai, dùng Teflon"],
     answer: "Đúng, dùng làm mê",
     level: 11,
     emoji: "💉",
@@ -285,7 +286,7 @@ const questions = [
   },
   {
     question: "Cả saccarozơ và glucozơ phản ứng với Cu(OH)2",
-    options: ["Đúng, cùng tráng gương\", \"Sai, chỉ glucozơ\", \"Sai, chỉ saccarozơ\", \"Sai, không phản ứng"],
+    options: ["Đúng, cùng tráng gương", "Sai, chỉ glucozơ", "Sai, chỉ saccarozơ", "Sai, không phản ứng"],
     answer: "Đúng, cùng tráng gương",
     level: 12,
     emoji: "🍬",
@@ -324,7 +325,6 @@ const shuffleArray = (array) => {
 // Confetti component
 const Confetti = ({ show }) => {
   if (!show) return null;
-  
   return (
     <div className="fixed inset-0 pointer-events-none z-50">
       {[...Array(50)].map((_, i) => (
@@ -340,6 +340,70 @@ const Confetti = ({ show }) => {
       ))}
     </div>
   );
+};
+
+// Shared styles
+const globalStyles = `
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes confetti {
+    0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+  @keyframes timerPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .animate-blob { animation: blob 7s infinite; }
+  .animation-delay-2000 { animation-delay: 2s; }
+  .animation-delay-4000 { animation-delay: 4s; }
+  .shake { animation: shake 0.5s ease-in-out; }
+  .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+  .animate-slideUp { animation: slideUp 0.5s ease-out forwards; }
+  .animate-confetti { width: 10px; height: 10px; animation: confetti 3s ease-in-out forwards; }
+  .animate-timerPulse { animation: timerPulse 1s infinite; }
+  .animate-float { animation: float 3s ease-in-out infinite; }
+  .shimmer-text {
+    background: linear-gradient(90deg, #fff 0%, #a78bfa 25%, #818cf8 50%, #a78bfa 75%, #fff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+`;
+
+// Level color mapping
+const levelColors = {
+  8: { gradient: 'from-cyan-500 to-blue-600', text: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' },
+  9: { gradient: 'from-emerald-500 to-teal-600', text: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  10: { gradient: 'from-violet-500 to-purple-600', text: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/30' },
+  11: { gradient: 'from-orange-500 to-amber-600', text: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/30' },
+  12: { gradient: 'from-rose-500 to-pink-600', text: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
 };
 
 const PlacementTest = () => {
@@ -363,20 +427,17 @@ const PlacementTest = () => {
   const { programId } = useParams();
   const { user, setUser } = useAuth();
 
-  // Initialize shuffled options for current question
   useEffect(() => {
     if (quizStarted && questions[currentQuestion]) {
       const q = questions[currentQuestion];
       if (q.type === 'multiple' && q.options) {
         setShuffledOptions(shuffleArray(q.options));
       } else if (q.type === 'truefalse') {
-        // For true/false, set empty array since we don't need shuffled options
         setShuffledOptions([]);
       }
     }
   }, [currentQuestion, quizStarted]);
 
-  // Lấy curriculum đã chọn khi component mount
   useEffect(() => {
     const selectedCurriculumData = localStorage.getItem('selectedCurriculum');
     if (selectedCurriculumData) {
@@ -389,10 +450,8 @@ const PlacementTest = () => {
     }
   }, []);
 
-  // Timer countdown
   useEffect(() => {
-    if (!quizStarted || showResult || isAnswered) return;
-    
+    if (!quizStarted || showResult || isAnswered || currentQuestion >= questions.length) return;
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -403,7 +462,6 @@ const PlacementTest = () => {
       });
       setTotalTime((prev) => prev + 1);
     }, 1000);
-
     return () => clearInterval(timer);
   }, [quizStarted, showResult, isAnswered, currentQuestion]);
 
@@ -411,35 +469,24 @@ const PlacementTest = () => {
     if (!isAnswered) {
       setIsAnswered(true);
       setStreak(0);
-      setTimeout(() => {
-        goToNextQuestion();
-      }, 1500);
+      setTimeout(() => { goToNextQuestion(); }, 1500);
     }
-  }, [isAnswered]);
+  }, [isAnswered, currentQuestion]);
 
   const handleAnswerSelect = (option) => {
     if (isAnswered) return;
-    
     setSelectedAnswer(option);
     setIsAnswered(true);
-    
     const q = questions[currentQuestion];
     const isCorrect = option === q.answer;
-    
-    setAnswers(prev => ({
-      ...prev,
-      [currentQuestion]: option
-    }));
+    setAnswers(prev => ({ ...prev, [currentQuestion]: option }));
 
     if (isCorrect) {
       const timeBonus = Math.floor(timeLeft / 3);
       const streakBonus = Math.min(streak, 5);
-      const basePoints = 10;
-      const pointsEarned = basePoints + timeBonus + streakBonus;
-      
+      const pointsEarned = 10 + timeBonus + streakBonus;
       setScore(prev => prev + pointsEarned);
       setStreak(prev => prev + 1);
-      
       if (streak >= 2) {
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000);
@@ -447,10 +494,7 @@ const PlacementTest = () => {
     } else {
       setStreak(0);
     }
-
-    setTimeout(() => {
-      goToNextQuestion();
-    }, 1500);
+    setTimeout(() => { goToNextQuestion(); }, 1500);
   };
 
   const goToNextQuestion = () => {
@@ -479,28 +523,18 @@ const PlacementTest = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-
-    // Tính điểm theo từng cấp độ
     const scoresByLevel = {};
     questions.forEach((q, index) => {
-      if (!scoresByLevel[q.level]) {
-        scoresByLevel[q.level] = { correct: 0, total: 0 };
-      }
+      if (!scoresByLevel[q.level]) scoresByLevel[q.level] = { correct: 0, total: 0 };
       scoresByLevel[q.level].total++;
-      if (answers[index] === q.answer) {
-        scoresByLevel[q.level].correct++;
-      }
+      if (answers[index] === q.answer) scoresByLevel[q.level].correct++;
     });
 
-    // Xác định lớp phù hợp dựa trên kết quả
     let assignedGrade = 8;
-    const gradeLevels = [8, 9, 10, 11, 12];
-
-    for (const level of gradeLevels) {
+    for (const level of [8, 9, 10, 11, 12]) {
       const levelScore = scoresByLevel[level];
       if (levelScore && levelScore.total > 0) {
-        const percentage = (levelScore.correct / levelScore.total);
-        if (percentage >= 0.7) {
+        if ((levelScore.correct / levelScore.total) >= 0.7) {
           assignedGrade = Math.min(level + 1, 12);
         } else {
           assignedGrade = level;
@@ -508,121 +542,62 @@ const PlacementTest = () => {
         }
       }
     }
-    
     const totalScore = Object.values(scoresByLevel).reduce((acc, level) => acc + level.correct, 0);
-    const totalQuestions = questions.length;
 
     try {
-      if (!user || !user.email) {
-        console.error('User object:', user);
-        throw new Error('Bạn cần đăng nhập để hoàn thành bài kiểm tra');
-      }
-
-      console.log('Submitting placement test for user:', user.email);
-
-      const programNames = {
-        chemistry: 'Hóa học',
-        physics: 'Vật lý',
-        biology: 'Sinh học',
-        math: 'Toán học'
-      };
-
-      const selectedProgramName = programNames[programId] || 'Chương trình học';
-
+      if (!user || !user.email) throw new Error('Bạn cần đăng nhập để hoàn thành bài kiểm tra');
+      const programNames = { chemistry: 'Hóa học', physics: 'Vật lý', biology: 'Sinh học', math: 'Toán học' };
       const selectedCurriculumData = localStorage.getItem('selectedCurriculum');
       let curriculumType = null;
-      let curriculumName = null;
-      
       if (selectedCurriculumData) {
-        try {
-          const curriculumInfo = JSON.parse(selectedCurriculumData);
-          curriculumType = curriculumInfo.curriculumType;
-          curriculumName = curriculumInfo.curriculumName;
-          console.log('Found selected curriculum:', curriculumInfo);
-        } catch (e) {
-          console.error('Error parsing curriculum data:', e);
-        }
+        try { curriculumType = JSON.parse(selectedCurriculumData).curriculumType; } catch (e) {}
       }
 
+      const token = localStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}/users/enroll-program`, {
         method: 'POST',
-        headers: {
+        headers: { 
           'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
         },
-        body: JSON.stringify({ 
-          userId: user.email,
-          programId: programId,
-          programName: selectedProgramName,
-          initialClassId: assignedGrade,
-          placementTestScore: totalScore,
-          placementTestTotal: totalQuestions,
-          curriculumType: curriculumType
+        body: JSON.stringify({
+          userId: user.email, programId, programName: programNames[programId] || 'Chương trình học',
+          initialClassId: assignedGrade, placementTestScore: totalScore, placementTestTotal: questions.length,
+          curriculumType
         }),
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        console.error('API Error:', data);
-        throw new Error(data.message || 'Không thể lưu kết quả kiểm tra');
-      }
-
-      if (data.user) {
-        setUser(data.user);
-        localStorage.setItem('user', JSON.stringify(data.user));
-      }
-
+      if (!response.ok) throw new Error(data.message || 'Không thể lưu kết quả kiểm tra');
+      if (data.user) { setUser(data.user); localStorage.setItem('user', JSON.stringify(data.user)); }
       localStorage.removeItem('selectedCurriculum');
       navigate(`/program/${programId}`);
-
     } catch (error) {
-      console.error("Error submitting placement test:", error);
       alert(`❌ Có lỗi xảy ra: ${error.message}\n\nVui lòng thử lại sau.`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Calculate stats for result screen
   const getStats = () => {
     let correct = 0;
-    questions.forEach((q, index) => {
-      if (answers[index] === q.answer) correct++;
-    });
-    return {
-      correct,
-      total: questions.length,
-      percentage: Math.round((correct / questions.length) * 100),
-      avgTime: Math.round(totalTime / questions.length)
-    };
+    questions.forEach((q, index) => { if (answers[index] === q.answer) correct++; });
+    return { correct, total: questions.length, percentage: Math.round((correct / questions.length) * 100), avgTime: Math.round(totalTime / questions.length) };
   };
 
-  // Get assigned grade based on answers
   const getAssignedGrade = () => {
     const scoresByLevel = {};
     questions.forEach((q, index) => {
-      if (!scoresByLevel[q.level]) {
-        scoresByLevel[q.level] = { correct: 0, total: 0 };
-      }
+      if (!scoresByLevel[q.level]) scoresByLevel[q.level] = { correct: 0, total: 0 };
       scoresByLevel[q.level].total++;
-      if (answers[index] === q.answer) {
-        scoresByLevel[q.level].correct++;
-      }
+      if (answers[index] === q.answer) scoresByLevel[q.level].correct++;
     });
-
     let assignedGrade = 8;
-    const gradeLevels = [8, 9, 10, 11, 12];
-
-    for (const level of gradeLevels) {
+    for (const level of [8, 9, 10, 11, 12]) {
       const levelScore = scoresByLevel[level];
       if (levelScore && levelScore.total > 0) {
-        const percentage = (levelScore.correct / levelScore.total);
-        if (percentage >= 0.7) {
-          assignedGrade = Math.min(level + 1, 12);
-        } else {
-          assignedGrade = level;
-          break;
-        }
+        if ((levelScore.correct / levelScore.total) >= 0.7) assignedGrade = Math.min(level + 1, 12);
+        else { assignedGrade = level; break; }
       }
     }
     return assignedGrade;
@@ -630,322 +605,328 @@ const PlacementTest = () => {
 
   const currentQ = questions[currentQuestion];
   const progress = ((currentQuestion) / questions.length) * 100;
+  const currentLevelColor = currentQ ? levelColors[currentQ.level] : levelColors[8];
 
-  // Start Screen
+  // ========== START SCREEN ==========
   if (!quizStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
-          <div className="absolute top-40 right-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+      <div className="min-h-screen bg-[#0a0a1a] flex items-center justify-center p-4 relative overflow-hidden">
+        <style>{globalStyles}</style>
+
+        {/* Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-20 w-80 h-80 bg-blue-600/8 rounded-full blur-[120px] animate-blob" />
+          <div className="absolute top-40 right-20 w-72 h-72 bg-purple-600/8 rounded-full blur-[100px] animate-blob animation-delay-2000" />
+          <div className="absolute bottom-20 left-1/2 w-64 h-64 bg-cyan-600/5 rounded-full blur-[80px] animate-blob animation-delay-4000" />
         </div>
 
-        <div className="relative z-10 max-w-2xl w-full">
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
+        <div className="relative z-10 max-w-xl w-full">
+          <div className="bg-white/[0.03] backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl">
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl mb-6 shadow-lg">
+              {/* Icon */}
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl mb-6 shadow-lg shadow-blue-500/20 animate-float">
                 <Sparkles className="w-10 h-10 text-white" />
               </div>
-              
-              <h1 className="text-4xl font-bold text-white mb-4">
-                Bài Quiz Đánh Giá Năng Lực
+
+              <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
+                Đánh giá năng lực
               </h1>
-              <p className="text-lg text-white/80 mb-8">
-                Trả lời 30 câu hỏi để khám phá trình độ của bạn và nhận lộ trình học tập phù hợp nhất!
+              <p className="text-white/50 mb-8 leading-relaxed">
+                Trả lời {questions.length} câu hỏi để xác định trình độ và nhận lộ trình học tập phù hợp
               </p>
 
               {selectedCurriculum && (
-                <div className="bg-white/10 rounded-xl p-4 mb-6 border border-white/20">
-                  <p className="text-white/90">
-                    <span className="font-semibold">📖 Chương trình:</span> {selectedCurriculum.curriculumName}
-                  </p>
+                <div className="bg-white/[0.03] rounded-xl p-3 mb-6 border border-white/10 inline-flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-blue-400" />
+                  <span className="text-white/70 text-sm">{selectedCurriculum.curriculumName}</span>
                 </div>
               )}
 
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                <div className="bg-white/10 rounded-xl p-4 border border-white/10">
-                  <div className="text-3xl font-bold text-yellow-400 mb-1">30</div>
-                  <div className="text-sm text-white/70">Câu hỏi</div>
-                </div>
-                <div className="bg-white/10 rounded-xl p-4 border border-white/10">
-                  <div className="text-3xl font-bold text-green-400 mb-1">30s</div>
-                  <div className="text-sm text-white/70">Mỗi câu</div>
-                </div>
-                <div className="bg-white/10 rounded-xl p-4 border border-white/10">
-                  <div className="text-3xl font-bold text-blue-400 mb-1">5</div>
-                  <div className="text-sm text-white/70">Gợi ý</div>
-                </div>
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-3 mb-8">
+                {[
+                  { value: questions.length, label: 'Câu hỏi', icon: Target, color: 'text-cyan-400' },
+                  { value: '30s', label: 'Mỗi câu', icon: Timer, color: 'text-emerald-400' },
+                  { value: 5, label: 'Gợi ý', icon: Lightbulb, color: 'text-amber-400' },
+                ].map((s, i) => (
+                  <div key={i} className="bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                    <s.icon className={`w-5 h-5 ${s.color} mx-auto mb-2`} />
+                    <div className="text-2xl font-bold text-white">{s.value}</div>
+                    <div className="text-xs text-white/40">{s.label}</div>
+                  </div>
+                ))}
               </div>
 
-              <div className="space-y-3 text-left mb-8 bg-white/5 rounded-xl p-4">
-                <div className="flex items-center gap-3 text-white/80">
-                  <Zap className="w-5 h-5 text-yellow-400" />
-                  <span>Trả lời nhanh để nhận điểm thưởng thời gian</span>
-                </div>
-                <div className="flex items-center gap-3 text-white/80">
-                  <Target className="w-5 h-5 text-green-400" />
-                  <span>Streak bonus: Trả lời đúng liên tiếp để nhân điểm</span>
-                </div>
-                <div className="flex items-center gap-3 text-white/80">
-                  <Star className="w-5 h-5 text-purple-400" />
-                  <span>Sử dụng gợi ý khi cần thiết (tối đa 5 lần)</span>
-                </div>
+              {/* Rules */}
+              <div className="space-y-2.5 text-left mb-8">
+                {[
+                  { icon: Zap, text: 'Trả lời nhanh để nhận điểm thưởng thời gian', color: 'text-yellow-400' },
+                  { icon: Target, text: 'Streak bonus khi trả lời đúng liên tiếp', color: 'text-emerald-400' },
+                  { icon: Lightbulb, text: 'Sử dụng gợi ý khi cần (tối đa 5 lần)', color: 'text-blue-400' },
+                ].map((r, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-white/[0.02] rounded-lg px-4 py-3 border border-white/5">
+                    <r.icon className={`w-5 h-5 ${r.color} flex-shrink-0`} />
+                    <span className="text-sm text-white/60">{r.text}</span>
+                  </div>
+                ))}
               </div>
 
               <button
                 onClick={startQuiz}
-                className="w-full py-4 bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white font-bold text-xl rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
+                className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transform hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-3"
               >
-                <Sparkles className="w-6 h-6" />
-                Bắt đầu Quiz
-                <ChevronRight className="w-6 h-6" />
+                <Sparkles className="w-5 h-5" />
+                Bắt đầu đánh giá
+                <ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>
         </div>
-
-        <style>{`
-          @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
-          }
-          .animate-blob { animation: blob 7s infinite; }
-          .animation-delay-2000 { animation-delay: 2s; }
-          .animation-delay-4000 { animation-delay: 4s; }
-        `}</style>
       </div>
     );
   }
 
-  // Result Screen
+  // ========== RESULT SCREEN ==========
   if (showResult) {
     const stats = getStats();
     const assignedGrade = getAssignedGrade();
-    
+    const gradeColor = levelColors[assignedGrade];
+
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-[#0a0a1a] flex items-center justify-center p-4 relative overflow-hidden">
+        <style>{globalStyles}</style>
         <Confetti show={true} />
-        
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" />
-          <div className="absolute bottom-20 right-20 w-72 h-72 bg-green-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-2000" />
+
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-yellow-500/8 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-20 right-20 w-72 h-72 bg-emerald-500/8 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
 
-        <div className="relative z-10 max-w-2xl w-full">
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
+        <div className="relative z-10 max-w-xl w-full">
+          <div className="bg-white/[0.03] backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl">
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mb-6 shadow-lg animate-bounce">
+              {/* Trophy */}
+              <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-6 shadow-lg shadow-orange-500/20 animate-float">
                 <Trophy className="w-12 h-12 text-white" />
               </div>
-              
-              <h1 className="text-4xl font-bold text-white mb-2">
-                🎉 Hoàn Thành Xuất Sắc!
-              </h1>
-              <p className="text-lg text-white/80 mb-8">
-                Bạn đã hoàn thành bài quiz đánh giá năng lực
-              </p>
 
-              {/* Score Display */}
-              <div className="bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-2xl p-6 mb-6 border border-yellow-400/30">
-                <div className="text-6xl font-bold text-yellow-400 mb-2">{score}</div>
-                <div className="text-white/70">Điểm Quiz</div>
+              <h1 className="text-3xl font-extrabold text-white mb-2">Hoàn thành xuất sắc!</h1>
+              <p className="text-white/50 mb-8">Bạn đã hoàn thành bài đánh giá năng lực</p>
+
+              {/* Score */}
+              <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-2xl p-6 mb-6 border border-yellow-500/20">
+                <div className="text-5xl font-extrabold shimmer-text mb-1">{score}</div>
+                <div className="text-white/40 text-sm">Tổng điểm</div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-white/10 rounded-xl p-4 border border-white/10">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <CheckCircle className="w-5 h-5 text-green-400" />
-                    <span className="text-2xl font-bold text-white">{stats.correct}/{stats.total}</span>
-                  </div>
-                  <div className="text-sm text-white/70">Câu đúng</div>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                  <CheckCircle className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
+                  <div className="text-xl font-bold text-white">{stats.correct}/{stats.total}</div>
+                  <div className="text-xs text-white/40">Câu đúng</div>
                 </div>
-                <div className="bg-white/10 rounded-xl p-4 border border-white/10">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Clock className="w-5 h-5 text-blue-400" />
-                    <span className="text-2xl font-bold text-white">{stats.avgTime}s</span>
-                  </div>
-                  <div className="text-sm text-white/70">TB/câu</div>
+                <div className="bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                  <div className="text-xl font-bold text-white">{stats.percentage}%</div>
+                  <div className="text-xs text-white/40 mt-1">Chính xác</div>
+                </div>
+                <div className="bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                  <Clock className="w-5 h-5 text-blue-400 mx-auto mb-1" />
+                  <div className="text-xl font-bold text-white">{stats.avgTime}s</div>
+                  <div className="text-xs text-white/40">TB/câu</div>
                 </div>
               </div>
 
               {/* Assigned Grade */}
-              <div className="bg-gradient-to-r from-green-400/20 to-emerald-500/20 rounded-2xl p-6 mb-8 border border-green-400/30">
+              <div className={`${gradeColor.bg} rounded-2xl p-6 mb-8 border ${gradeColor.border}`}>
                 <div className="flex items-center justify-center gap-3 mb-2">
-                  <Award className="w-8 h-8 text-green-400" />
-                  <span className="text-3xl font-bold text-white">Lớp {assignedGrade}</span>
+                  <Award className={`w-7 h-7 ${gradeColor.text}`} />
+                  <span className="text-3xl font-extrabold text-white">Lớp {assignedGrade}</span>
                 </div>
-                <div className="text-white/80">Trình độ phù hợp của bạn</div>
+                <div className="text-white/50 text-sm">Trình độ được đề xuất cho bạn</div>
+              </div>
+
+              {/* Level breakdown */}
+              <div className="space-y-2 mb-8">
+                {[8, 9, 10, 11, 12].map(level => {
+                  const levelQs = questions.filter(q => q.level === level);
+                  const correct = levelQs.filter((q, i) => {
+                    const qIndex = questions.indexOf(q);
+                    return answers[qIndex] === q.answer;
+                  }).length;
+                  const total = levelQs.length;
+                  const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+                  const lc = levelColors[level];
+                  return (
+                    <div key={level} className="flex items-center gap-3">
+                      <span className={`text-xs font-medium w-12 ${lc.text}`}>Lớp {level}</span>
+                      <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                        <div className={`h-full bg-gradient-to-r ${lc.gradient} rounded-full transition-all duration-700`} style={{ width: `${pct}%` }} />
+                      </div>
+                      <span className="text-xs text-white/40 w-12 text-right">{correct}/{total}</span>
+                    </div>
+                  );
+                })}
               </div>
 
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full py-4 bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white font-bold text-xl rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                className="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-emerald-500/25 hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
               >
                 {loading ? (
                   <>
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     Đang xử lý...
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-6 h-6" />
+                    <Sparkles className="w-5 h-5" />
                     Bắt đầu học ngay
-                    <ChevronRight className="w-6 h-6" />
+                    <ArrowRight className="w-5 h-5" />
                   </>
                 )}
               </button>
             </div>
           </div>
         </div>
-
-        <style>{`
-          @keyframes confetti {
-            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-          }
-          .animate-confetti {
-            width: 10px;
-            height: 10px;
-            animation: confetti 3s ease-in-out forwards;
-          }
-        `}</style>
       </div>
     );
   }
 
-  // Quiz Screen
+  // ========== QUIZ SCREEN ==========
+  const timerPercentage = (timeLeft / 30) * 100;
+  const timerColor = timeLeft <= 5 ? 'text-red-400' : timeLeft <= 10 ? 'text-orange-400' : 'text-white';
+  const timerBarColor = timeLeft <= 5 ? 'from-red-500 to-red-600' : timeLeft <= 10 ? 'from-orange-500 to-amber-500' : `${currentLevelColor.gradient}`;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a1a] p-4 md:p-6 relative overflow-hidden">
+      <style>{globalStyles}</style>
       <Confetti show={showConfetti} />
-      
-      {/* Background effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 left-10 w-40 h-40 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob" />
-        <div className="absolute bottom-10 right-10 w-40 h-40 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000" />
+
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 left-10 w-48 h-48 bg-blue-600/5 rounded-full blur-[100px] animate-blob" />
+        <div className="absolute bottom-10 right-10 w-48 h-48 bg-purple-600/5 rounded-full blur-[80px] animate-blob animation-delay-2000" />
       </div>
 
-      <div className="relative z-10 max-w-3xl mx-auto">
-        {/* Header Stats */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
+      <div className="relative z-10 max-w-2xl mx-auto">
+        {/* Top Bar */}
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
             {/* Score */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20">
-              <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-yellow-400" />
-                <span className="text-white font-bold">{score}</span>
-              </div>
+            <div className="bg-white/[0.03] backdrop-blur-sm rounded-xl px-4 py-2.5 border border-white/10 flex items-center gap-2">
+              <Star className="w-4 h-4 text-yellow-400" />
+              <span className="text-white font-bold text-sm">{score}</span>
             </div>
-            
+
             {/* Streak */}
             {streak > 0 && (
-              <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-xl px-4 py-2 animate-pulse">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-white" />
-                  <span className="text-white font-bold">{streak}x Streak!</span>
-                </div>
+              <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl px-4 py-2.5 border border-orange-500/30 flex items-center gap-2 animate-fadeIn">
+                <Zap className="w-4 h-4 text-orange-400" />
+                <span className="text-orange-300 font-bold text-sm">{streak}x</span>
               </div>
             )}
           </div>
 
           {/* Timer */}
-          <div className={`rounded-xl px-4 py-2 border ${
-            timeLeft <= 10 
-              ? 'bg-red-500/20 border-red-400/50 animate-pulse' 
-              : 'bg-white/10 border-white/20'
+          <div className={`rounded-xl px-4 py-2.5 border flex items-center gap-2 transition-all ${
+            timeLeft <= 5 ? 'bg-red-500/10 border-red-500/30 animate-timerPulse' :
+            timeLeft <= 10 ? 'bg-orange-500/10 border-orange-500/30' :
+            'bg-white/[0.03] border-white/10'
           }`}>
-            <div className="flex items-center gap-2">
-              <Clock className={`w-5 h-5 ${timeLeft <= 10 ? 'text-red-400' : 'text-white'}`} />
-              <span className={`font-bold ${timeLeft <= 10 ? 'text-red-400' : 'text-white'}`}>{timeLeft}s</span>
-            </div>
+            <Clock className={`w-4 h-4 ${timerColor}`} />
+            <span className={`font-bold text-sm tabular-nums ${timerColor}`}>{timeLeft}s</span>
           </div>
         </div>
 
-        {/* Progress Bar */}
+        {/* Progress */}
         <div className="mb-6">
-          <div className="flex justify-between text-sm text-white/70 mb-2">
-            <span>Câu {currentQuestion + 1}/{questions.length}</span>
-            <span>Lớp {currentQ.level}</span>
+          <div className="flex justify-between items-center text-xs mb-2">
+            <span className="text-white/40">Câu {currentQuestion + 1} / {questions.length}</span>
+            <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${currentLevelColor.bg} ${currentLevelColor.text} border ${currentLevelColor.border}`}>
+              Lớp {currentQ.level}
+            </span>
           </div>
-          <div className="h-3 bg-white/10 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500"
+          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+            <div
+              className={`h-full bg-gradient-to-r ${currentLevelColor.gradient} rounded-full transition-all duration-500 ease-out`}
               style={{ width: `${progress}%` }}
+            />
+          </div>
+          {/* Timer bar */}
+          <div className="h-0.5 bg-white/5 rounded-full overflow-hidden mt-1.5">
+            <div
+              className={`h-full bg-gradient-to-r ${timerBarColor} rounded-full transition-all duration-1000 ease-linear`}
+              style={{ width: `${timerPercentage}%` }}
             />
           </div>
         </div>
 
         {/* Question Card */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
+        <div className="bg-white/[0.03] backdrop-blur-xl rounded-3xl p-7 md:p-9 border border-white/10 shadow-2xl animate-fadeIn" key={currentQuestion}>
           {/* Question */}
           <div className="text-center mb-8">
-            <div className="text-6xl mb-4">{currentQ.emoji}</div>
-            <h2 className="text-2xl font-bold text-white leading-relaxed">
+            <div className="text-5xl mb-4">{currentQ.emoji}</div>
+            <h2 className="text-xl md:text-2xl font-bold text-white leading-relaxed">
               {currentQ.question}
             </h2>
           </div>
 
           {/* Hint */}
           {showHint && (
-            <div className="bg-yellow-400/20 border border-yellow-400/50 rounded-xl p-4 mb-6 animate-fadeIn">
-              <div className="flex items-center gap-2 text-yellow-300">
-                <Sparkles className="w-5 h-5" />
-                <span className="font-medium">Gợi ý: {currentQ.hint}</span>
+            <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 mb-6 animate-fadeIn">
+              <div className="flex items-center gap-2 text-amber-300">
+                <Lightbulb className="w-5 h-5 flex-shrink-0" />
+                <span className="text-sm font-medium">{currentQ.hint}</span>
               </div>
             </div>
           )}
 
-          {/* Render based on question type */}
+          {/* Options */}
           {currentQ.type === 'truefalse' ? (
-            <TrueFalseQuiz 
+            <TrueFalseQuiz
               question={currentQ}
               userAnswer={selectedAnswer}
               isAnswered={isAnswered}
               onAnswer={handleAnswerSelect}
             />
           ) : (
-            // Multiple Choice Options
-            <div className="grid gap-4">
+            <div className="grid gap-3">
               {shuffledOptions.map((option, index) => {
                 const isSelected = selectedAnswer === option;
                 const isCorrect = option === currentQ.answer;
                 const showCorrect = isAnswered && isCorrect;
                 const showWrong = isAnswered && isSelected && !isCorrect;
-                
+
                 return (
                   <button
                     key={index}
                     onClick={() => handleAnswerSelect(option)}
                     disabled={isAnswered}
-                    className={`w-full p-4 rounded-2xl text-left font-medium transition-all duration-300 transform ${
+                    className={`w-full p-4 rounded-2xl text-left font-medium transition-all duration-300 border ${
                       showCorrect
-                        ? 'bg-green-500 text-white scale-105 shadow-lg shadow-green-500/30'
+                        ? 'bg-emerald-500/15 border-emerald-400/50 text-emerald-300 scale-[1.02] shadow-lg shadow-emerald-500/10'
                         : showWrong
-                          ? 'bg-red-500 text-white shake'
-                          : isSelected
-                            ? 'bg-white/30 text-white border-2 border-white'
-                            : 'bg-white/10 text-white hover:bg-white/20 hover:scale-102 border border-white/10'
-                    } ${isAnswered && !isSelected && !isCorrect ? 'opacity-50' : ''}`}
+                        ? 'bg-red-500/15 border-red-400/50 text-red-300 shake'
+                        : isSelected && !isAnswered
+                        ? 'bg-blue-500/15 border-blue-400/50 text-blue-300'
+                        : 'bg-white/[0.02] border-white/5 text-white/80 hover:bg-white/[0.06] hover:border-white/15'
+                    } ${isAnswered && !isSelected && !isCorrect ? 'opacity-30' : ''}`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                          showCorrect 
-                            ? 'bg-white text-green-500' 
-                            : showWrong 
-                              ? 'bg-white text-red-500'
-                              : 'bg-white/20 text-white'
+                        <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${
+                          showCorrect ? 'bg-emerald-500/30 text-emerald-300' :
+                          showWrong ? 'bg-red-500/30 text-red-300' :
+                          'bg-white/5 text-white/50'
                         }`}>
                           {String.fromCharCode(65 + index)}
                         </span>
-                        <span>{option}</span>
+                        <span className="text-sm md:text-base">{option}</span>
                       </div>
-                      {showCorrect && <CheckCircle className="w-6 h-6" />}
-                      {showWrong && <XCircle className="w-6 h-6" />}
+                      {showCorrect && <CheckCircle className="w-5 h-5 text-emerald-400" />}
+                      {showWrong && <XCircle className="w-5 h-5 text-red-400" />}
                     </div>
                   </button>
                 );
@@ -957,46 +938,35 @@ const PlacementTest = () => {
           {!showHint && !isAnswered && hintsUsed < 5 && (
             <button
               onClick={useHint}
-              className="mt-6 w-full py-3 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white rounded-xl border border-white/10 transition-all duration-300 flex items-center justify-center gap-2"
+              className="mt-6 w-full py-3 bg-white/[0.02] hover:bg-white/[0.05] text-white/40 hover:text-white/60 rounded-xl border border-white/5 hover:border-white/10 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
             >
-              <Sparkles className="w-5 h-5" />
+              <Lightbulb className="w-4 h-4" />
               Dùng gợi ý ({5 - hintsUsed} còn lại)
             </button>
           )}
         </div>
-      </div>
 
-      <style>{`
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes confetti {
-          0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-        .animate-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .shake { animation: shake 0.5s ease-in-out; }
-        .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
-        .animate-confetti {
-          width: 10px;
-          height: 10px;
-          animation: confetti 3s ease-in-out forwards;
-        }
-        .hover\\:scale-102:hover { transform: scale(1.02); }
-      `}</style>
+        {/* Question dots */}
+        <div className="flex justify-center gap-1 mt-6 flex-wrap">
+          {questions.map((q, i) => {
+            const isCompleted = i < currentQuestion;
+            const isCurrent = i === currentQuestion;
+            const wasCorrect = isCompleted && answers[i] === q.answer;
+            const lc = levelColors[q.level];
+            return (
+              <div
+                key={i}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  isCurrent ? `w-6 bg-gradient-to-r ${lc.gradient}` :
+                  isCompleted && wasCorrect ? 'bg-emerald-500/60' :
+                  isCompleted ? 'bg-red-500/40' :
+                  'bg-white/10'
+                }`}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

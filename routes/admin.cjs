@@ -8,6 +8,7 @@ const Challenge = require('../models/Challenge.cjs');
 const AuditLog = require('../models/AuditLog.cjs');
 const Notification = require('../models/Notification.cjs');
 const SystemSettings = require('../models/SystemSettings.cjs');
+const Announcement = require('../models/Announcement.cjs');
 const { authMiddleware, adminMiddleware, checkAdminPermission } = require('../middleware/roleAuth.cjs');
 
 // Tất cả routes đều yêu cầu đăng nhập và là admin
@@ -1210,6 +1211,36 @@ router.get('/content/challenges', checkAdminPermission('content'), async (req, r
   }
 });
 
+// PUT /api/admin/content/challenges/:id/status - Cập nhật trạng thái thử thách
+router.put('/content/challenges/:id/status', checkAdminPermission('content'), async (req, res) => {
+  try {
+    const { status } = req.body;
+    
+    if (!status) {
+      return res.status(400).json({ success: false, message: 'Trạng thái là bắt buộc' });
+    }
+
+    const challenge = await Challenge.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    
+    if (!challenge) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy thử thách' });
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Cập nhật trạng thái thành công', 
+      data: challenge 
+    });
+  } catch (error) {
+    console.error('Update challenge status error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
 // ==================== TEACHER NOTES ====================
 
 // POST /api/admin/teacher-requests/:userId/notes - Thêm ghi chú admin
@@ -1253,6 +1284,112 @@ router.post('/teacher-requests/:userId/notes', checkAdminPermission('teachers'),
     });
   } catch (error) {
     console.error('Add teacher note error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// ==================== SYSTEM ANNOUNCEMENTS ====================
+
+// GET /api/admin/announcements - Fetch all system announcements
+router.get('/announcements', async (req, res) => {
+  try {
+    const { page = 1, limit = 20, search } = req.query;
+    const query = { type: 'system' };
+    
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { content: { $regex: search, $options: 'i' } }
+      ];
+    }
+    
+    const [announcements, total] = await Promise.all([
+      Announcement.find(query)
+        .populate('author', 'displayName email')
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit))
+        .lean(),
+      Announcement.countDocuments(query)
+    ]);
+    
+    res.json({
+      success: true,
+      data: {
+        announcements,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get system announcements error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// POST /api/admin/announcements - Create a new system announcement
+router.post('/announcements', async (req, res) => {
+  try {
+    const { title, content, priority, isActive } = req.body;
+    
+    if (!title || !content) {
+      return res.status(400).json({ success: false, message: 'Vui lòng nhập tóm tắt và nội dung thông báo' });
+    }
+    
+    const announcement = new Announcement({
+      title,
+      content,
+      type: 'system',
+      author: req.user._id,
+      priority: priority || 'normal',
+      isActive: isActive !== undefined ? isActive : true
+    });
+    
+    await announcement.save();
+    res.status(201).json({ success: true, message: 'Đăng thông báo thành công', data: announcement });
+  } catch (error) {
+    console.error('Create system announcement error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// PUT /api/admin/announcements/:id - Update an announcement
+router.put('/announcements/:id', async (req, res) => {
+  try {
+    const { title, content, priority, isActive } = req.body;
+    const announcement = await Announcement.findById(req.params.id);
+    
+    if (!announcement) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy thông báo' });
+    }
+    
+    if (title) announcement.title = title;
+    if (content) announcement.content = content;
+    if (priority) announcement.priority = priority;
+    if (isActive !== undefined) announcement.isActive = isActive;
+    
+    await announcement.save();
+    res.json({ success: true, message: 'Cập nhật thông báo thành công', data: announcement });
+  } catch (error) {
+    console.error('Update announcement error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// DELETE /api/admin/announcements/:id - Delete an announcement
+router.delete('/announcements/:id', async (req, res) => {
+  try {
+    const announcement = await Announcement.findByIdAndDelete(req.params.id);
+    if (!announcement) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy thông báo' });
+    }
+    res.json({ success: true, message: 'Xóa thông báo thành công' });
+  } catch (error) {
+    console.error('Delete announcement error:', error);
     res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
   }
 });

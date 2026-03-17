@@ -1021,7 +1021,7 @@ const AssignmentManagement = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 flex-shrink-0">
-                          <a href={`${api.defaults.baseURL?.replace('/api', '')}${file.filePath}`} target="_blank" rel="noopener noreferrer"
+                          <a href={file.filePath} target="_blank" rel="noopener noreferrer"
                             className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg" title="Tải xuống">
                             <Download className="w-4 h-4" />
                           </a>

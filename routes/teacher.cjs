@@ -10,52 +10,11 @@ const ClassRoom = require('../models/ClassRoom.cjs');
 const Assignment = require('../models/Assignment.cjs');
 const Lesson = require('../models/Lesson.cjs');
 const Challenge = require('../models/Challenge.cjs');
+const Announcement = require('../models/Announcement.cjs');
 const { authMiddleware, teacherMiddleware, checkClassOwnership } = require('../middleware/roleAuth.cjs');
 
 // Multer configuration for file uploads
-const uploadsDir = path.join(__dirname, '..', 'uploads', 'assignments');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, uniqueSuffix + ext);
-  }
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.ms-powerpoint',
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/webp',
-    'text/plain'
-  ];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Loại file không được hỗ trợ. Chỉ chấp nhận PDF, Word, Excel, PowerPoint, hình ảnh và text.'), false);
-  }
-};
-
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB max
-});
+const { uploadAssignmentCloudinary, uploadMemory, cloudinary } = require('../config/cloudinary.cjs');
 
 // Tất cả routes đều yêu cầu đăng nhập và là giáo viên
 router.use(authMiddleware);
@@ -190,7 +149,8 @@ router.get('/dashboard', async (req, res) => {
 // GET /api/teacher/classes - Lấy danh sách lớp của giáo viên
 router.get('/classes', async (req, res) => {
   try {
-    const classes = await ClassRoom.find({ teacher: req.user._id })
+    const query = req.user.role === 'admin' ? {} : { teacher: req.user._id };
+    const classes = await ClassRoom.find(query)
       .sort({ createdAt: -1 })
       .lean();
     
@@ -681,7 +641,7 @@ router.get('/assignments', async (req, res) => {
   try {
     const { status, classId, page = 1, limit = 20 } = req.query;
     
-    const query = { createdBy: req.user._id };
+    const query = req.user.role === 'admin' ? {} : { createdBy: req.user._id };
     if (status) query.status = status;
     if (classId) query['assignedTo.classRoom'] = classId;
     
@@ -904,7 +864,7 @@ router.post('/assignments/:assignmentId/grade', async (req, res) => {
 // ==================== FILE UPLOAD ====================
 
 // POST /api/teacher/assignments/:assignmentId/upload - Upload file đính kèm
-router.post('/assignments/:assignmentId/upload', upload.array('files', 5), async (req, res) => {
+router.post('/assignments/:assignmentId/upload', uploadAssignmentCloudinary.array('files', 5), async (req, res) => {
   try {
     const assignment = await Assignment.findOne({
       _id: req.params.assignmentId,
@@ -921,8 +881,8 @@ router.post('/assignments/:assignmentId/upload', upload.array('files', 5), async
     
     const attachments = req.files.map(file => ({
       originalName: file.originalname,
-      fileName: file.filename,
-      filePath: `/uploads/assignments/${file.filename}`,
+      fileName: file.filename, // This becomes the Cloudinary public_id
+      filePath: file.path,     // This becomes the Cloudinary secure URL
       fileType: file.mimetype,
       fileSize: file.size,
       uploadedAt: new Date()
@@ -965,10 +925,11 @@ router.delete('/assignments/:assignmentId/attachments/:fileName', async (req, re
       await assignment.save();
     }
     
-    // Remove file from disk
-    const filePath = path.join(uploadsDir, req.params.fileName);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+    // Remove file from Cloudinary 
+    try {
+      await cloudinary.uploader.destroy(req.params.fileName);
+    } catch (err) {
+      console.error('Lỗi khi xóa file trên Cloudinary:', err);
     }
     
     res.json({ success: true, message: 'Đã xóa file' });
@@ -979,37 +940,30 @@ router.delete('/assignments/:assignmentId/attachments/:fileName', async (req, re
 });
 
 // POST /api/teacher/assignments/parse-file - Upload & parse file thành câu hỏi
-router.post('/assignments/parse-file', upload.single('file'), async (req, res) => {
+router.post('/assignments/parse-file', uploadMemory.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, message: 'Không có file nào được tải lên' });
     }
 
-    const filePath = req.file.path;
     const mimeType = req.file.mimetype;
     let text = '';
 
     // Extract text based on file type
     if (mimeType === 'application/pdf') {
-      const dataBuffer = fs.readFileSync(filePath);
-      const pdfData = await pdfParse(dataBuffer);
+      const pdfData = await pdfParse(req.file.buffer);
       text = pdfData.text;
     } else if (
       mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
       mimeType === 'application/msword'
     ) {
-      const result = await mammoth.extractRawText({ path: filePath });
+      const result = await mammoth.extractRawText({ buffer: req.file.buffer });
       text = result.value;
     } else if (mimeType === 'text/plain') {
-      text = fs.readFileSync(filePath, 'utf-8');
+      text = req.file.buffer.toString('utf-8');
     } else {
-      // Clean up
-      fs.unlinkSync(filePath);
       return res.status(400).json({ success: false, message: 'Chỉ hỗ trợ parse PDF, Word (.docx) và text (.txt)' });
     }
-
-    // Clean up uploaded file
-    fs.unlinkSync(filePath);
 
     if (!text.trim()) {
       return res.json({ success: true, data: { rawText: '', questions: [] }, message: 'File trống' });
@@ -1856,6 +1810,100 @@ router.delete('/classes/:classId/assignments/:assignmentId', checkClassOwnership
     });
   } catch (error) {
     console.error('Delete assignment error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// ==================== CLASS ANNOUNCEMENTS ====================
+
+// GET /api/teacher/classes/:classId/announcements - Lấy thông báo của lớp
+router.get('/classes/:classId/announcements', checkClassOwnership, async (req, res) => {
+  try {
+    const announcements = await Announcement.find({
+      type: 'class',
+      classId: req.params.classId
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+    
+    res.json({ success: true, data: announcements });
+  } catch (error) {
+    console.error('Get class announcements error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// POST /api/teacher/classes/:classId/announcements - Tạo thông báo mới cho lớp
+router.post('/classes/:classId/announcements', checkClassOwnership, async (req, res) => {
+  try {
+    const { title, content, priority, isActive } = req.body;
+    
+    if (!title || !content) {
+      return res.status(400).json({ success: false, message: 'Vui lòng nhập tiêu đề và nội dung' });
+    }
+    
+    const announcement = new Announcement({
+      title,
+      content,
+      type: 'class',
+      classId: req.params.classId,
+      author: req.user._id,
+      priority: priority || 'normal',
+      isActive: isActive !== undefined ? isActive : true
+    });
+    
+    await announcement.save();
+    res.status(201).json({ success: true, message: 'Tạo thông báo thành công', data: announcement });
+  } catch (error) {
+    console.error('Create class announcement error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// PUT /api/teacher/announcements/:id - Cập nhật thông báo
+router.put('/announcements/:id', async (req, res) => {
+  try {
+    const { title, content, priority, isActive } = req.body;
+    const announcement = await Announcement.findById(req.params.id);
+    
+    if (!announcement) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy thông báo' });
+    }
+
+    if (announcement.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Không có quyền sửa thông báo này' });
+    }
+    
+    if (title) announcement.title = title;
+    if (content) announcement.content = content;
+    if (priority) announcement.priority = priority;
+    if (isActive !== undefined) announcement.isActive = isActive;
+    
+    await announcement.save();
+    res.json({ success: true, message: 'Cập nhật thông báo thành công', data: announcement });
+  } catch (error) {
+    console.error('Update class announcement error:', error);
+    res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
+  }
+});
+
+// DELETE /api/teacher/announcements/:id - Xóa thông báo
+router.delete('/announcements/:id', async (req, res) => {
+  try {
+    const announcement = await Announcement.findById(req.params.id);
+    
+    if (!announcement) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy thông báo' });
+    }
+
+    if (announcement.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Không có quyền xóa thông báo này' });
+    }
+    
+    await Announcement.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Đã xóa thông báo' });
+  } catch (error) {
+    console.error('Delete class announcement error:', error);
     res.status(500).json({ success: false, message: 'Lỗi server', error: error.message });
   }
 });
