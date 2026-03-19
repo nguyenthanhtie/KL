@@ -319,9 +319,9 @@ const Sidebar = ({ children }) => {
           )}
 
           {/* Teacher Menu */}
-          {(user?.role === 'teacher' || user?.role === 'admin') && (
+          {user?.role === 'teacher' && (
             <>
-              <div className={`text-xs font-semibold text-gray-400 uppercase tracking-wider ${user?.role === 'teacher' ? 'mb-4' : 'my-4 pt-4 border-t border-gray-200'} ${isCollapsed ? 'text-center' : 'px-3'}`}>
+              <div className={`text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 ${isCollapsed ? 'text-center' : 'px-3'}`}>
                 {isCollapsed ? '👨‍🏫' : 'Giáo viên'}
               </div>
               {teacherMenuItems.map((item) => (

@@ -850,13 +850,16 @@ async function seedDatabase() {
     console.log('✓ Đã kết nối MongoDB');
 
     // Xóa dữ liệu cũ
-    // Drop old unique index first
+    // Drop old unique indexes first to avoid conflicts during re-creation
     try {
       await mongoose.connection.collection('lessons').dropIndex('classId_1_lessonId_1');
-      console.log('✓ Đã xóa index cũ (classId, lessonId)');
-    } catch (err) {
-      console.log('⚠️ Index cũ không tồn tại hoặc đã được xóa');
-    }
+      console.log('✓ Đã xóa index cũ: classId_1_lessonId_1');
+    } catch (err) {}
+
+    try {
+      await mongoose.connection.collection('lessons').dropIndex('classId_1_curriculumType_1_lessonId_1');
+      console.log('✓ Đã xóa index cũ: classId_1_curriculumType_1_lessonId_1');
+    } catch (err) {}
     
     await Lesson.deleteMany({});
     console.log('✓ Đã xóa dữ liệu bài học cũ');
@@ -909,39 +912,110 @@ async function seedDatabase() {
       ...class12Lessons
     ];
 
-    // Transform game structure from array to object with quizzes
+    // Transform legacy structure to new modular structure (Coursera-like)
     const transformedLessons = allLessons.map(lesson => {
+      // 1. Ensure game.quizzes exists for legacy code compatibility
+      let allQuizzes = [];
       if (Array.isArray(lesson.game)) {
-        // If game is an array, wrap it in quizzes property and add type field
-        const quizzesWithType = lesson.game.map(quiz => ({
+        allQuizzes = lesson.game.map(quiz => ({
           ...quiz,
-          type: quiz.type || 'multiple-choice' // Add default type if not present
+          type: quiz.type || 'multiple-choice'
         }));
-        return {
-          ...lesson,
-          game: {
-            quizzes: quizzesWithType
-          }
-        };
-      }
-      // If game is already an object (legacy structure with basic/intermediate/advanced)
-      // keep it as is, or transform to quizzes if needed
-      if (lesson.game && typeof lesson.game === 'object' && !lesson.game.quizzes) {
-        const quizzes = [
+      } else if (lesson.game && typeof lesson.game === 'object') {
+        allQuizzes = [
+          ...(lesson.game.quizzes || []),
           ...(lesson.game.basic || []),
           ...(lesson.game.intermediate || []),
           ...(lesson.game.advanced || [])
-        ];
-        return {
-          ...lesson,
-          game: {
-            quizzes: quizzes.length > 0 ? quizzes : undefined,
-            basic: lesson.game.basic,
-            intermediate: lesson.game.intermediate,
-            advanced: lesson.game.advanced
+        ].map(quiz => ({
+          ...quiz,
+          type: quiz.type || 'multiple-choice'
+        }));
+      }
+
+      // 2. Create the modular structure if missing
+      if (!lesson.modules || lesson.modules.length === 0) {
+        let items = [];
+        
+        // Intelligently split theoryModules into separate items
+        if (lesson.theoryModules && lesson.theoryModules.length > 0) {
+          let currentItem = null;
+          
+          lesson.theoryModules.forEach((mod, idx) => {
+            const isNewSection = mod.type === 'heading' || (mod.content && mod.content.title);
+            
+            if (isNewSection || !currentItem) {
+              // Start a new item
+              let title = 'Tiếp tục tìm hiểu';
+              if (mod.type === 'heading') title = mod.content.text;
+              else if (mod.content && mod.content.title) title = mod.content.title;
+              else if (idx === 0) title = 'Mở đầu bài học';
+
+              currentItem = {
+                type: 'theory',
+                title: title,
+                theoryModules: [mod],
+                duration: '3 min',
+                section: mod.type === 'heading' ? 'Đề mục chính' : 'Nội dung chi tiết'
+              };
+              items.push(currentItem);
+            } else {
+              // Append to current item
+              currentItem.theoryModules.push(mod);
+            }
+          });
+        } else {
+          // Fallback to single item if no theoryModules
+          items.push({
+            type: 'theory',
+            title: lesson.title || 'Nội dung bài học',
+            content: lesson.theory || lesson.content || '',
+            theoryModules: [],
+            duration: '15 min',
+            section: 'Kiến thức trọng tâm'
+          });
+        }
+
+        // If there's a videoUrl at the root, add it as a video item
+        if (lesson.videoUrl) {
+          items.unshift({
+            type: 'video',
+            title: 'Video giảng dạy',
+            videoUrl: lesson.videoUrl,
+            duration: '10 min',
+            section: 'Học liệu'
+          });
+        }
+
+        // Define Study items
+        const studyItems = [...items];
+
+        lesson.modules = [
+          {
+            title: 'I. Học phần: ' + (lesson.title || 'Kiến thức trọng tâm'),
+            description: lesson.description || '',
+            items: studyItems,
+            quizzes: [] // No quiz in study module
+          },
+          {
+            title: 'II. Thử thách tổng kết',
+            description: 'Đánh giá lại toàn bộ kiến thức bài học.',
+            items: [],
+            quizzes: allQuizzes // All quizzes go to the final module
           }
+        ];
+      }
+
+      // 3. Keep legacy game structure for backward compatibility with old quiz components
+      if (!lesson.game || typeof lesson.game !== 'object' || !lesson.game.quizzes) {
+        lesson.game = {
+          quizzes: allQuizzes,
+          basic: (lesson.game && lesson.game.basic) || allQuizzes.slice(0, 5),
+          intermediate: (lesson.game && lesson.game.intermediate) || [],
+          advanced: (lesson.game && lesson.game.advanced) || []
         };
       }
+
       return lesson;
     });
 

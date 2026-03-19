@@ -186,6 +186,68 @@ const lessonSchema = new mongoose.Schema({
       hint: String
     }]
   },
+  // New module-based structure (Coursera-like)
+  modules: [{
+    id: {
+      type: String,
+      required: true,
+      default: () => Math.random().toString(36).substr(2, 9)
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    description: String,
+    items: [{
+      id: {
+        type: String,
+        default: () => Math.random().toString(36).substr(2, 9)
+      },
+      type: {
+        type: String,
+        enum: ['theory', 'video'],
+        required: true
+      },
+      title: String,
+      content: String, // HTML content
+      theoryModules: [mongoose.Schema.Types.Mixed], // Block-based content
+      videoUrl: String,
+      duration: String, // e.g., "5 min"
+      section: String // e.g., "Mở đầu khóa học"
+    }],
+    quizzes: [{
+      type: {
+        type: String,
+        enum: ['multiple-choice', 'true-false', 'fill-in-blank', 'matching', 'ordering', 'drag-drop', 'molecule-assembly'],
+        required: true
+      },
+      question: {
+        type: String,
+        required: true
+      },
+      options: [String],
+      pairs: [{
+        left: String,
+        right: String
+      }],
+      correctOrder: [String],
+      correctAnswer: mongoose.Schema.Types.Mixed,
+      inline: Boolean,
+      slots: [{
+        id: Number,
+        label: String,
+        correct: String,
+        value: String
+      }],
+      explanation: String,
+      points: {
+        type: Number,
+        default: 10
+      },
+      hint: String
+    }],
+    order: Number
+  }],
   order: Number,
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

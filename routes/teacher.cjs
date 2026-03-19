@@ -1340,11 +1340,12 @@ router.post('/lessons', async (req, res) => {
       order: parseInt(order) || 1,
       theoryModules: theoryModules || [],
       game: {
-        quizzes: allQuizzes, // Single level format
+        quizzes: allQuizzes,
         basic: game?.basic || [],
         intermediate: game?.intermediate || [],
         advanced: game?.advanced || []
       },
+      modules: modules || [],
       createdBy: req.user._id
     });
     
@@ -1375,7 +1376,8 @@ router.put('/lessons/:id', async (req, res) => {
       level,
       order,
       theoryModules,
-      game
+      game,
+      modules
     } = req.body;
     
     const lesson = await Lesson.findById(req.params.id);
@@ -1414,6 +1416,7 @@ router.put('/lessons/:id', async (req, res) => {
     lesson.level = level;
     lesson.order = parseInt(order) || lesson.order;
     lesson.theoryModules = theoryModules || [];
+    lesson.modules = modules || lesson.modules || [];
     
     if (game) {
       // Save in both formats for compatibility

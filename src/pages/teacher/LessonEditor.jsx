@@ -21,7 +21,14 @@ import {
   ToggleLeft,
   Type,
   Columns,
-  ArrowUpDown
+  ArrowUpDown,
+  Video,
+  Layout,
+  Settings,
+  List,
+  Clock,
+  Tag,
+  ChevronRight
 } from 'lucide-react';
 
 // Quiz type options
@@ -50,7 +57,7 @@ const LessonEditor = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [activeTab, setActiveTab] = useState('info'); // info, theory, quiz
+  const [activeTab, setActiveTab] = useState('info'); // info, theory, quiz, modules
   const [activeQuizLevel, setActiveQuizLevel] = useState('basic');
   
   // Form data
@@ -69,7 +76,8 @@ const LessonEditor = () => {
       basic: [],
       intermediate: [],
       advanced: []
-    }
+    },
+    modules: []
   });
 
   // Load lesson data if editing
@@ -124,7 +132,8 @@ const LessonEditor = () => {
           level: lesson.level || 'Beginner',
           order: lesson.order || 1,
           theoryModules: theoryModulesData,
-          game: gameData
+          game: gameData,
+          modules: lesson.modules || []
         });
       }
     } catch (err) {
@@ -297,6 +306,121 @@ const LessonEditor = () => {
           [level]: newQuizzes
         }
       };
+    });
+  };
+  
+  // Module management functions
+  const addModule = () => {
+    const newModule = {
+      id: Math.random().toString(36).substr(2, 9),
+      title: 'Mô đun mới',
+      description: '',
+      items: [
+        { id: Math.random().toString(36).substr(2, 9), type: 'theory', title: 'Lý thuyết', theoryModules: [] }
+      ],
+      quizzes: [],
+      order: formData.modules.length + 1
+    };
+    
+    setFormData(prev => ({
+      ...prev,
+      modules: [...prev.modules, newModule]
+    }));
+  };
+  
+  const updateModule = (index, field, value) => {
+    setFormData(prev => {
+      const newModules = [...prev.modules];
+      newModules[index] = { ...newModules[index], [field]: value };
+      return { ...prev, modules: newModules };
+    });
+  };
+  
+  const removeModule = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      modules: prev.modules.filter((_, i) => i !== index)
+    }));
+  };
+  
+  const moveModule = (index, direction) => {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= formData.modules.length) return;
+    
+    setFormData(prev => {
+      const newModules = [...prev.modules];
+      [newModules[index], newModules[newIndex]] = [newModules[newIndex], newModules[index]];
+      return { ...prev, modules: newModules };
+    });
+  };
+  
+  const addModuleItem = (moduleIndex, type) => {
+    const newItem = {
+      id: Math.random().toString(36).substr(2, 9),
+      type,
+      title: type === 'theory' ? 'Lý thuyết' : 'Video bài giảng',
+      theoryModules: [],
+      videoUrl: ''
+    };
+    
+    setFormData(prev => {
+      const newModules = [...prev.modules];
+      newModules[moduleIndex].items = [...newModules[moduleIndex].items, newItem];
+      return { ...prev, modules: newModules };
+    });
+  };
+  
+  const updateModuleItem = (moduleIndex, itemIndex, field, value) => {
+    setFormData(prev => {
+      const newModules = [...prev.modules];
+      const newItems = [...newModules[moduleIndex].items];
+      newItems[itemIndex] = { ...newItems[itemIndex], [field]: value };
+      newModules[moduleIndex].items = newItems;
+      return { ...prev, modules: newModules };
+    });
+  };
+  
+  const removeModuleItem = (moduleIndex, itemIndex) => {
+    setFormData(prev => {
+      const newModules = [...prev.modules];
+      newModules[moduleIndex].items = newModules[moduleIndex].items.filter((_, i) => i !== itemIndex);
+      return { ...prev, modules: newModules };
+    });
+  };
+  
+  const addModuleQuiz = (moduleIndex) => {
+    const newQuiz = {
+      type: 'multiple-choice',
+      question: '',
+      options: ['', '', '', ''],
+      correctAnswer: 0,
+      explanation: '',
+      points: 10,
+      hint: ''
+    };
+    
+    setFormData(prev => {
+      const newModules = [...prev.modules];
+      newModules[moduleIndex].quizzes = [...newModules[moduleIndex].quizzes, newQuiz];
+      return { ...prev, modules: newModules };
+    });
+  };
+  
+  const updateModuleQuiz = (moduleIndex, quizIndex, field, value) => {
+    setFormData(prev => {
+      const newModules = [...prev.modules];
+      const newQuizzes = [...newModules[moduleIndex].quizzes];
+      newQuizzes[quizIndex] = { ...newQuizzes[quizIndex], [field]: value };
+      newModules[moduleIndex].quizzes = newQuizzes;
+      return { ...prev, modules: newModules };
+    });
+  };
+  
+  const removeModuleQuiz = (moduleIndex, quizIndex) => {
+    setFormData(prev => {
+      const newModules = [...prev.modules];
+      newModules[moduleIndex].quizzes = newModules[moduleIndex].quizzes.filter((_, i) => i !== quizIndex);
+      return { ...prev, modules: newModules };
     });
   };
 
@@ -705,6 +829,15 @@ const LessonEditor = () => {
             <Gamepad2 className="w-4 h-4" />
             Câu hỏi ({formData.game.basic.length + formData.game.intermediate.length + formData.game.advanced.length})
           </button>
+          <button
+            onClick={() => setActiveTab('modules')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
+              activeTab === 'modules' ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-100'
+            }`}
+          >
+            <Layout className="w-4 h-4" />
+            Cấu trúc Module ({formData.modules?.length || 0})
+          </button>
         </div>
       </div>
 
@@ -880,6 +1013,247 @@ const LessonEditor = () => {
               <Plus className="w-5 h-5" />
               Thêm câu hỏi {QUIZ_LEVELS.find(l => l.key === activeQuizLevel)?.label.toLowerCase()}
             </button>
+          </div>
+        )}
+
+        {/* Modules Tab */}
+        {activeTab === 'modules' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xl font-bold text-gray-800">Cấu trúc bài học theo Module</h2>
+              <button
+                onClick={addModule}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Thêm Module
+              </button>
+            </div>
+
+            {formData.modules.length === 0 ? (
+              <div className="bg-white border-2 border-dashed border-gray-200 rounded-xl p-12 text-center">
+                <Layout className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-600">Chưa có module nào</h3>
+                <p className="text-gray-400 mb-6">Chia nhỏ bài học thành các module để giúp học sinh dễ tiếp thu hơn.</p>
+                <button
+                  onClick={addModule}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Tạo Module đầu tiên
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {formData.modules.map((module, mIdx) => (
+                  <div key={module.id || mIdx} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    {/* Module Header */}
+                    <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold">
+                          {mIdx + 1}
+                        </div>
+                        <input
+                          type="text"
+                          value={module.title}
+                          onChange={(e) => updateModule(mIdx, 'title', e.target.value)}
+                          className="bg-transparent border-none text-lg font-bold text-gray-800 focus:ring-0 p-0 w-64"
+                          placeholder="Tiêu đề module..."
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => moveModule(mIdx, -1)}
+                          disabled={mIdx === 0}
+                          className="p-1.5 text-gray-400 hover:text-gray-600 disabled:opacity-20"
+                        >
+                          <ChevronUp className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => moveModule(mIdx, 1)}
+                          disabled={mIdx === formData.modules.length - 1}
+                          className="p-1.5 text-gray-400 hover:text-gray-600 disabled:opacity-20"
+                        >
+                          <ChevronDown className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => removeModule(mIdx)}
+                          className="p-1.5 text-red-400 hover:text-red-600"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="p-6 space-y-8">
+                      {/* Items List */}
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="font-semibold text-gray-700 flex items-center gap-2">
+                            <BookOpen className="w-4 h-4" />
+                            Nội dung bài học
+                          </h3>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          {module.items?.map((item, iIdx) => (
+                            <div key={item.id || iIdx} className="border border-gray-100 rounded-lg p-4 bg-gray-50/50">
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-2">
+                                  {item.type === 'video' ? <Video className="w-4 h-4 text-red-500" /> : <FileText className="w-4 h-4 text-blue-500" />}
+                                  <input
+                                    type="text"
+                                    value={item.title || ''}
+                                    onChange={(e) => updateModuleItem(mIdx, iIdx, 'title', e.target.value)}
+                                    className="bg-transparent border-none font-medium text-gray-700 focus:ring-0 p-0 w-64"
+                                    placeholder={item.type === 'video' ? 'Tiêu đề video...' : 'Tiêu đề lý thuyết...'}
+                                  />
+                                </div>
+                                <button
+                                  onClick={() => removeModuleItem(mIdx, iIdx)}
+                                  className="text-gray-400 hover:text-red-500"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                    <label className="block text-sm text-gray-500 mb-1 flex items-center gap-1">
+                                      <Tag className="w-3 h-3" /> Đề mục (Section)
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={item.section || ''}
+                                      onChange={(e) => updateModuleItem(mIdx, iIdx, 'section', e.target.value)}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                      placeholder="VD: Giới thiệu khóa học"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-sm text-gray-500 mb-1 flex items-center gap-1">
+                                      <Clock className="w-3 h-3" /> Thời lượng
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={item.duration || ''}
+                                      onChange={(e) => updateModuleItem(mIdx, iIdx, 'duration', e.target.value)}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                      placeholder="VD: 5 phút"
+                                    />
+                                  </div>
+                                </div>
+
+                                {item.type === 'video' ? (
+                                <div>
+                                  <label className="block text-sm text-gray-500 mb-1">YouTube Video URL</label>
+                                  <input
+                                    type="text"
+                                    value={item.videoUrl || ''}
+                                    onChange={(e) => updateModuleItem(mIdx, iIdx, 'videoUrl', e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500"
+                                    placeholder="https://www.youtube.com/watch?v=..."
+                                  />
+                                </div>
+                              ) : (
+                                <TheoryEditor
+                                  value={item.theoryModules || []}
+                                  onChange={(data) => {
+                                    updateModuleItem(mIdx, iIdx, 'theoryModules', data.modules);
+                                  }}
+                                />
+                              )}
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="flex gap-3 mt-4">
+                          <button
+                            onClick={() => addModuleItem(mIdx, 'theory')}
+                            className="flex-1 py-2 border border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:border-blue-400 hover:text-blue-600 transition-colors flex items-center justify-center gap-2"
+                          >
+                            <Plus className="w-4 h-4" /> Thêm Lý thuyết
+                          </button>
+                          <button
+                            onClick={() => addModuleItem(mIdx, 'video')}
+                            className="flex-1 py-2 border border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:border-red-400 hover:text-red-600 transition-colors flex items-center justify-center gap-2"
+                          >
+                            <Plus className="w-4 h-4" /> Thêm Video
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Quiz Section */}
+                      <div className="pt-6 border-t border-gray-100">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="font-semibold text-gray-700 flex items-center gap-2">
+                            <Gamepad2 className="w-4 h-4" />
+                            Kiểm tra nhanh (Module Quiz)
+                          </h3>
+                          <span className="text-xs text-gray-500">Nên có từ 3-5 câu hỏi cho mỗi module</span>
+                        </div>
+
+                        <div className="space-y-4 mb-4">
+                          {module.quizzes?.map((quiz, qIdx) => (
+                            <div key={qIdx} className="pl-4 border-l-2 border-blue-100">
+                              {/* Reusing existing renderQuizEditor logic but modified for module context */}
+                              <div className="bg-gray-50 rounded-lg p-4 mb-4 relative">
+                                <button
+                                  onClick={() => removeModuleQuiz(mIdx, qIdx)}
+                                  className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                                
+                                <div className="space-y-3">
+                                  <input
+                                    type="text"
+                                    value={quiz.question}
+                                    onChange={(e) => updateModuleQuiz(mIdx, qIdx, 'question', e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg"
+                                    placeholder={`Câu hỏi ${qIdx + 1}...`}
+                                  />
+                                  
+                                  <div className="grid grid-cols-1 gap-2">
+                                    {quiz.options?.map((opt, oIdx) => (
+                                      <div key={oIdx} className="flex items-center gap-2">
+                                        <input
+                                          type="radio"
+                                          name={`mod-quiz-${mIdx}-${qIdx}`}
+                                          checked={quiz.correctAnswer === oIdx}
+                                          onChange={() => updateModuleQuiz(mIdx, qIdx, 'correctAnswer', oIdx)}
+                                        />
+                                        <input
+                                          type="text"
+                                          value={opt}
+                                          onChange={(e) => {
+                                            const newOpts = [...quiz.options];
+                                            newOpts[oIdx] = e.target.value;
+                                            updateModuleQuiz(mIdx, qIdx, 'options', newOpts);
+                                          }}
+                                          className="flex-1 px-3 py-1 text-sm border border-gray-100 rounded"
+                                          placeholder={`Đáp án ${String.fromCharCode(65 + oIdx)}`}
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <button
+                          onClick={() => addModuleQuiz(mIdx)}
+                          className="w-full py-2 border border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:border-green-400 hover:text-green-600 transition-colors flex items-center justify-center gap-2"
+                        >
+                          <Plus className="w-4 h-4" /> Thêm câu hỏi trắc nghiệm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
